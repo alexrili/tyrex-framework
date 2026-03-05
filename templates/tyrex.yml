@@ -1,0 +1,40 @@
+# .tyrex/tyrex.yml - Tyrex Framework Configuration
+# Docs: https://github.com/tyrex-framework/tyrex
+
+project:
+  name: "{{PROJECT_NAME}}"
+  created: "{{DATE}}"
+
+# Operation mode
+mode:
+  commits: "{{COMMIT_MODE}}"         # "auto" | "approve"
+  branches: "{{BRANCH_MODE}}"        # "auto" | "approve"
+  changelog: "always"                # LOCKED - always enabled
+  documentation: "{{DOC_MODE}}"      # "always" | "suggest" | "minimal"
+
+# Documentation defaults for new demands (/tyrex.new)
+docs:
+  adr: true
+  rfc: false
+  wiki: true
+  diagrams: true
+  changelog: true                    # LOCKED - always true
+
+# Quality guardrails
+quality:
+  tdd: true
+  lint: true
+  security_scan: true
+  review_checklist: true
+
+# Parallelization
+parallel:
+  enabled: true
+  max_agents: {{MAX_AGENTS}}
+  auto_suggest: true                 # Suggest parallelization when possible
+
+# Git
+git:
+  branch_prefix: "{{BRANCH_PREFIX}}"
+  commit_style: "{{COMMIT_STYLE}}"   # "conventional" | "descriptive"
+  auto_push: false                   # Never auto-push by default

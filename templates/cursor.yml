@@ -1,0 +1,23 @@
+# .tyrex/state/cursor.yml - Session pointer for quick recovery
+# This file enables fast session resumption without re-reading the entire codebase.
+# Updated by the orchestrator agent after each task completion.
+
+last_updated: "{{DATE}}T00:00:00Z"
+session_id: null
+
+active_feature: null
+active_feature_file: null
+
+last_task_completed: null
+last_commit: null
+last_action: "tyrex_initialized"
+
+tasks_summary:
+  total: 0
+  completed: 0
+  in_progress: 0
+  pending: 0
+  failed: 0
+  blocked: 0
+
+next_tasks: []

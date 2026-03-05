@@ -1,0 +1,32 @@
+{
+  "name": "tyrex-framework",
+  "version": "0.1.0",
+  "description": "Human-driven, AI-accelerated pair programming framework. Orchestrates AI agents with guardrails, parallelization, and shared memory.",
+  "bin": {
+    "tyrex": "./bin/tyrex.js"
+  },
+  "keywords": [
+    "ai",
+    "pair-programming",
+    "claude-code",
+    "cursor",
+    "codex",
+    "framework",
+    "orchestration",
+    "tdd",
+    "spec-driven"
+  ],
+  "author": "Tyrex Contributors",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tyrex-framework/tyrex"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "bin/",
+    "templates/"
+  ]
+}
