@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Wiki page: Skills System (`docs/wiki/skills-system.md`)
+- `/tyrex-help`, `/tyrex-status`, `/tyrex-settings` updated with skills system references
+- All 17 commands synced to 4 agent directories with skills updates
 - `/tyrex-do` loads skill personas during task execution (Role, Guidelines, Patterns, Review Criteria self-check)
 - `/tyrex-plan` checks feature spec for pre-selected skills and matches by expertise
 - `/tyrex-new` analyzes demand to suggest/create skills before configuration

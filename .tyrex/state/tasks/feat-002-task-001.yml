@@ -1,7 +1,7 @@
 task_id: "feat-002-task-001"
 feature: "002-skills-system"
 name: "Create skill template and scaffold in bin/tyrex.js"
-status: "pending"
+status: "completed"
 depends_on: []
 unlocks: ["feat-002-task-002", "feat-002-task-003", "feat-002-task-004", "feat-002-task-005"]
 parallel: false
@@ -10,10 +10,14 @@ quality: "optional"
 files:
   - "templates/skill.md"
   - "bin/tyrex.js"
-started_at: null
-finished_at: null
-agent: null
-commit: null
-files_changed: []
-output: null
+started_at: "2026-03-07T00:00:00Z"
+finished_at: "2026-03-07T00:00:00Z"
+agent: "claude-opus-4-6"
+commit: "aa5bdc3"
+files_changed:
+  - "templates/skill.md"
+  - "bin/tyrex.js"
+  - ".tyrex/templates/skill.md"
+  - "docs/CHANGELOG.md"
+output: "Created skill.md persona template, updated scaffold to copy it"
 errors: null

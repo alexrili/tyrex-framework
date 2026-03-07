@@ -1,7 +1,7 @@
 task_id: "feat-002-task-005"
 feature: "002-skills-system"
 name: "Update /tyrex-do — skill loading during execution"
-status: "pending"
+status: "completed"
 depends_on: ["feat-002-task-001"]
 unlocks: ["feat-002-task-006"]
 parallel: true
@@ -9,10 +9,11 @@ skill: "none"
 quality: "optional"
 files:
   - "templates/commands/unified/tyrex-do.md"
-started_at: null
-finished_at: null
-agent: null
-commit: null
-files_changed: []
-output: null
+started_at: "2026-03-07T00:00:00Z"
+finished_at: "2026-03-07T00:00:00Z"
+agent: "claude-opus-4-6"
+commit: "102f05c"
+files_changed:
+  - "templates/commands/unified/tyrex-do.md"
+output: "Updated skill path to flat files, detailed persona application, skill in parallel context"
 errors: null

@@ -1,7 +1,7 @@
 task_id: "feat-002-task-004"
 feature: "002-skills-system"
 name: "Update /tyrex-plan — skill-aware task assignment"
-status: "pending"
+status: "completed"
 depends_on: ["feat-002-task-001"]
 unlocks: ["feat-002-task-006"]
 parallel: true
@@ -9,10 +9,11 @@ skill: "none"
 quality: "optional"
 files:
   - "templates/commands/unified/tyrex-plan.md"
-started_at: null
-finished_at: null
-agent: null
-commit: null
-files_changed: []
-output: null
+started_at: "2026-03-07T00:00:00Z"
+finished_at: "2026-03-07T00:00:00Z"
+agent: "claude-opus-4-6"
+commit: "4a6ba97"
+files_changed:
+  - "templates/commands/unified/tyrex-plan.md"
+output: "Skills loaded in Step 1, feature spec checked first for pre-selected skills"
 errors: null

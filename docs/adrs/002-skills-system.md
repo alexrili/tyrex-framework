@@ -1,7 +1,7 @@
 # ADR-002: Skills System — Reusable AI Agent Personas
 
 ## Status
-Proposed
+Accepted
 
 ## Date
 2026-03-07
