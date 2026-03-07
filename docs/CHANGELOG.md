@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Config templates updated with SPEC, SRS, PRD doc options (`templates/tyrex.yml`, `templates/feature.md`)
+- `/tyrex-init` now includes context ingestion step after codebase analysis
 - SPEC template (`templates/spec.md`) — per-task technical specification
 - SRS template (`templates/srs.md`) — per-demand software requirements specification
 - PRD template (`templates/prd.md`) — per-demand product requirements document

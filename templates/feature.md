@@ -12,24 +12,28 @@
 - ...
 
 ## Technical Notes
-<!-- Added during /tyrex.plan phase -->
+<!-- Added during /tyrex-plan phase -->
 
 ## Tasks
-<!-- Added during /tyrex.plan phase. Each task has dependency and parallelism attributes. -->
+<!-- Added during /tyrex-plan phase. Each task has dependency, parallelism, skill, and quality attributes. -->
 <!--
 ### Task 1: [description]
 - **Type:** sequential | parallel
 - **Depends on:** [] (task numbers)
 - **Unlocks:** [] (task numbers)
+- **Estimate:** small | medium | large
+- **Files:** [files to create or modify]
+- **Skill:** none | [skill name from .tyrex/skills/]
+- **Quality:** required | recommended | optional
 - **Status:** pending | in_progress | completed | failed
 -->
 
 ## Configuration
-<!-- Set during /tyrex.new -->
+<!-- Set during /tyrex-new -->
 <!--
 - Commits: approve | auto
 - Branch: feat/...
-- Docs: [changelog, adr, rfc, wiki, diagrams]
+- Docs: [changelog, spec, srs, prd, adr, rfc, wiki, diagrams]
 -->
 
 ## Status: spec
