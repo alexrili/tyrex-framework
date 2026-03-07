@@ -1,0 +1,54 @@
+# .tyrex/tyrex.yml - Tyrex Framework Configuration
+# Docs: https://github.com/tyrex-framework/tyrex
+
+project:
+  name: "tyrex"
+  created: "2026-03-07"
+
+# Operation mode
+mode:
+  commits: "approve"         # "auto" | "approve"
+  branches: "approve"        # "auto" | "approve"
+  changelog: "always"                # LOCKED - always enabled
+  documentation: "suggest"      # "always" | "suggest" | "minimal"
+
+# Documentation defaults for new demands (/tyrex-new)
+docs:
+  spec: true                        # LOCKED - always true (technical specification per task)
+  srs: true                         # Software Requirements Specification per demand
+  prd: true                         # Product Requirements Document per demand
+  adr: true
+  rfc: false
+  wiki: true
+  diagrams: true
+  changelog: true                    # LOCKED - always true
+
+# Quality guardrails
+quality:
+  lint: true
+  security_scan: true
+  review_checklist: true
+  # Adaptive quality strategy per area type
+  # Values: "required" (TDD mandatory) | "recommended" (tests suggested) | "optional" (ask user)
+  strategy:
+    default: "recommended"          # Fallback for areas not listed below (no test framework yet)
+    api: "required"                # API endpoints, controllers
+    workers: "required"            # Background jobs, queue processors
+    data: "required"               # Models, migrations, data layer
+    security: "required"           # Auth, encryption, access control
+    frontend: "recommended"        # UI components, views
+    mobile: "recommended"          # Mobile-specific code
+    infra: "optional"             # Docker, CI/CD, config files
+    docs: "optional"              # Documentation generation
+
+# Parallelization
+parallel:
+  enabled: true
+  max_agents: 5
+  auto_suggest: true                 # Suggest parallelization when possible
+
+# Git
+git:
+  branch_prefix: "feat/"
+  commit_style: "conventional"   # "conventional" | "descriptive"
+  auto_push: false                   # Never auto-push by default
