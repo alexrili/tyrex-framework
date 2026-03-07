@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- `/tyrex-discuss` command — interactive project exploration and technical discussion with codebase, greenfield, and hybrid modes
+- `/tyrex-init` improved for greenfield projects — structured flow with `/tyrex-discuss` recommendation instead of a single-line fallback
+- `/tyrex-help` updated with discuss command in workflow diagram, command reference, and detailed help
+- `/tyrex-status` suggests `/tyrex-discuss` for greenfield projects and incomplete TYREX.md
+- All 18 commands synced to 4 agent directories (was 17, now includes tyrex-discuss)
 - Project roadmap system (`.tyrex/roadmap.yml`) for tracking planned, in-progress, and completed features
 - `/tyrex-status` now shows comprehensive project dashboard: Roadmap, Health diagnostics, Documentation coverage, Skills, and Context sections
 - `/tyrex-new` checks roadmap for planned features before asking for a new demand description

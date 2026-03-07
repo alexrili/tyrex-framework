@@ -34,6 +34,9 @@ TYREX Help
     /tyrex-do         Execute implementation tasks
     /tyrex-review     Review implementation, finalize docs
 
+  Exploration:
+    /tyrex-discuss    Explore the project, ask questions, brainstorm architecture
+
   Shortcuts:
     /tyrex-quick      Quick task without full ceremony (bug fix, tweak)
     /tyrex-handoff    Autopilot — chains new→plan→do→review automatically
@@ -60,9 +63,15 @@ TYREX Help
 ```
   Typical workflow:
 
-    /tyrex-init → /tyrex-new → /tyrex-plan → /tyrex-do → /tyrex-review
-                                     ↑                         │
-                                     └─── fix tasks ───────────┘
+    /tyrex-init → /tyrex-discuss → /tyrex-new → /tyrex-plan → /tyrex-do → /tyrex-review
+                  (optional)                          ↑                         │
+                                                      └─── fix tasks ───────────┘
+
+  Greenfield:
+    /tyrex-init → /tyrex-discuss (brainstorm) → /tyrex-new → ...
+
+  Anytime Q&A:
+    /tyrex-discuss  (explore the project, ask questions at any point)
 
   Fast mode:
     /tyrex-handoff  (runs the entire workflow, stops at checkpoints)
@@ -110,7 +119,7 @@ All resolve to the same command.
 #### Step 1: Identify the command
 
 Strip any `/tyrex-` or `tyrex-` prefix from the argument. Match against the known commands:
-`init`, `new`, `plan`, `do`, `review`, `quick`, `handoff`, `status`, `resume`, `settings`, `evolve`, `skills`, `context`, `readme`, `openapi`, `wiki`, `help`
+`init`, `new`, `plan`, `do`, `review`, `quick`, `handoff`, `status`, `resume`, `settings`, `evolve`, `skills`, `context`, `discuss`, `readme`, `openapi`, `wiki`, `help`
 
 If no match: show "Command not found" and list all available commands.
 
@@ -151,6 +160,13 @@ Use the reference below for each command:
 - Steps: Codebase analysis → Generate TYREX.md + constitution → Interactive config → Summary
 - Prerequisites: None (this is the starting point)
 - Next: `/tyrex-new`
+
+**discuss:**
+- What: Interactive exploration and technical discussion. In codebase mode, answers questions about existing code with file references. In greenfield mode, brainstorms architecture, stack, and scope. Loads relevant skills as perspective automatically.
+- When: You're new to a project and want to understand it, or starting from scratch and want to brainstorm before building. Can be used anytime for Q&A.
+- Steps: Detect mode (codebase/greenfield/hybrid) → Load skills → Multi-turn conversation → Save conclusions on demand (user-initiated only)
+- Prerequisites: `.tyrex/` initialized (recommended but not required for basic Q&A)
+- Next: `/tyrex-new` (to act on what was discussed) or `/tyrex-evolve` (to record decisions)
 
 **new:**
 - What: Starts a new feature/demand. Checks the roadmap for planned features first, captures requirements, analyzes required skills, configures docs/git, generates feature spec, and updates the roadmap. Supports documentation types: ADR, RFC, Wiki, SPEC, SRS, PRD.

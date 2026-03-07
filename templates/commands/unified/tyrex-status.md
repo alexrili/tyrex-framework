@@ -77,6 +77,7 @@ Last action: [action from cursor.yml]
 ═══════════════════════════════════════
 
 Commands:
+  /tyrex-discuss   Explore the project, ask questions, brainstorm
   /tyrex-do        Continue implementation (if active feature)
   /tyrex-review    Review completed feature (if all tasks done)
   /tyrex-new       Start new feature
@@ -118,11 +119,13 @@ Based on the status, suggest the most relevant next actions:
 - If there's an active feature with pending tasks: suggest `/tyrex-do`
 - If all tasks are done but feature not reviewed: suggest `/tyrex-review`
 - If no active feature: suggest `/tyrex-new`
-- If TYREX.md is incomplete: suggest `/tyrex-evolve`
-- If no context files: suggest `/tyrex-context`
+- If TYREX.md is incomplete: suggest `/tyrex-evolve` or `/tyrex-discuss` to explore and fill gaps
+- If no context files: suggest `/tyrex-context` or `/tyrex-discuss` to explore the project
+- If project is greenfield (no features completed, minimal code): suggest `/tyrex-discuss` to brainstorm
 - If no skills and features exist: suggest `/tyrex-skills create`
 - If stale branches exist: suggest cleanup
 - If roadmap has planned features: mention what's next
+- Always include `/tyrex-discuss` in the commands list for Q&A availability
 
 ## Rules
 - Keep the output concise — this is a status check, not a full report

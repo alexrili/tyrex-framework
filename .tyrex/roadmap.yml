@@ -20,8 +20,8 @@ features:
 
   - id: "003"
     name: "discuss-command"
-    description: "/tyrex-discuss — Structured technical discussions with AI"
-    status: planned
+    description: "/tyrex-discuss — Interactive project exploration & technical discussion"
+    status: done
     referenced_in: ["002-skills-system"]
     depends_on: ["002"]
 

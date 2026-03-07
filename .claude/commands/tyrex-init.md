@@ -88,11 +88,29 @@ Present a summary of:
 - Context files ingested (if any)
 - Next step: "Run /tyrex-new to start your first feature"
 
-### For empty/new projects:
-If the directory is empty or has minimal files, skip the analysis phase and focus on asking the user what they want to build. Generate TYREX.md with the information they provide.
+### For empty/new projects (greenfield):
+If the directory is empty or has minimal files (only config, README, or scaffold):
+
+1. **Skip codebase analysis** — there's nothing to analyze yet.
+2. **Create minimal structure** — scaffold `.tyrex/`, `docs/`, and core files with placeholder content.
+3. **Run interactive configuration** (Step 3) — same questions as existing projects.
+4. **Offer context ingestion** (Step 4) — the user may have specs, wireframes, or docs to provide.
+5. **Summary with adapted next steps:**
+   ```
+   Tyrex initialized (greenfield project).
+   
+   No code to analyze — project context will be built as you go.
+   
+   Suggested next steps:
+     /tyrex-discuss   Brainstorm architecture, stack, and scope interactively
+     /tyrex-new       Jump straight into defining your first feature
+     /tyrex-context   Provide project context (specs, docs, constraints)
+   ```
+6. **Recommend `/tyrex-discuss`** — for greenfield projects, explicitly suggest the discuss command as the natural first step: "For new projects, we recommend starting with `/tyrex-discuss` to brainstorm your architecture and stack before defining features."
 
 ## Important Rules
 - NEVER skip the security audit on existing projects
 - ALWAYS generate `.tyrex/map/` files for existing projects
+- For greenfield projects, recommend `/tyrex-discuss` before `/tyrex-new`
 - Keep TYREX.md under 300 lines — be concise
 - The constitution.md should be adapted to the detected stack (e.g., Ruby projects get Brakeman in CI, Node projects get npm audit, etc.)
