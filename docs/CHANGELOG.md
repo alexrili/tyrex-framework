@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- CLI (`bin/tyrex.js`) now scaffolds `docs/specs/`, `docs/srs/`, `docs/prd/`, `.tyrex/context/` directories and copies SPEC/SRS/PRD templates
 - `/tyrex-plan` now reads context/SRS/PRD, generates mandatory SPEC drafts per task, includes spec_file in task state
 - `/tyrex-new` now includes context ingestion step, SRS/PRD in doc bundle, and ordered doc generation
 - Config templates updated with SPEC, SRS, PRD doc options (`templates/tyrex.yml`, `templates/feature.md`)
