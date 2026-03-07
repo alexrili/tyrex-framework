@@ -17,6 +17,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `/tyrex-help` updated with roadmap-aware descriptions for `status` and `new` commands
 - All 17 commands synced to 4 agent directories with roadmap updates
 
+### Fixed
+- `bin/tyrex.js` no longer overwrites evolved core files (TYREX.md, constitution.md, cursor.yml, tyrex.yml, roadmap.yml) on re-install — prevents loss of project state when self-hosting or re-running scaffold
+- Rules files (CLAUDE.md, AGENTS.md) also protected from accidental overwrite on re-install
+- Added `--force` / `-f` flag to explicitly reset core files to template defaults when needed
+
 ### Changed
 - `/tyrex-status` rewritten from simple feature list to comprehensive project health dashboard
 - `/tyrex-help` descriptions for `status` and `new` updated to reflect roadmap integration

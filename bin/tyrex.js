@@ -107,6 +107,20 @@ function copyTemplate(templateName, destPath, replacements = {}) {
   return true;
 }
 
+/**
+ * Copy a template only if the destination doesn't already exist.
+ * Core files (TYREX.md, constitution.md, cursor.yml, tyrex.yml, roadmap.yml)
+ * evolve over time and must NOT be overwritten by a re-install.
+ * Use --force to explicitly reset them to template defaults.
+ */
+function copyTemplateIfNew(templateName, destPath, replacements = {}, force = false) {
+  if (!force && fs.existsSync(destPath)) {
+    console.log(c("dim", `  Preserved ${path.relative(process.cwd(), destPath)} (already exists, use --force to overwrite)`));
+    return false;
+  }
+  return copyTemplate(templateName, destPath, replacements);
+}
+
 function ensureDir(dirPath) {
   fs.mkdirSync(dirPath, { recursive: true });
 }
@@ -134,7 +148,7 @@ async function installCommands(targetDir, agent) {
   return count;
 }
 
-function installTyrexStructure(targetDir, config, agents) {
+function installTyrexStructure(targetDir, config, agents, force = false) {
   const tyrexDir = path.join(targetDir, ".tyrex");
 
   // Directories
@@ -165,19 +179,17 @@ function installTyrexStructure(targetDir, config, agents) {
     BRANCH_PREFIX: config.branchPrefix || "feat/",
   };
 
-  // Core files
-  copyTemplate("tyrex.yml", path.join(tyrexDir, "tyrex.yml"), replacements);
-  copyTemplate("TYREX.md", path.join(tyrexDir, "TYREX.md"), replacements);
-  copyTemplate("constitution.md", path.join(tyrexDir, "constitution.md"), replacements);
-  copyTemplate("cursor.yml", path.join(tyrexDir, "state", "cursor.yml"), replacements);
+  // Core files — these evolve over time and must NOT be overwritten on re-install.
+  // Use --force to explicitly reset them to template defaults.
+  copyTemplateIfNew("tyrex.yml", path.join(tyrexDir, "tyrex.yml"), replacements, force);
+  copyTemplateIfNew("TYREX.md", path.join(tyrexDir, "TYREX.md"), replacements, force);
+  copyTemplateIfNew("constitution.md", path.join(tyrexDir, "constitution.md"), replacements, force);
+  copyTemplateIfNew("cursor.yml", path.join(tyrexDir, "state", "cursor.yml"), replacements, force);
+  copyTemplateIfNew("roadmap.yml", path.join(tyrexDir, "roadmap.yml"), replacements, force);
 
-  // Roadmap file
-  copyTemplate("roadmap.yml", path.join(tyrexDir, "roadmap.yml"), replacements);
-
-  // Templates for user — copied WITHOUT replacements intentionally.
-  // These are fill-in-later templates that the AI agent populates
-  // when generating actual specs, ADRs, etc. Placeholders like
-  // {{DATE}} and {{PROJECT_NAME}} are filled at generation time.
+  // Reference templates — safe to overwrite since these are fill-in-later
+  // templates that AI agents use as starting points. Updating them ensures
+  // projects always have the latest template versions.
   copyTemplate("feature.md", path.join(tyrexDir, "templates", "feature.md"));
   copyTemplate("adr.md", path.join(tyrexDir, "templates", "adr.md"));
   copyTemplate("rfc.md", path.join(tyrexDir, "templates", "rfc.md"));
@@ -187,27 +199,27 @@ function installTyrexStructure(targetDir, config, agents) {
   copyTemplate("prd.md", path.join(tyrexDir, "templates", "prd.md"));
   copyTemplate("skill.md", path.join(tyrexDir, "templates", "skill.md"));
 
-  // Rules files (CLAUDE.md and/or AGENTS.md) based on selected agents
+  // Rules files (CLAUDE.md and/or AGENTS.md) — these may be customized by the user,
+  // so protect them from overwrite on re-install.
   const installedRules = new Set();
   for (const agentKey of agents) {
     const agentConfig = AGENTS[agentKey];
     const rulesFile = agentConfig.rulesFile;
     if (!installedRules.has(rulesFile)) {
-      copyTemplate(agentConfig.rulesTemplate, path.join(targetDir, rulesFile), replacements);
-      console.log(c("green", `  Created ${rulesFile}`));
+      const rulesPath = path.join(targetDir, rulesFile);
+      if (copyTemplateIfNew(agentConfig.rulesTemplate, rulesPath, replacements, force)) {
+        console.log(c("green", `  Created ${rulesFile}`));
+      }
       installedRules.add(rulesFile);
     }
   }
 
-  // CHANGELOG.md (if not exists)
+  // CHANGELOG.md — never overwrite (append-only by nature)
   const changelogPath = path.join(targetDir, "docs", "CHANGELOG.md");
-  if (!fs.existsSync(changelogPath)) {
-    copyTemplate("CHANGELOG.md", changelogPath, replacements);
-  }
+  copyTemplateIfNew("CHANGELOG.md", changelogPath, replacements);
 
   console.log(c("green", "  Created .tyrex/ directory structure"));
   console.log(c("green", "  Created docs/ directory structure"));
-  console.log(c("green", "  Created docs/CHANGELOG.md"));
 }
 
 // ─── Main ────────────────────────────────────────────────────
@@ -227,6 +239,7 @@ async function main() {
     local: args.includes("--local") || args.includes("-l"),
     uninstall: args.includes("--uninstall"),
     defaults: args.includes("--defaults") || args.includes("-d"),
+    force: args.includes("--force") || args.includes("-f"),
   };
 
   console.log("");
@@ -360,7 +373,7 @@ async function main() {
 
   // Install .tyrex structure (only for local)
   if (location === "local") {
-    installTyrexStructure(targetDir, config, agents);
+    installTyrexStructure(targetDir, config, agents, flags.force);
   } else {
     // For global, only install commands
     console.log(c("dim", "  Global install: only slash commands installed."));
@@ -411,6 +424,7 @@ function printHelp() {
   console.log(`    --local, -l      Install in current directory`);
   console.log(`    --global, -g     Install in home directory`);
   console.log(`    --defaults, -d   Skip configuration questions, use defaults`);
+  console.log(`    --force, -f      Overwrite core files (TYREX.md, constitution, etc.) on re-install`);
   console.log(`    --uninstall      Remove Tyrex commands`);
   console.log(`    --version, -v    Show version`);
   console.log(`    --help, -h       Show this help`);
