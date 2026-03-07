@@ -31,6 +31,30 @@ Before configuring or generating documentation, offer the user a chance to provi
 3. If no: proceed to configuration
 4. Note: the user can always add more context later with `/tyrex-context`
 
+### Step 3b: Skill Analysis & Suggestion
+After ingesting context, analyze the demand to identify relevant skills:
+
+1. **Identify expertise domains** from the demand description (e.g., "backend API" → backend-engineer, "database migration" → dba, "security audit" → security-engineer, "product requirements" → product-manager).
+2. **Scan `.tyrex/skills/`** for existing skills matching the identified domains.
+3. **If matching skills exist:**
+   - Show: "Skills that match this demand: [list with name + role]"
+   - Ask: "Use these skills? [Y/n]"
+   - Selected skills will be loaded during planning and execution.
+4. **If NO matching skills exist (or partial match):**
+   - Show: "No skills found for: [unmatched domains]. Skills improve implementation quality by providing specialized context."
+   - Ask: "Create skills for these areas now? [Y/n]"
+   - If yes: For each missing skill, ask for a brief role description, then generate the skill file in `.tyrex/skills/{name}.md` using:
+     ```
+     # Skill: {Name}
+     ## Role
+     ## Expertise
+     ## Guidelines
+     ## Patterns
+     ## Review Criteria
+     ```
+   - If no: Continue without skills (they can be created later with `/tyrex-skills create`).
+5. **Record selected skills** — they will be included in the feature spec (Step 6) as a `Skills:` field.
+
 ### Step 4: Demand configuration
 Read defaults from `.tyrex/tyrex.yml` and present configuration for THIS demand:
 
@@ -75,6 +99,7 @@ Create `.tyrex/features/NNN-feature-name.md` with:
 - Objective (1-2 sentences)
 - Acceptance criteria (concise list)
 - Out of scope
+- Skills: [list of selected skill names, or "none"]
 - Configuration for this demand (including which docs were generated)
 - Status: `spec`
 

@@ -53,10 +53,15 @@ For each ready task, one at a time:
    - If SPEC file is missing, warn user and ask whether to generate one or proceed without
 2. **Load skill (if assigned):**
    - Check if the task has a `skill` attribute
-   - If yes: read the skill file from `.tyrex/skills/<name>/SKILL.md`
-   - If skill not found: check `.claude/skills/`, `.opencode/skills/`, `.agents/skills/`
+   - If yes: read the skill file from `.tyrex/skills/<name>.md`
+   - If skill not found: check `.claude/skills/<name>.md`, `.opencode/skills/<name>.md`, `.codex/skills/tyrex/<name>.md`
    - If still not found: warn user and continue without skill
-   - Apply skill patterns and conventions during implementation
+   - Apply the skill persona during implementation:
+     - Read `## Role` to understand the persona perspective for this task
+     - Apply `## Guidelines` as behavioral constraints during implementation
+     - Follow `## Patterns` for project-specific conventions
+     - If the skill's `## Expertise` doesn't match the current task's domain, log a note but still apply (the human selected it)
+   - Before marking the task complete, use `## Review Criteria` from the skill as a self-check
 3. Update task state to `in_progress`
 3. Update cursor.yml with current task
 4. **Implement following quality strategy:**
@@ -94,7 +99,8 @@ For each ready task, one at a time:
    - The specific task description and files
    - TYREX.md content (read-only context)
    - constitution.md content (read-only guardrails)
-   - Instruction: "Implement this task with TDD. Write results to the specified state file."
+   - Skill content (if assigned) — the full skill markdown file
+   - Instruction: "Implement this task following the skill guidelines. Write results to the specified state file."
    - The sub-agent should: implement, test, and report results
 
 2. Wait for all sub-agents to complete
