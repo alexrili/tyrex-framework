@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- `/tyrex-new` now includes context ingestion step, SRS/PRD in doc bundle, and ordered doc generation
 - Config templates updated with SPEC, SRS, PRD doc options (`templates/tyrex.yml`, `templates/feature.md`)
 - `/tyrex-init` now includes context ingestion step after codebase analysis
 - SPEC template (`templates/spec.md`) — per-task technical specification
