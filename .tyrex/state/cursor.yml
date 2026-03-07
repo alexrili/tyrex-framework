@@ -2,16 +2,16 @@
 last_updated: "2026-03-07T00:00:00Z"
 session_id: null
 
-active_feature: "002"
-active_feature_file: ".tyrex/features/002-skills-system.md"
+active_feature: null
+active_feature_file: null
 
-last_task_completed: "feat-002-task-008"
-last_commit: "6a2d2dd"
-last_action: "all_tasks_completed"
+last_task_completed: null
+last_commit: null
+last_action: "feature_002_completed"
 
 tasks_summary:
-  total: 8
-  completed: 8
+  total: 0
+  completed: 0
   in_progress: 0
   pending: 0
   failed: 0
@@ -19,6 +19,6 @@ tasks_summary:
 
 next_tasks: []
 
-# Feature 002: Skills System — Reusable AI Agent Personas
-# Branch: feat/skills-system
-# All 8 tasks completed. Ready for /tyrex-review.
+# Feature 002: Skills System — DONE
+# Branch: feat/skills-system (11 commits + review fix)
+# 8 tasks, 5 waves, 0 failures

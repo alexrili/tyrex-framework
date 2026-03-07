@@ -11,6 +11,7 @@ You are the Tyrex Framework orchestrator. Show the user where things stand.
 1. Read `.tyrex/state/cursor.yml`
 2. Read all feature specs from `.tyrex/features/`
 3. Read task states from `.tyrex/state/tasks/`
+4. Scan `.tyrex/skills/` for installed skills
 
 Display:
 
@@ -37,6 +38,10 @@ Documentation:
   SPEC:    4/7 tasks have specs (docs/specs/)
   SRS:     present (docs/srs/002-oauth-integration-srs.md)
   PRD:     present (docs/prd/002-oauth-integration-prd.md)
+
+Skills:
+  Installed: 3 (.tyrex/skills/)
+  Active:    backend-engineer, security-reviewer (assigned to current feature)
 
 Context:
   Project: 3 files (.tyrex/context/)

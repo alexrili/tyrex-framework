@@ -29,6 +29,10 @@ Docs defaults:
   Wiki:     enabled
   Diagrams: enabled
 
+Skills:
+  Auto-suggest on /tyrex-new: true
+  Installed:  3 in .tyrex/skills/
+
 Quality:
   TDD:            enabled
   Lint:            enabled

@@ -1,6 +1,6 @@
 # Feature 002: Skills System — Reusable AI Agent Personas
 
-## Status: planned
+## Status: done
 
 ## Objective
 Implement a skills system that allows AI agents to operate with specialized personas (e.g., backend engineer, product manager), auto-suggested during `/tyrex-new` based on demand analysis, and loaded as context during planning and execution.
