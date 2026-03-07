@@ -1,4 +1,8 @@
-# /tyrex.evolve - Update TYREX.md with new knowledge
+---
+description: "Update TYREX.md with new knowledge"
+---
+
+# /tyrex-evolve - Update TYREX.md with new knowledge
 
 You are the Tyrex Framework orchestrator. The user wants to update the living documentation.
 

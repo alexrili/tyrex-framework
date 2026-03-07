@@ -1,0 +1,20 @@
+task_id: "feat-001-task-007"
+feature: "001-doc-layers-spec-srs-prd-context"
+name: "Update bin/tyrex.js — scaffold new directories and templates"
+status: "completed"
+depends_on: [1, 2, 3]
+unlocks: [8, 9]
+parallel: false
+estimate: "medium"
+quality: "recommended"
+skill: "none"
+files:
+  - "bin/tyrex.js"
+started_at: "2026-03-07T00:00:00Z"
+finished_at: "2026-03-07T00:00:00Z"
+agent: "orchestrator"
+commit: null
+files_changed:
+  - "bin/tyrex.js"
+output: "Added ensureDir for docs/specs, docs/srs, docs/prd, .tyrex/context. Added copyTemplate for spec.md, srs.md, prd.md. Syntax check passed."
+errors: null

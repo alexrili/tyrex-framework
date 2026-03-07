@@ -1,0 +1,24 @@
+task_id: "feat-001-task-001"
+feature: "001-doc-layers-spec-srs-prd-context"
+name: "Create SPEC, SRS, PRD templates"
+status: "completed"
+depends_on: []
+unlocks: [3, 5, 6, 7]
+parallel: true
+estimate: "small"
+quality: "optional"
+skill: "none"
+files:
+  - "templates/spec.md"
+  - "templates/srs.md"
+  - "templates/prd.md"
+started_at: "2026-03-07T00:00:00Z"
+finished_at: "2026-03-07T00:00:00Z"
+agent: "sub-agent-1"
+commit: null
+files_changed:
+  - "templates/spec.md"
+  - "templates/srs.md"
+  - "templates/prd.md"
+output: "Created 3 templates: spec.md (33 lines), srs.md (27 lines), prd.md (30 lines)"
+errors: null

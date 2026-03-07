@@ -1,0 +1,20 @@
+task_id: "feat-001-task-002"
+feature: "001-doc-layers-spec-srs-prd-context"
+name: "Create /tyrex-context command definition"
+status: "completed"
+depends_on: []
+unlocks: [4, 5, 6]
+parallel: true
+estimate: "medium"
+quality: "optional"
+skill: "none"
+files:
+  - "templates/commands/unified/tyrex-context.md"
+started_at: "2026-03-07T00:00:00Z"
+finished_at: "2026-03-07T00:00:00Z"
+agent: "sub-agent-2"
+commit: null
+files_changed:
+  - "templates/commands/unified/tyrex-context.md"
+output: "Created tyrex-context.md (102 lines) with default/add/list subcommands"
+errors: null

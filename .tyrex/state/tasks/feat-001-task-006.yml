@@ -1,0 +1,20 @@
+task_id: "feat-001-task-006"
+feature: "001-doc-layers-spec-srs-prd-context"
+name: "Update /tyrex-plan command — SPEC generation per task + context reading"
+status: "completed"
+depends_on: [1, 2, 5]
+unlocks: [7]
+parallel: false
+estimate: "medium"
+quality: "optional"
+skill: "none"
+files:
+  - "templates/commands/unified/tyrex-plan.md"
+started_at: "2026-03-07T00:00:00Z"
+finished_at: "2026-03-07T00:00:00Z"
+agent: "orchestrator"
+commit: null
+files_changed:
+  - "templates/commands/unified/tyrex-plan.md"
+output: "Added context/SRS/PRD loading in Step 1, added Step 2b SPEC generation per task, added spec_file to task state schema, updated approval step and rules"
+errors: null

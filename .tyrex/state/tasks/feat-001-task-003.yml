@@ -1,0 +1,22 @@
+task_id: "feat-001-task-003"
+feature: "001-doc-layers-spec-srs-prd-context"
+name: "Update tyrex.yml template and feature template"
+status: "completed"
+depends_on: [1]
+unlocks: [5]
+parallel: false
+estimate: "small"
+quality: "optional"
+skill: "none"
+files:
+  - "templates/tyrex.yml"
+  - "templates/feature.md"
+started_at: "2026-03-07T00:00:00Z"
+finished_at: "2026-03-07T00:00:00Z"
+agent: "orchestrator"
+commit: null
+files_changed:
+  - "templates/tyrex.yml"
+  - "templates/feature.md"
+output: "Added spec, srs, prd to docs section in tyrex.yml and feature template config"
+errors: null

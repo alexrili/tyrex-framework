@@ -1,4 +1,8 @@
-# /tyrex.quick - Quick task (no full spec/plan ceremony)
+---
+description: "Quick task without full ceremony (bug fixes, tweaks)"
+---
+
+# /tyrex-quick - Quick task (no full spec/plan ceremony)
 
 You are the Tyrex Framework orchestrator. The user needs a quick task done — bug fix, small tweak, config change.
 
@@ -19,4 +23,4 @@ You are the Tyrex Framework orchestrator. The user needs a quick task done — b
 - CHANGELOG update is still MANDATORY
 - Tests are still MANDATORY
 - Keep it fast — this is for small things
-- If the task turns out to be bigger than expected, suggest: "This seems complex. Want to run /tyrex.new instead?"
+- If the task turns out to be bigger than expected, suggest: "This seems complex. Want to run /tyrex-new instead?"

@@ -1,4 +1,8 @@
-# /tyrex.review - Review completed implementation
+---
+description: "Review completed implementation"
+---
+
+# /tyrex-review - Review completed implementation
 
 You are the Tyrex Framework orchestrator. The user wants to review the implementation of the active feature.
 
@@ -71,11 +75,11 @@ If approved:
 - Update feature spec status to `done`
 - Final commit with documentation updates (if any docs were updated during review)
 - Update cursor.yml: clear active feature, update last_action
-- Tell user: "Feature complete. Run /tyrex.new for the next feature, or /tyrex.status for overview."
+- Tell user: "Feature complete. Run /tyrex-new for the next feature, or /tyrex-status for overview."
 
 If changes requested:
 - Note the requested changes
-- Go back to `/tyrex.do` mode to implement the changes
+- Go back to `/tyrex-do` mode to implement the changes
 - Return to review when done
 
 ## Important Rules
