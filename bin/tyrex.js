@@ -171,7 +171,10 @@ function installTyrexStructure(targetDir, config, agents) {
   copyTemplate("constitution.md", path.join(tyrexDir, "constitution.md"), replacements);
   copyTemplate("cursor.yml", path.join(tyrexDir, "state", "cursor.yml"), replacements);
 
-  // Templates for user
+  // Templates for user — copied WITHOUT replacements intentionally.
+  // These are fill-in-later templates that the AI agent populates
+  // when generating actual specs, ADRs, etc. Placeholders like
+  // {{DATE}} and {{PROJECT_NAME}} are filled at generation time.
   copyTemplate("feature.md", path.join(tyrexDir, "templates", "feature.md"));
   copyTemplate("adr.md", path.join(tyrexDir, "templates", "adr.md"));
   copyTemplate("rfc.md", path.join(tyrexDir, "templates", "rfc.md"));

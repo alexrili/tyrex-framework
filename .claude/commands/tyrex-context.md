@@ -54,7 +54,7 @@ Project Context
 3. Process by type:
    - **Free text:** Ask for a short title. Save as `.tyrex/context/YYYY-MM-DD-[slug].md` (project) or append to `.tyrex/features/NNN-context.md` (demand). Include a YAML frontmatter with `title` and `date`.
    - **File:** Read the file(s), extract and summarize key points. Save the summary — never copy raw content verbatim.
-   - **URL:** Fetch content using WebFetch, summarize key points. Save the summary with the source URL noted.
+   - **URL:** Fetch the URL content, summarize key points. Save the summary with the source URL noted.
 
 4. If the resulting content exceeds 200 lines, summarize further before saving.
 
