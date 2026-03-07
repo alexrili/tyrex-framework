@@ -6,8 +6,8 @@ active_feature: null
 active_feature_file: null
 
 last_task_completed: null
-last_commit: null
-last_action: "feature_001_completed"
+last_commit: "c1d106e"
+last_action: "feature_001_merged_to_main"
 
 tasks_summary:
   total: 0
@@ -19,6 +19,6 @@ tasks_summary:
 
 next_tasks: []
 
-# Feature 001: Documentation Layers (SPEC, SRS, PRD) & Context Ingestion — DONE
-# Branch: feat/doc-layers-spec-srs-prd-context
-# 11 tasks, 8 waves, 0 failures
+# Feature 001: Documentation Layers (SPEC, SRS, PRD) & Context Ingestion — MERGED
+# Branch: feat/doc-layers-spec-srs-prd-context (merged to main)
+# 11 tasks, 8 waves, 0 failures, 10 commits
