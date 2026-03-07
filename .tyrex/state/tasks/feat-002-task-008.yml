@@ -1,0 +1,23 @@
+task_id: "feat-002-task-008"
+feature: "002-skills-system"
+name: "Wiki page + CHANGELOG + ADR finalize"
+status: "completed"
+depends_on: ["feat-002-task-007"]
+unlocks: []
+parallel: false
+skill: "none"
+quality: "optional"
+files:
+  - "docs/wiki/skills-system.md"
+  - "docs/CHANGELOG.md"
+  - "docs/adrs/002-skills-system.md"
+started_at: "2026-03-07T00:00:00Z"
+finished_at: "2026-03-07T00:00:00Z"
+agent: "claude-opus-4-6"
+commit: "6a2d2dd"
+files_changed:
+  - "docs/wiki/skills-system.md"
+  - "docs/CHANGELOG.md"
+  - "docs/adrs/002-skills-system.md"
+output: "Wiki page created, ADR-002 accepted, CHANGELOG finalized"
+errors: null

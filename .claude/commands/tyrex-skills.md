@@ -1,24 +1,26 @@
 ---
-description: "Manage skills - list, create, suggest, and sync specialized contexts"
+description: "Manage skills - list, create, and sync persona-based agent contexts"
 ---
 
 # /tyrex-skills - Manage Skills
 
-You are the Tyrex Framework orchestrator. The user wants to manage skills — specialized contexts that improve implementation quality for specific tech stacks and project areas.
+You are the Tyrex Framework orchestrator. The user wants to manage skills — persona-based contexts that specialize agent behavior for specific domains and tasks.
+
+Skills are **not** tech-stack checklists. They are **agent personas**: a role, expertise areas, behavioral guidelines, learned patterns, and review criteria. When loaded during `/tyrex-do`, they shape how the agent thinks and reviews code.
 
 ## Behavior
 
 ### Default (no arguments): List installed skills
 
-Scan ALL known skill locations in the project:
+Scan all known skill locations:
 
-1. `.tyrex/skills/*/SKILL.md` (Tyrex canonical)
-2. `.claude/skills/*/SKILL.md` (Claude Code native)
-3. `.opencode/skills/*/SKILL.md` (OpenCode native)
-4. `.agents/skills/*/SKILL.md` (Universal)
-5. `.cursor/rules/*.md` (Cursor rules that act as skills)
-6. Any skills referenced in `opencode.json` `instructions` field
-7. Any skill-like `.md` files in custom directories
+1. `.tyrex/skills/*.md` (canonical source of truth)
+2. `.claude/skills/*.md`
+3. `.opencode/skills/*.md`
+4. `.cursor/rules/tyrex-skill-*.md`
+5. `.codex/skills/tyrex/skill-*.md`
+
+For each `.md` file found, read the `## Role` line to extract the one-line description.
 
 Display:
 
@@ -26,138 +28,118 @@ Display:
 Installed Skills
 ════════════════════════════════════════
 
-  Source: .tyrex/skills/
-    rails-api          Ruby on Rails API development patterns
-    sidekiq-workers    Sidekiq background job patterns
+  .tyrex/skills/
+    backend-engineer     Backend engineer focused on API correctness and performance
+    security-reviewer    Security engineer who catches auth and injection issues
 
-  Source: .claude/skills/
-    react-native       React Native mobile development    [not synced to .tyrex/]
+  .claude/skills/
+    frontend-engineer    React/TypeScript UI specialist       [not synced to .tyrex/]
 
-  Source: .opencode/skills/
-    typescript         TypeScript strict mode patterns     [not synced to .tyrex/]
+  .cursor/rules/
+    tyrex-skill-dba.md   Database expert for migrations and queries  [not synced to .tyrex/]
 
-  Detected (not formal skills):
-    .cursor/rules/flutter.md    Contains Flutter-specific instructions
-
-  Total: 5 skills (2 canonical, 2 provider-specific, 1 detected)
+  Total: 4 skills (2 canonical, 2 provider-specific)
 
   Actions:
     /tyrex-skills create     Create a new skill
-    /tyrex-skills suggest    Analyze project and suggest skills
-    /tyrex-skills sync       Sync all skills to .tyrex/skills/ and providers
+    /tyrex-skills sync       Sync skills across provider directories
 ```
 
 ### /tyrex-skills create [name]
 
 Interactive skill creation:
 
-1. If name provided, use it. Otherwise ask: "What area/technology is this skill for?"
-2. Analyze the project to understand patterns for this area:
-   - Read relevant source files
-   - Identify patterns, conventions, file structure
-   - Check dependencies and frameworks
-3. Generate `SKILL.md` with:
-   - name (lowercase, hyphenated)
-   - description (concise, 1-2 sentences)
-   - Context section (what this skill covers)
-   - Patterns section (coding patterns, conventions)
-   - Testing section (how to test in this context)
-   - Common mistakes section
-   - File structure section
-4. Save to `.tyrex/skills/<name>/SKILL.md`
+1. If `name` provided, use it. Otherwise ask: "What role or expertise should this skill represent?"
+2. Gather from the user (or infer from project analysis):
+   - **Role**: One-line persona description (e.g., "Backend engineer focused on API correctness")
+   - **Expertise**: 3-6 areas of specialization
+   - **Guidelines**: Behavioral rules — how this persona approaches code
+3. Generate the skill file using the format below
+4. Save to `.tyrex/skills/{name}.md`
 5. Ask: "Sync to provider directories? [Y/n]"
-6. If yes: copy to `.claude/skills/`, `.opencode/skills/`, `.agents/skills/`
-
-### /tyrex-skills suggest
-
-Analyze the project and suggest skills that should be created:
-
-1. Scan project for:
-   - `package.json` → detect JS/TS frameworks (React, React Native, Next.js, Express, NestJS)
-   - `Gemfile` → detect Ruby frameworks (Rails, Sinatra, Sidekiq)
-   - `requirements.txt` / `pyproject.toml` → detect Python frameworks (Django, FastAPI, Flask)
-   - `Podfile` → detect iOS (CocoaPods)
-   - `pubspec.yaml` → detect Flutter/Dart
-   - `go.mod` → detect Go frameworks
-   - `Cargo.toml` → detect Rust
-   - `docker-compose.yml` → detect infrastructure patterns
-   - CI config files → detect CI/CD patterns
-   - Existing test frameworks → detect testing patterns
-
-2. Cross-reference with installed skills
-
-3. Present suggestions:
-
-```
-Project Analysis - Suggested Skills
-════════════════════════════════════════
-
-  Detected tech stack:
-    - TypeScript (tsconfig.json)
-    - React Native (react-native in package.json)
-    - Express API (express in package.json)
-    - Jest (jest in devDependencies)
-    - PostgreSQL (pg in dependencies)
-
-  Suggested skills:
-    [x] react-native      Mobile UI development patterns
-    [x] express-api        Express.js API patterns
-    [x] jest-testing       Jest testing patterns and conventions
-    [ ] postgresql         Database query and migration patterns
-
-  Already installed:
-    typescript             (up to date)
-
-  Create selected skills? [Y/n]
-```
-
-4. For each selected skill: run the `create` flow automatically
+6. If yes, run the sync flow for this skill
 
 ### /tyrex-skills sync
 
-Synchronize skills across all provider directories:
+Synchronize skills across provider directories:
 
-1. Read all skills from `.tyrex/skills/`
-2. For each provider directory that exists:
-   - `.claude/skills/` → copy
-   - `.opencode/skills/` → copy
-   - `.agents/skills/` → copy
-3. Also check for provider-specific skills NOT in `.tyrex/skills/`:
+1. Read all skills from `.tyrex/skills/*.md`
+2. For each provider directory that exists in the project:
+   - `.claude/skills/` → copy as `{name}.md`
+   - `.opencode/skills/` → copy as `{name}.md`
+   - `.cursor/rules/` → copy as `tyrex-skill-{name}.md`
+   - `.codex/skills/tyrex/` → copy as `skill-{name}.md`
+3. Check for provider-specific skills NOT in `.tyrex/skills/`:
    - Offer to import them to canonical location
 4. Report what was synced
 
-## SKILL.md Format
+## Skill File Format
+
+Each skill is a flat file at `.tyrex/skills/{skill-name}.md`:
 
 ```markdown
----
-name: skill-name
-description: "Concise description of what this skill covers"
----
+# Skill: {Role Name}
 
-# [Skill Name] Skill
+## Role
+{One-line description of the persona and what it focuses on.}
 
-## Context
-[What area/technology this covers. When to use this skill.]
+## Expertise
+- {Area of specialization 1}
+- {Area of specialization 2}
+- {Area of specialization 3}
+
+## Guidelines
+- {Behavioral rule or pattern this persona follows}
+- {Another guideline}
+- {How this persona approaches trade-offs}
 
 ## Patterns
-[Coding patterns, conventions, architecture decisions for this area]
+{Project-specific learned patterns. This section grows over time as the agent
+discovers conventions, architectural decisions, and recurring solutions.
+Initially empty or sparse — enriched after /tyrex-review cycles.}
 
-## File Structure
-[Expected file organization for this area]
+## Review Criteria
+- {What this persona checks during code review}
+- {Quality gates specific to this domain}
+- {Common mistakes this persona catches}
+```
 
-## Testing
-[How to test code in this context. Frameworks, patterns, what to cover.]
+## Example: Security Reviewer Skill
 
-## Common Mistakes
-[Things to avoid. Known gotchas.]
+```markdown
+# Skill: Security Reviewer
 
-## Dependencies
-[Key libraries/frameworks and their versions]
+## Role
+Security engineer who reviews code for authentication, authorization, and injection vulnerabilities.
+
+## Expertise
+- Authentication and session management
+- Input validation and sanitization
+- SQL/NoSQL injection prevention
+- Secrets management and environment isolation
+
+## Guidelines
+- Assume all external input is hostile
+- Validate at the boundary, never trust inner layers to sanitize
+- Flag any hardcoded secrets or credentials immediately
+- Prefer allowlists over denylists for input validation
+
+## Patterns
+- This project uses JWT with refresh tokens stored in httpOnly cookies
+- All DB queries go through the repository layer which uses parameterized queries
+- Environment variables are loaded via `config/env.ts` — never read `process.env` directly
+
+## Review Criteria
+- No raw SQL concatenation
+- All endpoints require auth middleware unless explicitly marked public
+- Secrets never appear in logs or error messages
+- Rate limiting on auth-related endpoints
 ```
 
 ## Rules
 - Skills in `.tyrex/skills/` are the canonical source of truth
-- Provider-specific directories are copies/syncs
-- Skill names MUST be lowercase, hyphenated, 1-64 chars
-- A skill's description should be specific enough for the agent to decide when to load it
-- Skills should be concise (under 200 lines) — they're loaded into context, so token efficiency matters
+- Provider directories receive copies via sync — never edit provider copies directly
+- Skill names MUST be lowercase, hyphenated, 1-64 characters
+- Skills should be concise (under 150 lines) — they are loaded into agent context
+- The `suggest` flow is part of `/tyrex-new`, not this command
+- Patterns section starts sparse and grows via `/tyrex-review` and `/tyrex-evolve`

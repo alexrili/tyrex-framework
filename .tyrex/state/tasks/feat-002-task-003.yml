@@ -1,0 +1,19 @@
+task_id: "feat-002-task-003"
+feature: "002-skills-system"
+name: "Update /tyrex-new — skill analysis and suggestion"
+status: "completed"
+depends_on: ["feat-002-task-001"]
+unlocks: ["feat-002-task-006"]
+parallel: true
+skill: "none"
+quality: "optional"
+files:
+  - "templates/commands/unified/tyrex-new.md"
+started_at: "2026-03-07T00:00:00Z"
+finished_at: "2026-03-07T00:00:00Z"
+agent: "claude-opus-4-6"
+commit: "71fdb3a"
+files_changed:
+  - "templates/commands/unified/tyrex-new.md"
+output: "Added Step 3b with skill analysis, suggestion, and creation flow"
+errors: null

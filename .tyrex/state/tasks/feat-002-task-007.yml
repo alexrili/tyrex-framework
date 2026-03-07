@@ -1,0 +1,23 @@
+task_id: "feat-002-task-007"
+feature: "002-skills-system"
+name: "Update help, status, and settings commands"
+status: "completed"
+depends_on: ["feat-002-task-006"]
+unlocks: ["feat-002-task-008"]
+parallel: false
+skill: "none"
+quality: "optional"
+files:
+  - "templates/commands/unified/tyrex-help.md"
+  - "templates/commands/unified/tyrex-status.md"
+  - "templates/commands/unified/tyrex-settings.md"
+started_at: "2026-03-07T00:00:00Z"
+finished_at: "2026-03-07T00:00:00Z"
+agent: "claude-opus-4-6"
+commit: "8b4c5dd"
+files_changed:
+  - "templates/commands/unified/tyrex-help.md"
+  - "templates/commands/unified/tyrex-status.md"
+  - "templates/commands/unified/tyrex-settings.md"
+output: "Help updated with skill workflow, status shows skills count, settings shows skills config"
+errors: null

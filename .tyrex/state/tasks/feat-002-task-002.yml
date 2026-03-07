@@ -1,0 +1,20 @@
+task_id: "feat-002-task-002"
+feature: "002-skills-system"
+name: "Update /tyrex-skills command — create and list"
+status: "completed"
+depends_on: ["feat-002-task-001"]
+unlocks: ["feat-002-task-006"]
+parallel: false
+skill: "none"
+quality: "optional"
+files:
+  - "templates/commands/unified/tyrex-skills.md"
+started_at: "2026-03-07T00:00:00Z"
+finished_at: "2026-03-07T00:00:00Z"
+agent: "claude-opus-4-6"
+commit: "bb81eb1"
+files_changed:
+  - "templates/commands/unified/tyrex-skills.md"
+  - "docs/CHANGELOG.md"
+output: "Rewritten with persona format, flat file paths, removed suggest subcommand, added example"
+errors: null

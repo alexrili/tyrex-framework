@@ -14,10 +14,11 @@ Read (in this order):
 2. Active feature spec file
 3. `.tyrex/TYREX.md` → project patterns and context
 4. `.tyrex/constitution.md` → guardrails
-5. `.tyrex/context/` → project-level context files (if any)
-6. `.tyrex/features/NNN-context.md` → demand-level context (if any)
-7. `docs/srs/NNN-*.md` → SRS for this demand (if generated during /tyrex-new)
-8. `docs/prd/NNN-*.md` → PRD for this demand (if generated during /tyrex-new)
+5. `.tyrex/skills/*.md` → available skills (scan names and `## Expertise` sections)
+6. `.tyrex/context/` → project-level context files (if any)
+7. `.tyrex/features/NNN-context.md` → demand-level context (if any)
+8. `docs/srs/NNN-*.md` → SRS for this demand (if generated during /tyrex-new)
+9. `docs/prd/NNN-*.md` → PRD for this demand (if generated during /tyrex-new)
 
 If no active feature: ask the user which feature to plan, or suggest running `/tyrex-new` first.
 
@@ -31,15 +32,21 @@ Analyze the feature — including all loaded context, SRS, and PRD — and propo
 - **Unlocks:** [list of task numbers]
 - **Estimate:** small | medium | large
 - **Files:** [files to create or modify]
-- **Skill:** [skill name from .tyrex/skills/, or "none"]
+- **Skill:** [skill filename from .tyrex/skills/, e.g., "backend-engineer.md", or "none"]
 - **Quality:** required | recommended | optional
 ```
 
 **Skill assignment:**
-- Scan `.tyrex/skills/` (and provider dirs) for available skills
-- Match skills to tasks based on the technology/area involved
-- If a relevant skill exists, assign it — the agent loads it before executing
-- If no skill matches, set "none"
+1. **Check the feature spec first** for skills pre-selected during `/tyrex-new`:
+   - Read the active feature spec file and look for a `Skills:` field
+   - Pre-selected skills have priority when assigning to tasks
+2. **Match skills to tasks** based on expertise:
+   - Read each available skill's `## Expertise` section
+   - Match expertise areas to the task's domain/technology
+   - If a pre-selected skill matches the task, assign it
+   - If no pre-selected skill matches but another installed skill does, suggest it to the user
+   - If no skill matches at all, set "none"
+3. The assigned skill is loaded by the agent before executing the task
 
 **Quality strategy per task:**
 - `required` — TDD mandatory, tests MUST pass (default for: API, workers, data layer, security)

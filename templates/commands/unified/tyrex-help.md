@@ -153,9 +153,9 @@ Use the reference below for each command:
 - Next: `/tyrex-new`
 
 **new:**
-- What: Starts a new feature/demand. Captures requirements, configures docs/git for this demand, generates feature spec. Supports documentation types: ADR, RFC, Wiki, SPEC, SRS, PRD.
+- What: Starts a new feature/demand. Captures requirements, analyzes required skills, configures docs/git, generates feature spec. Supports documentation types: ADR, RFC, Wiki, SPEC, SRS, PRD.
 - When: You have something to build and want to go through the full workflow.
-- Steps: Describe demand → Clarification questions → Config (docs, branch, commits) → Generate docs first (ADR, RFC, Wiki, SPEC, SRS, PRD) → Create feature spec → Create branch
+- Steps: Describe demand → Clarification questions → Context ingestion → Skill analysis & suggestion → Config (docs, branch, commits) → Generate docs first → Create feature spec → Create branch
 - Prerequisites: `.tyrex/` initialized (`/tyrex-init`)
 - Next: `/tyrex-plan`
 
@@ -223,9 +223,9 @@ Use the reference below for each command:
 - Next: Nothing specific
 
 **skills:**
-- What: Manages reusable skills — specialized contexts for specific technologies/areas. Can list, create, suggest, and sync skills across providers.
-- When: You want to improve implementation quality by teaching the agent about your stack's patterns.
-- Steps: (list) Scan all skill locations → Display. (create) Analyze project → Generate SKILL.md. (suggest) Detect stack → Propose skills. (sync) Copy to all providers.
+- What: Manages reusable skills — persona-based agent contexts (Role, Expertise, Guidelines, Patterns, Review Criteria). Can list, create, and sync skills across providers.
+- When: You want to improve implementation quality by giving agents specialized perspectives. Also auto-suggested during `/tyrex-new`.
+- Steps: (list) Scan `.tyrex/skills/` + providers → Display. (create) Gather role/expertise/guidelines → Generate skill file. (sync) Copy to all providers.
 - Prerequisites: `.tyrex/` initialized
 - Next: Skills are automatically loaded during `/tyrex-do` when assigned to tasks
 
