@@ -182,6 +182,7 @@ function installTyrexStructure(targetDir, config, agents) {
   copyTemplate("spec.md", path.join(tyrexDir, "templates", "spec.md"));
   copyTemplate("srs.md", path.join(tyrexDir, "templates", "srs.md"));
   copyTemplate("prd.md", path.join(tyrexDir, "templates", "prd.md"));
+  copyTemplate("skill.md", path.join(tyrexDir, "templates", "skill.md"));
 
   // Rules files (CLAUDE.md and/or AGENTS.md) based on selected agents
   const installedRules = new Set();

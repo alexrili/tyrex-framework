@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Skill template (`templates/skill.md`) with persona format (Role, Expertise, Guidelines, Patterns, Review Criteria)
+- CLI scaffolds skill template to `.tyrex/templates/skill.md` during install
 - Feature 002: Skills System — spec created, ADR-002 accepted
 - ADR-002: Skills System — Reusable AI Agent Personas
 - Wiki page: Documentation Layers (`docs/wiki/documentation-layers.md`)
