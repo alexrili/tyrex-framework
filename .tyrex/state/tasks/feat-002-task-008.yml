@@ -1,0 +1,20 @@
+task_id: "feat-002-task-008"
+feature: "002-skills-system"
+name: "Wiki page + CHANGELOG + ADR finalize"
+status: "pending"
+depends_on: ["feat-002-task-007"]
+unlocks: []
+parallel: false
+skill: "none"
+quality: "optional"
+files:
+  - "docs/wiki/skills-system.md"
+  - "docs/CHANGELOG.md"
+  - "docs/adrs/002-skills-system.md"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: []
+output: null
+errors: null

@@ -1,0 +1,20 @@
+task_id: "feat-002-task-007"
+feature: "002-skills-system"
+name: "Update help, status, and settings commands"
+status: "pending"
+depends_on: ["feat-002-task-006"]
+unlocks: ["feat-002-task-008"]
+parallel: false
+skill: "none"
+quality: "optional"
+files:
+  - "templates/commands/unified/tyrex-help.md"
+  - "templates/commands/unified/tyrex-status.md"
+  - "templates/commands/unified/tyrex-settings.md"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: []
+output: null
+errors: null

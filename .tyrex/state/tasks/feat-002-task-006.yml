@@ -1,0 +1,21 @@
+task_id: "feat-002-task-006"
+feature: "002-skills-system"
+name: "Sync commands to all 4 agent directories"
+status: "pending"
+depends_on: ["feat-002-task-002", "feat-002-task-003", "feat-002-task-004", "feat-002-task-005"]
+unlocks: ["feat-002-task-007"]
+parallel: false
+skill: "none"
+quality: "optional"
+files:
+  - ".claude/commands/"
+  - ".opencode/commands/"
+  - ".cursor/rules/tyrex/"
+  - ".codex/skills/tyrex/"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: []
+output: null
+errors: null

@@ -1,6 +1,6 @@
 # Feature 002: Skills System — Reusable AI Agent Personas
 
-## Status: spec
+## Status: planned
 
 ## Objective
 Implement a skills system that allows AI agents to operate with specialized personas (e.g., backend engineer, product manager), auto-suggested during `/tyrex-new` based on demand analysis, and loaded as context during planning and execution.
@@ -22,6 +22,16 @@ Implement a skills system that allows AI agents to operate with specialized pers
 - Skill evolution via `/tyrex-review` (deferred to Feature 004)
 - Skill versioning or diffing
 - Skills for `/tyrex-discuss` or `/tyrex-research` (Features 003, 005)
+
+## Plan (8 tasks, 5 waves)
+1. Skill template + scaffold in bin/tyrex.js
+2. Update /tyrex-skills command (create, list)
+3. Update /tyrex-new — skill analysis & suggestion (parallel w/ 4,5)
+4. Update /tyrex-plan — skill-aware task assignment (parallel w/ 3,5)
+5. Update /tyrex-do — skill loading during execution (parallel w/ 3,4)
+6. Sync commands to all 4 agent directories
+7. Update help, status, settings commands
+8. Wiki + CHANGELOG + ADR finalize
 
 ## Configuration
 - Docs: CHANGELOG (mandatory), ADR-002 (done), Wiki (yes), Diagrams (no)

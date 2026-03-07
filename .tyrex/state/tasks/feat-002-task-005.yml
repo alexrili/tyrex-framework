@@ -1,0 +1,18 @@
+task_id: "feat-002-task-005"
+feature: "002-skills-system"
+name: "Update /tyrex-do — skill loading during execution"
+status: "pending"
+depends_on: ["feat-002-task-001"]
+unlocks: ["feat-002-task-006"]
+parallel: true
+skill: "none"
+quality: "optional"
+files:
+  - "templates/commands/unified/tyrex-do.md"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: []
+output: null
+errors: null

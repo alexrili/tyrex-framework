@@ -1,0 +1,19 @@
+task_id: "feat-002-task-001"
+feature: "002-skills-system"
+name: "Create skill template and scaffold in bin/tyrex.js"
+status: "pending"
+depends_on: []
+unlocks: ["feat-002-task-002", "feat-002-task-003", "feat-002-task-004", "feat-002-task-005"]
+parallel: false
+skill: "none"
+quality: "optional"
+files:
+  - "templates/skill.md"
+  - "bin/tyrex.js"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: []
+output: null
+errors: null
