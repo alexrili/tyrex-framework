@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Wiki page: Documentation Layers (`docs/wiki/documentation-layers.md`)
 - Synced 17 commands (including new `/tyrex-context`) to all 4 agent directories
 - Updated self-hosted `.tyrex/tyrex.yml` with SPEC/SRS/PRD doc options
 - `/tyrex-help` now registers `/tyrex-context` command and mentions SPEC/SRS/PRD doc types
