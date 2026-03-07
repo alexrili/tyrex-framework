@@ -2,12 +2,12 @@
 last_updated: "2026-03-07T00:00:00Z"
 session_id: null
 
-active_feature: null
-active_feature_file: null
+active_feature: "002"
+active_feature_file: ".tyrex/features/002-skills-system.md"
 
 last_task_completed: null
-last_commit: "c1d106e"
-last_action: "feature_001_merged_to_main"
+last_commit: "358c787"
+last_action: "feature_created"
 
 tasks_summary:
   total: 0
@@ -19,6 +19,6 @@ tasks_summary:
 
 next_tasks: []
 
-# Feature 001: Documentation Layers (SPEC, SRS, PRD) & Context Ingestion — MERGED
-# Branch: feat/doc-layers-spec-srs-prd-context (merged to main)
-# 11 tasks, 8 waves, 0 failures, 10 commits
+# Feature 002: Skills System — Reusable AI Agent Personas
+# Branch: feat/skills-system
+# Status: spec (ready for /tyrex-plan)

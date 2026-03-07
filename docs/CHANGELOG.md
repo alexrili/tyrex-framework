@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Feature 002: Skills System — spec created, ADR-002 accepted
+- ADR-002: Skills System — Reusable AI Agent Personas
 - Wiki page: Documentation Layers (`docs/wiki/documentation-layers.md`)
 - Synced 17 commands (including new `/tyrex-context`) to all 4 agent directories
 - Updated self-hosted `.tyrex/tyrex.yml` with SPEC/SRS/PRD doc options
