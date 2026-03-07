@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- `/tyrex-help` now registers `/tyrex-context` command and mentions SPEC/SRS/PRD doc types
+- `/tyrex-settings` displays SPEC/SRS/PRD options (SPEC is locked as mandatory)
+- `/tyrex-status` shows documentation coverage (SPECs, SRS, PRD) and context file counts
+- `/tyrex-resume` loads context files and existing SPEC/SRS/PRD during session recovery
+- `/tyrex-do` loads SPEC before each task, references context, and refines SPEC after execution
 - CLI (`bin/tyrex.js`) now scaffolds `docs/specs/`, `docs/srs/`, `docs/prd/`, `.tyrex/context/` directories and copies SPEC/SRS/PRD templates
 - `/tyrex-plan` now reads context/SRS/PRD, generates mandatory SPEC drafts per task, includes spec_file in task state
 - `/tyrex-new` now includes context ingestion step, SRS/PRD in doc bundle, and ordered doc generation
