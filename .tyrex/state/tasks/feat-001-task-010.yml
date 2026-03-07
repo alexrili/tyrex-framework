@@ -1,0 +1,31 @@
+task_id: "feat-001-task-010"
+feature: "001-doc-layers-spec-srs-prd-context"
+name: "Sync commands to all 4 agent directories + update self-hosted .tyrex/"
+status: "completed"
+depends_on: [8, 9]
+unlocks: [11]
+parallel: false
+estimate: "small"
+quality: "optional"
+skill: "none"
+files:
+  - ".claude/commands/"
+  - ".opencode/commands/"
+  - ".cursor/rules/tyrex/"
+  - ".codex/skills/tyrex/"
+  - ".tyrex/tyrex.yml"
+started_at: "2026-03-07T00:00:00Z"
+finished_at: "2026-03-07T00:00:00Z"
+agent: "orchestrator"
+commit: null
+files_changed:
+  - ".claude/commands/"
+  - ".opencode/commands/"
+  - ".cursor/rules/tyrex/"
+  - ".codex/skills/tyrex/"
+  - ".tyrex/tyrex.yml"
+  - ".tyrex/templates/spec.md"
+  - ".tyrex/templates/srs.md"
+  - ".tyrex/templates/prd.md"
+output: "Synced 17 commands to all 4 agent dirs. Updated self-hosted tyrex.yml with spec/srs/prd. Copied new templates. Created context/, docs/specs/, docs/srs/, docs/prd/ dirs."
+errors: null

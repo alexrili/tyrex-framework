@@ -11,17 +11,34 @@ const TEMPLATES_DIR = path.join(__dirname, "..", "templates");
 const AGENTS = {
   claude: {
     name: "Claude Code",
-    commandsDir: ".claude/commands/tyrex",
+    commandsDir: ".claude/commands",
+    commandsSrc: "commands/unified",
+    rulesFile: "CLAUDE.md",
+    rulesTemplate: "CLAUDE.md",
     settingsFile: ".claude/settings.json",
+  },
+  opencode: {
+    name: "OpenCode",
+    commandsDir: ".opencode/commands",
+    commandsSrc: "commands/unified",
+    rulesFile: "AGENTS.md",
+    rulesTemplate: "AGENTS.md",
+    settingsFile: null,
   },
   cursor: {
     name: "Cursor",
     commandsDir: ".cursor/rules/tyrex",
+    commandsSrc: "commands/unified",
+    rulesFile: "CLAUDE.md",
+    rulesTemplate: "CLAUDE.md",
     settingsFile: null,
   },
   codex: {
     name: "Codex",
     commandsDir: ".codex/skills/tyrex",
+    commandsSrc: "commands/unified",
+    rulesFile: "CLAUDE.md",
+    rulesTemplate: "CLAUDE.md",
     settingsFile: null,
   },
 };
@@ -99,7 +116,7 @@ function ensureDir(dirPath) {
 async function installCommands(targetDir, agent) {
   const agentConfig = AGENTS[agent];
   const commandsTarget = path.join(targetDir, agentConfig.commandsDir);
-  const commandsSrc = path.join(TEMPLATES_DIR, "commands", "tyrex");
+  const commandsSrc = path.join(TEMPLATES_DIR, agentConfig.commandsSrc);
 
   ensureDir(commandsTarget);
 
@@ -117,20 +134,25 @@ async function installCommands(targetDir, agent) {
   return count;
 }
 
-function installTyrexStructure(targetDir, config) {
+function installTyrexStructure(targetDir, config, agents) {
   const tyrexDir = path.join(targetDir, ".tyrex");
 
   // Directories
   ensureDir(path.join(tyrexDir, "state", "tasks"));
   ensureDir(path.join(tyrexDir, "features"));
   ensureDir(path.join(tyrexDir, "templates"));
+  ensureDir(path.join(tyrexDir, "skills"));
   ensureDir(path.join(tyrexDir, "map"));
+  ensureDir(path.join(tyrexDir, "context"));
 
   // Docs directories
   ensureDir(path.join(targetDir, "docs", "adrs"));
   ensureDir(path.join(targetDir, "docs", "rfcs"));
   ensureDir(path.join(targetDir, "docs", "wiki"));
   ensureDir(path.join(targetDir, "docs", "diagrams"));
+  ensureDir(path.join(targetDir, "docs", "specs"));
+  ensureDir(path.join(targetDir, "docs", "srs"));
+  ensureDir(path.join(targetDir, "docs", "prd"));
 
   const replacements = {
     PROJECT_NAME: config.projectName || path.basename(targetDir),
@@ -149,16 +171,31 @@ function installTyrexStructure(targetDir, config) {
   copyTemplate("constitution.md", path.join(tyrexDir, "constitution.md"), replacements);
   copyTemplate("cursor.yml", path.join(tyrexDir, "state", "cursor.yml"), replacements);
 
-  // Templates for user
+  // Templates for user — copied WITHOUT replacements intentionally.
+  // These are fill-in-later templates that the AI agent populates
+  // when generating actual specs, ADRs, etc. Placeholders like
+  // {{DATE}} and {{PROJECT_NAME}} are filled at generation time.
   copyTemplate("feature.md", path.join(tyrexDir, "templates", "feature.md"));
   copyTemplate("adr.md", path.join(tyrexDir, "templates", "adr.md"));
   copyTemplate("rfc.md", path.join(tyrexDir, "templates", "rfc.md"));
   copyTemplate("review-checklist.md", path.join(tyrexDir, "templates", "review-checklist.md"));
+  copyTemplate("spec.md", path.join(tyrexDir, "templates", "spec.md"));
+  copyTemplate("srs.md", path.join(tyrexDir, "templates", "srs.md"));
+  copyTemplate("prd.md", path.join(tyrexDir, "templates", "prd.md"));
 
-  // CLAUDE.md at project root
-  copyTemplate("CLAUDE.md", path.join(targetDir, "CLAUDE.md"), replacements);
+  // Rules files (CLAUDE.md and/or AGENTS.md) based on selected agents
+  const installedRules = new Set();
+  for (const agentKey of agents) {
+    const agentConfig = AGENTS[agentKey];
+    const rulesFile = agentConfig.rulesFile;
+    if (!installedRules.has(rulesFile)) {
+      copyTemplate(agentConfig.rulesTemplate, path.join(targetDir, rulesFile), replacements);
+      console.log(c("green", `  Created ${rulesFile}`));
+      installedRules.add(rulesFile);
+    }
+  }
 
-  // CHANGELOG.md at project root (if not exists)
+  // CHANGELOG.md (if not exists)
   const changelogPath = path.join(targetDir, "docs", "CHANGELOG.md");
   if (!fs.existsSync(changelogPath)) {
     copyTemplate("CHANGELOG.md", changelogPath, replacements);
@@ -166,7 +203,6 @@ function installTyrexStructure(targetDir, config) {
 
   console.log(c("green", "  Created .tyrex/ directory structure"));
   console.log(c("green", "  Created docs/ directory structure"));
-  console.log(c("green", "  Created CLAUDE.md"));
   console.log(c("green", "  Created docs/CHANGELOG.md"));
 }
 
@@ -179,6 +215,7 @@ async function main() {
   // Non-interactive flags
   const flags = {
     claude: args.includes("--claude"),
+    opencode: args.includes("--opencode"),
     cursor: args.includes("--cursor"),
     codex: args.includes("--codex"),
     all: args.includes("--all"),
@@ -221,19 +258,22 @@ async function main() {
   // 1. Choose agent
   let agent;
   if (flags.claude) agent = "claude";
+  else if (flags.opencode) agent = "opencode";
   else if (flags.cursor) agent = "cursor";
   else if (flags.codex) agent = "codex";
   else if (flags.all) agent = "all";
   else {
     const agentChoice = await choose("Which AI agent are you using?", [
       { label: "Claude Code", desc: "Anthropic's CLI agent", default: true },
+      { label: "OpenCode", desc: "Open source AI coding agent" },
       { label: "Cursor", desc: "AI-first code editor" },
       { label: "Codex", desc: "OpenAI's coding agent" },
       { label: "All", desc: "Install for all agents" },
     ]);
-    agent = ["claude", "cursor", "codex", "all"][
+    agent = ["claude", "opencode", "cursor", "codex", "all"][
       [
         "Claude Code",
+        "OpenCode",
         "Cursor",
         "Codex",
         "All",
@@ -309,27 +349,27 @@ async function main() {
   console.log(c("bold", "\n  Installing...\n"));
 
   // Install slash commands
-  const agents = agent === "all" ? ["claude", "cursor", "codex"] : [agent];
+  const agents = agent === "all" ? ["claude", "opencode", "cursor", "codex"] : [agent];
   for (const a of agents) {
     installCommands(targetDir, a);
   }
 
   // Install .tyrex structure (only for local)
   if (location === "local") {
-    installTyrexStructure(targetDir, config);
+    installTyrexStructure(targetDir, config, agents);
   } else {
     // For global, only install commands
     console.log(c("dim", "  Global install: only slash commands installed."));
-    console.log(c("dim", "  Run /tyrex.init in your project to create .tyrex/ structure."));
+    console.log(c("dim", "  Run /tyrex-init in your project to create .tyrex/ structure."));
   }
 
   // 5. Done
   console.log(c("bold", "\n  ═══════════════════════════════════════"));
   console.log(c("green", c("bold", "  Done!")));
   console.log("");
-  console.log(`  ${c("dim", "Start your agent and run:")} ${c("cyan", "/tyrex.init")}`);
-  console.log(`  ${c("dim", "Or for a new feature:")}     ${c("cyan", "/tyrex.new")}`);
-  console.log(`  ${c("dim", "See all commands:")}         ${c("cyan", "/tyrex.status")}`);
+  console.log(`  ${c("dim", "Start your agent and run:")} ${c("cyan", "/tyrex-init")}`);
+  console.log(`  ${c("dim", "Or for a new feature:")}     ${c("cyan", "/tyrex-new")}`);
+  console.log(`  ${c("dim", "See all commands:")}         ${c("cyan", "/tyrex-status")}`);
   console.log("");
 
   rl.close();
@@ -337,8 +377,8 @@ async function main() {
 
 async function handleUninstall(flags) {
   const agents = flags.all
-    ? ["claude", "cursor", "codex"]
-    : [flags.claude ? "claude" : flags.cursor ? "cursor" : "codex"];
+    ? ["claude", "opencode", "cursor", "codex"]
+    : [flags.claude ? "claude" : flags.opencode ? "opencode" : flags.cursor ? "cursor" : "codex"];
   const targetDir = flags.global ? require("os").homedir() : process.cwd();
 
   for (const agent of agents) {
@@ -360,6 +400,7 @@ function printHelp() {
   console.log("");
   console.log(`  ${c("bold", "Options:")}`);
   console.log(`    --claude         Install for Claude Code`);
+  console.log(`    --opencode       Install for OpenCode`);
   console.log(`    --cursor         Install for Cursor`);
   console.log(`    --codex          Install for Codex`);
   console.log(`    --all            Install for all agents`);
@@ -371,9 +412,11 @@ function printHelp() {
   console.log(`    --help, -h       Show this help`);
   console.log("");
   console.log(`  ${c("bold", "Examples:")}`);
-  console.log(`    npx tyrex-framework                  Interactive setup`);
-  console.log(`    npx tyrex-framework --claude --local  Non-interactive install`);
-  console.log(`    npx tyrex-framework --all --global    Install for all agents globally`);
+  console.log(`    npx tyrex-framework                          Interactive setup`);
+  console.log(`    npx tyrex-framework --claude --local          Claude Code, current project`);
+  console.log(`    npx tyrex-framework --opencode --local        OpenCode, current project`);
+  console.log(`    npx tyrex-framework --opencode --local -d     OpenCode, defaults, no questions`);
+  console.log(`    npx tyrex-framework --all --global            All agents, global install`);
   console.log("");
 }
 

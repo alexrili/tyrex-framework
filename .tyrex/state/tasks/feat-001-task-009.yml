@@ -1,0 +1,26 @@
+task_id: "feat-001-task-009"
+feature: "001-doc-layers-spec-srs-prd-context"
+name: "Update secondary commands — settings, status, resume, do"
+status: "completed"
+depends_on: [7]
+unlocks: [10]
+parallel: true
+estimate: "medium"
+quality: "optional"
+skill: "none"
+files:
+  - "templates/commands/unified/tyrex-settings.md"
+  - "templates/commands/unified/tyrex-status.md"
+  - "templates/commands/unified/tyrex-resume.md"
+  - "templates/commands/unified/tyrex-do.md"
+started_at: "2026-03-07T00:00:00Z"
+finished_at: "2026-03-07T00:00:00Z"
+agent: "sub-agent-4"
+commit: null
+files_changed:
+  - "templates/commands/unified/tyrex-settings.md"
+  - "templates/commands/unified/tyrex-status.md"
+  - "templates/commands/unified/tyrex-resume.md"
+  - "templates/commands/unified/tyrex-do.md"
+output: "Updated settings with SPEC/SRS/PRD options, status with doc and context display, resume with context loading, do with SPEC loading and refinement"
+errors: null

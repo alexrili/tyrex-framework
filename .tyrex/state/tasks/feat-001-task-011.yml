@@ -1,0 +1,20 @@
+task_id: "feat-001-task-011"
+feature: "001-doc-layers-spec-srs-prd-context"
+name: "Wiki page — new documentation workflow"
+status: "completed"
+depends_on: [10]
+unlocks: []
+parallel: false
+estimate: "small"
+quality: "optional"
+skill: "none"
+files:
+  - "docs/wiki/documentation-layers.md"
+started_at: "2026-03-07T00:00:00Z"
+finished_at: "2026-03-07T00:00:00Z"
+agent: "orchestrator"
+commit: null
+files_changed:
+  - "docs/wiki/documentation-layers.md"
+output: "Created wiki page covering all doc types, context ingestion, workflow integration, config, and file structure"
+errors: null

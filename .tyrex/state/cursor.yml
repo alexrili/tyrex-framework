@@ -1,0 +1,24 @@
+# .tyrex/state/cursor.yml - Session pointer for quick recovery
+last_updated: "2026-03-07T00:00:00Z"
+session_id: null
+
+active_feature: null
+active_feature_file: null
+
+last_task_completed: null
+last_commit: null
+last_action: "feature_001_completed"
+
+tasks_summary:
+  total: 0
+  completed: 0
+  in_progress: 0
+  pending: 0
+  failed: 0
+  blocked: 0
+
+next_tasks: []
+
+# Feature 001: Documentation Layers (SPEC, SRS, PRD) & Context Ingestion — DONE
+# Branch: feat/doc-layers-spec-srs-prd-context
+# 11 tasks, 8 waves, 0 failures

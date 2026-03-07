@@ -2,15 +2,15 @@
 # Docs: https://github.com/tyrex-framework/tyrex
 
 project:
-  name: "{{PROJECT_NAME}}"
-  created: "{{DATE}}"
+  name: "tyrex"
+  created: "2026-03-07"
 
 # Operation mode
 mode:
-  commits: "{{COMMIT_MODE}}"         # "auto" | "approve"
-  branches: "{{BRANCH_MODE}}"        # "auto" | "approve"
+  commits: "approve"         # "auto" | "approve"
+  branches: "approve"        # "auto" | "approve"
   changelog: "always"                # LOCKED - always enabled
-  documentation: "{{DOC_MODE}}"      # "always" | "suggest" | "minimal"
+  documentation: "suggest"      # "always" | "suggest" | "minimal"
 
 # Documentation defaults for new demands (/tyrex-new)
 docs:
@@ -31,7 +31,7 @@ quality:
   # Adaptive quality strategy per area type
   # Values: "required" (TDD mandatory) | "recommended" (tests suggested) | "optional" (ask user)
   strategy:
-    default: "required"            # Fallback for areas not listed below
+    default: "recommended"          # Fallback for areas not listed below (no test framework yet)
     api: "required"                # API endpoints, controllers
     workers: "required"            # Background jobs, queue processors
     data: "required"               # Models, migrations, data layer
@@ -44,11 +44,11 @@ quality:
 # Parallelization
 parallel:
   enabled: true
-  max_agents: {{MAX_AGENTS}}
+  max_agents: 5
   auto_suggest: true                 # Suggest parallelization when possible
 
 # Git
 git:
-  branch_prefix: "{{BRANCH_PREFIX}}"
-  commit_style: "{{COMMIT_STYLE}}"   # "conventional" | "descriptive"
+  branch_prefix: "feat/"
+  commit_style: "conventional"   # "conventional" | "descriptive"
   auto_push: false                   # Never auto-push by default
