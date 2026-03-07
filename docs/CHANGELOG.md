@@ -7,59 +7,58 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
-- `/tyrex-discuss` command — interactive project exploration and technical discussion with codebase, greenfield, and hybrid modes
-- `/tyrex-init` improved for greenfield projects — structured flow with `/tyrex-discuss` recommendation instead of a single-line fallback
-- `/tyrex-help` updated with discuss command in workflow diagram, command reference, and detailed help
-- `/tyrex-status` suggests `/tyrex-discuss` for greenfield projects and incomplete TYREX.md
-- All 18 commands synced to 4 agent directories (was 17, now includes tyrex-discuss)
-- Project roadmap system (`.tyrex/roadmap.yml`) for tracking planned, in-progress, and completed features
-- `/tyrex-status` now shows comprehensive project dashboard: Roadmap, Health diagnostics, Documentation coverage, Skills, and Context sections
-- `/tyrex-new` checks roadmap for planned features before asking for a new demand description
-- `/tyrex-new` automatically updates roadmap when creating or starting features
-- `/tyrex-review` updates roadmap status to `done` when feature is approved
-- Roadmap template (`templates/roadmap.yml`) scaffolded by `bin/tyrex.js` during install
-- `/tyrex-help` updated with roadmap-aware descriptions for `status` and `new` commands
-- All 17 commands synced to 4 agent directories with roadmap updates
+## [0.1.0] - 2026-03-07
 
-### Fixed
-- `bin/tyrex.js` no longer overwrites evolved core files (TYREX.md, constitution.md, cursor.yml, tyrex.yml, roadmap.yml) on re-install — prevents loss of project state when self-hosting or re-running scaffold
-- Rules files (CLAUDE.md, AGENTS.md) also protected from accidental overwrite on re-install
-- Added `--force` / `-f` flag to explicitly reset core files to template defaults when needed
+First release of the Tyrex Framework — human-driven, AI-accelerated pair programming.
 
-### Changed
-- `/tyrex-status` rewritten from simple feature list to comprehensive project health dashboard
-- `/tyrex-help` descriptions for `status` and `new` updated to reflect roadmap integration
+### Core Framework
+- CLI installer (`bin/tyrex.js`) with interactive setup for 4 AI agents: Claude Code, OpenCode, Cursor, Codex
+- `.tyrex/` project structure: state management, feature specs, templates, skills, context, codebase mapping
+- `docs/` structure: CHANGELOG, ADRs, RFCs, wiki, diagrams, specs, SRS, PRD
+- Core files: `TYREX.md` (living project context), `constitution.md` (inviolable guardrails), `cursor.yml` (session recovery)
+- Configuration via `tyrex.yml`: commit mode, branch mode, doc level, quality strategy, parallelization
+- Protection against accidental overwrite of evolved core files on re-install (`--force` flag to override)
 
-### Previously added
-- Wiki page: Skills System (`docs/wiki/skills-system.md`)
-- `/tyrex-help`, `/tyrex-status`, `/tyrex-settings` updated with skills system references
-- All 17 commands synced to 4 agent directories with skills updates
-- `/tyrex-do` loads skill personas during task execution (Role, Guidelines, Patterns, Review Criteria self-check)
-- `/tyrex-plan` checks feature spec for pre-selected skills and matches by expertise
-- `/tyrex-new` analyzes demand to suggest/create skills before configuration
-- `/tyrex-skills` rewritten with persona-based format per ADR-002 (create, list, sync)
-- Skill template (`templates/skill.md`) with persona format (Role, Expertise, Guidelines, Patterns, Review Criteria)
-- CLI scaffolds skill template to `.tyrex/templates/skill.md` during install
-- Feature 002: Skills System — spec created, ADR-002 accepted
+### Commands (18 total)
+- `/tyrex-init` — Initialize project with codebase analysis, security audit, and config. Greenfield support with structured flow
+- `/tyrex-new` — Start new feature with roadmap check, context ingestion, skill suggestion, doc generation (SPEC/SRS/PRD/ADR/RFC)
+- `/tyrex-plan` — Plan tasks with dependencies, parallelism, skill assignments, quality strategy, and SPEC generation per task
+- `/tyrex-do` — Execute tasks with TDD, skill-aware context, SPEC loading, parallel sub-agents
+- `/tyrex-review` — Review implementation against acceptance criteria, finalize docs, evolve TYREX.md
+- `/tyrex-quick` — Quick task without full ceremony (bug fixes, tweaks)
+- `/tyrex-handoff` — Deterministic autopilot chaining new→plan→do→review
+- `/tyrex-status` — Comprehensive dashboard: features, roadmap, health diagnostics, documentation coverage, skills, context
+- `/tyrex-resume` — Fast session recovery from cursor.yml
+- `/tyrex-settings` — View/modify Tyrex configuration
+- `/tyrex-evolve` — Update TYREX.md with new patterns, hurdles, decisions
+- `/tyrex-discuss` — Interactive project exploration and technical discussion (codebase, greenfield, hybrid modes)
+- `/tyrex-skills` — Manage reusable skill personas (create, list, sync)
+- `/tyrex-context` — Ingest and manage project context (free text, files, URLs)
+- `/tyrex-readme` — Generate or update project README.md
+- `/tyrex-openapi` — Generate OpenAPI documentation from code (read-only)
+- `/tyrex-wiki` — Generate or update project wiki pages
+- `/tyrex-help` — Command reference with workflow diagram and contextual suggestions
+
+### Documentation System
+- SPEC template — mandatory per-task technical specification
+- SRS template — per-demand software requirements specification
+- PRD template — per-demand product requirements document
+- ADR template — architecture decision records
+- RFC template — technical proposals
+- Context ingestion at project and demand levels (`.tyrex/context/`, `.tyrex/features/NNN-context.md`)
+
+### Skills System (ADR-002)
+- Skill personas as markdown files in `.tyrex/skills/` (Role, Expertise, Guidelines, Patterns, Review Criteria)
+- Auto-suggestion during `/tyrex-new` based on demand analysis
+- Skill-aware task assignment during `/tyrex-plan`
+- Skill loading during `/tyrex-do` task execution
+
+### Project Roadmap
+- `.tyrex/roadmap.yml` for tracking planned, in-progress, and completed features
+- `/tyrex-new` checks roadmap for planned features and updates on create
+- `/tyrex-review` marks features as done in roadmap
+- `/tyrex-status` displays roadmap with forward-looking visibility
+
+### Architecture Decisions
+- ADR-001: Documentation Layers (SPEC, SRS, PRD) & Context Ingestion
 - ADR-002: Skills System — Reusable AI Agent Personas
-- Wiki page: Documentation Layers (`docs/wiki/documentation-layers.md`)
-- Synced 17 commands (including new `/tyrex-context`) to all 4 agent directories
-- Updated self-hosted `.tyrex/tyrex.yml` with SPEC/SRS/PRD doc options
-- `/tyrex-help` now registers `/tyrex-context` command and mentions SPEC/SRS/PRD doc types
-- `/tyrex-settings` displays SPEC/SRS/PRD options (SPEC is locked as mandatory)
-- `/tyrex-status` shows documentation coverage (SPECs, SRS, PRD) and context file counts
-- `/tyrex-resume` loads context files and existing SPEC/SRS/PRD during session recovery
-- `/tyrex-do` loads SPEC before each task, references context, and refines SPEC after execution
-- CLI (`bin/tyrex.js`) now scaffolds `docs/specs/`, `docs/srs/`, `docs/prd/`, `.tyrex/context/` directories and copies SPEC/SRS/PRD templates
-- `/tyrex-plan` now reads context/SRS/PRD, generates mandatory SPEC drafts per task, includes spec_file in task state
-- `/tyrex-new` now includes context ingestion step, SRS/PRD in doc bundle, and ordered doc generation
-- Config templates updated with SPEC, SRS, PRD doc options (`templates/tyrex.yml`, `templates/feature.md`)
-- `/tyrex-init` now includes context ingestion step after codebase analysis
-- SPEC template (`templates/spec.md`) — per-task technical specification
-- SRS template (`templates/srs.md`) — per-demand software requirements specification
-- PRD template (`templates/prd.md`) — per-demand product requirements document
-- `/tyrex-context` command (`templates/commands/unified/tyrex-context.md`) — context ingestion and management
-- Feature 001: Documentation Layers (SPEC, SRS, PRD) & Context Ingestion — spec created
-- ADR-001: Decision to add SPEC/SRS/PRD documentation layers and context ingestion workflow
-- Project initialized with Tyrex Framework v0.1.0
