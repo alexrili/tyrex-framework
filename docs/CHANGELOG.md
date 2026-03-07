@@ -8,6 +8,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Project roadmap system (`.tyrex/roadmap.yml`) for tracking planned, in-progress, and completed features
+- `/tyrex-status` now shows comprehensive project dashboard: Roadmap, Health diagnostics, Documentation coverage, Skills, and Context sections
+- `/tyrex-new` checks roadmap for planned features before asking for a new demand description
+- `/tyrex-new` automatically updates roadmap when creating or starting features
+- `/tyrex-review` updates roadmap status to `done` when feature is approved
+- Roadmap template (`templates/roadmap.yml`) scaffolded by `bin/tyrex.js` during install
+- `/tyrex-help` updated with roadmap-aware descriptions for `status` and `new` commands
+- All 17 commands synced to 4 agent directories with roadmap updates
+
+### Changed
+- `/tyrex-status` rewritten from simple feature list to comprehensive project health dashboard
+- `/tyrex-help` descriptions for `status` and `new` updated to reflect roadmap integration
+
+### Previously added
 - Wiki page: Skills System (`docs/wiki/skills-system.md`)
 - `/tyrex-help`, `/tyrex-status`, `/tyrex-settings` updated with skills system references
 - All 17 commands synced to 4 agent directories with skills updates

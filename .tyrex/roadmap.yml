@@ -1,0 +1,40 @@
+# .tyrex/roadmap.yml - Project roadmap and feature backlog
+# Tracks planned, in-progress, and completed features.
+# Updated by /tyrex-new (planned → in_progress), /tyrex-review (→ done).
+# Read by /tyrex-status for project-wide visibility.
+
+features:
+  - id: "001"
+    name: "doc-layers-spec-srs-prd-context"
+    description: "Documentation Layers (SPEC, SRS, PRD) & Context Ingestion"
+    status: done
+    referenced_in: []
+    depends_on: []
+
+  - id: "002"
+    name: "skills-system"
+    description: "Skills System — Reusable AI Agent Personas"
+    status: done
+    referenced_in: []
+    depends_on: ["001"]
+
+  - id: "003"
+    name: "discuss-command"
+    description: "/tyrex-discuss — Structured technical discussions with AI"
+    status: planned
+    referenced_in: ["002-skills-system"]
+    depends_on: ["002"]
+
+  - id: "004"
+    name: "review-knowledge-base"
+    description: "Skill evolution via /tyrex-review — knowledge base enrichment"
+    status: planned
+    referenced_in: ["002-skills-system", "ADR-002"]
+    depends_on: ["002"]
+
+  - id: "005"
+    name: "research-command"
+    description: "/tyrex-research — AI-powered technical research"
+    status: planned
+    referenced_in: ["002-skills-system"]
+    depends_on: ["002"]

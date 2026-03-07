@@ -8,6 +8,25 @@ You are the Tyrex Framework orchestrator. The user is starting a new implementat
 
 ## Behavior
 
+### Step 0: Check roadmap
+Before asking the user to describe the demand:
+1. Read `.tyrex/roadmap.yml` (if exists) and check for `planned` features.
+2. If there are planned features in the roadmap, show them:
+   ```
+   Planned features in roadmap:
+     003-discuss-command        /tyrex-discuss — Structured technical discussions
+     004-review-knowledge-base  Skill evolution via /tyrex-review
+     005-research-command       /tyrex-research — AI-powered research
+   
+   Start one of these? Or describe a new demand?
+   ```
+3. If the user picks a roadmap feature:
+   - Use its description as the starting point for Step 1
+   - Update `.tyrex/roadmap.yml`: change its status from `planned` to `in_progress`
+   - Pre-fill the feature number from the roadmap ID
+4. If the user describes something new: proceed normally to Step 1
+5. If roadmap.yml doesn't exist or has no planned features: skip to Step 1
+
 ### Step 1: Describe the demand
 Ask the user: "Describe what you want to implement."
 Listen to their description. This is the WHAT and WHY.
@@ -112,6 +131,11 @@ Update `.tyrex/state/cursor.yml`:
 - `active_feature`: feature ID
 - `active_feature_file`: path to feature spec
 - `last_action`: "feature_created"
+
+Update `.tyrex/roadmap.yml`:
+- If this feature was picked from the roadmap: status is already `in_progress` (set in Step 0)
+- If this is a NEW feature not in the roadmap: add it to the roadmap with status `in_progress`
+- This ensures the roadmap always reflects reality
 
 ### Step 9: Next step
 Tell the user: "Feature spec created. Run /tyrex-plan to plan the implementation."

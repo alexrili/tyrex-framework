@@ -153,9 +153,9 @@ Use the reference below for each command:
 - Next: `/tyrex-new`
 
 **new:**
-- What: Starts a new feature/demand. Captures requirements, analyzes required skills, configures docs/git, generates feature spec. Supports documentation types: ADR, RFC, Wiki, SPEC, SRS, PRD.
+- What: Starts a new feature/demand. Checks the roadmap for planned features first, captures requirements, analyzes required skills, configures docs/git, generates feature spec, and updates the roadmap. Supports documentation types: ADR, RFC, Wiki, SPEC, SRS, PRD.
 - When: You have something to build and want to go through the full workflow.
-- Steps: Describe demand → Clarification questions → Context ingestion → Skill analysis & suggestion → Config (docs, branch, commits) → Generate docs first → Create feature spec → Create branch
+- Steps: Check roadmap for planned features → Describe demand → Clarification questions → Context ingestion → Skill analysis & suggestion → Config (docs, branch, commits) → Generate docs first → Create feature spec → Create branch → Update roadmap
 - Prerequisites: `.tyrex/` initialized (`/tyrex-init`)
 - Next: `/tyrex-plan`
 
@@ -195,9 +195,9 @@ Use the reference below for each command:
 - Next: Nothing — it runs the full cycle
 
 **status:**
-- What: Shows a dashboard of the project state: features, tasks, progress, and suggested next actions.
-- When: You want a quick overview of where things stand.
-- Steps: Read state → Display summary
+- What: Shows a comprehensive dashboard: features, active tasks, project roadmap (planned/future features), health diagnostics (TYREX.md completeness, stale branches, context/skills coverage), documentation coverage, and actionable suggestions.
+- When: You want a full overview of where things stand — what's done, what's active, what's planned, and what needs attention.
+- Steps: Read state + roadmap + health checks → Display comprehensive summary
 - Prerequisites: `.tyrex/` initialized
 - Next: Whatever the status suggests
 

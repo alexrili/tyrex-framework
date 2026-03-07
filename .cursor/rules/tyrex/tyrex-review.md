@@ -73,6 +73,7 @@ Ask: "Approve and mark feature as done? Or request changes?"
 ### Step 7: Finalize
 If approved:
 - Update feature spec status to `done`
+- Update `.tyrex/roadmap.yml`: set this feature's status to `done`
 - Final commit with documentation updates (if any docs were updated during review)
 - Update cursor.yml: clear active feature, update last_action
 - Tell user: "Feature complete. Run /tyrex-new for the next feature, or /tyrex-status for overview."

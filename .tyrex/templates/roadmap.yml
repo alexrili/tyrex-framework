@@ -1,0 +1,16 @@
+# .tyrex/roadmap.yml - Project roadmap and feature backlog
+# Tracks planned, in-progress, and completed features.
+# Updated by /tyrex-new (planned -> in_progress), /tyrex-review (-> done).
+# Read by /tyrex-status for project-wide visibility.
+#
+# Status values: planned | in_progress | done | cancelled
+#
+# To add a planned feature manually:
+#   - id: "NNN"
+#     name: "feature-name"
+#     description: "Short description of the feature"
+#     status: planned
+#     referenced_in: []
+#     depends_on: []
+
+features: []
