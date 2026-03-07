@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- `/tyrex-do` loads skill personas during task execution (Role, Guidelines, Patterns, Review Criteria self-check)
+- `/tyrex-plan` checks feature spec for pre-selected skills and matches by expertise
+- `/tyrex-new` analyzes demand to suggest/create skills before configuration
+- `/tyrex-skills` rewritten with persona-based format per ADR-002 (create, list, sync)
 - Skill template (`templates/skill.md`) with persona format (Role, Expertise, Guidelines, Patterns, Review Criteria)
 - CLI scaffolds skill template to `.tyrex/templates/skill.md` during install
 - Feature 002: Skills System — spec created, ADR-002 accepted
