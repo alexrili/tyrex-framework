@@ -6,8 +6,8 @@ active_feature: null
 active_feature_file: null
 
 last_task_completed: null
-last_commit: null
-last_action: "feature_002_completed"
+last_commit: "650fd22"
+last_action: "feature_002_merged_to_main"
 
 tasks_summary:
   total: 0
@@ -19,6 +19,6 @@ tasks_summary:
 
 next_tasks: []
 
-# Feature 002: Skills System — DONE
-# Branch: feat/skills-system (11 commits + review fix)
+# Feature 002: Skills System — MERGED
+# Branch: feat/skills-system (12 commits, merged to main)
 # 8 tasks, 5 waves, 0 failures
