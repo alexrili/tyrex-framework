@@ -1,0 +1,21 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "agent": {
+    "plan": {
+      "description": "Plan mode — read, analyze, discuss. Cannot write source code.",
+      "permission": {
+        "edit": "deny",
+        "bash": "ask"
+      }
+    },
+    "build": {
+      "description": "Build mode — implement, test, commit. Full code writing allowed.",
+      "permission": {
+        "edit": "allow",
+        "bash": "ask"
+      }
+    }
+  },
+  "default_agent": "plan",
+  "plugin": [".opencode/plugin.ts"]
+}

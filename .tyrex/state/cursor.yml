@@ -1,13 +1,19 @@
 # .tyrex/state/cursor.yml - Session pointer for quick recovery
-last_updated: "2026-03-07T00:00:00Z"
+last_updated: "2026-03-08T00:00:00Z"
 session_id: null
+
+# Agent mode controls what the agent can do.
+# "plan"  — read, analyze, discuss, plan. MUST NOT write source code.
+# "build" — implement, test, commit. May write source code following TDD and commit rules.
+# Each /tyrex-* command sets this field as its FIRST action.
+agent_mode: "plan"
 
 active_feature: null
 active_feature_file: null
 
 last_task_completed: null
-last_commit: null
-last_action: "v0.1.0_released"
+last_commit: "ec4679f"
+last_action: "agent_mode_enforcement_added"
 
 tasks_summary:
   total: 0
@@ -21,3 +27,5 @@ next_tasks: []
 
 # v0.1.0 released — Features 001, 002, 003 complete
 # 18 commands, 4 agents, roadmap system, skills, discuss
+# Agent mode enforcement added — plan/build, security tracking, review scopes
+# OpenCode plugin created — mechanical mode enforcement via native agent system

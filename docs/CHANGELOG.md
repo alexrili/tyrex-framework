@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Agent Mode Enforcement
+- Added `agent_mode` field (`plan`/`build`) to `cursor.yml` — each command sets this as its first action
+- Added "On Agent Mode" section to `constitution.md` — inviolable rules preventing code writes in plan mode
+- All 18 commands now declare their mode in an `## Agent Mode` section
+- 16 commands run in `plan` mode, 2 in `build` mode (`/tyrex-do`, `/tyrex-quick`), `/tyrex-resume` inherits, `/tyrex-handoff` transitions dynamically
+- Updated `CLAUDE.md` and `AGENTS.md` with step 3: "Check mode" before any action
+
+### Security Tracking
+- `/tyrex-status` now reads `.tyrex/map/security-audit.md` and displays pending security findings
+- `/tyrex-review` includes a dedicated Security Review step (Step 3) that cross-references changed files against findings
+- `/tyrex-init` documents required `Status` column format (`[ ]`/`[x]`) for security-audit.md
+- Security findings use checkbox tracking — resolved findings change from `[ ]` to `[x]`, never deleted
+
+### Review Scopes
+- `/tyrex-review` (default) = PR review — only reviews branch diff against base
+- `/tyrex-review full` = codebase-wide re-scan with security audit file update
+- Review is 100% plan mode — all suggestions are recommendations, never direct code writes
+
+### OpenCode Plugin Integration
+- Created `opencode.json` with plan/build agent definitions and native permission enforcement
+- Created `.opencode/plugin.ts` — Tyrex plugin using `command.execute.before` and `permission.ask` hooks
+- Plan agent has `edit: "deny"` — mechanical prevention of file writes, not just prompt-based
+- Plugin auto-switches agents when `/tyrex-*` commands are executed
+
 ## [0.1.0] - 2026-03-07
 
 First release of the Tyrex Framework — human-driven, AI-accelerated pair programming.
