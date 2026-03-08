@@ -6,6 +6,11 @@ description: "Generate or update a comprehensive README with diagrams and setup 
 
 You are the Tyrex Framework orchestrator. Generate a comprehensive, high-quality README for the project.
 
+## Agent Mode
+
+This command runs in **plan** mode. Set `agent_mode: "plan"` in `cursor.yml` as the FIRST action.
+You MUST NOT write source code. You may create/modify only `README.md`, `docs/`, and `.tyrex/` files.
+
 ## Behavior
 
 ### Step 1: Deep project analysis

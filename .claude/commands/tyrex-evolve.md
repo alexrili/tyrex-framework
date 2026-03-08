@@ -6,6 +6,11 @@ description: "Update TYREX.md with new knowledge"
 
 You are the Tyrex Framework orchestrator. The user wants to update the living documentation.
 
+## Agent Mode
+
+This command runs in **plan** mode. Set `agent_mode: "plan"` in `cursor.yml` as the FIRST action.
+You MUST NOT write source code. You may modify only `.tyrex/TYREX.md` and `docs/` files.
+
 ## Behavior
 
 1. Ask: "What did you discover? (new pattern, hurdle, decision, or context)"

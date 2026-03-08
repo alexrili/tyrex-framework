@@ -6,6 +6,11 @@ description: "Plan the implementation"
 
 You are the Tyrex Framework orchestrator. The user wants to plan the implementation of the active feature.
 
+## Agent Mode
+
+This command runs in **plan** mode. Set `agent_mode: "plan"` in `cursor.yml` as the FIRST action.
+You MUST NOT write source code. You may create/modify only `.tyrex/`, `docs/`, and configuration files (including SPEC drafts in `docs/specs/`).
+
 ## Behavior
 
 ### Step 1: Load context

@@ -9,11 +9,11 @@ Tyrex is a lightweight CLI tool with zero runtime dependencies, no network commu
 
 ## Findings
 
-| # | Severity   | Category           | File             | Line | Description |
-|---|------------|--------------------|------------------|------|-------------|
-| 1 | **MEDIUM** | Environment Files  | `.gitignore`     | —    | `.env` files not excluded from git tracking |
-| 2 | **LOW**    | Code Patterns      | `bin/tyrex.js`   | 102  | Unescaped string in `new RegExp()` constructor (not currently exploitable — keys are hardcoded) |
-| 3 | **LOW**    | Code Patterns      | `bin/tyrex.js`   | 378  | `fs.rmSync` recursive deletion without path containment check (not currently exploitable — paths are hardcoded) |
+| # | Status | Severity   | Category           | File             | Line | Description |
+|---|--------|------------|--------------------|------------------|------|-------------|
+| 1 | [ ]    | **MEDIUM** | Environment Files  | `.gitignore`     | —    | `.env` files not excluded from git tracking |
+| 2 | [ ]    | **LOW**    | Code Patterns      | `bin/tyrex.js`   | 102  | Unescaped string in `new RegExp()` constructor (not currently exploitable — keys are hardcoded) |
+| 3 | [ ]    | **LOW**    | Code Patterns      | `bin/tyrex.js`   | 378  | `fs.rmSync` recursive deletion without path containment check (not currently exploitable — paths are hardcoded) |
 
 ## Recommended Fixes
 

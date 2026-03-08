@@ -5,6 +5,12 @@
 last_updated: "{{DATE}}T00:00:00Z"
 session_id: null
 
+# Agent mode controls what the agent can do.
+# "plan"  — read, analyze, discuss, plan. MUST NOT write source code.
+# "build" — implement, test, commit. May write source code following TDD and commit rules.
+# Each /tyrex-* command sets this field as its FIRST action.
+agent_mode: "plan"
+
 active_feature: null
 active_feature_file: null
 

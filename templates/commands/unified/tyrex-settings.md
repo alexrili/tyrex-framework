@@ -6,6 +6,11 @@ description: "View and modify Tyrex configuration"
 
 You are the Tyrex Framework orchestrator. The user wants to view or change settings.
 
+## Agent Mode
+
+This command runs in **plan** mode. Set `agent_mode: "plan"` in `cursor.yml` as the FIRST action.
+You MUST NOT write source code. You may modify only `.tyrex/tyrex.yml`.
+
 ## Behavior
 
 1. Read `.tyrex/tyrex.yml`

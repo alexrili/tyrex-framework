@@ -6,6 +6,11 @@ description: "Show current project status"
 
 You are the Tyrex Framework orchestrator. Show the user a comprehensive view of where things stand.
 
+## Agent Mode
+
+This command runs in **plan** mode. Set `agent_mode: "plan"` in `cursor.yml` as the FIRST action.
+You MUST NOT write source code. Read-only analysis and reporting only.
+
 ## Behavior
 
 ### Step 1: Gather data
@@ -19,6 +24,7 @@ Read these files (in parallel where possible):
 7. `.tyrex/context/` — project context files (list directory)
 8. `.tyrex/TYREX.md` — check completeness (sections filled or empty)
 9. `docs/` — scan for existing documentation files
+10. `.tyrex/map/security-audit.md` — security findings from init mapping (if exists)
 
 ### Step 2: Display comprehensive status
 
@@ -52,7 +58,14 @@ Active: 003-feature-name
   Context:        [N files | no project context ingested]
   Skills:         [N installed (list names) | none installed]
   Git branches:   [N stale feature branches | clean]
-  Pending fixes:  [list if any diagnosed | none]
+
+─── Security ───────────────────────────
+  Last audit:     [date from security-audit.md header | never]
+  Findings:       [N pending, M resolved | no findings | no audit]
+
+  [!] MEDIUM  .env not in .gitignore
+  [!] LOW     Unescaped regex in bin/tyrex.js:102
+  [x] LOW     Path containment in bin/tyrex.js:378  (resolved)
 
 ─── Documentation ──────────────────────
   CHANGELOG:      [present, up to date | present, stale | missing]
@@ -112,6 +125,13 @@ Perform these quick checks and include results in the Health section:
 
 6. **Roadmap awareness** — If `.tyrex/roadmap.yml` exists, show planned/discussed features. If it doesn't exist but feature specs reference future features in "Out of Scope" or "Related" sections, extract those references and display them with a note "(extracted from feature specs — consider creating roadmap.yml)".
 
+7. **Security findings** — If `.tyrex/map/security-audit.md` exists:
+   - Parse the findings table for `Status` column (`[ ]` = pending, `[x]` = resolved)
+   - Count pending vs resolved findings
+   - Show each pending finding with severity and description
+   - Show resolved findings as `[x]` (collapsed or dimmed)
+   - If no security-audit.md exists, show "No security audit found — run `/tyrex-init` to generate one"
+
 ### Step 4: Actionable suggestions
 
 Based on the status, suggest the most relevant next actions:
@@ -125,6 +145,7 @@ Based on the status, suggest the most relevant next actions:
 - If no skills and features exist: suggest `/tyrex-skills create`
 - If stale branches exist: suggest cleanup
 - If roadmap has planned features: mention what's next
+- If security findings are pending: "N security findings pending. Fix now with `/tyrex-quick`? [y/N]" — if user says yes, list the pending findings and let them choose which to fix, then hand off to `/tyrex-quick`
 - Always include `/tyrex-discuss` in the commands list for Q&A availability
 
 ## Rules

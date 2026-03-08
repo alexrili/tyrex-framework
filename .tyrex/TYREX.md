@@ -53,12 +53,15 @@ bin/tyrex.js (~427 lines, single-file CLI)
 - **Single-file CLI:** All runtime logic in `bin/tyrex.js` (~427 lines)
 - **Template-driven output:** All scaffolded files use `{{PLACEHOLDER}}` interpolation via `copyTemplate()`
 - **Two template modes:** Core files (tyrex.yml, TYREX.md, etc.) are interpolated at install time; user templates (spec.md, adr.md, etc.) are copied as-is with placeholders intact for AI agents to fill at generation time
-- **Agent-agnostic commands:** One set of 17 command definitions in `templates/commands/unified/` is copied to all agent directories
+- **Agent-agnostic commands:** One set of 18 command definitions in `templates/commands/unified/` is copied to all agent directories
 - **Self-hosted:** Tyrex uses itself (`.tyrex/` exists in the repo)
 - **Naming:** files=lowercase-hyphenated, JS constants=UPPER_SNAKE_CASE, JS functions=camelCase
 - **Documentation layers:** SPEC (mandatory per task), SRS, PRD (suggested per demand), context ingestion at project and demand levels
 - **Skills as personas:** Skills in `.tyrex/skills/` are markdown persona files (Role, Expertise, Guidelines, Patterns, Review Criteria). Auto-suggested during `/tyrex-new`, assigned to tasks during `/tyrex-plan`, loaded as context during `/tyrex-do`
 - **Sync after every command update:** When updating commands in `templates/commands/unified/`, ALWAYS re-sync to all 4 agent directories as the LAST step — updates made after sync will be missed
+- **Agent mode (plan/build):** Every command declares its mode (`plan` or `build`) in an `## Agent Mode` section and sets `agent_mode` in `cursor.yml` as its first action. Plan mode = no source code writes. Build mode = full implementation with TDD. Enforced via triple layer: cursor.yml state + constitution rules + per-command instructions.
+- **Security finding tracking:** `.tyrex/map/security-audit.md` uses a `Status` column (`[ ]` pending, `[x]` resolved) consumed by `/tyrex-status` and `/tyrex-review`
+- **Review scopes:** `/tyrex-review` supports `pr` (default, branch diff only) and `full` (codebase-wide re-scan) scopes
 - **No scripts in package.json:** No `start`, `test`, `lint`, or `build` scripts defined yet
 
 ## Environment Variables
@@ -89,6 +92,9 @@ bin/tyrex.js (~427 lines, single-file CLI)
 | 2026-03-07 | Context stored in filesystem       | `.tyrex/context/` (project) + `.tyrex/features/NNN-context.md` (demand) — consistent with state-via-filesystem pattern |
 | 2026-03-07 | Command count: 17 (was 16)        | Added `/tyrex-context` for context ingestion — keeps all workflow in slash commands |
 | 2026-03-07 | Skills as markdown personas (ADR-002) | Flat files in `.tyrex/skills/`, not subdirectories. Persona format over tech-stack format for natural agent consumption |
+| 2026-03-08 | Agent mode as first-class concept     | `agent_mode` field in cursor.yml (`plan`/`build`) enforced via triple layer (state + constitution + command instructions). Prevents agents from writing code during review/plan/discuss commands |
+| 2026-03-08 | Security audit with tracking          | `security-audit.md` uses `Status` column (`[ ]`/`[x]`) for finding resolution tracking. Consumed by `/tyrex-status` and `/tyrex-review` |
+| 2026-03-08 | Review scopes: PR vs Full             | `/tyrex-review` defaults to PR scope (branch diff only); `/tyrex-review full` re-scans entire codebase. PR scope is faster and focused; Full scope updates the audit file |
 
 ## CI/CD
 

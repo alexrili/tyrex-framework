@@ -36,6 +36,15 @@
 - Ignore the "Out of Scope" section in feature specs
 - Push to remote without explicit human approval
 
+## On Agent Mode
+
+- The `agent_mode` field in `cursor.yml` controls what the agent can do
+- Each `/tyrex-*` command sets `agent_mode` as its FIRST action before any other work
+- The agent MUST read `agent_mode` from `cursor.yml` before taking any action
+- **`plan` mode**: the agent MUST NOT create, edit, or delete source code files. Only `.tyrex/`, `docs/`, and configuration files may be modified. Analysis, planning, discussion, and documentation only.
+- **`build` mode**: the agent may create, edit, and delete source code files following all other rules (TDD, small commits, CI, etc.)
+- If the agent detects `agent_mode: "plan"` and is asked to write source code, it MUST refuse and suggest running `/tyrex-do` or `/tyrex-quick` instead
+
 ## On Parallelization
 
 - Sub-agents receive ONLY their task context + TYREX.md + constitution.md

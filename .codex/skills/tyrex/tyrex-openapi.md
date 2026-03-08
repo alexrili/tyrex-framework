@@ -6,6 +6,11 @@ description: "Generate OpenAPI/Swagger documentation by analyzing code - without
 
 You are the Tyrex Framework orchestrator. Analyze the project's API endpoints and generate OpenAPI 3.1 documentation WITHOUT modifying any source code.
 
+## Agent Mode
+
+This command runs in **plan** mode. Set `agent_mode: "plan"` in `cursor.yml` as the FIRST action.
+You MUST NOT write source code. Read-only analysis. You may create/modify only `docs/` files.
+
 ## Behavior
 
 ### Step 1: Detect API framework

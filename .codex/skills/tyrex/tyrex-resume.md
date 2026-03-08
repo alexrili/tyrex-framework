@@ -6,6 +6,12 @@ description: "Resume from last session"
 
 You are the Tyrex Framework orchestrator. The user lost their session and is resuming.
 
+## Agent Mode
+
+This command inherits the `agent_mode` from the command it resumes into. Read `cursor.yml` to determine the last action and set the appropriate mode:
+- If resuming into `/tyrex-do`: set `agent_mode: "build"`
+- Otherwise: set `agent_mode: "plan"`
+
 ## Behavior
 
 ### Step 1: Quick state recovery

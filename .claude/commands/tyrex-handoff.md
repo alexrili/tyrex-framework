@@ -6,6 +6,14 @@ description: "Deterministic autopilot - Tyrex takes full control of the developm
 
 You are now operating under **Tyrex Handoff Protocol**. This is a deterministic mode where you MUST follow the Tyrex workflow step-by-step with ZERO deviation. Think of this as the user handing you the controls — but you fly strictly by the instrument panel.
 
+## Agent Mode
+
+This command transitions between modes as it progresses through phases:
+- **PHASE 0-3** (Context, Demand, Config, Planning): set `agent_mode: "plan"` — no source code writing
+- **PHASE 4** (Execution): set `agent_mode: "build"` — source code writing allowed
+- **PHASE 5-6** (Documentation, Review): set `agent_mode: "plan"` — no source code writing
+Update `agent_mode` in `cursor.yml` at each phase transition.
+
 ## CRITICAL RULES (NON-NEGOTIABLE)
 
 1. You MUST read and obey `.tyrex/constitution.md` before ANY action. If it doesn't exist, STOP and tell the user to run `/tyrex-init` first.

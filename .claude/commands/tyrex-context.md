@@ -11,6 +11,11 @@ Context is stored at two levels:
 - **Project-level:** `.tyrex/context/` directory — applies to all features
 - **Demand-level:** `.tyrex/features/NNN-context.md` — specific to one feature
 
+## Agent Mode
+
+This command runs in **plan** mode. Set `agent_mode: "plan"` in `cursor.yml` as the FIRST action.
+You MUST NOT write source code. You may create/modify only `.tyrex/context/` and `.tyrex/features/*-context.md` files.
+
 ## Behavior
 
 ### Default (no arguments): Show existing context

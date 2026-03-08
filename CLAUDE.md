@@ -6,8 +6,9 @@ This project uses the Tyrex Framework for human-driven, AI-accelerated pair prog
 
 1. **Read context first:** Before any action, read `.tyrex/TYREX.md` for project context and `.tyrex/constitution.md` for guardrails.
 2. **Check state:** Read `.tyrex/state/cursor.yml` to know where we left off.
-3. **Use commands:** The `/tyrex-*` slash commands orchestrate the development workflow.
-4. **Update state:** After every task, update the cursor and task state files.
+3. **Check mode:** Read `agent_mode` from `cursor.yml`. In `plan` mode, NEVER write source code — only `.tyrex/`, `docs/`, and config files. In `build` mode, follow TDD and commit rules.
+4. **Use commands:** The `/tyrex-*` slash commands orchestrate the development workflow.
+5. **Update state:** After every task, update the cursor and task state files.
 
 ## Commands Available
 

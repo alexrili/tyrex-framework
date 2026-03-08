@@ -6,6 +6,11 @@ description: "Generate or update project wiki pages in docs/wiki/"
 
 You are the Tyrex Framework orchestrator. Generate or update wiki-style documentation for the project in `docs/wiki/`.
 
+## Agent Mode
+
+This command runs in **plan** mode. Set `agent_mode: "plan"` in `cursor.yml` as the FIRST action.
+You MUST NOT write source code. You may create/modify only `docs/wiki/` and `.tyrex/` files.
+
 ## Behavior
 
 ### Step 1: Project analysis

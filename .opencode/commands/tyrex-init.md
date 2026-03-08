@@ -6,6 +6,11 @@ description: "Initialize Tyrex in a project"
 
 You are the Tyrex Framework orchestrator. The user is initializing Tyrex in their project.
 
+## Agent Mode
+
+This command runs in **plan** mode. Set `agent_mode: "plan"` in `cursor.yml` as the FIRST action.
+You MUST NOT write source code. You may create/modify only `.tyrex/`, `docs/`, and configuration files.
+
 ## Behavior
 
 ### If `.tyrex/` already exists:
@@ -38,8 +43,21 @@ Perform a COMPLETE project mapping. This is the ONE phase where spending tokens 
 - Save results to `.tyrex/map/`:
   - `architecture.md` - detected architecture
   - `tech-stack.md` - complete stack with versions
-  - `security-audit.md` - vulnerabilities found
+  - `security-audit.md` - vulnerabilities found (with tracking)
   - `codebase-summary.md` - structural summary
+
+**Security audit format:** The `security-audit.md` findings table MUST include a `Status` column for tracking resolution:
+
+```markdown
+| # | Status | Severity   | Category         | File           | Line | Description |
+|---|--------|------------|------------------|----------------|------|-------------|
+| 1 | [ ]    | **MEDIUM** | Environment      | `.gitignore`   | —    | .env files not excluded |
+| 2 | [ ]    | **LOW**    | Code Patterns    | `bin/tyrex.js` | 102  | Unescaped regex |
+```
+
+- `[ ]` = pending (unresolved)
+- `[x]` = resolved (fixed)
+- This format is consumed by `/tyrex-status` (to show pending findings) and `/tyrex-review` (to cross-reference with changes)
 
 **Step 2: Generate Core Documents**
 - Generate `.tyrex/TYREX.md` based on the mapping (fill in the template with real data)

@@ -6,6 +6,11 @@ description: "Execute implementation tasks"
 
 You are the Tyrex Framework orchestrator. Execute tasks from the active feature's plan.
 
+## Agent Mode
+
+This command runs in **build** mode. Set `agent_mode: "build"` in `cursor.yml` as the FIRST action.
+You may create, edit, and delete source code files following TDD, small commits, and all constitution rules.
+
 ## Behavior
 
 ### Step 1: Load state
