@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-03-08
+
 ### Agent Mode Enforcement
 - Added `agent_mode` field (`plan`/`build`) to `cursor.yml` — each command sets this as its first action
 - Added "On Agent Mode" section to `constitution.md` — inviolable rules preventing code writes in plan mode
@@ -30,6 +32,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Created `.opencode/plugin.ts` — Tyrex plugin using `command.execute.before` and `permission.ask` hooks
 - Plan agent has `edit: "deny"` — mechanical prevention of file writes, not just prompt-based
 - Plugin auto-switches agents when `/tyrex-*` commands are executed
+
+### Documentation
+- README install instructions now include direct git-based npm install for scenarios without a published package
 
 ## [0.1.0] - 2026-03-07
 

@@ -1,5 +1,5 @@
 # .tyrex/state/cursor.yml - Session pointer for quick recovery
-last_updated: "2026-03-08T00:00:00Z"
+last_updated: "2026-03-08T19:46:00Z"
 session_id: null
 
 # Agent mode controls what the agent can do.
@@ -11,9 +11,9 @@ agent_mode: "plan"
 active_feature: null
 active_feature_file: null
 
-last_task_completed: null
+last_task_completed: "release_0_1_1_preparation"
 last_commit: "ec4679f"
-last_action: "agent_mode_enforcement_added"
+last_action: "release_0_1_1_preparation"
 
 tasks_summary:
   total: 0

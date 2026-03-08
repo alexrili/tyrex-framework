@@ -5,7 +5,7 @@ const path = require("path");
 const readline = require("readline");
 
 // ─── Constants ───────────────────────────────────────────────
-const VERSION = "0.1.0";
+const VERSION = "0.1.1";
 const TEMPLATES_DIR = path.join(__dirname, "..", "templates");
 
 const AGENTS = {

@@ -46,8 +46,17 @@ You (human)          AI Agent              Tyrex
 
 ### 1. Install
 
+**Option A – npx (recommended)**
+
 ```bash
 # In your project directory
+npx tyrex-framework
+```
+
+**Option B – npm Git/HTTP install (no registry release needed)**
+
+```bash
+npm install git+https://github.com/tyrex-framework/tyrex.git
 npx tyrex-framework
 ```
 
