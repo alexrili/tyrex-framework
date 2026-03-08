@@ -33,7 +33,7 @@
 <!--
 - Commits: approve | auto
 - Branch: feat/...
-- Docs: [changelog, adr, rfc, wiki, diagrams]
+- Docs: [changelog, spec, srs, prd, adr, rfc, wiki, diagrams]
 -->
 
 ## Status: spec
