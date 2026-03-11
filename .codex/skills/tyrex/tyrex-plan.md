@@ -1,5 +1,5 @@
 ---
-description: "Plan the implementation"
+description: "Plan the implementation with security-first approach"
 ---
 
 # /tyrex-plan - Plan the implementation
@@ -10,6 +10,10 @@ You are the Tyrex Framework orchestrator. The user wants to plan the implementat
 
 This command runs in **plan** mode. Set `agent_mode: "plan"` in `cursor.yml` as the FIRST action.
 You MUST NOT write source code. You may create/modify only `.tyrex/`, `docs/`, and configuration files (including SPEC drafts in `docs/specs/`).
+
+## Interactive Quiz Rule
+
+**ALL decisions in this command MUST use the interactive quiz format** (multiple-choice selection). Never ask open-ended questions when a quiz can be used. This applies to: task approval, parallelism decisions, skill assignments, and any other decision point.
 
 ## Behavior
 
@@ -25,10 +29,45 @@ Read (in this order):
 8. `docs/srs/NNN-*.md` → SRS for this demand (if generated during /tyrex-new)
 9. `docs/prd/NNN-*.md` → PRD for this demand (if generated during /tyrex-new)
 
-If no active feature: ask the user which feature to plan, or suggest running `/tyrex-new` first.
+If no active feature: present quiz:
+```
+No active feature found.
+  [ ] Select from existing features
+  [ ] Start a new feature (/tyrex-new)
+```
 
-### Step 2: Propose tasks
-Analyze the feature — including all loaded context, SRS, and PRD — and propose a list of tasks. Each task MUST have these attributes:
+### Step 2: Security-First Analysis
+
+**Before proposing tasks**, perform a security assessment of the feature:
+
+1. **Identify security-sensitive areas** in the demand:
+   - Data handling (storage, transmission, processing)
+   - User input (forms, APIs, file uploads)
+   - Authentication/authorization flows
+   - Third-party integrations
+   - Encryption/hashing needs
+   - File system operations
+   - Network requests
+
+2. **Check for DevSec skill:** If security-sensitive areas are detected and no `devsec.md` skill exists:
+   ```
+   Security-sensitive areas detected in this feature:
+     - [list of areas]
+   
+   No DevSec skill is installed.
+     [ ] Create DevSec skill from built-in template (Recommended)
+     [ ] Continue without DevSec skill
+   ```
+
+3. **Generate security considerations** that will inform task planning:
+   - Input validation requirements per endpoint/form
+   - Auth checks needed per operation
+   - Data sanitization points
+   - Encryption requirements
+   - Security testing requirements (these become quality: `required` tasks)
+
+### Step 3: Propose tasks
+Analyze the feature — including all loaded context, SRS, PRD, and security considerations — and propose a list of tasks. Each task MUST have these attributes:
 
 ```markdown
 ### Task N: [short description]
@@ -39,7 +78,15 @@ Analyze the feature — including all loaded context, SRS, and PRD — and propo
 - **Files:** [files to create or modify]
 - **Skill:** [skill filename from .tyrex/skills/, e.g., "backend-engineer.md", or "none"]
 - **Quality:** required | recommended | optional
+- **Security:** [none | input-validation | auth-check | data-sanitization | encryption | full-audit]
 ```
+
+**Security-first task rules:**
+- Tasks with `security: input-validation` MUST include input validation in the implementation
+- Tasks with `security: auth-check` MUST include auth/authz verification
+- Tasks with `security: full-audit` get quality: `required` automatically and devsec skill assigned
+- If a feature has ANY security-sensitive areas, add a dedicated **"Security hardening"** task at the end
+- Security tasks MUST NOT be skippable or optional
 
 **Skill assignment:**
 1. **Check the feature spec first** for skills pre-selected during `/tyrex-new`:
@@ -49,14 +96,15 @@ Analyze the feature — including all loaded context, SRS, and PRD — and propo
    - Read each available skill's `## Expertise` section
    - Match expertise areas to the task's domain/technology
    - If a pre-selected skill matches the task, assign it
-   - If no pre-selected skill matches but another installed skill does, suggest it to the user
+   - If no pre-selected skill matches but another installed skill does, suggest it to the user via quiz
    - If no skill matches at all, set "none"
-3. The assigned skill is loaded by the agent before executing the task
+3. **Auto-assign devsec skill** to all tasks marked with security attributes
+4. The assigned skill is loaded by the agent before executing the task
 
 **Quality strategy per task:**
-- `required` — TDD mandatory, tests MUST pass (default for: API, workers, data layer, security)
+- `required` — TDD mandatory, tests MUST pass (default for: API, workers, data layer, security, any task with security attribute)
 - `recommended` — write tests, warn if skipped (default for: frontend, mobile UI)
-- `optional` — ask user "Write tests? [y/N]" (default for: infra, config, docs, migrations)
+- `optional` — ask user via quiz "Write tests? [y/N]" (default for: infra, config, docs, migrations)
 - Read the project-level default from `tyrex.yml` quality section and override per task context
 
 **Rules for task decomposition:**
@@ -64,15 +112,17 @@ Analyze the feature — including all loaded context, SRS, and PRD — and propo
 - Tasks that modify the SAME file CANNOT be parallel
 - Tests CAN be parallel if they test independent units
 - Migrations and schema changes are ALWAYS sequential and come first
-- Order: data model → business logic → interface → tests (but tests can interleave)
+- Security tasks execute BEFORE or alongside the code they protect
+- Order: data model → business logic → interface → security hardening → tests (but tests can interleave)
 
-### Step 2b: Generate SPEC per task
+### Step 3b: Generate SPEC per task
 For EACH proposed task, generate a SPEC draft:
 
 1. Create `docs/specs/NNN-task-MMM-[slug].md` using the SPEC template
 2. Fill in:
    - **Objective:** What this task achieves technically
    - **Technical Approach:** How it will be implemented, referencing context and SRS/PRD where relevant
+   - **Security Considerations:** What security measures this task must implement (if security attribute is set)
    - **Constraints & Trade-offs:** Informed by project context and demand context
    - **Dependencies:** Libraries, services, or other tasks
    - **Files Affected:** Same as task file list
@@ -81,7 +131,7 @@ For EACH proposed task, generate a SPEC draft:
 3. SPECs are drafts at this stage — they are refined during `/tyrex-do`
 4. Present all SPECs to the user as part of the plan review
 
-### Step 2c: Offer documentation tasks (optional)
+### Step 3c: Offer documentation tasks (optional)
 After proposing implementation tasks, check if any of these are relevant for this feature:
 - `/tyrex-readme` — if the feature changes the project's public API or adds new capabilities
 - `/tyrex-openapi` — if the feature adds/modifies API endpoints
@@ -89,29 +139,36 @@ After proposing implementation tasks, check if any of these are relevant for thi
 
 If relevant, suggest adding them as final tasks (after all implementation and test tasks). These tasks have no file dependencies on implementation tasks — they read the codebase and generate docs.
 
-### Step 3: Show execution graph
+### Step 4: Show execution graph
 Display the execution waves visually:
 
 ```
-Wave 1: [Task 1] ──────────────────────────────
-                       │
-Wave 2: [Task 2] ─┬── [Task 3] ─┬── [Task 4] ─
-                   │  (parallel)  │  (parallel)
-Wave 3:            └──────────────┘
-                          │
-                    [Task 5] ──────────────────
+Wave 1: [Task 1: Data model] ──────────────────
+                   │
+Wave 2: [Task 2: Logic] ─┬── [Task 3: API] ────
+                          │  (parallel)
+Wave 3:                   └── [Task 4: Security]
+                                    │
+Wave 4:                      [Task 5: Tests] ──
 ```
 
-### Step 4: Human approval
-Present the plan — including task list, execution graph, and SPEC drafts — and ask:
-- "Does this plan look good?"
-- "Want to add, remove, or reorder any tasks?"
-- "Any task that should NOT be parallelized?"
-- "Any SPEC that needs adjustment?"
+### Step 5: Human approval (interactive quiz)
+Present the plan — including task list, execution graph, security considerations, and SPEC drafts — and ask via quiz:
+
+```
+Plan Review:
+  [ ] Approve plan as-is
+  [ ] Add tasks
+  [ ] Remove tasks
+  [ ] Reorder tasks
+  [ ] Modify parallelism
+  [ ] Adjust SPEC details
+  [ ] Reject — start planning over
+```
 
 The human MUST approve before proceeding. Do NOT start implementation.
 
-### Step 5: Save the plan
+### Step 6: Save the plan
 Update the feature spec file with the tasks section.
 Create `.tyrex/state/tasks/` state files for each task:
 
@@ -123,6 +180,7 @@ status: "pending"
 depends_on: []
 unlocks: []
 parallel: true|false
+security: "none|input-validation|auth-check|data-sanitization|encryption|full-audit"
 spec_file: "docs/specs/NNN-task-MMM-slug.md"
 started_at: null
 finished_at: null
@@ -133,7 +191,7 @@ output: null
 errors: null
 ```
 
-### Step 6: Update state
+### Step 7: Update state
 Update cursor.yml:
 - `last_action`: "plan_approved"
 - `tasks_summary`: with counts
@@ -145,8 +203,12 @@ Tell the user: "Plan approved. Run /tyrex-do to start implementation."
 - NEVER propose more than 15 tasks for a single feature (break into multiple features if needed)
 - NEVER start implementing during the plan phase
 - The plan section in the feature spec should stay under 50 lines
+- ALWAYS use interactive quiz for ALL decisions — never open-ended questions
+- ALWAYS perform security-first analysis before proposing tasks
+- ALWAYS suggest DevSec skill if security areas are detected and no skill exists
 - Always identify what can be parallelized — this is a core Tyrex differentiator
 - If a task is large (estimate: large), suggest breaking it into smaller tasks
 - ALWAYS generate a SPEC draft per task — SPECs are mandatory documentation
+- Security considerations MUST be included in SPECs for security-sensitive tasks
 - Context files (project-level and demand-level) MUST be read and considered in task planning
 - SPECs should reference relevant context, SRS requirements, and PRD goals where applicable

@@ -53,13 +53,22 @@ bin/tyrex.js (~427 lines, single-file CLI)
 - **Single-file CLI:** All runtime logic in `bin/tyrex.js` (~427 lines)
 - **Template-driven output:** All scaffolded files use `{{PLACEHOLDER}}` interpolation via `copyTemplate()`
 - **Two template modes:** Core files (tyrex.yml, TYREX.md, etc.) are interpolated at install time; user templates (spec.md, adr.md, etc.) are copied as-is with placeholders intact for AI agents to fill at generation time
-- **Agent-agnostic commands:** One set of 18 command definitions in `templates/commands/unified/` is copied to all agent directories
+- **Agent-agnostic commands:** One set of command definitions in `templates/commands/unified/` is copied to all agent directories
 - **Self-hosted:** Tyrex uses itself (`.tyrex/` exists in the repo)
 - **Naming:** files=lowercase-hyphenated, JS constants=UPPER_SNAKE_CASE, JS functions=camelCase
 - **Documentation layers:** SPEC (mandatory per task), SRS, PRD (suggested per demand), context ingestion at project and demand levels
 - **Skills as personas:** Skills in `.tyrex/skills/` are markdown persona files (Role, Expertise, Guidelines, Patterns, Review Criteria). Auto-suggested during `/tyrex-new`, assigned to tasks during `/tyrex-plan`, loaded as context during `/tyrex-do`
+- **Built-in DevSec skill:** `templates/skills/devsec.md` is a built-in security skill template. Auto-suggested when security-sensitive areas are detected during `/tyrex-new` and `/tyrex-plan`. Copied to `.tyrex/skills/devsec.md` on creation.
 - **Sync after every command update:** When updating commands in `templates/commands/unified/`, ALWAYS re-sync to all 4 agent directories as the LAST step — updates made after sync will be missed
 - **Agent mode (plan/build):** Every command declares its mode (`plan` or `build`) in an `## Agent Mode` section and sets `agent_mode` in `cursor.yml` as its first action. Plan mode = no source code writes. Build mode = full implementation with TDD. Enforced via triple layer: cursor.yml state + constitution rules + per-command instructions.
+- **Interactive quiz pattern:** ALL user decisions across ALL commands use interactive quiz format (multiple-choice selection). Never open-ended questions when a quiz can be used. This ensures consistent UX and reduces cognitive load.
+- **Security-first planning:** `/tyrex-plan` performs a security assessment BEFORE proposing tasks. Security-sensitive tasks get `security` attribute, quality: `required`, and devsec skill auto-assigned. Every feature with security implications gets a dedicated security hardening task.
+- **4-lens senior review:** `/tyrex-review` evaluates through 4 lenses: Pattern Compliance, Code Quality & DRY, Business & Technical Compliance, Security First. Uses senior engineer persona for the project's tech stack.
+- **Review → Fix loop:** `/tyrex-review` with `--do-all` or `--do-critical` flags auto-creates requested-change tasks (prefixed `rc-`) within the same feature and enters plan/do loop. Includes mini re-review after fixes.
+- **Command flags:** Commands support flags: `/tyrex-do --auto-approve`, `/tyrex-review --do-all|--do-critical|full`, `/tyrex-quick --auto-approve`
+- **TYREX.md auto-update:** When macro docs (ADR, PRD, SRS) are generated or updated, commands auto-update TYREX.md with summaries in appropriate sections (Architecture Decisions, Business Rules, Requirements Summary)
+- **Quick = unified workflow:** `/tyrex-quick` is a fast-track `new → plan → do` pipeline from a single prompt. With `--auto-approve` it runs full autopilot. Replaces the old "no docs" quick approach.
+- **Handoff deprecated:** `/tyrex-handoff` replaced by `/tyrex-quick --auto-approve`
 - **Security finding tracking:** `.tyrex/map/security-audit.md` uses a `Status` column (`[ ]` pending, `[x]` resolved) consumed by `/tyrex-status` and `/tyrex-review`
 - **Review scopes:** `/tyrex-review` supports `pr` (default, branch diff only) and `full` (codebase-wide re-scan) scopes
 - **OpenCode plugin for mechanical enforcement:** `.opencode/plugin.ts` uses OpenCode's native hooks (`command.execute.before`, `permission.ask`) to mechanically enforce plan/build mode switching. `opencode.json` defines two agents (`plan` with `edit: "deny"`, `build` with `edit: "allow"`). The plugin reads/writes `cursor.yml` and injects `AgentPart` to switch agents on command execution. This is a triple-layer enforcement: cursor.yml state + constitution rules + native permission system.
@@ -97,6 +106,15 @@ bin/tyrex.js (~427 lines, single-file CLI)
 | 2026-03-08 | Security audit with tracking          | `security-audit.md` uses `Status` column (`[ ]`/`[x]`) for finding resolution tracking. Consumed by `/tyrex-status` and `/tyrex-review` |
 | 2026-03-08 | Review scopes: PR vs Full             | `/tyrex-review` defaults to PR scope (branch diff only); `/tyrex-review full` re-scans entire codebase. PR scope is faster and focused; Full scope updates the audit file |
 | 2026-03-08 | OpenCode plugin for mode enforcement   | Native plugin using OpenCode SDK hooks provides mechanical guardrails — plan agent literally cannot write files. Triple-layer: cursor.yml + constitution + native permissions |
+| 2026-03-10 | Interactive quiz as UX standard          | All user decisions across all commands use interactive quiz (multiple-choice). Reduces cognitive load, speeds up interaction, ensures consistent UX |
+| 2026-03-10 | Security-first planning                  | `/tyrex-plan` performs security assessment before task decomposition. Security-sensitive tasks auto-get devsec skill and quality: required |
+| 2026-03-10 | 4-lens senior code review                | `/tyrex-review` evaluates Pattern Compliance, Code Quality, Business Compliance, and Security. Senior engineer persona per tech stack |
+| 2026-03-10 | Review → Fix loop                        | `/tyrex-review --do-all/--do-critical` auto-creates `rc-` prefixed tasks within same feature and enters plan/do loop |
+| 2026-03-10 | Command flags (--auto-approve, etc.)     | Commands support flags for automation: `--auto-approve` (skip all checkpoints), `--do-all`/`--do-critical` (auto-fix review findings) |
+| 2026-03-10 | TYREX.md as living knowledge index       | Auto-updated when macro docs (ADR, PRD, SRS) are generated. Sections: Architecture Decisions, Business Rules, Requirements Summary, Patterns |
+| 2026-03-10 | Quick = unified new+plan+do              | `/tyrex-quick` redesigned as fast-track pipeline. Same quality, fewer steps. `--auto-approve` for full autopilot |
+| 2026-03-10 | Handoff deprecated                       | Replaced by `/tyrex-quick --auto-approve`. One command for same behavior, cleaner mental model |
+| 2026-03-10 | Built-in DevSec skill template           | `templates/skills/devsec.md` ships with framework. Auto-suggested when security areas detected. OWASP/SANS coverage |
 
 ## CI/CD
 

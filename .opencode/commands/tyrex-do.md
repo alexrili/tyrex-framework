@@ -11,6 +11,15 @@ You are the Tyrex Framework orchestrator. Execute tasks from the active feature'
 This command runs in **build** mode. Set `agent_mode: "build"` in `cursor.yml` as the FIRST action.
 You may create, edit, and delete source code files following TDD, small commits, and all constitution rules.
 
+## Parameters
+
+- **`/tyrex-do`** (default) — Execute tasks with human approval at each checkpoint
+- **`/tyrex-do --auto-approve`** — Execute ALL tasks automatically: commits, parallelism decisions, and all checkpoints are auto-approved. Only stops on failures after 3 retries.
+
+## Interactive Quiz Rule
+
+**ALL decisions in this command MUST use the interactive quiz format** (multiple-choice selection). Never ask open-ended questions when a quiz can be used. This applies to: parallelization choices, failure handling, commit approval, and any other decision point.
+
 ## Behavior
 
 ### Step 1: Load state
@@ -35,16 +44,16 @@ These are the "ready" tasks.
 ### Step 3: Parallelization decision
 If there are MULTIPLE ready tasks that are marked as `parallel: true`:
 
-**Ask the user:**
+**If `--auto-approve`:** automatically choose parallel execution for all eligible tasks.
+
+**Otherwise, present interactive quiz:**
 ```
 Tasks [2, 3, 4] are ready and can run in parallel.
 
-[1] Execute all in parallel (3 agents)
-[2] Execute sequentially (one at a time)
-[3] Choose which to parallelize
+  [ ] Execute all in parallel (3 agents)
+  [ ] Execute sequentially (one at a time)
+  [ ] Choose which to parallelize
 ```
-
-If the user chose parallel in previous interaction for this feature AND `auto_suggest: true`, you can suggest the same choice again.
 
 ### Step 4: Execute tasks
 
@@ -68,36 +77,47 @@ For each ready task, one at a time:
      - If the skill's `## Expertise` doesn't match the current task's domain, log a note but still apply (the human selected it)
    - Before marking the task complete, use `## Review Criteria` from the skill as a self-check
 3. Update task state to `in_progress`
-3. Update cursor.yml with current task
-4. **Implement following quality strategy:**
+4. Update cursor.yml with current task
+5. **Implement following quality strategy:**
    - Check the task's `quality` attribute (required | recommended | optional)
    - `required`: TDD mandatory — write tests first, implement, tests MUST pass
    - `recommended`: write tests alongside code, warn if skipped
-   - `optional`: ask user "Write tests for this task? [y/N]"
+   - `optional`: present quiz: `[ ] Write tests for this task` / `[ ] Skip tests`
+   - **If `--auto-approve`:** for `optional` quality, default to writing tests
    - Run lint if configured — it MUST pass
    - Run security scan if configured
-4. **On success:**
+6. **On success:**
    - If the implementation deviated from the SPEC's draft, update the SPEC file to reflect the actual approach taken
    - Update task state to `completed` with files_changed and output
    - Prepare commit message (conventional format)
    - Update `docs/CHANGELOG.md` with what changed
-   - **If commit mode is `approve`:**
+   - **If `--auto-approve`:**
+     - Make the commit automatically (overrides `approve` mode from tyrex.yml)
+   - **Else if commit mode is `approve`:**
      - Show: diff summary, commit message, changelog entry
-     - Ask: "Approve this commit? [Y/n/edit]"
-     - If edit: let user modify commit message
-     - If approved: make the commit
-   - **If commit mode is `auto`:**
+     - Present quiz: `[ ] Approve commit` / `[ ] Edit commit message` / `[ ] Reject and redo`
+   - **Else if commit mode is `auto`:**
      - Make the commit automatically
    - Update cursor.yml: last_task_completed, tasks_summary, next_tasks
-5. **On failure:**
+   - **Auto-update TYREX.md:** If this task generated or updated any ADR, PRD, SRS, or other macro documentation, automatically update TYREX.md:
+     - Add a summary entry in the appropriate section (Architecture Decisions for ADR, Business Rules for PRD, Requirements for SRS)
+     - Add any new patterns discovered to the Patterns section
+     - This keeps TYREX.md as the living index of all project knowledge
+7. **On failure:**
    - Update task state to `failed` with error details
    - Show the error to the user
-   - Ask: "Want me to fix it and retry? Or skip this task?"
+   - **If `--auto-approve`:** automatically retry up to 3 times, then mark as `failed` and continue to next task
+   - **Otherwise, present quiz:**
+     ```
+     [ ] Fix and retry
+     [ ] Skip this task
+     [ ] Stop execution
+     ```
    - If retry: fix and go back to step 3 of the task
    - If skip: mark as `failed`, check if any tasks are now `blocked`
 
-6. After task completion, check for newly unlocked tasks
-7. If new parallel tasks are available, go back to Step 3 (ask about parallelization)
+8. After task completion, check for newly unlocked tasks
+9. If new parallel tasks are available, go back to Step 3 (ask about parallelization)
 
 **For PARALLEL execution:**
 1. For each parallel task, spawn a sub-agent (Task tool) with:
@@ -112,7 +132,7 @@ For each ready task, one at a time:
 3. Collect results from task state files
 4. For each completed sub-task:
    - Validate the implementation (tests pass, lint clean)
-   - Handle commits (based on mode: approve or auto)
+   - Handle commits (based on mode: approve, auto, or `--auto-approve`)
    - Update CHANGELOG.md (sequentially, after all parallel tasks finish)
 5. Update cursor.yml with all completed tasks
 6. Check for newly unlocked tasks → go to Step 3
@@ -127,7 +147,10 @@ When ALL tasks are `completed`:
 - NEVER make a commit that breaks CI
 - ALWAYS update cursor.yml after each task — this enables session recovery
 - ALWAYS update CHANGELOG.md — it's mandatory
+- ALWAYS use interactive quiz for decisions — never open-ended questions
 - Sub-agents for parallel tasks should ONLY modify files listed in their task
 - If two parallel tasks need to modify the same file, they CANNOT be parallel — execute sequentially
 - The orchestrator (you) handles commits and state updates, NOT sub-agents
 - If the user interrupts ("stop", "wait", "pause"), immediately save state and stop
+- `--auto-approve` is a trust accelerator — it skips ALL human checkpoints but still runs all quality checks (tests, lint, security)
+- When macro docs (ADR, PRD, SRS) are created/updated, ALWAYS update TYREX.md with a summary

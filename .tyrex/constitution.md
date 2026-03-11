@@ -28,13 +28,17 @@
 ## The Agent MUST
 
 - Ask when in doubt instead of assuming
+- Use interactive quiz format (multiple-choice) for ALL user decisions — never open-ended questions when a quiz can be used
 - Propose the simplest solution first
 - Warn when something seems over-engineered
 - Follow patterns documented in TYREX.md
 - Update CHANGELOG.md after every change
+- Update TYREX.md when macro docs (ADR, PRD, SRS) are generated or updated
 - Run tests before considering a task complete
 - Respect task dependencies defined in feature specs
 - Update cursor.yml after completing each task
+- Evaluate security implications during planning (security-first approach)
+- Suggest DevSec skill when security-sensitive areas are detected
 
 ## The Agent MUST NOT
 
@@ -47,6 +51,8 @@
 - Ignore the "Out of Scope" section in feature specs
 - Push to remote without explicit human approval
 - Add runtime dependencies without explicit justification and approval
+- Ask open-ended questions when a quiz format is possible
+- Skip security analysis during planning phase
 
 ## On Parallelization
 

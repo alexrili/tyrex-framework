@@ -9,27 +9,29 @@ This project uses the Tyrex Framework for human-driven, AI-accelerated pair prog
 3. **Check mode:** Read `agent_mode` from `cursor.yml`. In `plan` mode, NEVER write source code — only `.tyrex/`, `docs/`, and config files. In `build` mode, follow TDD and commit rules.
 4. **Use commands:** The `/tyrex-*` slash commands orchestrate the development workflow.
 5. **Update state:** After every task, update the cursor and task state files.
+6. **Interactive quiz:** ALL user decisions use interactive quiz format (multiple-choice). Never ask open-ended questions when a quiz can be used.
+7. **Security first:** Always consider security implications during planning and review. The DevSec skill (`templates/skills/devsec.md`) is auto-suggested for security-sensitive work.
 
 ## Commands Available
 
-| Command | Purpose |
-|---------|---------|
-| `/tyrex-init` | Initialize Tyrex in a project (map codebase, configure) |
-| `/tyrex-settings` | View/modify Tyrex configuration |
-| `/tyrex-new` | Start a new feature/demand (with docs config per demand) |
-| `/tyrex-plan` | Plan implementation tasks with dependencies and parallelism |
-| `/tyrex-do` | Execute tasks (sequential or parallel, with TDD) |
-| `/tyrex-review` | Review implementation, finalize docs, refactor |
-| `/tyrex-status` | Show current project and feature status |
-| `/tyrex-resume` | Resume from last session (fast recovery via cursor) |
-| `/tyrex-quick` | Quick task without full ceremony (bug fixes, tweaks) |
-| `/tyrex-evolve` | Update TYREX.md with new patterns/knowledge |
-| `/tyrex-handoff` | Deterministic autopilot (chains new→plan→do→review) |
-| `/tyrex-skills` | Manage and apply reusable skills |
-| `/tyrex-readme` | Generate or update project README.md |
-| `/tyrex-openapi` | Generate or update OpenAPI documentation |
-| `/tyrex-wiki` | Generate or update project wiki pages |
-| `/tyrex-help` | Show commands, workflow guide, and contextual suggestions |
+| Command | Flags | Purpose |
+|---------|-------|---------|
+| `/tyrex-init` | | Initialize Tyrex in a project (map codebase, configure) |
+| `/tyrex-settings` | | View/modify Tyrex configuration |
+| `/tyrex-new` | | Start a new feature/demand (interactive quiz workflow) |
+| `/tyrex-plan` | | Plan tasks with security-first analysis |
+| `/tyrex-do` | `--auto-approve` | Execute tasks (sequential or parallel, with TDD) |
+| `/tyrex-review` | `--do-all` `--do-critical` `full` | Senior code review with 4 lenses + auto-fix loop |
+| `/tyrex-status` | | Show current project and feature status |
+| `/tyrex-resume` | | Resume from last session (fast recovery via cursor) |
+| `/tyrex-quick` | `--auto-approve` | Fast-track: unified new→plan→do from single prompt |
+| `/tyrex-evolve` | | Update TYREX.md with new patterns/knowledge |
+| `/tyrex-skills` | `create` `sync` | Manage and apply reusable skills |
+| `/tyrex-readme` | | Generate or update project README.md |
+| `/tyrex-openapi` | | Generate or update OpenAPI documentation |
+| `/tyrex-wiki` | | Generate or update project wiki pages |
+| `/tyrex-help` | `<command>` | Show commands, workflow guide, and contextual suggestions |
+| `/tyrex-handoff` | | **DEPRECATED** — use `/tyrex-quick --auto-approve` |
 
 ## Core Rules
 
@@ -38,11 +40,13 @@ This project uses the Tyrex Framework for human-driven, AI-accelerated pair prog
 3. **Every commit passes CI.** No broken commits, ever.
 4. **CHANGELOG is mandatory.** Update `docs/CHANGELOG.md` on every change.
 5. **Small commits.** One task = one atomic, revertible commit.
-6. **Ask, don't assume.** When in doubt, ask the human.
+6. **Interactive quiz for all decisions.** Use multiple-choice, not open-ended questions.
 7. **Simplicity wins.** Propose the simplest solution first.
 8. **Documentation first.** When configured, generate docs before code.
-9. **Update state.** Always update cursor.yml after completing tasks.
-10. **Respect parallelism rules.** Sub-agents only modify their own files and state.
+9. **Security first.** Evaluate security implications during planning and review.
+10. **Update state.** Always update cursor.yml after completing tasks.
+11. **Respect parallelism rules.** Sub-agents only modify their own files and state.
+12. **TYREX.md is the living index.** Auto-update when macro docs (ADR, PRD, SRS) are generated.
 
 ## File Structure
 
@@ -58,6 +62,9 @@ This project uses the Tyrex Framework for human-driven, AI-accelerated pair prog
 ├── templates/         # Document templates
 ├── skills/            # Reusable skills (synced across agents)
 └── map/               # Project mapping (generated on init)
+templates/
+├── skills/
+│   └── devsec.md      # Built-in DevSec skill template
 docs/
 ├── CHANGELOG.md       # Mandatory changelog
 ├── adrs/              # Architecture Decision Records
@@ -66,9 +73,27 @@ docs/
 └── diagrams/          # Flow diagrams
 ```
 
+## Workflow
+
+```
+Full workflow:
+  /tyrex-init → /tyrex-new → /tyrex-plan → /tyrex-do → /tyrex-review
+                (quiz)       (security)    [--auto]     (4 lenses)
+                                              ↑              │
+                                              └── fix tasks ─┘
+
+Fast track:
+  /tyrex-quick [--auto-approve]
+    = new + plan + do in one command
+
+Review with auto-fix:
+  /tyrex-review --do-all       (fix everything)
+  /tyrex-review --do-critical  (fix HIGH/CRITICAL only)
+```
+
 ## On Parallelization
 
-When tasks can run in parallel, ask the human before spawning sub-agents.
+When tasks can run in parallel, ask the human before spawning sub-agents (or auto-decide with `--auto-approve`).
 Each sub-agent receives: task description + TYREX.md + constitution.md.
 Each sub-agent writes ONLY to its own task state file.
 The orchestrator (main agent) handles commits, CHANGELOG, and cursor updates.

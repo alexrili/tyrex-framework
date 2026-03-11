@@ -32,19 +32,18 @@ Show ALL commands grouped by category:
 TYREX Help
 ═══════════════════════════════════════
 
-  Workflow principal:
+  Core Workflow:
     /tyrex-init       Initialize Tyrex in a project (map codebase, configure)
-    /tyrex-new        Start a new feature/demand
-    /tyrex-plan       Plan tasks with dependencies and parallelism
-    /tyrex-do         Execute implementation tasks
-    /tyrex-review     Review implementation, finalize docs
+    /tyrex-new        Start a new feature/demand (interactive quiz)
+    /tyrex-plan       Plan tasks with security-first approach
+    /tyrex-do         Execute tasks [--auto-approve]
+    /tyrex-review     Senior code review with 4 lenses [--do-all | --do-critical] [full]
 
   Exploration:
     /tyrex-discuss    Explore the project, ask questions, brainstorm architecture
 
-  Shortcuts:
-    /tyrex-quick      Quick task without full ceremony (bug fix, tweak)
-    /tyrex-handoff    Autopilot — chains new→plan→do→review automatically
+  Fast Track:
+    /tyrex-quick      Unified new→plan→do from a single prompt [--auto-approve]
 
   Management:
     /tyrex-status     Show current project and feature status
@@ -61,6 +60,9 @@ TYREX Help
 
   Meta:
     /tyrex-help       This command. Use /tyrex-help <command> for details.
+
+  Deprecated:
+    /tyrex-handoff    → Use /tyrex-quick --auto-approve instead
 ```
 
 #### Step 3: Show workflow diagram
@@ -68,21 +70,21 @@ TYREX Help
 ```
   Typical workflow:
 
-    /tyrex-init → /tyrex-discuss → /tyrex-new → /tyrex-plan → /tyrex-do → /tyrex-review
-                  (optional)                          ↑                         │
-                                                      └─── fix tasks ───────────┘
+    /tyrex-init → /tyrex-new → /tyrex-plan → /tyrex-do → /tyrex-review
+                  (quiz)       (security)    [--auto]     (4 lenses)
+                                                ↑              │
+                                                └── fix tasks ─┘
 
-  Greenfield:
-    /tyrex-init → /tyrex-discuss (brainstorm) → /tyrex-new → ...
+  Fast track (from single prompt):
+    /tyrex-quick [--auto-approve]
+      = /tyrex-new + /tyrex-plan + /tyrex-do in one command
 
-  Anytime Q&A:
+  Review with auto-fix:
+    /tyrex-review --do-all       (fix everything)
+    /tyrex-review --do-critical  (fix only HIGH/CRITICAL)
+
+  Exploration (anytime):
     /tyrex-discuss  (explore the project, ask questions at any point)
-
-  Fast mode:
-    /tyrex-handoff  (runs the entire workflow, stops at checkpoints)
-
-  Quick fix:
-    /tyrex-quick    (skip spec/plan, just fix and commit)
 ```
 
 #### Step 4: Contextual suggestion
@@ -93,19 +95,19 @@ Based on the current state, suggest the next action. Use EXACTLY ONE of these:
   > "You haven't initialized Tyrex yet. Start with `/tyrex-init` to map your project and configure the framework."
 
 - **`.tyrex/` exists but no active feature (or last feature is `done`):**
-  > "Tyrex is initialized. Use `/tyrex-new` to start a new feature, or `/tyrex-handoff` for autopilot mode."
+  > "Tyrex is initialized. Use `/tyrex-new` to start a new feature, or `/tyrex-quick` for a fast-track task."
 
 - **Active feature with status `spec` (no plan yet):**
   > "You have a feature spec ready. Run `/tyrex-plan` to plan the implementation tasks."
 
 - **Active feature with status `planned` (plan approved, no tasks started):**
-  > "Your plan is approved. Run `/tyrex-do` to start implementing."
+  > "Your plan is approved. Run `/tyrex-do` to start implementing, or `/tyrex-do --auto-approve` for autopilot."
 
 - **Active feature with tasks `in_progress` or `pending`:**
   > "You have tasks in progress. Run `/tyrex-do` to continue, or `/tyrex-resume` if this is a new session."
 
 - **Active feature with ALL tasks `completed`:**
-  > "All tasks are done! Run `/tyrex-review` to review the implementation."
+  > "All tasks are done! Run `/tyrex-review` to review, or `/tyrex-review --do-all` to review and auto-fix."
 
 - **Cannot determine state (cursor.yml missing or corrupted):**
   > "Run `/tyrex-status` to see where things stand, or `/tyrex-init` to start fresh."
@@ -124,7 +126,9 @@ All resolve to the same command.
 #### Step 1: Identify the command
 
 Strip any `/tyrex-` or `tyrex-` prefix from the argument. Match against the known commands:
-`init`, `new`, `plan`, `do`, `review`, `quick`, `handoff`, `status`, `resume`, `settings`, `evolve`, `skills`, `context`, `discuss`, `readme`, `openapi`, `wiki`, `help`
+`init`, `new`, `plan`, `do`, `review`, `quick`, `status`, `resume`, `settings`, `evolve`, `skills`, `context`, `discuss`, `readme`, `openapi`, `wiki`, `help`
+
+Also match deprecated: `handoff` → redirect to `quick`.
 
 If no match: show "Command not found" and list all available commands.
 
@@ -138,6 +142,9 @@ For the matched command, present a structured summary:
 
   What it does:
     [1-2 sentence description of purpose]
+
+  Flags:
+    [list of flags and their effects, or "None"]
 
   When to use:
     [Context — when should the user reach for this command]
@@ -161,6 +168,7 @@ Use the reference below for each command:
 
 **init:**
 - What: Maps your codebase, detects stack/architecture/security issues, configures Tyrex.
+- Flags: None
 - When: First time using Tyrex in a project, or re-initializing after major changes.
 - Steps: Codebase analysis → Generate TYREX.md + constitution → Interactive config → Summary
 - Prerequisites: None (this is the starting point)
@@ -168,62 +176,63 @@ Use the reference below for each command:
 
 **discuss:**
 - What: Interactive exploration and technical discussion. In codebase mode, answers questions about existing code with file references. In greenfield mode, brainstorms architecture, stack, and scope. Loads relevant skills as perspective automatically.
+- Flags: None
 - When: You're new to a project and want to understand it, or starting from scratch and want to brainstorm before building. Can be used anytime for Q&A.
 - Steps: Detect mode (codebase/greenfield/hybrid) → Load skills → Multi-turn conversation → Save conclusions on demand (user-initiated only)
 - Prerequisites: `.tyrex/` initialized (recommended but not required for basic Q&A)
 - Next: `/tyrex-new` (to act on what was discussed) or `/tyrex-evolve` (to record decisions)
 
 **new:**
-- What: Starts a new feature/demand. Checks the roadmap for planned features first, captures requirements, analyzes required skills, configures docs/git, generates feature spec, and updates the roadmap. Supports documentation types: ADR, RFC, Wiki, SPEC, SRS, PRD.
+- What: Starts a new feature/demand. All decisions are made via interactive quizzes. Checks the roadmap, captures requirements, analyzes required skills (including DevSec), configures docs/git, generates feature spec, and updates TYREX.md.
+- Flags: None
 - When: You have something to build and want to go through the full workflow.
-- Steps: Check roadmap for planned features → Describe demand → Clarification questions → Context ingestion → Skill analysis & suggestion → Config (docs, branch, commits) → Generate docs first → Create feature spec → Create branch → Update roadmap
+- Steps: Check roadmap (quiz) → Describe demand → Clarification (quiz) → Context ingestion (quiz) → Skill analysis with DevSec check (quiz) → Config docs/git (quiz) → Generate docs first → Create feature spec → Create branch → Update TYREX.md
 - Prerequisites: `.tyrex/` initialized (`/tyrex-init`)
 - Next: `/tyrex-plan`
 
 **plan:**
-- What: Breaks the feature into executable tasks with dependencies, parallelism, skill assignments, and quality strategy.
+- What: Breaks the feature into tasks with dependencies, parallelism, skill assignments, quality strategy, and security-first analysis. Every task gets a SPEC draft. Security-sensitive tasks get the devsec skill auto-assigned.
+- Flags: None
 - When: After creating a feature spec with `/tyrex-new`.
-- Steps: Load feature → Propose tasks → Show execution graph → Human approval → Save plan
+- Steps: Load context → Security-first analysis → Propose tasks with security attributes → Generate SPECs → Show execution graph → Human approval (quiz) → Save plan
 - Prerequisites: Active feature in `spec` status
 - Next: `/tyrex-do`
 
 **do:**
-- What: Executes tasks from the plan. Handles TDD, parallelization, commits, and state updates.
+- What: Executes tasks from the plan. Handles TDD, parallelization, commits, and state updates. Auto-updates TYREX.md when macro docs are generated.
+- Flags: `--auto-approve` (skip ALL human checkpoints, full autopilot)
 - When: After the plan is approved with `/tyrex-plan`.
-- Steps: Load state → Find ready tasks → Ask about parallelization → Execute with TDD → Commit → Update state → Repeat
+- Steps: Load state → Find ready tasks → Parallelization (quiz or auto) → Execute with TDD → Commit (quiz or auto) → Update state + TYREX.md → Repeat
 - Prerequisites: Active feature with approved plan
 - Next: `/tyrex-review` (when all tasks done)
 
 **review:**
-- What: Reviews the completed implementation against acceptance criteria, checks quality, finalizes docs.
+- What: Senior code review through 4 lenses: Pattern Compliance, Code Quality & DRY, Business & Technical Compliance, Security First. Can auto-create fix tasks and enter the plan/do loop.
+- Flags: `--do-all` (fix all findings), `--do-critical` (fix HIGH/CRITICAL only), `full` (codebase-wide review instead of branch diff)
 - When: All implementation tasks are complete.
-- Steps: Automated checks → Code review → Documentation finalization → TYREX.md evolution → Human approval
+- Steps: Automated checks → 4-lens review → TYREX.md evolution → Present findings (quiz) → Requested changes loop (if needed) → Finalize
 - Prerequisites: All tasks in active feature completed
-- Next: `/tyrex-new` (next feature) or `/tyrex-status`
+- Next: `/tyrex-new` (next feature) or done
 
 **quick:**
-- What: Handles a small task without the full spec/plan ceremony. Still requires tests and CHANGELOG.
-- When: Bug fixes, config tweaks, small changes that don't need a feature spec.
-- Steps: Describe task → Implement with TDD → Commit
+- What: Fast-track workflow — unified new/plan/do from a single prompt. Same quality guardrails, fewer steps. All decisions via quizzes.
+- Flags: `--auto-approve` (full autopilot from prompt to implementation)
+- When: Bug fixes, config tweaks, small features — anything that doesn't need extensive ceremony but still needs quality.
+- Steps: Capture demand (quiz) → Quick config (quiz) → Skill + security check → Quick plan (quiz) → Execute (same as /tyrex-do) → Update TYREX.md
 - Prerequisites: `.tyrex/` initialized
-- Next: Nothing specific — back to normal flow
-
-**handoff:**
-- What: Deterministic autopilot. Chains the entire workflow (new→plan→do→review) automatically, stopping only at defined checkpoints for human decisions.
-- When: You want to describe what to build and let Tyrex drive the entire process.
-- Steps: Context load → Demand capture [CHECKPOINT] → Config [CHECKPOINT] → Planning [CHECKPOINT] → Execution (with checkpoints per parallel decision and commit approval) → Review [CHECKPOINT]
-- Prerequisites: `.tyrex/` initialized
-- Next: Nothing — it runs the full cycle
+- Next: `/tyrex-review` (optional) or done
 
 **status:**
-- What: Shows a comprehensive dashboard: features, active tasks, project roadmap (planned/future features), health diagnostics (TYREX.md completeness, stale branches, context/skills coverage), documentation coverage, and actionable suggestions.
-- When: You want a full overview of where things stand — what's done, what's active, what's planned, and what needs attention.
+- What: Shows a comprehensive dashboard: features, active tasks, project roadmap, health diagnostics, documentation coverage, and actionable suggestions.
+- Flags: None
+- When: You want a full overview of where things stand.
 - Steps: Read state + roadmap + health checks → Display comprehensive summary
 - Prerequisites: `.tyrex/` initialized
 - Next: Whatever the status suggests
 
 **resume:**
 - What: Recovers session state from cursor.yml with minimal token usage. Picks up where you left off.
+- Flags: None
 - When: Starting a new agent session and wanting to continue previous work.
 - Steps: Read cursor.yml → Show resume summary → Continue from last state
 - Prerequisites: Previous Tyrex session with state saved
@@ -231,41 +240,47 @@ Use the reference below for each command:
 
 **settings:**
 - What: Shows and lets you modify Tyrex configuration (commit mode, branch mode, docs, quality, parallelism, git).
+- Flags: None
 - When: You want to change how Tyrex behaves.
-- Steps: Display current settings → Ask what to change → Save
+- Steps: Display current settings → Ask what to change (quiz) → Save
 - Prerequisites: `.tyrex/tyrex.yml` exists
 - Next: Changes apply from next demand onward
 
 **evolve:**
 - What: Updates TYREX.md with new patterns, hurdles, architecture decisions, or context discovered during work.
+- Flags: None
 - When: You learned something about the project that future sessions should know.
 - Steps: Describe discovery → Update TYREX.md → Commit
 - Prerequisites: `.tyrex/TYREX.md` exists
 - Next: Nothing specific
 
 **skills:**
-- What: Manages reusable skills — persona-based agent contexts (Role, Expertise, Guidelines, Patterns, Review Criteria). Can list, create, and sync skills across providers.
-- When: You want to improve implementation quality by giving agents specialized perspectives. Also auto-suggested during `/tyrex-new`.
-- Steps: (list) Scan `.tyrex/skills/` + providers → Display. (create) Gather role/expertise/guidelines → Generate skill file. (sync) Copy to all providers.
+- What: Manages reusable skills — persona-based agent contexts. Can list, create, and sync skills. DevSec skill is available as a built-in template.
+- Flags: `create [name]`, `sync`
+- When: You want to improve implementation quality by giving agents specialized perspectives.
+- Steps: (list) Scan `.tyrex/skills/` + providers → Display. (create) Gather role/expertise/guidelines (quiz) → Generate skill file. (sync) Copy to all providers.
 - Prerequisites: `.tyrex/` initialized
 - Next: Skills are automatically loaded during `/tyrex-do` when assigned to tasks
 
 **context:**
-- What: Ingests and manages project context (business rules, legacy system constraints, external docs) for better AI decisions. Supports free text, file paths, and URLs.
-- When: After `/tyrex-init` to add project background, during `/tyrex-new` for demand-specific context, or anytime you have new context to add.
-- Steps: Show existing context → Choose scope (project/demand) → Choose input type (text/file/URL) → Process and save → Confirm
+- What: Ingests and manages project context (business rules, legacy system constraints, external docs) for better AI decisions.
+- Flags: None
+- When: After `/tyrex-init` to add project background, during `/tyrex-new` for demand-specific context, or anytime.
+- Steps: Show existing context → Choose scope (quiz) → Choose input type (quiz) → Process and save → Confirm
 - Prerequisites: `.tyrex/` initialized (`/tyrex-init`)
 - Next: Context is automatically read by `/tyrex-plan` and `/tyrex-do`
 
 **readme:**
 - What: Generates a comprehensive README.md with architecture diagrams, setup instructions, and API overview.
+- Flags: None
 - When: Your project needs a README, or the existing one is outdated.
-- Steps: Deep project analysis → Generate README → Handle existing (replace/merge) → Commit
+- Steps: Deep project analysis → Generate README → Handle existing (quiz) → Commit
 - Prerequisites: A project with code to document
 - Next: Nothing specific
 
 **openapi:**
 - What: Analyzes your API endpoints and generates OpenAPI 3.1 documentation WITHOUT modifying source code.
+- Flags: None
 - When: Your project has an API and you need documentation for it.
 - Steps: Detect framework → Map endpoints (read-only) → Generate openapi.yaml + readable docs → Commit
 - Prerequisites: A project with HTTP endpoints
@@ -273,13 +288,19 @@ Use the reference below for each command:
 
 **wiki:**
 - What: Generates wiki-style documentation pages in docs/wiki/ covering architecture, getting started, domain areas, deployment, and troubleshooting.
+- Flags: None
 - When: You need internal documentation for the team.
-- Steps: Project analysis → Propose wiki structure → Generate pages → Handle existing → Commit
+- Steps: Project analysis → Propose wiki structure (quiz) → Generate pages → Handle existing (quiz) → Commit
 - Prerequisites: A project with code to document
 - Next: Nothing specific
 
+**handoff (DEPRECATED):**
+- What: Replaced by `/tyrex-quick --auto-approve`. See migration guide in the command file.
+- When: Never — use `/tyrex-quick --auto-approve` instead.
+
 **help:**
 - What: This command. Shows all available commands and suggests what to do next.
+- Flags: `<command-name>` for detailed help
 - When: You're not sure what command to use.
 - Steps: Display command list → Show workflow → Suggest next action
 - Prerequisites: None
@@ -291,3 +312,4 @@ Use the reference below for each command:
 - When showing details for a specific command, do NOT dump the entire command file — summarize for humans
 - The workflow diagram should be ASCII-compatible (no special Unicode beyond box-drawing)
 - If the user asks `/tyrex-help` with a command that doesn't exist, be helpful: suggest the closest match
+- ALWAYS mention flags for commands that have them — this is a key differentiator

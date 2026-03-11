@@ -1,19 +1,19 @@
 # .tyrex/state/cursor.yml - Session pointer for quick recovery
-last_updated: "2026-03-08T19:46:00Z"
+last_updated: "2026-03-11T10:30:00Z"
 session_id: null
 
 # Agent mode controls what the agent can do.
 # "plan"  — read, analyze, discuss, plan. MUST NOT write source code.
 # "build" — implement, test, commit. May write source code following TDD and commit rules.
 # Each /tyrex-* command sets this field as its FIRST action.
-agent_mode: "plan"
+agent_mode: "build"
 
 active_feature: null
 active_feature_file: null
 
-last_task_completed: "release_0_1_1_preparation"
-last_commit: "ec4679f"
-last_action: "release_0_1_1_preparation"
+last_task_completed: "framework_simplification_v0.2.0"
+last_commit: "c7f256b"
+last_action: "framework_simplification"
 
 tasks_summary:
   total: 0
@@ -26,6 +26,16 @@ tasks_summary:
 next_tasks: []
 
 # v0.1.0 released — Features 001, 002, 003 complete
-# 18 commands, 4 agents, roadmap system, skills, discuss
+# v0.1.1 released — 18 commands, 4 agents, roadmap system, skills, discuss
 # Agent mode enforcement added — plan/build, security tracking, review scopes
 # OpenCode plugin created — mechanical mode enforcement via native agent system
+# v0.2.0 — Framework simplification:
+#   - Interactive quiz pattern enforced across all commands
+#   - Security-first planning in /tyrex-plan
+#   - 4-lens senior code review in /tyrex-review
+#   - Review → Fix loop with --do-all/--do-critical
+#   - /tyrex-do --auto-approve flag
+#   - /tyrex-quick redesigned as unified new+plan+do pipeline
+#   - /tyrex-handoff deprecated (replaced by /tyrex-quick --auto-approve)
+#   - Built-in DevSec skill template
+#   - TYREX.md auto-update when macro docs generated
