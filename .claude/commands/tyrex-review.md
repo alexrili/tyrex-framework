@@ -141,7 +141,7 @@ Ensure all required documentation is complete:
 - [ ] ADR files are complete (if configured for this demand)
 - [ ] RFC files are complete (if configured for this demand)
 - [ ] Wiki updated (if configured for this demand)
-- [ ] Diagrams updated (if configured for this demand)
+- [ ] Diagrams updated (if configured for this demand) — D2 format, renderable with `d2` CLI
 
 If any docs are missing or incomplete, generate/complete them now (docs are allowed in plan mode).
 

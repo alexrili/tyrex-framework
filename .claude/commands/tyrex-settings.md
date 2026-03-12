@@ -25,14 +25,18 @@ Mode:
   Changelog:     always (locked)
   Documentation: suggest
 
-Docs defaults:
-  SPEC:     enabled (LOCKED — mandatory per task)
-  SRS:      enabled (Software Requirements Specification per demand)
-  PRD:      enabled (Product Requirements Document per demand)
-  ADR:      enabled
-  RFC:      disabled
-  Wiki:     enabled
-  Diagrams: enabled
+Documentation:
+  Built-in:
+    SPEC:     enabled (LOCKED — mandatory per task)
+    SRS:      enabled
+    PRD:      enabled
+    ADR:      enabled
+    RFC:      disabled
+    Wiki:     enabled
+    Diagrams: enabled (D2 — d2lang.com)
+    CHANGELOG: enabled (LOCKED — mandatory)
+  Custom:
+    (none configured — add via "add custom doc type")
 
 Skills:
   Auto-suggest on /tyrex-new: true
@@ -59,9 +63,52 @@ Git:
 4. For each change, update `tyrex.yml`
 5. Confirm the change was saved
 
+### Documentation management
+
+When the user wants to change documentation settings, present:
+
+```
+Documentation settings:
+
+  Built-in doc types:
+    1. Toggle SRS          [currently: enabled]
+    2. Toggle PRD          [currently: enabled]
+    3. Toggle ADR          [currently: enabled]
+    4. Toggle RFC          [currently: disabled]
+    5. Toggle Wiki         [currently: enabled]
+    6. Toggle Diagrams     [currently: enabled]
+
+  Custom doc types:
+    7. Add custom doc type
+    8. Remove custom doc type
+    9. List custom doc types
+
+  (SPEC and CHANGELOG are locked — always enabled)
+```
+
+**Adding a custom doc type:**
+1. Ask for the doc type name (e.g., "runbook", "test-plan", "release-notes")
+2. Ask for scope: "demand" (one per feature) or "task" (one per task)
+3. Ask if mandatory: always generated, or optional per demand
+4. Generate a starter template in `.tyrex/templates/{name}.md` with:
+   - Title placeholder
+   - Date and project fields ({{DATE}}, {{PROJECT_NAME}})
+   - 3-4 relevant sections based on the name (infer from the doc type name)
+5. Add the entry to `tyrex.yml` docs.custom array
+6. Confirm: "Custom doc type '{name}' added. It will appear in /tyrex-new documentation bundle."
+
+**Removing a custom doc type:**
+1. List current custom doc types
+2. Ask which to remove
+3. Remove from `tyrex.yml` docs.custom array
+4. Ask: "Also delete the template file? [y/N]"
+
 ## Rules
 - `changelog: always` is LOCKED and cannot be changed
 - `docs.changelog: true` is LOCKED and cannot be changed
 - `docs.spec: true` is LOCKED and cannot be changed — SPECs are mandatory per task
 - Warn the user if they try to disable TDD or security scan (but allow it)
 - Changes apply from the next demand onward
+- Custom doc type names must be lowercase-hyphenated (e.g., "test-plan", not "Test Plan")
+- Custom templates are stored in `.tyrex/templates/` — do NOT overwrite built-in templates in `templates/`
+- Diagrams use D2 language (d2lang.com) — not Mermaid
