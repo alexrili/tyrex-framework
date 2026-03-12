@@ -1,0 +1,15 @@
+task_id: "feat-005-task-004"
+feature: "005-global-only-install"
+name: "Update commands, CHANGELOG, TYREX.md, sync"
+status: "completed"
+depends_on: ["feat-005-task-002", "feat-005-task-003"]
+unlocks: []
+parallel: false
+spec_file: "docs/specs/005-task-004-commands-docs.md"
+started_at: "2026-03-12T11:25:00Z"
+finished_at: "2026-03-12T11:35:00Z"
+agent: null
+commit: null
+files_changed: ["templates/commands/unified/tyrex-init.md", "templates/commands/unified/tyrex-help.md", "docs/CHANGELOG.md", ".tyrex/TYREX.md"]
+output: "Updated commands, CHANGELOG with v0.4.0, TYREX.md with ADR-005, synced to all agent dirs"
+errors: null
