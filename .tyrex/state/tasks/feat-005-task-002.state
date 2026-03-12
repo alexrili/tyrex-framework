@@ -1,0 +1,15 @@
+task_id: "feat-005-task-002"
+feature: "005-global-only-install"
+name: "Full symlink logic in init"
+status: "completed"
+depends_on: ["feat-005-task-001"]
+unlocks: ["feat-005-task-004"]
+parallel: true
+spec_file: "docs/specs/005-task-002-symlink-logic.md"
+started_at: "2026-03-12T11:00:00Z"
+finished_at: "2026-03-12T11:15:00Z"
+agent: null
+commit: "d52ae8e"
+files_changed: ["bin/tyrex.js"]
+output: "Symlink logic implemented as part of Task 1 — createDirSymlink(), detectGlobalAgents(), initProject() with full symlink support"
+errors: null

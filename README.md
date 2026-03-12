@@ -44,28 +44,25 @@ You (human)          AI Agent              Tyrex
 
 ## Quick Start
 
-### 1. Install
-
-**Option A – npx (recommended)**
+### 1. Install globally (once)
 
 ```bash
-# In your project directory
-npx tyrex-framework
+npm install -g tyrex-framework
+tyrex --all
 ```
 
-**Option B – npm Git/HTTP install (no registry release needed)**
+This installs slash commands and templates to your home directory (`~/`). You only do this once.
+
+### 2. Initialize each project
 
 ```bash
-npm install git+https://github.com/tyrex-framework/tyrex.git
-npx tyrex-framework
+cd your-project
+tyrex init
 ```
 
-The interactive installer asks:
-1. Which AI agent? (Claude Code, OpenCode, Cursor, Codex, or all)
-2. Local or global install?
-3. Configuration (commit mode, branch mode, documentation level)
+This creates the `.tyrex/` and `docs/` structure in your project. It auto-detects which agents you installed and creates symlinks for agents that need project-local files (Cursor, Codex). Templates are symlinked to the global install — when you update Tyrex, all projects get the latest templates automatically.
 
-### 2. Initialize
+### 3. Map your codebase
 
 Open your AI agent and run:
 
@@ -77,7 +74,7 @@ This maps your codebase, detects your stack, runs a security audit, and generate
 
 For **new/empty projects**, Tyrex creates a minimal structure and suggests `/tyrex-discuss` to brainstorm before building.
 
-### 3. Start building
+### 4. Start building
 
 ```
 /tyrex-discuss    # Explore the project or brainstorm architecture
@@ -251,23 +248,37 @@ Custom doc types appear in `/tyrex-new` alongside built-in ones.
 
 ## Supported Agents
 
-| Agent | Commands Directory | Rules File |
-|-------|-------------------|------------|
-| Claude Code | `.claude/commands/` | `CLAUDE.md` |
-| OpenCode | `.opencode/commands/` | `AGENTS.md` |
-| Cursor | `.cursor/rules/tyrex/` | `CLAUDE.md` |
-| Codex | `.codex/skills/tyrex/` | `CLAUDE.md` |
+| Agent | Global Commands | Project Symlink | Rules File |
+|-------|----------------|-----------------|------------|
+| Claude Code | `~/.claude/commands/` | Not needed (reads global) | `CLAUDE.md` |
+| OpenCode | `~/.opencode/commands/` | Not needed (reads global) | `AGENTS.md` |
+| Cursor | `~/.cursor/rules/tyrex/` | `.cursor/rules/tyrex/` → global | `CLAUDE.md` |
+| Codex | `~/.codex/skills/tyrex/` | `.codex/skills/tyrex/` → global | `CLAUDE.md` |
 
-All agents receive the same 18 command definitions from a single source of truth (`templates/commands/unified/`).
+All agents receive the same 18 command definitions from a single source of truth. Commands are installed globally and symlinked into projects for agents that require project-local files.
 
 ## Project Structure
 
-After installation, your project gets:
+### Global (`~/`) — installed once via `tyrex`
+
+```
+~/
+  .tyrex/
+    templates/           # Shared document templates (SPEC, SRS, PRD, ADR, etc.)
+    config-templates/    # Core config templates for `tyrex init`
+    rules/               # Rules file templates (CLAUDE.md, AGENTS.md)
+  .claude/commands/      # Slash commands for Claude Code
+  .opencode/commands/    # Slash commands for OpenCode
+  .cursor/rules/tyrex/   # Slash commands for Cursor
+  .codex/skills/tyrex/   # Slash commands for Codex
+```
+
+### Per project — created via `tyrex init`
 
 ```
 your-project/
   .tyrex/
-    tyrex.yml            # Configuration
+    tyrex.yml            # Configuration (project-specific)
     TYREX.md             # Living project context
     constitution.md      # Inviolable guardrails
     roadmap.yml          # Feature roadmap and backlog
@@ -277,8 +288,11 @@ your-project/
     features/            # Feature specs
     skills/              # Reusable AI personas
     context/             # Project context files
-    templates/           # Document templates (SPEC, SRS, PRD, ADR, etc.)
+    templates/ -> ~/.tyrex/templates/   # Symlink to global templates
     map/                 # Codebase analysis results
+  .cursor/rules/tyrex/ -> ~/.cursor/rules/tyrex/   # Symlink (if Cursor installed)
+  .codex/skills/tyrex/ -> ~/.codex/skills/tyrex/    # Symlink (if Codex installed)
+  CLAUDE.md              # Rules file (copied, customizable per project)
   docs/
     CHANGELOG.md         # Mandatory changelog
     adrs/                # Architecture Decision Records
@@ -290,30 +304,32 @@ your-project/
     diagrams/            # Flow diagrams
 ```
 
-## CLI Options
+## CLI
 
 ```bash
-npx tyrex-framework                          # Interactive setup
-npx tyrex-framework --claude --local         # Claude Code, current project
-npx tyrex-framework --all --local            # All agents, current project
-npx tyrex-framework --all --local -d         # All agents, default config
-npx tyrex-framework --all --global           # All agents, home directory
-npx tyrex-framework --uninstall --claude     # Remove Claude commands
-npx tyrex-framework --force                  # Re-install, overwrite core files
+tyrex                              # Interactive global setup
+tyrex --all                        # Global install for all agents
+tyrex --claude                     # Global install for Claude Code only
+tyrex init                         # Initialize current project
+tyrex init -d                      # Init with default configuration
+tyrex init -f                      # Re-init, overwrite core files
+tyrex --uninstall --all            # Remove global installation
 ```
 
-| Flag | Description |
-|------|-------------|
+| Command / Flag | Description |
+|----------------|-------------|
+| `tyrex` | Global install (interactive) |
+| `tyrex init` | Initialize project (creates `.tyrex/`, `docs/`, symlinks) |
+| `tyrex help` | Show help |
+| `tyrex version` | Show version |
 | `--claude` | Install for Claude Code |
 | `--opencode` | Install for OpenCode |
 | `--cursor` | Install for Cursor |
 | `--codex` | Install for Codex |
 | `--all` | Install for all agents |
-| `--local`, `-l` | Install in current directory |
-| `--global`, `-g` | Install in home directory |
 | `--defaults`, `-d` | Skip config questions, use defaults |
-| `--force`, `-f` | Overwrite core files on re-install |
-| `--uninstall` | Remove agent commands |
+| `--force`, `-f` | Overwrite core files on re-install/re-init |
+| `--uninstall` | Remove global Tyrex installation |
 
 ## Core Rules
 

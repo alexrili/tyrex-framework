@@ -1,0 +1,15 @@
+task_id: "feat-005-task-003"
+feature: "005-global-only-install"
+name: "Update README"
+status: "completed"
+depends_on: ["feat-005-task-001"]
+unlocks: ["feat-005-task-004"]
+parallel: true
+spec_file: "docs/specs/005-task-003-readme-help.md"
+started_at: "2026-03-12T11:15:00Z"
+finished_at: "2026-03-12T11:25:00Z"
+agent: null
+commit: null
+files_changed: ["README.md"]
+output: "README updated: global-only install flow, symlink docs, new CLI section, updated project structure"
+errors: null
