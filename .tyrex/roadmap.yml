@@ -35,7 +35,7 @@ features:
   - id: "004"
     name: "documentation-system"
     description: "Documentation System — D2 diagrams, complete templates, customizable doc layers"
-    status: in_progress
+    status: done
     referenced_in: ["ADR-004"]
     depends_on: []
 

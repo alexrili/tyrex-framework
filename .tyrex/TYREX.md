@@ -56,7 +56,9 @@ bin/tyrex.js (~427 lines, single-file CLI)
 - **Agent-agnostic commands:** One set of command definitions in `templates/commands/unified/` is copied to all agent directories
 - **Self-hosted:** Tyrex uses itself (`.tyrex/` exists in the repo)
 - **Naming:** files=lowercase-hyphenated, JS constants=UPPER_SNAKE_CASE, JS functions=camelCase
-- **Documentation layers:** SPEC (mandatory per task), SRS, PRD (suggested per demand), context ingestion at project and demand levels
+- **Documentation layers:** SPEC (mandatory per task), SRS, PRD, ADR, RFC (suggested per demand), D2 diagrams (always offered), context ingestion at project and demand levels. Custom doc types supported via `tyrex.yml docs.custom` array.
+- **D2 diagrams:** Diagrams use D2 language (d2lang.com) with 4 template types: architecture, sequence, data-flow, ER. Templates in `templates/diagrams/`. Always offered during `/tyrex-new`. (ADR-004)
+- **Custom doc layers:** Users can add custom documentation types via `/tyrex-settings`. Each custom doc type has: name, template path, scope (demand/task), mandatory flag. Templates stored in `.tyrex/templates/`.
 - **Skills as personas:** Skills in `.tyrex/skills/` are markdown persona files (Role, Expertise, Guidelines, Patterns, Review Criteria). Auto-suggested during `/tyrex-new`, assigned to tasks during `/tyrex-plan`, loaded as context during `/tyrex-do`
 - **Built-in DevSec skill:** `templates/skills/devsec.md` is a built-in security skill template. Auto-suggested when security-sensitive areas are detected during `/tyrex-new` and `/tyrex-plan`. Copied to `.tyrex/skills/devsec.md` on creation.
 - **Sync after every command update:** When updating commands in `templates/commands/unified/`, ALWAYS re-sync to all 4 agent directories as the LAST step — updates made after sync will be missed
@@ -116,6 +118,9 @@ bin/tyrex.js (~427 lines, single-file CLI)
 | 2026-03-10 | Quick = unified new+plan+do              | `/tyrex-quick` redesigned as fast-track pipeline. Same quality, fewer steps. `--auto-approve` for full autopilot |
 | 2026-03-10 | Handoff deprecated                       | Replaced by `/tyrex-quick --auto-approve`. One command for same behavior, cleaner mental model |
 | 2026-03-10 | Built-in DevSec skill template           | `templates/skills/devsec.md` ships with framework. Auto-suggested when security areas detected. OWASP/SANS coverage |
+| 2026-03-12 | D2 diagrams replace Mermaid (ADR-004)     | D2 language for all diagrams. 4 template types (architecture, sequence, data-flow, ER). Always offered during `/tyrex-new` |
+| 2026-03-12 | Custom documentation layers (ADR-004)    | `tyrex.yml docs.custom` array for user-defined doc types. Managed via `/tyrex-settings`. Templates in `.tyrex/templates/` |
+| 2026-03-12 | Production-ready doc templates (ADR-004) | All built-in templates (SPEC, SRS, PRD, ADR, RFC) rewritten with complete sections, guidance, and examples |
 
 ## CI/CD
 
