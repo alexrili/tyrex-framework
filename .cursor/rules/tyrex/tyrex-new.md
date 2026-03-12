@@ -127,7 +127,7 @@ Documentation bundle for this demand:
   [ ] ADR — Architecture Decision Record
   [ ] RFC — Technical proposal
   [ ] Wiki update
-  [ ] Flow diagram
+  [ ] Diagram (D2) — architecture, sequence, data-flow, or ER
 
 Defaults from tyrex.yml are pre-selected. Modify as needed.
 ```
@@ -150,7 +150,12 @@ Generate documentation BEFORE any code, in this order:
 2. **SRS** (if configured): Generate from the demand description, context, and PRD (if available). Save to `docs/srs/NNN-feature-name.md`. Present for review.
 3. **ADR** (if configured): Create in `docs/adrs/`. Present for review.
 4. **RFC** (if configured): Create in `docs/rfcs/`. Present for review.
-5. **Diagrams** (if configured): Create in `docs/diagrams/`. Present for review.
+5. **Diagrams** (always offered, even if not pre-configured): After generating other docs, ask:
+   "Want to create a diagram to visualize this demand?"
+   If yes, ask which type: architecture, sequence, data-flow, or ER.
+   Generate using D2 language (d2lang.com) with `templates/diagrams/*.d2` as base.
+   Save the D2 file to `docs/diagrams/NNN-feature-name-[type].d2` and the wrapper to `docs/diagrams/NNN-feature-name-[type].md`.
+   Present for review. Render instructions: `d2 input.d2 output.svg`.
 
 Present quiz for doc approval:
 ```

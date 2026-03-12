@@ -14,14 +14,39 @@ mode:
 
 # Documentation defaults for new demands (/tyrex-new)
 docs:
+  # Built-in doc types (shipped with Tyrex)
   spec: true                        # LOCKED - always true (technical specification per task)
   srs: true                         # Software Requirements Specification per demand
   prd: true                         # Product Requirements Document per demand
-  adr: true
-  rfc: false
-  wiki: true
-  diagrams: true
-  changelog: true                    # LOCKED - always true
+  adr: true                         # Architecture Decision Records
+  rfc: false                        # Technical proposals
+  wiki: true                        # Project wiki pages
+  diagrams: true                    # D2 diagrams (d2lang.com) — architecture, sequence, data-flow, ER
+  changelog: true                   # LOCKED - always true
+
+  # Custom doc types — add your own documentation layers
+  # Each entry defines a doc type that appears in /tyrex-new and /tyrex-settings
+  # Fields:
+  #   name:      Display name (used in menus and file naming)
+  #   template:  Path to the markdown template (relative to project root)
+  #   scope:     "demand" (one per feature) or "task" (one per task)
+  #   mandatory: true = always generated, false = optional per demand
+  #
+  # Example:
+  # custom:
+  #   - name: "runbook"
+  #     template: ".tyrex/templates/runbook.md"
+  #     scope: "demand"
+  #     mandatory: false
+  #   - name: "test-plan"
+  #     template: ".tyrex/templates/test-plan.md"
+  #     scope: "demand"
+  #     mandatory: true
+  #   - name: "release-notes"
+  #     template: ".tyrex/templates/release-notes.md"
+  #     scope: "demand"
+  #     mandatory: false
+  custom: []
 
 # Quality guardrails
 quality:

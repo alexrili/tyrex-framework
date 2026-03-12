@@ -1,0 +1,64 @@
+# Architecture Diagram — [FEATURE/SYSTEM NAME]
+# Render: d2 architecture.d2 architecture.svg
+#
+# Shows system components, their layers, and connections.
+# Customize: replace placeholder names, add/remove components as needed.
+
+direction: right
+
+# ── Layers ──────────────────────────────────────────
+
+clients: "Clients" {
+  style.fill: "#e8f4fd"
+
+  web: "Web App"
+  mobile: "Mobile App"
+  cli: "CLI"
+}
+
+api: "API Layer" {
+  style.fill: "#fff3e0"
+
+  gateway: "API Gateway"
+  auth: "Auth Service"
+  core: "Core Service"
+}
+
+data: "Data Layer" {
+  style.fill: "#e8f5e9"
+
+  db: "Database" {
+    shape: cylinder
+  }
+  cache: "Cache" {
+    shape: cylinder
+  }
+  queue: "Message Queue" {
+    shape: queue
+  }
+}
+
+external: "External Services" {
+  style.fill: "#fce4ec"
+
+  email: "Email Provider"
+  storage: "Object Storage"
+  monitoring: "Monitoring"
+}
+
+# ── Connections ─────────────────────────────────────
+
+clients.web -> api.gateway: "HTTPS"
+clients.mobile -> api.gateway: "HTTPS"
+clients.cli -> api.gateway: "HTTPS"
+
+api.gateway -> api.auth: "verify token"
+api.gateway -> api.core: "route request"
+
+api.core -> data.db: "read/write"
+api.core -> data.cache: "lookup"
+api.core -> data.queue: "publish events"
+
+data.queue -> external.email: "send notifications"
+api.core -> external.storage: "upload/download"
+api.core -> external.monitoring: "metrics & logs"

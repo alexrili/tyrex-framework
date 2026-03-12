@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-03-12
+
+### Added
+- D2 diagram templates: architecture, sequence, data-flow, ER (templates/diagrams/)
+- Diagram markdown wrapper template (templates/diagram.md)
+
+### Changed
+- SPEC template: added acceptance criteria, rollback plan, improved guidance
+- SRS template: added system context, data requirements, interface requirements, acceptance testing
+- PRD template: added competitive landscape, risks, launch criteria, timeline
+- ADR template: added participants, related ADRs, positive/negative consequences
+- RFC template: added implementation plan, rollout strategy, security considerations, metrics
+- `/tyrex-new`: diagrams always offered (not just when pre-configured), uses D2 with type selection
+- `/tyrex-readme`: replaced Mermaid with D2 diagrams
+- `/tyrex-wiki`: replaced Mermaid with D2 diagrams
+- `/tyrex-review`: diagram check specifies D2 format
+- `tyrex.yml`: added `docs.custom` array for user-defined documentation layers
+- `/tyrex-settings`: dedicated documentation management section with add/remove custom doc types
+- README: added D2 diagrams, customizable documentation, and updated documentation layers table
+
 ## [0.2.1] - 2026-03-12
 
 ### Changed

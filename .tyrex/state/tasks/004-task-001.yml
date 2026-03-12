@@ -1,0 +1,15 @@
+task_id: "feat-004-task-001"
+feature: "004-documentation-system"
+name: "Rewrite core doc templates (SPEC, SRS, PRD, ADR, RFC)"
+status: "completed"
+depends_on: []
+unlocks: ["feat-004-task-003", "feat-004-task-004"]
+parallel: true
+spec_file: "docs/specs/004-task-001-rewrite-doc-templates.md"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: []
+output: null
+errors: null

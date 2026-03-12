@@ -45,9 +45,8 @@ What this project does, who it's for, key features (3-5 bullet points).
 
 ## Architecture
 
-```mermaid
-graph TD
-    ...
+```d2
+# System architecture — see templates/diagrams/architecture.d2
 ```
 
 Brief explanation of the architecture.
@@ -146,7 +145,7 @@ Update CHANGELOG.md with the README change.
 Handle commit based on configured mode (auto/approve).
 
 ## Rules
-- Mermaid diagrams are REQUIRED for architecture section
+- D2 diagrams are REQUIRED for architecture section (d2lang.com). Use templates/diagrams/architecture.d2 as base
 - Quick Start steps MUST be copy-pasteable and actually work
 - Do NOT invent features or capabilities — only document what exists
 - If the project has an API, mention it and link to `/tyrex-openapi` output if available

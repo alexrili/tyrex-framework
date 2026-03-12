@@ -217,7 +217,37 @@ A security engineering skill (`devsec`) ships with the framework. It's auto-sugg
 | **SRS** | Per feature | Generated during `/tyrex-new` (suggested) |
 | **PRD** | Per feature | Provided or generated during `/tyrex-new` (suggested) |
 | **ADR** | Per decision | Generated when architecture choices arise |
+| **RFC** | Per proposal | Generated for complex technical proposals |
+| **Diagram** | Per feature | D2 diagrams (d2lang.com) — always offered during `/tyrex-new` |
 | **Context** | Project or feature | Ingested via `/tyrex-context` at any time |
+| **Custom** | Configurable | User-defined doc types via `/tyrex-settings` |
+
+### Diagrams with D2
+
+Tyrex uses [D2](https://d2lang.com) for diagrams. Four templates ship with the framework:
+
+- **Architecture** — system components, layers, and connections
+- **Sequence** — interaction flow between actors and components
+- **Data Flow** — data transformation pipeline
+- **ER** — entity-relationship model
+
+Diagrams are always offered during `/tyrex-new` to help visualize the proposed solution. Render with: `d2 input.d2 output.svg`.
+
+### Customizable Documentation
+
+Every company has its own documentation workflow. Tyrex ships with a standard set (SPEC, SRS, PRD, ADR, RFC, diagrams) but lets you add custom doc types via `/tyrex-settings`:
+
+```yaml
+# tyrex.yml
+docs:
+  custom:
+    - name: "runbook"
+      template: ".tyrex/templates/runbook.md"
+      scope: "demand"
+      mandatory: false
+```
+
+Custom doc types appear in `/tyrex-new` alongside built-in ones.
 
 ## Supported Agents
 

@@ -1,0 +1,35 @@
+# Sequence Diagram — [FEATURE/FLOW NAME]
+# Render: d2 sequence.d2 sequence.svg
+#
+# Shows the interaction flow between actors and components.
+# Customize: replace actors, messages, and steps as needed.
+
+shape: sequence_diagram
+
+# ── Actors ──────────────────────────────────────────
+
+user: "User"
+frontend: "Frontend"
+api: "API Server"
+auth: "Auth Service"
+db: "Database" {
+  shape: cylinder
+}
+
+# ── Flow ────────────────────────────────────────────
+
+user -> frontend: "1. Submit action"
+frontend -> api: "2. POST /resource"
+api -> auth: "3. Validate token"
+auth -> api: "4. Token valid"
+api -> db: "5. Query/mutate data"
+db -> api: "6. Result"
+api -> frontend: "7. 200 OK + payload"
+frontend -> user: "8. Show result"
+
+# ── Error path (optional) ──────────────────────────
+
+# api -> auth: "3b. Validate token"
+# auth -> api: "4b. Token expired"
+# api -> frontend: "5b. 401 Unauthorized"
+# frontend -> user: "6b. Redirect to login"

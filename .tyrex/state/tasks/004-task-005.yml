@@ -1,0 +1,15 @@
+task_id: "feat-004-task-005"
+feature: "004-documentation-system"
+name: "Re-sync to agent directories"
+status: "completed"
+depends_on: ["feat-004-task-003", "feat-004-task-004"]
+unlocks: ["feat-004-task-006"]
+parallel: false
+spec_file: "docs/specs/004-task-005-resync-agents.md"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: []
+output: null
+errors: null

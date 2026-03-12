@@ -33,13 +33,20 @@ features:
     depends_on: []
 
   - id: "004"
+    name: "documentation-system"
+    description: "Documentation System — D2 diagrams, complete templates, customizable doc layers"
+    status: done
+    referenced_in: ["ADR-004"]
+    depends_on: []
+
+  - id: "006"
     name: "review-knowledge-base"
     description: "Skill evolution via /tyrex-review — knowledge base enrichment"
     status: planned
     referenced_in: ["002-skills-system", "ADR-002"]
     depends_on: ["002"]
 
-  - id: "005"
+  - id: "007"
     name: "research-command"
     description: "/tyrex-research — AI-powered technical research"
     status: planned
