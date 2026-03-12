@@ -21,9 +21,9 @@ If `--do-all` or `--do-critical` flags are used and changes are approved, the co
 
 Flags can be combined: `/tyrex-review --do-all`, `/tyrex-review full --do-critical`
 
-## Interactive Quiz Rule
+## Adaptive Decision Format
 
-**ALL decisions in this command MUST use the interactive quiz format** (multiple-choice selection). Never ask open-ended questions when a quiz can be used. This includes: approval decisions, scope selection, change requests, and any other decision point.
+**ALL decisions in this command MUST use structured choices** adapted to the agent's interface. CLI agents (Claude Code, OpenCode): numbered quiz where the user types a number. Chat-based agents (Cursor, Codex): numbered list or direct question where the user responds naturally. Never ask open-ended questions when structured choices are possible. This includes: approval decisions, scope selection, change requests, and any other decision point.
 
 ## The 4 Review Lenses
 
@@ -203,12 +203,12 @@ TYREX.md: [updated with N new entries / no updates needed]
 Total findings: [N] (CRITICAL: [n], HIGH: [n], MEDIUM: [n], LOW: [n])
 ```
 
-### Step 7: Decision — interactive quiz
+### Step 7: Decision — structured choices
 
-**If `--do-all` flag:** skip quiz, automatically create tasks for ALL findings → go to Step 8.
-**If `--do-critical` flag:** skip quiz, automatically create tasks for CRITICAL and HIGH findings → go to Step 8.
+**If `--do-all` flag:** skip choices, automatically create tasks for ALL findings → go to Step 8.
+**If `--do-critical` flag:** skip choices, automatically create tasks for CRITICAL and HIGH findings → go to Step 8.
 
-**Otherwise, present interactive quiz:**
+**Otherwise, present structured choices:**
 ```
 What would you like to do?
 
@@ -281,7 +281,7 @@ When changes are requested (via flag or quiz), this command automatically enters
 
 ## Important Rules
 - ALWAYS check CHANGELOG.md is updated — it's mandatory
-- ALWAYS use interactive quiz for ALL decisions — never open-ended questions
+- ALWAYS use structured choices for ALL decisions — never open-ended questions when choices are possible
 - ALWAYS apply all 4 review lenses — never skip any
 - ALWAYS use senior engineer persona for the project's tech stack
 - The review phase is where documentation gets FINALIZED, not skipped

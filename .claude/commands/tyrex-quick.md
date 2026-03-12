@@ -18,9 +18,9 @@ Update `agent_mode` in `cursor.yml` at each transition.
 - **`/tyrex-quick`** (default) — Interactive fast-track with quiz checkpoints for key decisions
 - **`/tyrex-quick --auto-approve`** — Full autopilot: captures the prompt, makes smart defaults for all decisions, and executes everything. Only stops on failures after 3 retries.
 
-## Interactive Quiz Rule
+## Adaptive Decision Format
 
-**ALL decisions in this command MUST use the interactive quiz format** (multiple-choice selection). Never ask open-ended questions when a quiz can be used. This is the standard for every interaction point.
+**ALL decisions in this command MUST use structured choices** adapted to the agent's interface. CLI agents (Claude Code, OpenCode): numbered quiz where the user types a number. Chat-based agents (Cursor, Codex): numbered list or direct question where the user responds naturally. Never ask open-ended questions when structured choices are possible. This is the standard for every interaction point.
 
 ## Behavior
 
@@ -30,7 +30,7 @@ Ask: "What do you need done?"
 
 Listen to the user's description. This is the starting point.
 
-**Clarification phase:** If the description is ambiguous or missing critical details, ask clarification questions **via interactive quiz** where possible. Examples:
+**Clarification phase:** If the description is ambiguous or missing critical details, ask clarification questions **using structured choices** where possible. Examples:
 ```
 What's the scope of this change?
   [ ] Single file fix
@@ -187,7 +187,7 @@ This seems complex for a quick task.
 - SPEC is still mandatory (per task, even if compact)
 - Security checks are still mandatory
 - ALWAYS create a separate branch (never work on main/master)
-- ALWAYS use interactive quiz for ALL decisions
+- ALWAYS use structured choices for ALL decisions — adapt format to agent interface
 - `--auto-approve` is full autopilot: prompt → implementation with zero human interaction (except on failures)
 - If the task grows beyond quick-track scope, suggest escalating to the full workflow
 - This replaces the old "quick = no docs" approach. Quick now means "same quality, fewer steps"

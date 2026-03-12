@@ -34,7 +34,7 @@ TYREX Help
 
   Core Workflow:
     /tyrex-init       Initialize Tyrex in a project (map codebase, configure)
-    /tyrex-new        Start a new feature/demand (interactive quiz)
+    /tyrex-new        Start a new feature/demand (structured choices)
     /tyrex-plan       Plan tasks with security-first approach
     /tyrex-do         Execute tasks [--auto-approve]
     /tyrex-review     Senior code review with 4 lenses [--do-all | --do-critical] [full]
@@ -183,7 +183,7 @@ Use the reference below for each command:
 - Next: `/tyrex-new` (to act on what was discussed) or `/tyrex-evolve` (to record decisions)
 
 **new:**
-- What: Starts a new feature/demand. All decisions are made via interactive quizzes. Checks the roadmap, captures requirements, analyzes required skills (including DevSec), configures docs/git, generates feature spec, and updates TYREX.md.
+- What: Starts a new feature/demand. All decisions use structured choices adapted to the agent's interface. Checks the roadmap, captures requirements, analyzes required skills (including DevSec), configures docs/git, generates feature spec, and updates TYREX.md.
 - Flags: None
 - When: You have something to build and want to go through the full workflow.
 - Steps: Check roadmap (quiz) → Describe demand → Clarification (quiz) → Context ingestion (quiz) → Skill analysis with DevSec check (quiz) → Config docs/git (quiz) → Generate docs first → Create feature spec → Create branch → Update TYREX.md

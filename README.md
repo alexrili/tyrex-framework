@@ -188,9 +188,9 @@ Skills are auto-suggested during `/tyrex-new` and loaded during `/tyrex-do` for 
 
 Use `--do-all` or `--do-critical` to auto-create fix tasks from review findings.
 
-### Interactive Quiz UX
+### Adaptive Decision Format
 
-All user decisions across all commands use interactive quiz format (multiple-choice selection). This ensures consistent UX and reduces cognitive load — no open-ended questions when a quiz can be used.
+All user decisions across all commands use structured choices adapted to the agent's interface. CLI agents (Claude Code, OpenCode) present numbered quizzes; chat-based agents (Cursor, Codex) use numbered lists or direct questions. The goal is structured choices over open-ended questions — the format adapts, the discipline stays.
 
 ### Built-in DevSec Skill
 

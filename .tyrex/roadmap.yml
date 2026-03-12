@@ -25,6 +25,13 @@ features:
     referenced_in: ["002-skills-system"]
     depends_on: ["002"]
 
+  - id: "003"
+    name: "adaptive-decision-format"
+    description: "Adaptive decision format — structured choices that work across CLI and chat agents"
+    status: done
+    referenced_in: ["ADR-003"]
+    depends_on: []
+
   - id: "004"
     name: "review-knowledge-base"
     description: "Skill evolution via /tyrex-review — knowledge base enrichment"

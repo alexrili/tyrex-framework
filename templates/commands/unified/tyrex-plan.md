@@ -11,9 +11,9 @@ You are the Tyrex Framework orchestrator. The user wants to plan the implementat
 This command runs in **plan** mode. Set `agent_mode: "plan"` in `cursor.yml` as the FIRST action.
 You MUST NOT write source code. You may create/modify only `.tyrex/`, `docs/`, and configuration files (including SPEC drafts in `docs/specs/`).
 
-## Interactive Quiz Rule
+## Adaptive Decision Format
 
-**ALL decisions in this command MUST use the interactive quiz format** (multiple-choice selection). Never ask open-ended questions when a quiz can be used. This applies to: task approval, parallelism decisions, skill assignments, and any other decision point.
+**ALL decisions in this command MUST use structured choices** adapted to the agent's interface. CLI agents (Claude Code, OpenCode): numbered quiz where the user types a number. Chat-based agents (Cursor, Codex): numbered list or direct question where the user responds naturally. Never ask open-ended questions when structured choices are possible. This applies to: task approval, parallelism decisions, skill assignments, and any other decision point.
 
 ## Behavior
 
@@ -152,8 +152,8 @@ Wave 3:                   └── [Task 4: Security]
 Wave 4:                      [Task 5: Tests] ──
 ```
 
-### Step 5: Human approval (interactive quiz)
-Present the plan — including task list, execution graph, security considerations, and SPEC drafts — and ask via quiz:
+### Step 5: Human approval (structured choices)
+Present the plan — including task list, execution graph, security considerations, and SPEC drafts — and ask with structured choices:
 
 ```
 Plan Review:
@@ -203,7 +203,7 @@ Tell the user: "Plan approved. Run /tyrex-do to start implementation."
 - NEVER propose more than 15 tasks for a single feature (break into multiple features if needed)
 - NEVER start implementing during the plan phase
 - The plan section in the feature spec should stay under 50 lines
-- ALWAYS use interactive quiz for ALL decisions — never open-ended questions
+- ALWAYS use structured choices for ALL decisions — never open-ended questions when choices are possible
 - ALWAYS perform security-first analysis before proposing tasks
 - ALWAYS suggest DevSec skill if security areas are detected and no skill exists
 - Always identify what can be parallelized — this is a core Tyrex differentiator
