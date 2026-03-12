@@ -1,7 +1,7 @@
 task_id: "feat-004-task-005"
 feature: "004-documentation-system"
 name: "Re-sync to agent directories"
-status: "pending"
+status: "completed"
 depends_on: ["feat-004-task-003", "feat-004-task-004"]
 unlocks: ["feat-004-task-006"]
 parallel: false

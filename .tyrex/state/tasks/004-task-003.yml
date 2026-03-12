@@ -1,7 +1,7 @@
 task_id: "feat-004-task-003"
 feature: "004-documentation-system"
 name: "Update commands to use D2 and offer diagrams"
-status: "pending"
+status: "completed"
 depends_on: ["feat-004-task-001", "feat-004-task-002"]
 unlocks: ["feat-004-task-005"]
 parallel: true
