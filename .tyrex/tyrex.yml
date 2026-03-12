@@ -17,11 +17,12 @@ docs:
   spec: true                        # LOCKED - always true (technical specification per task)
   srs: true                         # Software Requirements Specification per demand
   prd: true                         # Product Requirements Document per demand
-  adr: true
-  rfc: false
-  wiki: true
-  diagrams: true
-  changelog: true                    # LOCKED - always true
+  adr: true                         # Architecture Decision Records
+  rfc: false                        # Technical proposals
+  wiki: true                        # Project wiki pages
+  diagrams: true                    # D2 diagrams (d2lang.com)
+  changelog: true                   # LOCKED - always true
+  custom: []                        # Custom doc types — configure via /tyrex-settings
 
 # Quality guardrails
 quality:
