@@ -42,7 +42,7 @@ features:
   - id: "005"
     name: "global-only-install"
     description: "Global-only installation with symlinks — eliminate local/global duplication"
-    status: in_progress
+    status: done
     referenced_in: ["ADR-005"]
     depends_on: []
 

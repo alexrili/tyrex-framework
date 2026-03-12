@@ -33,4 +33,4 @@ Eliminate local/global install choice. Installation becomes global-only with sym
 4. Update commands, CHANGELOG, TYREX.md, sync [small, optional, depends: 2,3]
 
 ## Status
-planned
+done
