@@ -28,7 +28,7 @@ features:
   - id: "003"
     name: "adaptive-decision-format"
     description: "Adaptive decision format — structured choices that work across CLI and chat agents"
-    status: in_progress
+    status: done
     referenced_in: ["ADR-003"]
     depends_on: []
 
