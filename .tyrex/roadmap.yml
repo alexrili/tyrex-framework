@@ -39,6 +39,13 @@ features:
     referenced_in: ["ADR-004"]
     depends_on: []
 
+  - id: "005"
+    name: "global-only-install"
+    description: "Global-only installation with symlinks — eliminate local/global duplication"
+    status: in_progress
+    referenced_in: ["ADR-005"]
+    depends_on: []
+
   - id: "006"
     name: "review-knowledge-base"
     description: "Skill evolution via /tyrex-review — knowledge base enrichment"

@@ -2,11 +2,14 @@
 
 const fs = require("fs");
 const path = require("path");
+const os = require("os");
 const readline = require("readline");
 
 // ─── Constants ───────────────────────────────────────────────
-const VERSION = "0.1.1";
+const VERSION = "0.4.0";
 const TEMPLATES_DIR = path.join(__dirname, "..", "templates");
+const HOME_DIR = os.homedir();
+const GLOBAL_TYREX_DIR = path.join(HOME_DIR, ".tyrex");
 
 const AGENTS = {
   claude: {
@@ -15,7 +18,7 @@ const AGENTS = {
     commandsSrc: "commands/unified",
     rulesFile: "CLAUDE.md",
     rulesTemplate: "CLAUDE.md",
-    settingsFile: ".claude/settings.json",
+    needsProjectSymlink: false, // reads from ~/ natively
   },
   opencode: {
     name: "OpenCode",
@@ -23,7 +26,7 @@ const AGENTS = {
     commandsSrc: "commands/unified",
     rulesFile: "AGENTS.md",
     rulesTemplate: "AGENTS.md",
-    settingsFile: null,
+    needsProjectSymlink: false, // reads from ~/ natively
   },
   cursor: {
     name: "Cursor",
@@ -31,7 +34,7 @@ const AGENTS = {
     commandsSrc: "commands/unified",
     rulesFile: "CLAUDE.md",
     rulesTemplate: "CLAUDE.md",
-    settingsFile: null,
+    needsProjectSymlink: true, // needs project-local files
   },
   codex: {
     name: "Codex",
@@ -39,7 +42,7 @@ const AGENTS = {
     commandsSrc: "commands/unified",
     rulesFile: "CLAUDE.md",
     rulesTemplate: "CLAUDE.md",
-    settingsFile: null,
+    needsProjectSymlink: true, // needs project-local files
   },
 };
 
@@ -125,11 +128,51 @@ function ensureDir(dirPath) {
   fs.mkdirSync(dirPath, { recursive: true });
 }
 
-// ─── Installation Logic ──────────────────────────────────────
+/**
+ * Create a directory symlink. Handles existing symlinks, regular dirs, and missing targets.
+ * Returns true if symlink was created/updated, false otherwise.
+ */
+function createDirSymlink(target, linkPath) {
+  // Check if target exists
+  if (!fs.existsSync(target)) {
+    console.log(c("yellow", `  Skipped symlink ${path.relative(process.cwd(), linkPath)} (target not found: ${target})`));
+    return false;
+  }
 
-async function installCommands(targetDir, agent) {
+  // Ensure parent directory exists
+  ensureDir(path.dirname(linkPath));
+
+  // Check if linkPath already exists
+  let exists = false;
+  try {
+    const stat = fs.lstatSync(linkPath);
+    exists = true;
+    if (stat.isSymbolicLink()) {
+      const currentTarget = fs.readlinkSync(linkPath);
+      if (currentTarget === target) {
+        console.log(c("dim", `  Symlink already correct: ${path.relative(process.cwd(), linkPath)}`));
+        return true;
+      }
+      // Wrong target — remove and recreate
+      fs.unlinkSync(linkPath);
+    } else if (stat.isDirectory()) {
+      console.log(c("yellow", `  Warning: ${path.relative(process.cwd(), linkPath)} is a regular directory, not replacing with symlink`));
+      return false;
+    }
+  } catch (err) {
+    // lstat throws if path doesn't exist — that's fine
+  }
+
+  fs.symlinkSync(target, linkPath, "dir");
+  console.log(c("green", `  Symlink: ${path.relative(process.cwd(), linkPath)} -> ${target}`));
+  return true;
+}
+
+// ─── Global Installation ─────────────────────────────────────
+
+function installCommandsGlobal(agent) {
   const agentConfig = AGENTS[agent];
-  const commandsTarget = path.join(targetDir, agentConfig.commandsDir);
+  const commandsTarget = path.join(HOME_DIR, agentConfig.commandsDir);
   const commandsSrc = path.join(TEMPLATES_DIR, agentConfig.commandsSrc);
 
   ensureDir(commandsTarget);
@@ -144,32 +187,131 @@ async function installCommands(targetDir, agent) {
     count++;
   }
 
-  console.log(c("green", `  Installed ${count} slash commands to ${agentConfig.commandsDir}/`));
+  console.log(c("green", `  Installed ${count} commands to ~/${agentConfig.commandsDir}/`));
   return count;
 }
 
-function installTyrexStructure(targetDir, config, agents, force = false) {
-  const tyrexDir = path.join(targetDir, ".tyrex");
+function installGlobalTemplates() {
+  const globalTemplatesDir = path.join(GLOBAL_TYREX_DIR, "templates");
+  ensureDir(globalTemplatesDir);
 
-  // Directories
+  // Reference templates — these are used by AI agents as starting points
+  const templates = [
+    "feature.md", "adr.md", "rfc.md", "review-checklist.md",
+    "spec.md", "srs.md", "prd.md", "skill.md", "diagram.md",
+  ];
+
+  for (const tmpl of templates) {
+    const src = path.join(TEMPLATES_DIR, tmpl);
+    const dest = path.join(globalTemplatesDir, tmpl);
+    if (fs.existsSync(src)) {
+      fs.copyFileSync(src, dest);
+    }
+  }
+
+  // D2 diagram templates
+  const diagramsSrc = path.join(TEMPLATES_DIR, "diagrams");
+  if (fs.existsSync(diagramsSrc)) {
+    const diagramsTarget = path.join(globalTemplatesDir, "diagrams");
+    ensureDir(diagramsTarget);
+    const diagramFiles = fs.readdirSync(diagramsSrc);
+    for (const file of diagramFiles) {
+      fs.copyFileSync(
+        path.join(diagramsSrc, file),
+        path.join(diagramsTarget, file)
+      );
+    }
+  }
+
+  // Skills templates
+  const skillsSrc = path.join(TEMPLATES_DIR, "skills");
+  if (fs.existsSync(skillsSrc)) {
+    const skillsTarget = path.join(globalTemplatesDir, "skills");
+    ensureDir(skillsTarget);
+    const skillFiles = fs.readdirSync(skillsSrc);
+    for (const file of skillFiles) {
+      fs.copyFileSync(
+        path.join(skillsSrc, file),
+        path.join(skillsTarget, file)
+      );
+    }
+  }
+
+  console.log(c("green", `  Installed templates to ~/.tyrex/templates/`));
+}
+
+function installGlobalRulesTemplates() {
+  // Store rules templates globally so `tyrex init` can copy them to projects
+  const rulesDir = path.join(GLOBAL_TYREX_DIR, "rules");
+  ensureDir(rulesDir);
+
+  const rulesTemplates = ["CLAUDE.md", "AGENTS.md"];
+  for (const tmpl of rulesTemplates) {
+    const src = path.join(TEMPLATES_DIR, tmpl);
+    const dest = path.join(rulesDir, tmpl);
+    if (fs.existsSync(src)) {
+      fs.copyFileSync(src, dest);
+    }
+  }
+
+  // Store core config templates globally for `tyrex init`
+  const configTemplates = [
+    "tyrex.yml", "TYREX.md", "constitution.md", "cursor.yml",
+    "roadmap.yml", "CHANGELOG.md",
+  ];
+  const configDir = path.join(GLOBAL_TYREX_DIR, "config-templates");
+  ensureDir(configDir);
+
+  for (const tmpl of configTemplates) {
+    const src = path.join(TEMPLATES_DIR, tmpl);
+    const dest = path.join(configDir, tmpl);
+    if (fs.existsSync(src)) {
+      fs.copyFileSync(src, dest);
+    }
+  }
+}
+
+// ─── Project Initialization ─────────────────────────────────
+
+function detectGlobalAgents() {
+  const detected = [];
+  for (const [key, agentConfig] of Object.entries(AGENTS)) {
+    const commandsDir = path.join(HOME_DIR, agentConfig.commandsDir);
+    if (fs.existsSync(commandsDir)) {
+      detected.push(key);
+    }
+  }
+  return detected;
+}
+
+function initProject(projectDir, config, force = false) {
+  const tyrexDir = path.join(projectDir, ".tyrex");
+
+  // Check if global install exists
+  if (!fs.existsSync(path.join(GLOBAL_TYREX_DIR, "templates"))) {
+    console.log(c("red", "  Global Tyrex installation not found."));
+    console.log(c("dim", "  Run 'tyrex' first to install globally."));
+    return false;
+  }
+
+  // Project-specific directories
   ensureDir(path.join(tyrexDir, "state", "tasks"));
   ensureDir(path.join(tyrexDir, "features"));
-  ensureDir(path.join(tyrexDir, "templates"));
   ensureDir(path.join(tyrexDir, "skills"));
   ensureDir(path.join(tyrexDir, "map"));
   ensureDir(path.join(tyrexDir, "context"));
 
   // Docs directories
-  ensureDir(path.join(targetDir, "docs", "adrs"));
-  ensureDir(path.join(targetDir, "docs", "rfcs"));
-  ensureDir(path.join(targetDir, "docs", "wiki"));
-  ensureDir(path.join(targetDir, "docs", "diagrams"));
-  ensureDir(path.join(targetDir, "docs", "specs"));
-  ensureDir(path.join(targetDir, "docs", "srs"));
-  ensureDir(path.join(targetDir, "docs", "prd"));
+  ensureDir(path.join(projectDir, "docs", "adrs"));
+  ensureDir(path.join(projectDir, "docs", "rfcs"));
+  ensureDir(path.join(projectDir, "docs", "wiki"));
+  ensureDir(path.join(projectDir, "docs", "diagrams"));
+  ensureDir(path.join(projectDir, "docs", "specs"));
+  ensureDir(path.join(projectDir, "docs", "srs"));
+  ensureDir(path.join(projectDir, "docs", "prd"));
 
   const replacements = {
-    PROJECT_NAME: config.projectName || path.basename(targetDir),
+    PROJECT_NAME: config.projectName || path.basename(projectDir),
     DATE: new Date().toISOString().split("T")[0],
     COMMIT_MODE: config.commits || "approve",
     BRANCH_MODE: config.branches || "approve",
@@ -179,34 +321,26 @@ function installTyrexStructure(targetDir, config, agents, force = false) {
     BRANCH_PREFIX: config.branchPrefix || "feat/",
   };
 
-  // Core files — these evolve over time and must NOT be overwritten on re-install.
-  // Use --force to explicitly reset them to template defaults.
+  // Core config files — project-specific, copied with interpolation
   copyTemplateIfNew("tyrex.yml", path.join(tyrexDir, "tyrex.yml"), replacements, force);
   copyTemplateIfNew("TYREX.md", path.join(tyrexDir, "TYREX.md"), replacements, force);
   copyTemplateIfNew("constitution.md", path.join(tyrexDir, "constitution.md"), replacements, force);
   copyTemplateIfNew("cursor.yml", path.join(tyrexDir, "state", "cursor.yml"), replacements, force);
   copyTemplateIfNew("roadmap.yml", path.join(tyrexDir, "roadmap.yml"), replacements, force);
 
-  // Reference templates — safe to overwrite since these are fill-in-later
-  // templates that AI agents use as starting points. Updating them ensures
-  // projects always have the latest template versions.
-  copyTemplate("feature.md", path.join(tyrexDir, "templates", "feature.md"));
-  copyTemplate("adr.md", path.join(tyrexDir, "templates", "adr.md"));
-  copyTemplate("rfc.md", path.join(tyrexDir, "templates", "rfc.md"));
-  copyTemplate("review-checklist.md", path.join(tyrexDir, "templates", "review-checklist.md"));
-  copyTemplate("spec.md", path.join(tyrexDir, "templates", "spec.md"));
-  copyTemplate("srs.md", path.join(tyrexDir, "templates", "srs.md"));
-  copyTemplate("prd.md", path.join(tyrexDir, "templates", "prd.md"));
-  copyTemplate("skill.md", path.join(tyrexDir, "templates", "skill.md"));
+  // Templates — symlink to global
+  const templatesLink = path.join(tyrexDir, "templates");
+  const globalTemplates = path.join(GLOBAL_TYREX_DIR, "templates");
+  createDirSymlink(globalTemplates, templatesLink);
 
-  // Rules files (CLAUDE.md and/or AGENTS.md) — these may be customized by the user,
-  // so protect them from overwrite on re-install.
+  // Rules files — copied (customizable per project)
   const installedRules = new Set();
-  for (const agentKey of agents) {
+  const detectedAgents = detectGlobalAgents();
+  for (const agentKey of detectedAgents) {
     const agentConfig = AGENTS[agentKey];
     const rulesFile = agentConfig.rulesFile;
     if (!installedRules.has(rulesFile)) {
-      const rulesPath = path.join(targetDir, rulesFile);
+      const rulesPath = path.join(projectDir, rulesFile);
       if (copyTemplateIfNew(agentConfig.rulesTemplate, rulesPath, replacements, force)) {
         console.log(c("green", `  Created ${rulesFile}`));
       }
@@ -214,12 +348,28 @@ function installTyrexStructure(targetDir, config, agents, force = false) {
     }
   }
 
-  // CHANGELOG.md — never overwrite (append-only by nature)
-  const changelogPath = path.join(targetDir, "docs", "CHANGELOG.md");
+  // Agent symlinks — for agents that need project-local commands
+  for (const agentKey of detectedAgents) {
+    const agentConfig = AGENTS[agentKey];
+    if (agentConfig.needsProjectSymlink) {
+      const globalCommandsDir = path.join(HOME_DIR, agentConfig.commandsDir);
+      const localCommandsDir = path.join(projectDir, agentConfig.commandsDir);
+      createDirSymlink(globalCommandsDir, localCommandsDir);
+    }
+  }
+
+  // CHANGELOG.md — never overwrite
+  const changelogPath = path.join(projectDir, "docs", "CHANGELOG.md");
   copyTemplateIfNew("CHANGELOG.md", changelogPath, replacements);
 
   console.log(c("green", "  Created .tyrex/ directory structure"));
   console.log(c("green", "  Created docs/ directory structure"));
+
+  if (detectedAgents.length > 0) {
+    console.log(c("dim", `  Detected agents: ${detectedAgents.map((a) => AGENTS[a].name).join(", ")}`));
+  }
+
+  return true;
 }
 
 // ─── Main ────────────────────────────────────────────────────
@@ -235,8 +385,6 @@ async function main() {
     cursor: args.includes("--cursor"),
     codex: args.includes("--codex"),
     all: args.includes("--all"),
-    global: args.includes("--global") || args.includes("-g"),
-    local: args.includes("--local") || args.includes("-l"),
     uninstall: args.includes("--uninstall"),
     defaults: args.includes("--defaults") || args.includes("-d"),
     force: args.includes("--force") || args.includes("-f"),
@@ -269,8 +417,71 @@ async function main() {
     return;
   }
 
-  // ─── Install flow ───
-  console.log(c("bold", "  Setup\n"));
+  // ─── Init subcommand ───
+  if (command === "init") {
+    console.log(c("bold", "  Project Initialization\n"));
+
+    let config;
+    if (flags.defaults) {
+      console.log(c("dim", "  Using default configuration.\n"));
+      config = {
+        projectName: path.basename(process.cwd()),
+        commits: "approve",
+        branches: "approve",
+        documentation: "suggest",
+        maxAgents: 5,
+        commitStyle: "conventional",
+        branchPrefix: "feat/",
+      };
+    } else {
+      console.log(c("bold", "  Configuration\n"));
+
+      const commitMode = await choose("Commit mode:", [
+        { label: "Approve", desc: "Review and approve each commit", default: true },
+        { label: "Auto", desc: "Commit automatically after each task" },
+      ]);
+
+      const branchMode = await choose("Branch creation:", [
+        { label: "Approve", desc: "Tyrex suggests branch name, you approve", default: true },
+        { label: "Auto", desc: "Create branches automatically" },
+      ]);
+
+      const docMode = await choose("Documentation level:", [
+        { label: "Suggest", desc: "Suggest docs per demand, you choose", default: true },
+        { label: "Always", desc: "Always generate full documentation (ADR, RFC, Wiki)" },
+        { label: "Minimal", desc: "Only CHANGELOG (mandatory) + TYREX.md" },
+      ]);
+
+      config = {
+        projectName: path.basename(process.cwd()),
+        commits: commitMode.label.toLowerCase(),
+        branches: branchMode.label.toLowerCase(),
+        documentation: docMode.label.toLowerCase(),
+        maxAgents: 5,
+        commitStyle: "conventional",
+        branchPrefix: "feat/",
+      };
+    }
+
+    console.log(c("bold", "\n  Initializing project...\n"));
+    const success = initProject(process.cwd(), config, flags.force);
+
+    if (success) {
+      console.log(c("bold", "\n  ═══════════════════════════════════════"));
+      console.log(c("green", c("bold", "  Project initialized!")));
+      console.log("");
+      console.log(`  ${c("dim", "Start your agent and run:")} ${c("cyan", "/tyrex-init")}`);
+      console.log(`  ${c("dim", "Or for a new feature:")}     ${c("cyan", "/tyrex-new")}`);
+      console.log(`  ${c("dim", "See all commands:")}         ${c("cyan", "/tyrex-status")}`);
+      console.log("");
+    }
+
+    rl.close();
+    return;
+  }
+
+  // ─── Global install flow (default command) ───
+  console.log(c("bold", "  Global Setup\n"));
 
   // 1. Choose agent
   let agent;
@@ -298,95 +509,24 @@ async function main() {
     ];
   }
 
-  // 2. Choose location
-  let location;
-  if (flags.global) location = "global";
-  else if (flags.local) location = "local";
-  else {
-    const locChoice = await choose("Where to install?", [
-      {
-        label: "Local (this project)",
-        desc: "Install in current directory. Best for per-project setup.",
-        default: true,
-      },
-      {
-        label: "Global",
-        desc: "Install in home directory. Available for all projects.",
-      },
-    ]);
-    location = locChoice.label.startsWith("Local") ? "local" : "global";
-  }
+  // 2. Install globally
+  console.log(c("bold", "\n  Installing globally...\n"));
 
-  const targetDir = location === "global" ? require("os").homedir() : process.cwd();
-
-  // 3. Configure defaults
-  let config;
-  if (flags.defaults) {
-    console.log(c("dim", "\n  Using default configuration.\n"));
-    config = {
-      projectName: path.basename(process.cwd()),
-      commits: "approve",
-      branches: "approve",
-      documentation: "suggest",
-      maxAgents: 5,
-      commitStyle: "conventional",
-      branchPrefix: "feat/",
-    };
-  } else {
-    console.log(c("bold", "\n  Configuration\n"));
-
-    const commitMode = await choose("Commit mode:", [
-      { label: "Approve", desc: "Review and approve each commit", default: true },
-      { label: "Auto", desc: "Commit automatically after each task" },
-    ]);
-
-    const branchMode = await choose("Branch creation:", [
-      { label: "Approve", desc: "Tyrex suggests branch name, you approve", default: true },
-      { label: "Auto", desc: "Create branches automatically" },
-    ]);
-
-    const docMode = await choose("Documentation level:", [
-      { label: "Suggest", desc: "Suggest docs per demand, you choose", default: true },
-      { label: "Always", desc: "Always generate full documentation (ADR, RFC, Wiki)" },
-      { label: "Minimal", desc: "Only CHANGELOG (mandatory) + TYREX.md" },
-    ]);
-
-    config = {
-      projectName: path.basename(process.cwd()),
-      commits: commitMode.label.toLowerCase(),
-      branches: branchMode.label.toLowerCase(),
-      documentation: docMode.label.toLowerCase(),
-      maxAgents: 5,
-      commitStyle: "conventional",
-      branchPrefix: "feat/",
-    };
-  }
-
-  // 4. Install
-  console.log(c("bold", "\n  Installing...\n"));
-
-  // Install slash commands
   const agents = agent === "all" ? ["claude", "opencode", "cursor", "codex"] : [agent];
   for (const a of agents) {
-    installCommands(targetDir, a);
+    installCommandsGlobal(a);
   }
 
-  // Install .tyrex structure (only for local)
-  if (location === "local") {
-    installTyrexStructure(targetDir, config, agents, flags.force);
-  } else {
-    // For global, only install commands
-    console.log(c("dim", "  Global install: only slash commands installed."));
-    console.log(c("dim", "  Run /tyrex-init in your project to create .tyrex/ structure."));
-  }
+  // Install global templates and config templates
+  installGlobalTemplates();
+  installGlobalRulesTemplates();
 
-  // 5. Done
+  // 3. Done
   console.log(c("bold", "\n  ═══════════════════════════════════════"));
   console.log(c("green", c("bold", "  Done!")));
   console.log("");
-  console.log(`  ${c("dim", "Start your agent and run:")} ${c("cyan", "/tyrex-init")}`);
-  console.log(`  ${c("dim", "Or for a new feature:")}     ${c("cyan", "/tyrex-new")}`);
-  console.log(`  ${c("dim", "See all commands:")}         ${c("cyan", "/tyrex-status")}`);
+  console.log(`  ${c("dim", "Next, in your project directory run:")} ${c("cyan", "tyrex init")}`);
+  console.log(`  ${c("dim", "Then start your agent and run:")}       ${c("cyan", "/tyrex-init")}`);
   console.log("");
 
   rl.close();
@@ -396,45 +536,63 @@ async function handleUninstall(flags) {
   const agents = flags.all
     ? ["claude", "opencode", "cursor", "codex"]
     : [flags.claude ? "claude" : flags.opencode ? "opencode" : flags.cursor ? "cursor" : "codex"];
-  const targetDir = flags.global ? require("os").homedir() : process.cwd();
 
   for (const agent of agents) {
     const agentConfig = AGENTS[agent];
-    const commandsDir = path.join(targetDir, agentConfig.commandsDir);
+    const commandsDir = path.join(HOME_DIR, agentConfig.commandsDir);
     if (fs.existsSync(commandsDir)) {
       fs.rmSync(commandsDir, { recursive: true });
-      console.log(c("green", `  Removed ${agentConfig.commandsDir}/`));
+      console.log(c("green", `  Removed ~/${agentConfig.commandsDir}/`));
     } else {
-      console.log(c("dim", `  ${agentConfig.commandsDir}/ not found, skipping`));
+      console.log(c("dim", `  ~/${agentConfig.commandsDir}/ not found, skipping`));
     }
   }
+
+  // Remove global tyrex dir
+  if (fs.existsSync(GLOBAL_TYREX_DIR)) {
+    fs.rmSync(GLOBAL_TYREX_DIR, { recursive: true });
+    console.log(c("green", "  Removed ~/.tyrex/"));
+  }
+
   console.log(c("green", "\n  Uninstall complete."));
-  console.log(c("dim", "  Note: .tyrex/ directory was preserved (contains project state)."));
+  console.log(c("dim", "  Note: project .tyrex/ directories were preserved (contain project state)."));
 }
 
 function printHelp() {
-  console.log(`  ${c("bold", "Usage:")} npx tyrex-framework [options]`);
+  console.log(`  ${c("bold", "Usage:")}`);
+  console.log(`    tyrex                   Install globally (slash commands + templates)`);
+  console.log(`    tyrex init              Initialize Tyrex in current project`);
+  console.log(`    tyrex help              Show this help`);
+  console.log(`    tyrex version           Show version`);
   console.log("");
-  console.log(`  ${c("bold", "Options:")}`);
-  console.log(`    --claude         Install for Claude Code`);
-  console.log(`    --opencode       Install for OpenCode`);
-  console.log(`    --cursor         Install for Cursor`);
-  console.log(`    --codex          Install for Codex`);
-  console.log(`    --all            Install for all agents`);
-  console.log(`    --local, -l      Install in current directory`);
-  console.log(`    --global, -g     Install in home directory`);
-  console.log(`    --defaults, -d   Skip configuration questions, use defaults`);
-  console.log(`    --force, -f      Overwrite core files (TYREX.md, constitution, etc.) on re-install`);
-  console.log(`    --uninstall      Remove Tyrex commands`);
-  console.log(`    --version, -v    Show version`);
-  console.log(`    --help, -h       Show this help`);
+  console.log(`  ${c("bold", "Agent flags (for install):")}`);
+  console.log(`    --claude                Install for Claude Code`);
+  console.log(`    --opencode              Install for OpenCode`);
+  console.log(`    --cursor                Install for Cursor`);
+  console.log(`    --codex                 Install for Codex`);
+  console.log(`    --all                   Install for all agents`);
+  console.log("");
+  console.log(`  ${c("bold", "Other flags:")}`);
+  console.log(`    --defaults, -d          Skip configuration questions, use defaults`);
+  console.log(`    --force, -f             Overwrite core files on re-install/re-init`);
+  console.log(`    --uninstall             Remove global Tyrex installation`);
+  console.log(`    --version, -v           Show version`);
+  console.log(`    --help, -h              Show this help`);
   console.log("");
   console.log(`  ${c("bold", "Examples:")}`);
-  console.log(`    npx tyrex-framework                          Interactive setup`);
-  console.log(`    npx tyrex-framework --claude --local          Claude Code, current project`);
-  console.log(`    npx tyrex-framework --opencode --local        OpenCode, current project`);
-  console.log(`    npx tyrex-framework --opencode --local -d     OpenCode, defaults, no questions`);
-  console.log(`    npx tyrex-framework --all --global            All agents, global install`);
+  console.log(`    tyrex                                 Interactive global setup`);
+  console.log(`    tyrex --claude                        Global install for Claude Code`);
+  console.log(`    tyrex --all                           Global install for all agents`);
+  console.log(`    tyrex init                            Init project (interactive)`);
+  console.log(`    tyrex init -d                         Init project with defaults`);
+  console.log(`    tyrex init -f                         Re-init, overwrite core files`);
+  console.log(`    tyrex --uninstall --all               Remove all global installations`);
+  console.log("");
+  console.log(`  ${c("bold", "Workflow:")}`);
+  console.log(`    1. ${c("cyan", "npm install -g tyrex-framework")}    Install the CLI`);
+  console.log(`    2. ${c("cyan", "tyrex --all")}                       Global setup (once)`);
+  console.log(`    3. ${c("cyan", "cd your-project && tyrex init")}     Init each project`);
+  console.log(`    4. ${c("cyan", "/tyrex-new")}                        Start building!`);
   console.log("");
 }
 
