@@ -78,7 +78,7 @@ docs/
 ```
 Full workflow:
   /tyrex-init → /tyrex-new → /tyrex-plan → /tyrex-do → /tyrex-review
-                (quiz)       (security)    [--auto]     (4 lenses)
+              (choices)      (security)    [--auto]     (4 lenses)
                                               ↑              │
                                               └── fix tasks ─┘
 

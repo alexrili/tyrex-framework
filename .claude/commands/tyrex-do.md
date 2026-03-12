@@ -16,9 +16,9 @@ You may create, edit, and delete source code files following TDD, small commits,
 - **`/tyrex-do`** (default) — Execute tasks with human approval at each checkpoint
 - **`/tyrex-do --auto-approve`** — Execute ALL tasks automatically: commits, parallelism decisions, and all checkpoints are auto-approved. Only stops on failures after 3 retries.
 
-## Interactive Quiz Rule
+## Adaptive Decision Format
 
-**ALL decisions in this command MUST use the interactive quiz format** (multiple-choice selection). Never ask open-ended questions when a quiz can be used. This applies to: parallelization choices, failure handling, commit approval, and any other decision point.
+**ALL decisions in this command MUST use structured choices** adapted to the agent's interface. CLI agents (Claude Code, OpenCode): numbered quiz where the user types a number. Chat-based agents (Cursor, Codex): numbered list or direct question where the user responds naturally. Never ask open-ended questions when structured choices are possible. This applies to: parallelization choices, failure handling, commit approval, and any other decision point.
 
 ## Behavior
 
@@ -46,7 +46,7 @@ If there are MULTIPLE ready tasks that are marked as `parallel: true`:
 
 **If `--auto-approve`:** automatically choose parallel execution for all eligible tasks.
 
-**Otherwise, present interactive quiz:**
+**Otherwise, present structured choices:**
 ```
 Tasks [2, 3, 4] are ready and can run in parallel.
 
@@ -147,7 +147,7 @@ When ALL tasks are `completed`:
 - NEVER make a commit that breaks CI
 - ALWAYS update cursor.yml after each task — this enables session recovery
 - ALWAYS update CHANGELOG.md — it's mandatory
-- ALWAYS use interactive quiz for decisions — never open-ended questions
+- ALWAYS use structured choices for decisions — never open-ended questions when choices are possible
 - Sub-agents for parallel tasks should ONLY modify files listed in their task
 - If two parallel tasks need to modify the same file, they CANNOT be parallel — execute sequentially
 - The orchestrator (you) handles commits and state updates, NOT sub-agents

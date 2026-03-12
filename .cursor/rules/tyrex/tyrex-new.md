@@ -11,16 +11,16 @@ You are the Tyrex Framework orchestrator. The user is starting a new implementat
 This command runs in **plan** mode. Set `agent_mode: "plan"` in `cursor.yml` as the FIRST action.
 You MUST NOT write source code. You may create/modify only `.tyrex/`, `docs/`, and configuration files.
 
-## Interactive Quiz Rule
+## Adaptive Decision Format
 
-**ALL decisions in this command MUST use the interactive quiz format** (multiple-choice selection). Never ask open-ended questions when a quiz can be used. This applies to: roadmap selection, clarification questions, context ingestion, skill selection, documentation configuration, branch configuration, and any other decision point.
+**ALL decisions in this command MUST use structured choices** adapted to the agent's interface. CLI agents (Claude Code, OpenCode): numbered quiz where the user types a number. Chat-based agents (Cursor, Codex): numbered list or direct question where the user responds naturally. Never ask open-ended questions when structured choices are possible. This applies to: roadmap selection, clarification questions, context ingestion, skill selection, documentation configuration, branch configuration, and any other decision point.
 
 ## Behavior
 
 ### Step 0: Check roadmap
 Before asking the user to describe the demand:
 1. Read `.tyrex/roadmap.yml` (if exists) and check for `planned` features.
-2. If there are planned features, present interactive quiz:
+2. If there are planned features, present structured choices:
    ```
    Start a planned feature or describe something new?
    
@@ -40,8 +40,8 @@ Before asking the user to describe the demand:
 Ask the user: "Describe what you want to implement."
 Listen to their description. This is the WHAT and WHY.
 
-### Step 2: Clarification (max 5 questions, quiz format)
-Analyze the description and ask UP TO 5 targeted clarification questions **using interactive quizzes**:
+### Step 2: Clarification (max 5 questions, structured choices)
+Analyze the description and ask UP TO 5 targeted clarification questions **using structured choices**:
 
 Example quiz formats for common clarifications:
 ```
@@ -115,8 +115,8 @@ After ingesting context, analyze the demand to identify relevant skills:
    - If yes: For each missing skill, ask for a brief role description, then generate the skill file
 6. **Record selected skills** — they will be included in the feature spec (Step 6) as a `Skills:` field.
 
-### Step 4: Demand configuration (interactive quiz)
-Read defaults from `.tyrex/tyrex.yml` and present configuration via quiz:
+### Step 4: Demand configuration (structured choices)
+Read defaults from `.tyrex/tyrex.yml` and present configuration with structured choices:
 
 ```
 Documentation bundle for this demand:
@@ -202,7 +202,7 @@ Tell the user: "Feature spec created. Run /tyrex-plan to plan the implementation
 ## Important Rules
 - Feature spec MUST be under 50 lines
 - ALWAYS generate CHANGELOG entry (even if just "Feature X started")
-- ALWAYS use interactive quiz for ALL decisions — never open-ended questions for configuration
+- ALWAYS use structured choices for ALL decisions — never open-ended questions when choices are possible
 - Documentation is generated BEFORE code — the human reviews docs first
 - SPEC is always mandatory — it is generated per task during `/tyrex-plan`, not here
 - SRS and PRD are suggested based on demand nature — not forced
