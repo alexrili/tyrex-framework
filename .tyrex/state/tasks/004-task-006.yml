@@ -1,0 +1,15 @@
+task_id: "feat-004-task-006"
+feature: "004-documentation-system"
+name: "Update README"
+status: "pending"
+depends_on: ["feat-004-task-005"]
+unlocks: []
+parallel: false
+spec_file: "docs/specs/004-task-006-update-readme.md"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: []
+output: null
+errors: null

@@ -1,0 +1,50 @@
+# Entity-Relationship Diagram — [DOMAIN NAME]
+# Render: d2 er.d2 er.svg
+#
+# Shows data entities, their attributes, and relationships.
+# Customize: replace entities, fields, and cardinality as needed.
+
+direction: right
+
+# ── Entities ────────────────────────────────────────
+
+user: "User" {
+  shape: sql_table
+
+  id: "id" {constraint: primary_key}
+  email: "email" {constraint: unique}
+  name: "name"
+  role: "role"
+  created_at: "created_at"
+  updated_at: "updated_at"
+}
+
+project: "Project" {
+  shape: sql_table
+
+  id: "id" {constraint: primary_key}
+  name: "name"
+  description: "description"
+  owner_id: "owner_id" {constraint: foreign_key}
+  status: "status"
+  created_at: "created_at"
+}
+
+task: "Task" {
+  shape: sql_table
+
+  id: "id" {constraint: primary_key}
+  title: "title"
+  description: "description"
+  project_id: "project_id" {constraint: foreign_key}
+  assignee_id: "assignee_id" {constraint: foreign_key}
+  status: "status"
+  priority: "priority"
+  created_at: "created_at"
+}
+
+# ── Relationships ───────────────────────────────────
+
+user -> project: "owns (1:N)"
+user -> task: "assigned to (1:N)"
+project -> task: "contains (1:N)"

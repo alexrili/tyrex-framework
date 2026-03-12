@@ -1,0 +1,56 @@
+# Data Flow Diagram — [FEATURE/PIPELINE NAME]
+# Render: d2 data-flow.d2 data-flow.svg
+#
+# Shows how data is transformed as it moves through the system.
+# Customize: replace stages, data formats, and transformations as needed.
+
+direction: right
+
+# ── Input ───────────────────────────────────────────
+
+input: "Input Source" {
+  style.fill: "#e3f2fd"
+
+  raw: "Raw Data"
+  raw.shape: page
+}
+
+# ── Processing ──────────────────────────────────────
+
+processing: "Processing Pipeline" {
+  style.fill: "#fff8e1"
+
+  validate: "Validate" {
+    shape: hexagon
+  }
+  transform: "Transform" {
+    shape: hexagon
+  }
+  enrich: "Enrich" {
+    shape: hexagon
+  }
+}
+
+# ── Output ──────────────────────────────────────────
+
+output: "Output" {
+  style.fill: "#e8f5e9"
+
+  store: "Data Store" {
+    shape: cylinder
+  }
+  notify: "Notification"
+  report: "Report" {
+    shape: page
+  }
+}
+
+# ── Data Flow ───────────────────────────────────────
+
+input.raw -> processing.validate: "raw payload"
+processing.validate -> processing.transform: "validated data"
+processing.transform -> processing.enrich: "normalized data"
+
+processing.enrich -> output.store: "enriched record"
+processing.enrich -> output.notify: "event trigger"
+output.store -> output.report: "aggregated data"

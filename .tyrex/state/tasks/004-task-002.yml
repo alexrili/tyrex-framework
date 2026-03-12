@@ -1,0 +1,15 @@
+task_id: "feat-004-task-002"
+feature: "004-documentation-system"
+name: "Create D2 diagram templates"
+status: "pending"
+depends_on: []
+unlocks: ["feat-004-task-003", "feat-004-task-004"]
+parallel: true
+spec_file: "docs/specs/004-task-002-d2-diagram-templates.md"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: []
+output: null
+errors: null
