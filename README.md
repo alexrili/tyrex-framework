@@ -96,16 +96,16 @@ For **new/empty projects**, Tyrex creates a minimal structure and suggests `/tyr
 | `/tyrex-init` | Map codebase, configure project, generate TYREX.md |
 | `/tyrex-discuss` | Explore project interactively, brainstorm architecture |
 | `/tyrex-new` | Start a new feature (requirements, docs, skills, branch) |
-| `/tyrex-plan` | Plan tasks with dependencies, parallelism, and SPEC per task |
-| `/tyrex-do` | Execute tasks (TDD, skill-aware, parallel sub-agents) |
-| `/tyrex-review` | Review implementation, finalize docs, evolve TYREX.md |
+| `/tyrex-plan` | Security-first planning with dependencies, parallelism, and SPEC per task |
+| `/tyrex-do` | Execute tasks (TDD, skill-aware, parallel sub-agents). Supports `--auto-approve` |
+| `/tyrex-review` | 4-lens senior code review. Supports `--do-all`, `--do-critical`, `full` |
 
 ### Shortcuts
 
 | Command | Purpose |
 |---------|---------|
-| `/tyrex-quick` | Fast task without full ceremony (bug fixes, tweaks) |
-| `/tyrex-handoff` | Autopilot: chains new -> plan -> do -> review |
+| `/tyrex-quick` | Fast-track unified `new → plan → do` from a single prompt |
+| `/tyrex-quick --auto-approve` | Full autopilot (replaces deprecated `/tyrex-handoff`) |
 
 ### Management
 
@@ -140,9 +140,10 @@ For **new/empty projects**, Tyrex creates a minimal structure and suggests `/tyr
 /tyrex-init --> /tyrex-discuss (brainstorm) --> /tyrex-new --> ...
 ```
 
-**Quick fix:**
+**Quick fix or small feature:**
 ```
-/tyrex-quick  (skip spec/plan, just fix and commit)
+/tyrex-quick              (unified new → plan → do, single prompt)
+/tyrex-quick --auto-approve  (full autopilot, no checkpoints)
 ```
 
 ## Key Concepts
@@ -172,6 +173,37 @@ REST APIs, database design, authentication, performance optimization.
 ```
 
 Skills are auto-suggested during `/tyrex-new` and loaded during `/tyrex-do` for specialized implementation quality.
+
+### Security-First Planning
+
+`/tyrex-plan` performs a security assessment before proposing tasks. Security-sensitive tasks automatically get the `devsec` skill assigned and `quality: required`. Features with security implications get a dedicated hardening task.
+
+### 4-Lens Senior Code Review
+
+`/tyrex-review` evaluates through 4 critical lenses:
+1. **Pattern Compliance** — does the code follow project patterns from TYREX.md?
+2. **Code Quality & DRY** — duplication, complexity, maintainability
+3. **Business & Technical Compliance** — does it meet the SPEC and acceptance criteria?
+4. **Security First** — OWASP top 10, input validation, secrets management
+
+Use `--do-all` or `--do-critical` to auto-create fix tasks from review findings.
+
+### Interactive Quiz UX
+
+All user decisions across all commands use interactive quiz format (multiple-choice selection). This ensures consistent UX and reduces cognitive load — no open-ended questions when a quiz can be used.
+
+### Built-in DevSec Skill
+
+A security engineering skill (`devsec`) ships with the framework. It's auto-suggested when security-sensitive areas are detected during `/tyrex-new` and `/tyrex-plan`, providing OWASP/SANS coverage out of the box.
+
+### Command Flags
+
+| Flag | Commands | Effect |
+|------|----------|--------|
+| `--auto-approve` | `/tyrex-do`, `/tyrex-quick` | Skip all human checkpoints |
+| `--do-all` | `/tyrex-review` | Auto-create fix tasks for all findings |
+| `--do-critical` | `/tyrex-review` | Auto-create fix tasks for critical findings only |
+| `full` | `/tyrex-review` | Codebase-wide re-scan (default is PR scope) |
 
 ### Roadmap — Forward Visibility
 

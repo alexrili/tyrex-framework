@@ -7,6 +7,50 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-03-12
+
+### Framework Simplification & Quality Upgrade
+
+#### Interactive Quiz UX
+- All user decisions across all commands now use interactive quiz format (multiple-choice selection)
+- Consistent UX pattern — no open-ended questions when a quiz can be used
+
+#### Security-First Planning
+- `/tyrex-plan` performs a security assessment BEFORE proposing tasks
+- Security-sensitive tasks auto-get `devsec` skill and `quality: required`
+- Features with security implications get a dedicated security hardening task
+
+#### 4-Lens Senior Code Review
+- `/tyrex-review` evaluates through 4 lenses: Pattern Compliance, Code Quality & DRY, Business & Technical Compliance, Security First
+- Uses senior engineer persona matched to the project's tech stack
+
+#### Review → Fix Loop
+- `/tyrex-review --do-all` auto-creates fix tasks (`rc-` prefixed) for all review findings
+- `/tyrex-review --do-critical` auto-creates fix tasks for critical findings only
+- Includes mini re-review after fixes are applied
+
+#### Command Flags
+- `/tyrex-do --auto-approve` — skip all human checkpoints during task execution
+- `/tyrex-review --do-all|--do-critical` — auto-create fix tasks from review findings
+- `/tyrex-review full` — codebase-wide re-scan (default remains PR scope)
+- `/tyrex-quick --auto-approve` — full autopilot mode
+
+#### Quick Task Redesign
+- `/tyrex-quick` redesigned as fast-track unified `new → plan → do` pipeline
+- Same quality guarantees, fewer steps
+- With `--auto-approve`, replaces the old `/tyrex-handoff` workflow
+
+#### Deprecations
+- `/tyrex-handoff` deprecated — replaced by `/tyrex-quick --auto-approve`
+
+#### Built-in DevSec Skill
+- `templates/skills/devsec.md` ships with the framework
+- Auto-suggested when security-sensitive areas are detected during `/tyrex-new` and `/tyrex-plan`
+- Covers OWASP/SANS security guidelines
+
+#### TYREX.md Auto-Update
+- When macro docs (ADR, PRD, SRS) are generated or updated, commands auto-update TYREX.md with summaries in appropriate sections
+
 ## [0.1.1] - 2026-03-08
 
 ### Agent Mode Enforcement
