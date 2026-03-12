@@ -1,7 +1,7 @@
 task_id: "feat-003-task-003"
 feature: "003-adaptive-decision-format"
 name: "Update command templates"
-status: "pending"
+status: "completed"
 depends_on: ["feat-003-task-001", "feat-003-task-002"]
 unlocks: ["feat-003-task-004"]
 parallel: false

@@ -1,7 +1,7 @@
 task_id: "feat-003-task-001"
 feature: "003-adaptive-decision-format"
 name: "Update constitution rules"
-status: "pending"
+status: "completed"
 depends_on: []
 unlocks: ["feat-003-task-003"]
 parallel: true

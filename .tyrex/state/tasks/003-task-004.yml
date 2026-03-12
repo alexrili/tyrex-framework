@@ -1,7 +1,7 @@
 task_id: "feat-003-task-004"
 feature: "003-adaptive-decision-format"
 name: "Re-sync to agent directories"
-status: "pending"
+status: "completed"
 depends_on: ["feat-003-task-003"]
 unlocks: []
 parallel: false

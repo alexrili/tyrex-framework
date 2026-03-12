@@ -1,7 +1,7 @@
 task_id: "feat-003-task-002"
 feature: "003-adaptive-decision-format"
 name: "Update TYREX.md pattern and ADR table"
-status: "pending"
+status: "completed"
 depends_on: []
 unlocks: ["feat-003-task-003"]
 parallel: true
