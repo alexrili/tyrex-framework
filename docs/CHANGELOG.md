@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Constitution: replaced mandatory quiz format with adaptive decision format (ADR-003)
 - TYREX.md: updated pattern and architecture decisions table
+- All command templates: replaced "Interactive Quiz Rule" with "Adaptive Decision Format"
+- AGENTS.md: updated references to structured choices
 
 ## [0.2.0] - 2026-03-12
 

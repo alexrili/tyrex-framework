@@ -9,7 +9,7 @@ This project uses the Tyrex Framework for human-driven, AI-accelerated pair prog
 3. **Check mode:** Read `agent_mode` from `cursor.yml`. In `plan` mode, NEVER write source code — only `.tyrex/`, `docs/`, and config files. In `build` mode, follow TDD and commit rules.
 4. **Use commands:** The `/tyrex-*` slash commands orchestrate the development workflow.
 5. **Update state:** After every task, update the cursor and task state files.
-6. **Interactive quiz:** ALL user decisions use interactive quiz format (multiple-choice). Never ask open-ended questions when a quiz can be used.
+6. **Structured choices:** ALL user decisions use structured choices adapted to the agent's interface (CLI: numbered quiz, Chat: numbered list or direct question). Never ask open-ended questions when structured choices are possible.
 7. **Security first:** Always consider security implications during planning and review. The DevSec skill (`templates/skills/devsec.md`) is auto-suggested for security-sensitive work.
 
 ## Commands Available
@@ -18,7 +18,7 @@ This project uses the Tyrex Framework for human-driven, AI-accelerated pair prog
 |---------|-------|---------|
 | `/tyrex-init` | | Initialize Tyrex in a project (map codebase, configure) |
 | `/tyrex-settings` | | View/modify Tyrex configuration |
-| `/tyrex-new` | | Start a new feature/demand (interactive quiz workflow) |
+| `/tyrex-new` | | Start a new feature/demand (structured choices workflow) |
 | `/tyrex-plan` | | Plan tasks with security-first analysis |
 | `/tyrex-do` | `--auto-approve` | Execute tasks (sequential or parallel, with TDD) |
 | `/tyrex-review` | `--do-all` `--do-critical` `full` | Senior code review with 4 lenses + auto-fix loop |
@@ -40,7 +40,7 @@ This project uses the Tyrex Framework for human-driven, AI-accelerated pair prog
 3. **Every commit passes CI.** No broken commits, ever.
 4. **CHANGELOG is mandatory.** Update `docs/CHANGELOG.md` on every change.
 5. **Small commits.** One task = one atomic, revertible commit.
-6. **Interactive quiz for all decisions.** Use multiple-choice, not open-ended questions.
+6. **Structured choices for all decisions.** Adapt format to agent interface (CLI: quiz, Chat: list/question). Never open-ended.
 7. **Simplicity wins.** Propose the simplest solution first.
 8. **Documentation first.** When configured, generate docs before code.
 9. **Security first.** Evaluate security implications during planning and review.
@@ -78,7 +78,7 @@ docs/
 ```
 Full workflow:
   /tyrex-init → /tyrex-new → /tyrex-plan → /tyrex-do → /tyrex-review
-                (quiz)       (security)    [--auto]     (4 lenses)
+              (choices)      (security)    [--auto]     (4 lenses)
                                               ↑              │
                                               └── fix tasks ─┘
 
