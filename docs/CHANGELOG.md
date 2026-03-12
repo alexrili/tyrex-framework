@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `/tyrex-review`: diagram check specifies D2 format
 - `tyrex.yml`: added `docs.custom` array for user-defined documentation layers
 - `/tyrex-settings`: dedicated documentation management section with add/remove custom doc types
+- README: added D2 diagrams, customizable documentation, and updated documentation layers table
 
 ## [0.2.1] - 2026-03-12
 
