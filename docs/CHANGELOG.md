@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-03-12
+
 ### Added
 - D2 diagram templates: architecture, sequence, data-flow, ER (templates/diagrams/)
 - Diagram markdown wrapper template (templates/diagram.md)
