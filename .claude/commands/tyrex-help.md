@@ -92,7 +92,7 @@ TYREX Help
 Based on the current state, suggest the next action. Use EXACTLY ONE of these:
 
 - **No `.tyrex/` directory exists:**
-  > "You haven't initialized Tyrex yet. Start with `/tyrex-init` to map your project and configure the framework."
+  > "You haven't initialized Tyrex in this project yet. Run `tyrex init` in your terminal to create the project structure, then `/tyrex-init` to map your codebase."
 
 - **`.tyrex/` exists but no active feature (or last feature is `done`):**
   > "Tyrex is initialized. Use `/tyrex-new` to start a new feature, or `/tyrex-quick` for a fast-track task."
@@ -167,11 +167,11 @@ Use the reference below for each command:
 #### Command Details
 
 **init:**
-- What: Maps your codebase, detects stack/architecture/security issues, configures Tyrex.
+- What: Maps your codebase, detects stack/architecture/security issues, and generates TYREX.md. Requires `tyrex init` (CLI) to have been run first to create the `.tyrex/` project structure.
 - Flags: None
 - When: First time using Tyrex in a project, or re-initializing after major changes.
-- Steps: Codebase analysis → Generate TYREX.md + constitution → Interactive config → Summary
-- Prerequisites: None (this is the starting point)
+- Steps: Check `.tyrex/` exists → Codebase analysis → Generate TYREX.md + constitution → Interactive config → Summary
+- Prerequisites: `tyrex init` (CLI command) must be run first to create project structure
 - Next: `/tyrex-new`
 
 **discuss:**

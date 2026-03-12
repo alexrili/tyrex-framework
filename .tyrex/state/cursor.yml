@@ -11,13 +11,13 @@ agent_mode: "plan"
 active_feature: null
 active_feature_file: null
 
-last_task_completed: "feat-004-task-006"
-last_commit: "c7f256b"
-last_action: "feature_004_completed"
+last_task_completed: "feat-005-task-004"
+last_commit: null
+last_action: "feature_005_completed"
 
 tasks_summary:
-  total: 6
-  completed: 6
+  total: 4
+  completed: 4
   in_progress: 0
   pending: 0
   failed: 0

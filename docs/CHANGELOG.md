@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-03-12
+
+### Breaking Changes
+- Installation is now **global-only** — removed `--local`/`-l` and `--global`/`-g` flags
+- New workflow: `tyrex` (global install) → `tyrex init` (per-project setup)
+
+### Added
+- `tyrex init` subcommand: creates project `.tyrex/` structure with symlinks to global templates/commands
+- Automatic symlinks for Cursor (`.cursor/rules/tyrex/`) and Codex (`.codex/skills/tyrex/`) pointing to global install
+- `.tyrex/templates/` symlinked to `~/.tyrex/templates/` — projects auto-update when Tyrex is updated
+- Auto-detection of globally installed agents during `tyrex init`
+- Global templates directory (`~/.tyrex/templates/`) for shared document templates
+- Global config-templates directory (`~/.tyrex/config-templates/`) for core file templates
+
+### Changed
+- `tyrex` (no subcommand) now installs globally to `~/` without asking local/global
+- `/tyrex-init` slash command now checks for `tyrex init` CLI prerequisite
+- `/tyrex-help` updated with new install flow guidance
+- README updated with global-only installation instructions, symlink documentation
+
+### Removed
+- `--local`/`-l` flag
+- `--global`/`-g` flag
+- "Where to install?" interactive question
+
 ## [0.3.0] - 2026-03-12
 
 ### Added

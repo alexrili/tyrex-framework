@@ -22,6 +22,11 @@ You MUST NOT write source code. You may create/modify only `.tyrex/`, `docs/`, a
 
 ### If `.tyrex/` does NOT exist (fresh project):
 
+First, check if the user has run the CLI `tyrex init` command. If `.tyrex/` doesn't exist at all, tell the user:
+> "Run `tyrex init` in your terminal first to create the project structure, then come back and run `/tyrex-init`."
+
+If `.tyrex/tyrex.yml` exists but `.tyrex/map/` is empty (i.e., `tyrex init` was run but `/tyrex-init` hasn't mapped the codebase yet), proceed with the mapping below.
+
 Perform a COMPLETE project mapping. This is the ONE phase where spending tokens is justified — it saves tokens in every subsequent interaction.
 
 **Step 1: Codebase Analysis** (use parallel sub-agents if the project is large)

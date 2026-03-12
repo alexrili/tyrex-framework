@@ -25,11 +25,16 @@ Tyrex Framework is a human-driven, AI-accelerated pair programming workflow orch
 ```
 CLI Scaffolding Tool + Prompt Engineering Framework
 
-User runs `npx tyrex-framework`
-  → Interactive setup (agent selection, config)
-  → Scaffolds .tyrex/ directory (state, config, templates)
-  → Installs slash commands to agent-specific directories
-  → Commands are markdown instruction files for AI agents
+User runs `tyrex` (global install, once)
+  → Installs slash commands to ~/.<agent>/commands/ (or rules/skills)
+  → Installs templates to ~/.tyrex/templates/
+  → Stores config templates in ~/.tyrex/config-templates/
+
+User runs `tyrex init` (per project)
+  → Creates .tyrex/ directory (state, config — project-specific)
+  → Symlinks .tyrex/templates/ → ~/.tyrex/templates/
+  → Symlinks agent command dirs for Cursor/Codex → global dirs
+  → Copies rules files (CLAUDE.md, AGENTS.md) for per-project customization
 
 bin/tyrex.js (~427 lines, single-file CLI)
   ├── main()                  Entry point, interactive flow
@@ -50,7 +55,8 @@ bin/tyrex.js (~427 lines, single-file CLI)
 
 ## Project Patterns
 
-- **Single-file CLI:** All runtime logic in `bin/tyrex.js` (~427 lines)
+- **Global-only installation:** `tyrex` installs globally to `~/`, `tyrex init` sets up each project with symlinks to global templates/commands. No duplication across projects. (ADR-005)
+- **Single-file CLI:** All runtime logic in `bin/tyrex.js`
 - **Template-driven output:** All scaffolded files use `{{PLACEHOLDER}}` interpolation via `copyTemplate()`
 - **Two template modes:** Core files (tyrex.yml, TYREX.md, etc.) are interpolated at install time; user templates (spec.md, adr.md, etc.) are copied as-is with placeholders intact for AI agents to fill at generation time
 - **Agent-agnostic commands:** One set of command definitions in `templates/commands/unified/` is copied to all agent directories
@@ -121,6 +127,7 @@ bin/tyrex.js (~427 lines, single-file CLI)
 | 2026-03-12 | D2 diagrams replace Mermaid (ADR-004)     | D2 language for all diagrams. 4 template types (architecture, sequence, data-flow, ER). Always offered during `/tyrex-new` |
 | 2026-03-12 | Custom documentation layers (ADR-004)    | `tyrex.yml docs.custom` array for user-defined doc types. Managed via `/tyrex-settings`. Templates in `.tyrex/templates/` |
 | 2026-03-12 | Production-ready doc templates (ADR-004) | All built-in templates (SPEC, SRS, PRD, ADR, RFC) rewritten with complete sections, guidance, and examples |
+| 2026-03-12 | Global-only installation (ADR-005)       | `tyrex` installs globally, `tyrex init` sets up projects with symlinks. Eliminates duplication, enables auto-updates |
 
 ## CI/CD
 

@@ -1,0 +1,15 @@
+task_id: "feat-005-task-001"
+feature: "005-global-only-install"
+name: "Refactor bin/tyrex.js — global-only + init subcommand"
+status: "completed"
+depends_on: []
+unlocks: ["feat-005-task-002", "feat-005-task-003"]
+parallel: false
+spec_file: "docs/specs/005-task-001-refactor-global-install.md"
+started_at: "2026-03-12T11:00:00Z"
+finished_at: "2026-03-12T11:15:00Z"
+agent: null
+commit: null
+files_changed: ["bin/tyrex.js"]
+output: "Refactored to global-only install with init subcommand, symlink support, updated help"
+errors: null
