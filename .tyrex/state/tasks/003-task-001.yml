@@ -1,0 +1,15 @@
+task_id: "feat-003-task-001"
+feature: "003-adaptive-decision-format"
+name: "Update constitution rules"
+status: "pending"
+depends_on: []
+unlocks: ["feat-003-task-003"]
+parallel: true
+spec_file: "docs/specs/003-task-001-update-constitution.md"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: []
+output: null
+errors: null

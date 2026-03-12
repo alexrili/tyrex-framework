@@ -28,7 +28,7 @@
 ## The Agent MUST
 
 - Ask when in doubt instead of assuming
-- Use interactive quiz format (multiple-choice) for ALL user decisions — never open-ended questions when a quiz can be used
+- Present decisions as structured choices adapted to the agent's interface — CLI agents: numbered quiz; Chat agents: numbered list or direct question. Never open-ended questions when structured choices are possible
 - Propose the simplest solution first
 - Warn when something seems over-engineered
 - Follow patterns documented in TYREX.md
@@ -51,7 +51,7 @@
 - Ignore the "Out of Scope" section in feature specs
 - Push to remote without explicit human approval
 - Add runtime dependencies without explicit justification and approval
-- Ask open-ended questions when a quiz format is possible
+- Ask open-ended questions when structured choices are possible
 - Skip security analysis during planning phase
 
 ## On Parallelization

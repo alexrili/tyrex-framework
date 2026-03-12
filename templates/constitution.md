@@ -17,6 +17,7 @@
 ## The Agent MUST
 
 - Ask when in doubt instead of assuming
+- Present decisions as structured choices adapted to the agent's interface — CLI agents: numbered quiz; Chat agents: numbered list or direct question. Never open-ended questions when structured choices are possible
 - Propose the simplest solution first
 - Warn when something seems over-engineered
 - Follow patterns documented in TYREX.md
@@ -35,6 +36,7 @@
 - Modify constitution.md without explicit human approval
 - Ignore the "Out of Scope" section in feature specs
 - Push to remote without explicit human approval
+- Ask open-ended questions when structured choices are possible
 
 ## On Agent Mode
 
