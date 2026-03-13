@@ -80,7 +80,7 @@ Ask the user these questions (use the question tool when available, otherwise as
 2. "Branch creation: automatic or you approve the branch name?"
    - Options: `auto` | `approve` (default: approve)
 
-3. "Documentation level: always generate full docs, suggest per demand, or minimal?"
+3. "Documentation level: always generate full docs, suggest per feature, or minimal?"
    - Options: `always` | `suggest` | `minimal` (default: suggest)
 
 4. "Allow parallel execution of independent tasks?"
@@ -94,7 +94,7 @@ Save answers to `.tyrex/tyrex.yml`.
 **Step 4: Context Ingestion**
 After the automated mapping is complete, offer the user a chance to provide additional project context that the codebase analysis cannot detect:
 
-1. Ask: "The automated analysis is complete. Do you have additional context to provide? (legacy systems, business constraints, external integrations, architectural history, etc.) [y/N]"
+1. Ask: "Add project context? (business rules, constraints, integrations) [y/N]"
 2. If yes: follow the `/tyrex-context add` flow with scope set to `project`
    - Accept free text, file paths, or URLs
    - Store in `.tyrex/context/`
@@ -114,7 +114,7 @@ Present a summary of:
 ### For empty/new projects (greenfield):
 If the directory is empty or has minimal files (only config, README, or scaffold):
 
-1. **Skip codebase analysis** — there's nothing to analyze yet.
+1. **Skip codebase analysis** — no source code to analyze.
 2. **Create minimal structure** — scaffold `.tyrex/`, `docs/`, and core files with placeholder content.
 3. **Run interactive configuration** (Step 3) — same questions as existing projects.
 4. **Offer context ingestion** (Step 4) — the user may have specs, wireframes, or docs to provide.

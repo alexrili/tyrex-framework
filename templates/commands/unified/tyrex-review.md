@@ -23,7 +23,7 @@ Flags can be combined: `/tyrex-review --do-all`, `/tyrex-review full --do-critic
 
 ## Adaptive Decision Format
 
-**ALL decisions in this command MUST use structured choices** adapted to the agent's interface. CLI agents (Claude Code, OpenCode): numbered quiz where the user types a number. Chat-based agents (Cursor, Codex): numbered list or direct question where the user responds naturally. Never ask open-ended questions when structured choices are possible. This includes: approval decisions, scope selection, change requests, and any other decision point.
+**ALL decisions in this command MUST use structured choices** adapted to the agent's interface. CLI agents (Claude Code, OpenCode): numbered choices where the user types a number. Chat-based agents (Cursor, Codex): numbered list or direct question where the user responds naturally. Never ask open-ended questions when structured choices are possible. This includes: approval decisions, scope selection, change requests, and any other decision point.
 
 ## The 4 Review Lenses
 
@@ -81,11 +81,11 @@ Every review MUST evaluate the implementation through these 4 critical lenses, i
 2. Read:
    - `.tyrex/state/cursor.yml` → active feature
    - Active feature spec → acceptance criteria
-   - `.tyrex/tyrex.yml` → documentation configuration for this demand
+   - `.tyrex/tyrex.yml` → documentation configuration for this feature
    - `.tyrex/map/security-audit.md` → existing security findings (if exists)
    - `.tyrex/TYREX.md` → project patterns (for Lens 1)
-   - `docs/prd/` → PRD for active demand (for Lens 3)
-   - `docs/srs/` → SRS for active demand (for Lens 3)
+   - `docs/prd/` → PRD for active feature (for Lens 3)
+   - `docs/srs/` → SRS for active feature (for Lens 3)
    - `docs/adrs/` → ADRs (for Lens 3)
    - `docs/specs/` → SPECs for completed tasks (for Lens 3)
    - `.tyrex/skills/devsec.md` → DevSec skill (for Lens 4, if exists)
@@ -138,10 +138,10 @@ Perform deep security analysis using the DevSec skill (if available) or the buil
 
 Ensure all required documentation is complete:
 - [ ] `docs/CHANGELOG.md` is up to date with all changes from this feature
-- [ ] ADR files are complete (if configured for this demand)
-- [ ] RFC files are complete (if configured for this demand)
-- [ ] Wiki updated (if configured for this demand)
-- [ ] Diagrams updated (if configured for this demand) — D2 format, renderable with `d2` CLI
+- [ ] ADR files are complete (if configured for this feature)
+- [ ] RFC files are complete (if configured for this feature)
+- [ ] Wiki updated (if configured for this feature)
+- [ ] Diagrams updated (if configured for this feature) — D2 format, renderable with `d2` CLI
 
 If any docs are missing or incomplete, generate/complete them now (docs are allowed in plan mode).
 
@@ -225,7 +225,7 @@ If **"Request re-review"**: tell user to make changes and run `/tyrex-review` ag
 
 ### Step 8: Requested Changes Loop (plan/do cycle)
 
-When changes are requested (via flag or quiz), this command automatically enters the fix cycle:
+When changes are requested (via flag or structured choices), this command automatically enters the fix cycle:
 
 1. **Create requested-change tasks** within the SAME feature:
    - Each finding becomes a task with prefix `rc-` (requested changes)
@@ -269,7 +269,7 @@ When changes are requested (via flag or quiz), this command automatically enters
    - TDD, commits, CHANGELOG updates all apply
    - If `--do-all` or `--do-critical` was used, auto-approve all fix commits too
 
-6. **After all fixes complete:** automatically run a **mini re-review** (only on the changed files from the fixes) to verify no regressions were introduced. If clean → go to Step 9. If new issues → present quiz to continue fixing or approve.
+6. **After all fixes complete:** automatically run a **mini re-review** (only on the changed files from the fixes) to verify no regressions were introduced. If clean → go to Step 9. If new issues → present choices to continue fixing or approve.
 
 ### Step 9: Finalize
 

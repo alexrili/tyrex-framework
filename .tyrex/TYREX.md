@@ -62,14 +62,16 @@ bin/tyrex.js (~427 lines, single-file CLI)
 - **Agent-agnostic commands:** One set of command definitions in `templates/commands/unified/` is copied to all agent directories
 - **Self-hosted:** Tyrex uses itself (`.tyrex/` exists in the repo)
 - **Naming:** files=lowercase-hyphenated, JS constants=UPPER_SNAKE_CASE, JS functions=camelCase
-- **Documentation layers:** SPEC (mandatory per task), SRS, PRD, ADR, RFC (suggested per demand), D2 diagrams (always offered), context ingestion at project and demand levels. Custom doc types supported via `tyrex.yml docs.custom` array.
+- **Documentation layers:** SPEC (mandatory per task), SRS, PRD, ADR, RFC (suggested per feature), D2 diagrams (always offered), context ingestion at project and feature levels. Custom doc types supported via `tyrex.yml docs.custom` array.
 - **D2 diagrams:** Diagrams use D2 language (d2lang.com) with 4 template types: architecture, sequence, data-flow, ER. Templates in `templates/diagrams/`. Always offered during `/tyrex-new`. (ADR-004)
-- **Custom doc layers:** Users can add custom documentation types via `/tyrex-settings`. Each custom doc type has: name, template path, scope (demand/task), mandatory flag. Templates stored in `.tyrex/templates/`.
+- **Custom doc layers:** Users can add custom documentation types via `/tyrex-settings`. Each custom doc type has: name, template path, scope (feature/task), mandatory flag. Templates stored in `.tyrex/templates/`.
 - **Skills as personas:** Skills in `.tyrex/skills/` are markdown persona files (Role, Expertise, Guidelines, Patterns, Review Criteria). Auto-suggested during `/tyrex-new`, assigned to tasks during `/tyrex-plan`, loaded as context during `/tyrex-do`
 - **Built-in DevSec skill:** `templates/skills/devsec.md` is a built-in security skill template. Auto-suggested when security-sensitive areas are detected during `/tyrex-new` and `/tyrex-plan`. Copied to `.tyrex/skills/devsec.md` on creation.
+- **Built-in Copywriter skill:** `templates/skills/copywriter.md` is a UX writing skill template. Used for text review and tone consistency enforcement. Voice: professional and direct (Stripe/Vercel style).
+- **Terminology standard:** User-facing text uses "feature" (never "demand"), "choices" (never "quiz"). Professional tone, active voice, actionable errors, no exclamation marks.
 - **Sync after every command update:** When updating commands in `templates/commands/unified/`, ALWAYS re-sync to all 4 agent directories as the LAST step — updates made after sync will be missed
 - **Agent mode (plan/build):** Every command declares its mode (`plan` or `build`) in an `## Agent Mode` section and sets `agent_mode` in `cursor.yml` as its first action. Plan mode = no source code writes. Build mode = full implementation with TDD. Enforced via triple layer: cursor.yml state + constitution rules + per-command instructions.
-- **Adaptive decision format:** ALL user decisions across ALL commands use structured choices adapted to the agent's interface. CLI agents (Claude Code, OpenCode): numbered quiz. Chat agents (Cursor, Codex): numbered list or direct question. Never open-ended questions when structured choices are possible. (ADR-003)
+- **Adaptive decision format:** ALL user decisions across ALL commands use structured choices adapted to the agent's interface. CLI agents (Claude Code, OpenCode): numbered choices. Chat agents (Cursor, Codex): numbered list or direct question. Never open-ended questions when structured choices are possible. (ADR-003)
 - **Security-first planning:** `/tyrex-plan` performs a security assessment BEFORE proposing tasks. Security-sensitive tasks get `security` attribute, quality: `required`, and devsec skill auto-assigned. Every feature with security implications gets a dedicated security hardening task.
 - **4-lens senior review:** `/tyrex-review` evaluates through 4 lenses: Pattern Compliance, Code Quality & DRY, Business & Technical Compliance, Security First. Uses senior engineer persona for the project's tech stack.
 - **Review → Fix loop:** `/tyrex-review` with `--do-all` or `--do-critical` flags auto-creates requested-change tasks (prefixed `rc-`) within the same feature and enters plan/do loop. Includes mini re-review after fixes.
@@ -128,6 +130,9 @@ bin/tyrex.js (~427 lines, single-file CLI)
 | 2026-03-12 | Custom documentation layers (ADR-004)    | `tyrex.yml docs.custom` array for user-defined doc types. Managed via `/tyrex-settings`. Templates in `.tyrex/templates/` |
 | 2026-03-12 | Production-ready doc templates (ADR-004) | All built-in templates (SPEC, SRS, PRD, ADR, RFC) rewritten with complete sections, guidance, and examples |
 | 2026-03-12 | Global-only installation (ADR-005)       | `tyrex` installs globally, `tyrex init` sets up projects with symlinks. Eliminates duplication, enables auto-updates |
+| 2026-03-12 | UX writing standard: "feature" not "demand" | Standardized on "feature" everywhere. "Demand" was jargon. 68 replacements across 12 files |
+| 2026-03-12 | UX writing standard: "choices" not "quiz" | "Quiz" implies testing the user. Replaced with "choices"/"structured choices". 38 replacements |
+| 2026-03-12 | Built-in Copywriter skill template       | `templates/skills/copywriter.md` for UX writing review. Professional and direct tone (Stripe/Vercel style) |
 
 ## CI/CD
 

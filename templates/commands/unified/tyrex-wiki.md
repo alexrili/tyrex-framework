@@ -45,7 +45,7 @@ For each proposed page, show:
 - Brief description of what it would cover
 - Whether it already exists (update) or is new (create)
 
-Ask: "Generate all pages? Or select individually?"
+Ask: "Generate all pages? [all/select]"
 
 ### Step 3: Generate wiki pages
 

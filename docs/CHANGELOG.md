@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Copywriter skill template (`templates/skills/copywriter.md`) — UX writer persona for text review and consistency enforcement
+- UX Writing Audit Report (`.tyrex/features/006-audit-report.md`)
+
+### Changed
+- Standardized terminology: "demand" → "feature" across all 18 command files (68 replacements)
+- Standardized terminology: "quiz" → "choices" / "structured choices" across all command files (38 replacements)
+- CLI text improvements: removed exclamation marks, added actionable error messages, fixed incorrect `/tyrex-status` → `/tyrex-help` reference
+- Command files: fixed passive voice, filler words, verbose messages, informal language
+- Dashboard formatting: standardized separator lengths (40 chars) and title format (`TYREX [Name]`)
+- Converted open-ended questions to structured choices (tyrex-discuss save prompt)
+- Standardized prompt response hints (`[Y/n]`, `[all/select]`, `[Y] Replace [n] Cancel [m] Merge`)
+- Voice and tone: professional and direct, consistent across all touchpoints
+
 ## [0.4.0] - 2026-03-12
 
 ### Breaking Changes

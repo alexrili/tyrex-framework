@@ -83,7 +83,7 @@ Active: 003-feature-name
 
 ─── Context ────────────────────────────
   Project:        [N files] (.tyrex/context/)
-  Demand:         [filename | none] (.tyrex/features/NNN-context.md)
+  Feature:        [filename | none] (.tyrex/features/NNN-context.md)
 
 Last commit: [hash] ([time or date])
 Last action: [action from cursor.yml]
