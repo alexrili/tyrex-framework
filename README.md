@@ -122,6 +122,7 @@ For **new/empty projects**, Tyrex creates a minimal structure and suggests `/tyr
 | `/tyrex-readme` | Generate/update README.md |
 | `/tyrex-openapi` | Generate OpenAPI docs from code |
 | `/tyrex-wiki` | Generate/update project wiki |
+| `/tyrex-research` | AI-powered technical research (codebase + web) |
 | `/tyrex-help` | Command reference and contextual suggestions |
 
 ## Typical Workflow
@@ -255,7 +256,7 @@ Custom doc types appear in `/tyrex-new` alongside built-in ones.
 | Cursor | `~/.cursor/rules/tyrex/` | `.cursor/rules/tyrex/` → global | `CLAUDE.md` |
 | Codex | `~/.codex/skills/tyrex/` | `.codex/skills/tyrex/` → global | `CLAUDE.md` |
 
-All agents receive the same 18 command definitions from a single source of truth. Commands are installed globally and symlinked into projects for agents that require project-local files.
+All agents receive the same 19 command definitions from a single source of truth. Commands are installed globally and symlinked into projects for agents that require project-local files.
 
 ## Project Structure
 
