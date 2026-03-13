@@ -69,6 +69,7 @@ bin/tyrex.js (~427 lines, single-file CLI)
 - **Built-in DevSec skill:** `templates/skills/devsec.md` is a built-in security skill template. Auto-suggested when security-sensitive areas are detected during `/tyrex-new` and `/tyrex-plan`. Copied to `.tyrex/skills/devsec.md` on creation.
 - **Built-in Copywriter skill:** `templates/skills/copywriter.md` is a UX writing skill template. Used for text review and tone consistency enforcement. Voice: professional and direct (Stripe/Vercel style).
 - **Terminology standard:** User-facing text uses "feature" (never "demand"), "choices" (never "quiz"). Professional tone, active voice, actionable errors, no exclamation marks.
+- **Skill evolution via review:** `/tyrex-review` Step 5b extracts patterns from review findings and evolves skills. CRITICAL/HIGH findings always become pattern candidates. Findings appearing 2+ times become candidates. Skills have a 150-line limit with summarization. User approval required (auto-approved with `--do-all`). New skills suggested when findings match no existing skill. (ADR-006)
 - **Sync after every command update:** When updating commands in `templates/commands/unified/`, ALWAYS re-sync to all 4 agent directories as the LAST step — updates made after sync will be missed
 - **Agent mode (plan/build):** Every command declares its mode (`plan` or `build`) in an `## Agent Mode` section and sets `agent_mode` in `cursor.yml` as its first action. Plan mode = no source code writes. Build mode = full implementation with TDD. Enforced via triple layer: cursor.yml state + constitution rules + per-command instructions.
 - **Adaptive decision format:** ALL user decisions across ALL commands use structured choices adapted to the agent's interface. CLI agents (Claude Code, OpenCode): numbered choices. Chat agents (Cursor, Codex): numbered list or direct question. Never open-ended questions when structured choices are possible. (ADR-003)
@@ -133,6 +134,7 @@ bin/tyrex.js (~427 lines, single-file CLI)
 | 2026-03-12 | UX writing standard: "feature" not "demand" | Standardized on "feature" everywhere. "Demand" was jargon. 68 replacements across 12 files |
 | 2026-03-12 | UX writing standard: "choices" not "quiz" | "Quiz" implies testing the user. Replaced with "choices"/"structured choices". 38 replacements |
 | 2026-03-12 | Built-in Copywriter skill template       | `templates/skills/copywriter.md` for UX writing review. Professional and direct tone (Stripe/Vercel style) |
+| 2026-03-13 | Skill evolution via review (ADR-006)     | `/tyrex-review` Step 5b extracts patterns from findings, evolves skills, suggests new skills. Closes the learning loop between review and skills systems |
 
 ## CI/CD
 

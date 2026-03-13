@@ -1,7 +1,7 @@
 # ADR-006: Skill Evolution via /tyrex-review
 
 ## Status
-Proposed
+Accepted
 
 ## Date
 2026-03-12
