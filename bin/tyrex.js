@@ -97,7 +97,7 @@ async function confirm(question, defaultYes = true) {
 function copyTemplate(templateName, destPath, replacements = {}) {
   const srcPath = path.join(TEMPLATES_DIR, templateName);
   if (!fs.existsSync(srcPath)) {
-    console.log(c("red", `  Template not found: ${templateName}`));
+    console.log(c("red", `  Missing template: ${templateName}. Run 'tyrex --force' to reinstall.`));
     return false;
   }
   let content = fs.readFileSync(srcPath, "utf-8");
@@ -118,7 +118,7 @@ function copyTemplate(templateName, destPath, replacements = {}) {
  */
 function copyTemplateIfNew(templateName, destPath, replacements = {}, force = false) {
   if (!force && fs.existsSync(destPath)) {
-    console.log(c("dim", `  Preserved ${path.relative(process.cwd(), destPath)} (already exists, use --force to overwrite)`));
+    console.log(c("dim", `  Skipped ${path.relative(process.cwd(), destPath)} (exists). Use --force to overwrite.`));
     return false;
   }
   return copyTemplate(templateName, destPath, replacements);
@@ -135,7 +135,7 @@ function ensureDir(dirPath) {
 function createDirSymlink(target, linkPath) {
   // Check if target exists
   if (!fs.existsSync(target)) {
-    console.log(c("yellow", `  Skipped symlink ${path.relative(process.cwd(), linkPath)} (target not found: ${target})`));
+    console.log(c("yellow", `  Skipped symlink ${path.relative(process.cwd(), linkPath)} — target directory not found.`));
     return false;
   }
 
@@ -156,7 +156,7 @@ function createDirSymlink(target, linkPath) {
       // Wrong target — remove and recreate
       fs.unlinkSync(linkPath);
     } else if (stat.isDirectory()) {
-      console.log(c("yellow", `  Warning: ${path.relative(process.cwd(), linkPath)} is a regular directory, not replacing with symlink`));
+      console.log(c("yellow", `  ${path.relative(process.cwd(), linkPath)} is a directory (not a symlink). Remove it manually to re-link.`));
       return false;
     }
   } catch (err) {
@@ -289,8 +289,7 @@ function initProject(projectDir, config, force = false) {
 
   // Check if global install exists
   if (!fs.existsSync(path.join(GLOBAL_TYREX_DIR, "templates"))) {
-    console.log(c("red", "  Global Tyrex installation not found."));
-    console.log(c("dim", "  Run 'tyrex' first to install globally."));
+    console.log(c("red", "  Global installation not found. Run 'tyrex' to install."));
     return false;
   }
 
@@ -468,11 +467,11 @@ async function main() {
 
     if (success) {
       console.log(c("bold", "\n  ═══════════════════════════════════════"));
-      console.log(c("green", c("bold", "  Project initialized!")));
+      console.log(c("green", c("bold", "  Project initialized.")));
       console.log("");
       console.log(`  ${c("dim", "Start your agent and run:")} ${c("cyan", "/tyrex-init")}`);
       console.log(`  ${c("dim", "Or for a new feature:")}     ${c("cyan", "/tyrex-new")}`);
-      console.log(`  ${c("dim", "See all commands:")}         ${c("cyan", "/tyrex-status")}`);
+      console.log(`  ${c("dim", "See all commands:")}         ${c("cyan", "/tyrex-help")}`);
       console.log("");
     }
 
@@ -523,7 +522,7 @@ async function main() {
 
   // 3. Done
   console.log(c("bold", "\n  ═══════════════════════════════════════"));
-  console.log(c("green", c("bold", "  Done!")));
+  console.log(c("green", c("bold", "  Setup complete.")));
   console.log("");
   console.log(`  ${c("dim", "Next, in your project directory run:")} ${c("cyan", "tyrex init")}`);
   console.log(`  ${c("dim", "Then start your agent and run:")}       ${c("cyan", "/tyrex-init")}`);
@@ -544,7 +543,7 @@ async function handleUninstall(flags) {
       fs.rmSync(commandsDir, { recursive: true });
       console.log(c("green", `  Removed ~/${agentConfig.commandsDir}/`));
     } else {
-      console.log(c("dim", `  ~/${agentConfig.commandsDir}/ not found, skipping`));
+      console.log(c("dim", `  ~/${agentConfig.commandsDir}/ not found — already uninstalled or never installed.`));
     }
   }
 
@@ -580,24 +579,25 @@ function printHelp() {
   console.log(`    --help, -h              Show this help`);
   console.log("");
   console.log(`  ${c("bold", "Examples:")}`);
-  console.log(`    tyrex                                 Interactive global setup`);
-  console.log(`    tyrex --claude                        Global install for Claude Code`);
-  console.log(`    tyrex --all                           Global install for all agents`);
-  console.log(`    tyrex init                            Init project (interactive)`);
-  console.log(`    tyrex init -d                         Init project with defaults`);
-  console.log(`    tyrex init -f                         Re-init, overwrite core files`);
-  console.log(`    tyrex --uninstall --all               Remove all global installations`);
+    console.log(`    tyrex                                 Set up globally (interactive)`);
+    console.log(`    tyrex --claude                        Set up for Claude Code`);
+    console.log(`    tyrex --all                           Set up for all agents`);
+    console.log(`    tyrex init                            Initialize project (interactive)`);
+    console.log(`    tyrex init -d                         Initialize project with defaults`);
+    console.log(`    tyrex init -f                         Reinitialize, overwrite core files`);
+    console.log(`    tyrex --uninstall --all               Remove all global installations`);
   console.log("");
   console.log(`  ${c("bold", "Workflow:")}`);
-  console.log(`    1. ${c("cyan", "npm install -g tyrex-framework")}    Install the CLI`);
-  console.log(`    2. ${c("cyan", "tyrex --all")}                       Global setup (once)`);
-  console.log(`    3. ${c("cyan", "cd your-project && tyrex init")}     Init each project`);
-  console.log(`    4. ${c("cyan", "/tyrex-new")}                        Start building!`);
+    console.log(`    1. ${c("cyan", "npm install -g tyrex-framework")}    Install the CLI`);
+    console.log(`    2. ${c("cyan", "tyrex --all")}                       Set up globally (once)`);
+    console.log(`    3. ${c("cyan", "cd your-project && tyrex init")}     Initialize your project`);
+    console.log(`    4. ${c("cyan", "/tyrex-new")}                        Start building`);
   console.log("");
 }
 
 main().catch((err) => {
   console.error(c("red", `\n  Error: ${err.message}`));
+  console.error(c("dim", `  Run 'tyrex help' for usage.`));
   rl.close();
   process.exit(1);
 });
