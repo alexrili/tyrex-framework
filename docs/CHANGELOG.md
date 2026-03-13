@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Skill evolution via `/tyrex-review` (ADR-006): new Step 5b extracts patterns from review findings and evolves existing skills
 - `/tyrex-review` now suggests creating new skills when findings match no existing skill
 - Review summary includes "Skills" section showing updated and suggested skill counts
+- `/tyrex-research` command — AI-powered technical research (codebase + web), works with or without active feature, saves results on demand
 
 ### Changed
 - Standardized terminology: "demand" → "feature" across all 18 command files (68 replacements)
