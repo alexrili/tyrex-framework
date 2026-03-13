@@ -28,5 +28,15 @@ Extend `/tyrex-review` to extract patterns from review findings and evolve exist
 - Branch: feat/007-review-knowledge-base
 - Commits: auto
 
+## Tasks
+1. Add Step 5b (knowledge extraction) to /tyrex-review — copywriter
+2. Update review summary format (Step 6) with skills section — copywriter
+3. Update Step 9 (finalize) to commit skill files — copywriter
+4. Sync updated command to all 4 agent directories
+5. Update CHANGELOG, TYREX.md, and ADR-006 status
+
+## Execution
+All sequential: Task 1 → 2 → 3 → 4 → 5 (same file dependency)
+
 ## Status
-spec
+planned

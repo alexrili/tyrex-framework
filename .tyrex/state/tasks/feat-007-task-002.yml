@@ -1,0 +1,17 @@
+task_id: "feat-007-task-002"
+feature: "007-review-knowledge-base"
+name: "Update review summary format (Step 6) with skills section"
+status: "pending"
+depends_on: ["feat-007-task-001"]
+unlocks: ["feat-007-task-003"]
+parallel: false
+spec_file: "docs/specs/007-task-002-update-review-summary.md"
+skill: "copywriter"
+quality: "optional"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: []
+output: null
+errors: null

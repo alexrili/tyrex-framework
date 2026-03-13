@@ -1,0 +1,17 @@
+task_id: "feat-007-task-001"
+feature: "007-review-knowledge-base"
+name: "Add Step 5b (knowledge extraction) to /tyrex-review"
+status: "pending"
+depends_on: []
+unlocks: ["feat-007-task-002"]
+parallel: false
+spec_file: "docs/specs/007-task-001-knowledge-extraction-step.md"
+skill: "copywriter"
+quality: "optional"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: []
+output: null
+errors: null

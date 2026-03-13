@@ -1,0 +1,17 @@
+task_id: "feat-007-task-003"
+feature: "007-review-knowledge-base"
+name: "Update Step 9 (finalize) to commit skill files"
+status: "pending"
+depends_on: ["feat-007-task-002"]
+unlocks: ["feat-007-task-004"]
+parallel: false
+spec_file: "docs/specs/007-task-003-finalize-skill-commits.md"
+skill: "copywriter"
+quality: "optional"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: []
+output: null
+errors: null

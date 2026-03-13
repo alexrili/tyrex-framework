@@ -1,0 +1,17 @@
+task_id: "feat-007-task-005"
+feature: "007-review-knowledge-base"
+name: "Update CHANGELOG, TYREX.md, and ADR-006 status"
+status: "pending"
+depends_on: ["feat-007-task-004"]
+unlocks: []
+parallel: false
+spec_file: "docs/specs/007-task-005-changelog-tyrexmd.md"
+skill: "none"
+quality: "optional"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: []
+output: null
+errors: null
