@@ -1,0 +1,22 @@
+task_id: "feat-007-task-005"
+feature: "007-review-knowledge-base"
+name: "Update CHANGELOG, TYREX.md, and ADR-006 status"
+status: "completed"
+depends_on: ["feat-007-task-004"]
+unlocks: []
+parallel: false
+spec_file: "docs/specs/007-task-005-changelog-tyrexmd.md"
+skill: "none"
+quality: "optional"
+started_at: "2026-03-12T13:11:00Z"
+finished_at: "2026-03-12T13:15:00Z"
+agent: null
+commit: null
+files_changed:
+  - "docs/CHANGELOG.md"
+  - ".tyrex/TYREX.md"
+  - "docs/adrs/006-review-knowledge-base.md"
+  - ".tyrex/features/007-review-knowledge-base.md"
+  - ".tyrex/state/cursor.yml"
+output: "Updated CHANGELOG with feature entries, TYREX.md with pattern and architecture decision, ADR-006 status to Accepted"
+errors: null

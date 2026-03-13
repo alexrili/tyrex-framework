@@ -1,0 +1,18 @@
+task_id: "feat-007-task-002"
+feature: "007-review-knowledge-base"
+name: "Update review summary format (Step 6) with skills section"
+status: "completed"
+depends_on: ["feat-007-task-001"]
+unlocks: ["feat-007-task-003"]
+parallel: false
+spec_file: "docs/specs/007-task-002-update-review-summary.md"
+skill: "copywriter"
+quality: "optional"
+started_at: "2026-03-12T13:05:00Z"
+finished_at: "2026-03-12T13:07:00Z"
+agent: null
+commit: null
+files_changed:
+  - "templates/commands/unified/tyrex-review.md"
+output: "Added Skills section to review summary template with Updated and Suggested counts"
+errors: null

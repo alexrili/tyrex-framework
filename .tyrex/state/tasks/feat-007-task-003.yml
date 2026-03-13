@@ -1,0 +1,18 @@
+task_id: "feat-007-task-003"
+feature: "007-review-knowledge-base"
+name: "Update Step 9 (finalize) to commit skill files"
+status: "completed"
+depends_on: ["feat-007-task-002"]
+unlocks: ["feat-007-task-004"]
+parallel: false
+spec_file: "docs/specs/007-task-003-finalize-skill-commits.md"
+skill: "copywriter"
+quality: "optional"
+started_at: "2026-03-12T13:07:00Z"
+finished_at: "2026-03-12T13:10:00Z"
+agent: null
+commit: null
+files_changed:
+  - "templates/commands/unified/tyrex-review.md"
+output: "Updated Step 9 to include skill file commits and sync to provider directories. Updated important rules to clarify Step 5b can write to .tyrex/skills/"
+errors: null

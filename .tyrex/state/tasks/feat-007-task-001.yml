@@ -1,0 +1,18 @@
+task_id: "feat-007-task-001"
+feature: "007-review-knowledge-base"
+name: "Add Step 5b (knowledge extraction) to /tyrex-review"
+status: "completed"
+depends_on: []
+unlocks: ["feat-007-task-002"]
+parallel: false
+spec_file: "docs/specs/007-task-001-knowledge-extraction-step.md"
+skill: "copywriter"
+quality: "optional"
+started_at: "2026-03-12T13:00:00Z"
+finished_at: "2026-03-12T13:05:00Z"
+agent: null
+commit: null
+files_changed:
+  - "templates/commands/unified/tyrex-review.md"
+output: "Added Step 5b with 5 sub-steps: match findings to skills, identify pattern candidates, draft skill updates, propose updates with approval, suggest new skills"
+errors: null

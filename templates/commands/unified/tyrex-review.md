@@ -156,6 +156,60 @@ Automatically analyze whether new patterns, hurdles, or architecture decisions e
 
 This keeps TYREX.md as the single living index of ALL project knowledge.
 
+### Step 5b: Skill evolution
+
+Extract patterns from review findings and evolve existing skills. Skip this step if zero findings were generated.
+
+1. **Match findings to skills:**
+   - Read all skills in `.tyrex/skills/`
+   - For each finding, compare its domain (security, code quality, architecture, etc.) against each skill's `## Expertise` section
+   - Group findings by matched skill
+
+2. **Identify pattern candidates:**
+   - CRITICAL/HIGH findings → always candidates (even if seen once)
+   - Findings appearing 2+ times across files → candidates
+   - Each candidate becomes a potential `## Patterns` entry
+
+3. **Draft skill updates:**
+   For each matched skill with pattern candidates:
+   - Draft new entries for `## Patterns`:
+     ```
+     ### [Pattern name] (YYYY-MM-DD)
+     [Description of the pattern or anti-pattern found]
+     Found in: [file:line] during review of feature [NNN]
+     ```
+   - Draft new `## Review Criteria` checklist items if the review reveals checks not currently listed in the skill
+   - Check the skill's line count: if approaching 150 lines, summarize the oldest patterns into a compact list before appending new ones
+
+4. **Propose updates:**
+   - Present each skill's proposed additions to the user:
+     ```
+     Skill updates from this review:
+
+       copywriter.md:
+         + Pattern: [description]
+         + Review criteria: [new checklist item]
+
+       devsec.md:
+         + Pattern: [description]
+
+     Approve skill updates? [Y/n/edit]
+     ```
+   - **If `--do-all` flag:** auto-approve all skill updates
+   - If approved: write the additions to each skill file
+
+5. **Suggest new skills:**
+   - If findings exist in domains with no matching skill:
+     ```
+     Findings in areas without a skill:
+       [domain]: [N] findings
+
+       [ ] Create skill for [domain] now
+       [ ] Skip
+     ```
+   - If creating: generate the skill file pre-populated with patterns from this review, using the standard skill format (Role, Expertise, Guidelines, Patterns, Review Criteria)
+   - **If `--do-all` flag:** auto-create suggested skills
+
 ### Step 6: Present review summary
 
 Present the complete review using the 4-lens format:
@@ -199,6 +253,10 @@ Documentation:
   Wiki:      [updated/N/A]
 
 TYREX.md: [updated with N new entries / no updates needed]
+
+Skills:
+  Updated:   [N] ([list of skill names with patterns added])
+  Suggested: [N] ([list of new skill names, if any])
 
 Total findings: [N] (CRITICAL: [n], HIGH: [n], MEDIUM: [n], LOW: [n])
 ```
@@ -275,7 +333,10 @@ When changes are requested (via flag or structured choices), this command automa
 
 - Update feature spec status to `done`
 - Update `.tyrex/roadmap.yml`: set this feature's status to `done`
-- Final commit with documentation updates (if any docs were updated during review)
+- If skill files were modified or created in Step 5b:
+  - Include `.tyrex/skills/*.md` changes in the final commit
+  - Sync updated/new skills to all provider directories (`.claude/skills/`, `.opencode/skills/`, `.cursor/rules/tyrex-skill-*.md`, `.codex/skills/tyrex/skill-*.md`)
+- Final commit with documentation and skill updates
 - Update cursor.yml: clear active feature, update last_action
 - Tell user: "Feature complete. Run /tyrex-new for the next feature, or /tyrex-status for overview."
 
@@ -287,7 +348,7 @@ When changes are requested (via flag or structured choices), this command automa
 - The review phase is where documentation gets FINALIZED, not skipped
 - Refactoring suggestions should be actionable and specific during review (plan mode)
 - NEVER skip the security review (Lens 4) — Security First is a core principle
-- NEVER write source code during the review phase (Steps 1-7) — only during Step 8 fix execution
+- NEVER write source code during the review phase (Steps 1-7) — only during Step 8 fix execution. Step 5b writes to skill files (`.tyrex/skills/`), which is allowed in plan mode.
 - For PR scope: always use `git diff` against the base branch to determine scope
 - For Full scope: always update `.tyrex/map/security-audit.md` with the complete re-scan results
 - When marking findings as resolved in `security-audit.md`, change `[ ]` to `[x]` — do not delete the row

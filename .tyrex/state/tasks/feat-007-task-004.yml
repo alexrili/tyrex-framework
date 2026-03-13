@@ -1,0 +1,21 @@
+task_id: "feat-007-task-004"
+feature: "007-review-knowledge-base"
+name: "Sync updated command to all 4 agent directories"
+status: "completed"
+depends_on: ["feat-007-task-003"]
+unlocks: ["feat-007-task-005"]
+parallel: false
+spec_file: "docs/specs/007-task-004-sync-agents.md"
+skill: "none"
+quality: "optional"
+started_at: "2026-03-12T13:10:00Z"
+finished_at: "2026-03-12T13:11:00Z"
+agent: null
+commit: null
+files_changed:
+  - ".claude/commands/tyrex-review.md"
+  - ".opencode/commands/tyrex-review.md"
+  - ".cursor/rules/tyrex/tyrex-review.md"
+  - ".codex/skills/tyrex/tyrex-review.md"
+output: "Synced tyrex-review.md to all 4 agent directories"
+errors: null

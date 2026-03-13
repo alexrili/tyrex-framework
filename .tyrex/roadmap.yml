@@ -47,13 +47,20 @@ features:
     depends_on: []
 
   - id: "006"
-    name: "review-knowledge-base"
-    description: "Skill evolution via /tyrex-review — knowledge base enrichment"
-    status: planned
-    referenced_in: ["002-skills-system", "ADR-002"]
-    depends_on: ["002"]
+    name: "ux-writing-review"
+    description: "UX Writing Skill & Text Review — copywriter skill, terminology standardization"
+    status: done
+    referenced_in: []
+    depends_on: []
 
   - id: "007"
+    name: "review-knowledge-base"
+    description: "Skill evolution via /tyrex-review — knowledge base enrichment"
+    status: done
+    referenced_in: ["002-skills-system", "ADR-002", "ADR-006"]
+    depends_on: ["002"]
+
+  - id: "008"
     name: "research-command"
     description: "/tyrex-research — AI-powered technical research"
     status: planned
