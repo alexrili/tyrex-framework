@@ -29,5 +29,10 @@ Create a new `/tyrex-research` command that enables structured technical researc
 - Branch: feat/008-research-command
 - Commits: auto
 
+## Tasks
+1. Create tyrex-research.md command file — copywriter
+2. Sync command to all 4 agent directories
+3. Update CHANGELOG, TYREX.md, feature spec, cursor
+
 ## Status
-spec
+in_review
