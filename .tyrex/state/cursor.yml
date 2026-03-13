@@ -8,16 +8,16 @@ session_id: null
 # Each /tyrex-* command sets this field as its FIRST action.
 agent_mode: "plan"
 
-active_feature: null
-active_feature_file: null
+active_feature: "008-research-command"
+active_feature_file: ".tyrex/features/008-research-command.md"
 
-last_task_completed: "feat-007-task-005"
+last_task_completed: null
 last_commit: null
-last_action: "feature_007_completed"
+last_action: "feature_created"
 
 tasks_summary:
-  total: 5
-  completed: 5
+  total: 0
+  completed: 0
   in_progress: 0
   pending: 0
   failed: 0
