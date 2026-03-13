@@ -56,7 +56,7 @@ features:
   - id: "007"
     name: "review-knowledge-base"
     description: "Skill evolution via /tyrex-review — knowledge base enrichment"
-    status: in_progress
+    status: done
     referenced_in: ["002-skills-system", "ADR-002", "ADR-006"]
     depends_on: ["002"]
 

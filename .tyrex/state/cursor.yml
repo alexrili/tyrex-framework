@@ -6,14 +6,14 @@ session_id: null
 # "plan"  — read, analyze, discuss, plan. MUST NOT write source code.
 # "build" — implement, test, commit. May write source code following TDD and commit rules.
 # Each /tyrex-* command sets this field as its FIRST action.
-agent_mode: "build"
+agent_mode: "plan"
 
-active_feature: "007-review-knowledge-base"
-active_feature_file: ".tyrex/features/007-review-knowledge-base.md"
+active_feature: null
+active_feature_file: null
 
 last_task_completed: "feat-007-task-005"
 last_commit: null
-last_action: "all_tasks_completed"
+last_action: "feature_007_completed"
 
 tasks_summary:
   total: 5

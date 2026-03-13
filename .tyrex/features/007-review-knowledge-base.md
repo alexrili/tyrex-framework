@@ -39,4 +39,4 @@ Extend `/tyrex-review` to extract patterns from review findings and evolve exist
 All sequential: Task 1 → 2 → 3 → 4 → 5 (same file dependency)
 
 ## Status
-in_review
+done
