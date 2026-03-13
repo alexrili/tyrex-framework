@@ -63,6 +63,6 @@ features:
   - id: "008"
     name: "research-command"
     description: "/tyrex-research — AI-powered technical research"
-    status: in_progress
+    status: done
     referenced_in: ["002-skills-system"]
     depends_on: ["002"]

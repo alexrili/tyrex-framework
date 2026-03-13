@@ -35,4 +35,4 @@ Create a new `/tyrex-research` command that enables structured technical researc
 3. Update CHANGELOG, TYREX.md, feature spec, cursor
 
 ## Status
-in_review
+done
