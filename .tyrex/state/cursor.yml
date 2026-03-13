@@ -11,24 +11,19 @@ agent_mode: "build"
 active_feature: "006-ux-writing-review"
 active_feature_file: ".tyrex/features/006-ux-writing-review.md"
 
-last_task_completed: null
+last_task_completed: "feat-006-task-005"
 last_commit: null
-last_action: "feature_006_started"
+last_action: "feature_006_completed"
 
 tasks_summary:
   total: 5
-  completed: 0
-  in_progress: 1
-  pending: 4
+  completed: 5
+  in_progress: 0
+  pending: 0
   failed: 0
   blocked: 0
 
-next_tasks:
-  - "feat-006-task-001"
-  - "feat-006-task-002"
-  - "feat-006-task-003"
-  - "feat-006-task-004"
-  - "feat-006-task-005"
+next_tasks: []
 
 # v0.1.0 released — Features 001, 002, 003 complete
 # v0.1.1 released — 18 commands, 4 agents, roadmap system, skills, discuss
