@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.2] - 2026-03-15
+
+### Added
+- "Updating" section in README with upgrade instructions
+- `postpublish` script in package.json — automatically runs `npm deprecate` on all versions below the newly published one
+
 ## [0.5.1] - 2026-03-15
 
 ### Fixed

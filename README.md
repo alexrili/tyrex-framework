@@ -84,6 +84,15 @@ For **new/empty projects**, Tyrex creates a minimal structure and suggests `/tyr
 /tyrex-review     # Review, finalize docs, ship
 ```
 
+## Updating
+
+```bash
+npm install -g tyrex-framework@latest
+tyrex --all
+```
+
+The first command updates the package. The second reinstalls global command files so new or changed commands are available to all agents. Project-level templates are symlinked to the global install, so they update automatically — no need to re-run `tyrex init`.
+
 ## Commands
 
 ### Workflow
