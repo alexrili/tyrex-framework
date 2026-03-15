@@ -6,7 +6,7 @@ const os = require("os");
 const readline = require("readline");
 
 // ─── Constants ───────────────────────────────────────────────
-const VERSION = "0.4.0";
+const VERSION = require("../package.json").version;
 const TEMPLATES_DIR = path.join(__dirname, "..", "templates");
 const HOME_DIR = os.homedir();
 const GLOBAL_TYREX_DIR = path.join(HOME_DIR, ".tyrex");
