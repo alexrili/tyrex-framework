@@ -491,19 +491,19 @@ async function main() {
   else if (flags.all) agent = "all";
   else {
     const agentChoice = await choose("Which AI agent are you using?", [
-      { label: "Claude Code", desc: "Anthropic's CLI agent", default: true },
+      { label: "All", desc: "Install for all agents (recommended)", default: true },
+      { label: "Claude Code", desc: "Anthropic's CLI agent" },
       { label: "OpenCode", desc: "Open source AI coding agent" },
       { label: "Cursor", desc: "AI-first code editor" },
       { label: "Codex", desc: "OpenAI's coding agent" },
-      { label: "All", desc: "Install for all agents" },
     ]);
-    agent = ["claude", "opencode", "cursor", "codex", "all"][
+    agent = ["all", "claude", "opencode", "cursor", "codex"][
       [
+        "All",
         "Claude Code",
         "OpenCode",
         "Cursor",
         "Codex",
-        "All",
       ].indexOf(agentChoice.label)
     ];
   }
