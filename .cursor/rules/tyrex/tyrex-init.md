@@ -22,10 +22,33 @@ You MUST NOT write source code. You may create/modify only `.tyrex/`, `docs/`, a
 
 ### If `.tyrex/` does NOT exist (fresh project):
 
-First, check if the user has run the CLI `tyrex init` command. If `.tyrex/` doesn't exist at all, tell the user:
-> "Run `tyrex init` in your terminal first to create the project structure, then come back and run `/tyrex-init`."
+**Step 0: Create Project Structure**
 
-If `.tyrex/tyrex.yml` exists but `.tyrex/map/` is empty (i.e., `tyrex init` was run but `/tyrex-init` hasn't mapped the codebase yet), proceed with the mapping below.
+If `.tyrex/` doesn't exist, create it now. Do NOT ask the user to leave and run a CLI command — handle everything inline.
+
+Create the following directories:
+```
+.tyrex/state/tasks/
+.tyrex/features/
+.tyrex/skills/
+.tyrex/map/
+.tyrex/context/
+docs/adrs/
+docs/rfcs/
+docs/wiki/
+docs/diagrams/
+docs/specs/
+docs/srs/
+docs/prd/
+```
+
+If `docs/CHANGELOG.md` doesn't exist, create it with the standard Keep a Changelog header.
+
+Then proceed with the mapping below. Configuration files (`tyrex.yml`, `TYREX.md`, `constitution.md`, `cursor.yml`) will be generated in Steps 2-3.
+
+> **Tip:** For future projects, you can run `tyrex init` in the terminal first to pre-configure the structure with symlinks to global templates. But it's not required — `/tyrex-init` handles everything.
+
+If `.tyrex/` exists but `.tyrex/map/` is empty (i.e., the structure was created but `/tyrex-init` hasn't mapped the codebase yet), skip Step 0 and proceed with the mapping below.
 
 Perform a COMPLETE project mapping. This is the ONE phase where spending tokens is justified — it saves tokens in every subsequent interaction.
 
@@ -80,7 +103,7 @@ Ask the user these questions (use the question tool when available, otherwise as
 2. "Branch creation: automatic or you approve the branch name?"
    - Options: `auto` | `approve` (default: approve)
 
-3. "Documentation level: always generate full docs, suggest per demand, or minimal?"
+3. "Documentation level: always generate full docs, suggest per feature, or minimal?"
    - Options: `always` | `suggest` | `minimal` (default: suggest)
 
 4. "Allow parallel execution of independent tasks?"
@@ -94,7 +117,7 @@ Save answers to `.tyrex/tyrex.yml`.
 **Step 4: Context Ingestion**
 After the automated mapping is complete, offer the user a chance to provide additional project context that the codebase analysis cannot detect:
 
-1. Ask: "The automated analysis is complete. Do you have additional context to provide? (legacy systems, business constraints, external integrations, architectural history, etc.) [y/N]"
+1. Ask: "Add project context? (business rules, constraints, integrations) [y/N]"
 2. If yes: follow the `/tyrex-context add` flow with scope set to `project`
    - Accept free text, file paths, or URLs
    - Store in `.tyrex/context/`
@@ -114,7 +137,7 @@ Present a summary of:
 ### For empty/new projects (greenfield):
 If the directory is empty or has minimal files (only config, README, or scaffold):
 
-1. **Skip codebase analysis** — there's nothing to analyze yet.
+1. **Skip codebase analysis** — no source code to analyze.
 2. **Create minimal structure** — scaffold `.tyrex/`, `docs/`, and core files with placeholder content.
 3. **Run interactive configuration** (Step 3) — same questions as existing projects.
 4. **Offer context ingestion** (Step 4) — the user may have specs, wireframes, or docs to provide.
