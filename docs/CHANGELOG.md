@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- Feature 009: `/tyrex-debug` — Interactive debug command with persistent bug registry
+- `/tyrex-debug` command template: two investigation modes (user-directed + automatic), flexible diagnostic depth (quick/standard/deep), infrastructure management with user approval, session-based bug reports in `.tyrex/bugs/`
+- Debugger skill template (`templates/skills/debugger.md`) — Senior Debug Engineer persona, ships with framework
+- DevSec skill (`.tyrex/skills/devsec.md`) — Security-First Developer persona
+- ADR-007: Interactive debug command design decisions
+- PRD, SRS, Wiki, and D2 sequence diagram for debug command
+- `/tyrex-new` Step 0b: checks bug registry for open bugs before starting a new feature
+- `/tyrex-status` Bugs section: shows debug session count and open bugs by severity
+- `/tyrex-help` updated with debug command reference and workflow diagram
+- Security hardening: curl timeout, localhost-only restriction, explicit command denylist
+
 ## [0.5.4] - 2026-03-16
 
 ### Fixed

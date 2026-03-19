@@ -21,7 +21,7 @@ These rules are **inviolable** during debug sessions:
 
 1. **Present every command before execution.** Before running ANY shell command (docker, service, log read, curl, etc.), show the exact command to the user and wait for approval.
 2. **Never interpolate user input into shell commands.** Construct all commands yourself from known-safe values. If you need a user-provided value (e.g., a service name), validate it against expected patterns before use.
-3. **Read-only infrastructure by default.** Only use commands that read state or start services: `docker compose up`, `docker compose ps`, `docker logs`, `docker inspect`, `curl`. NEVER use: `docker rm`, `docker rmi`, `docker volume rm`, `docker system prune`, or any command that deletes data.
+3. **Read-only infrastructure by default.** Only use commands that read state or start services: `docker compose up`, `docker compose ps`, `docker logs`, `docker inspect`, `curl` (with `--max-time 5`, localhost only — never follow redirects to external URLs). NEVER use: `docker rm`, `docker rmi`, `docker volume rm`, `docker system prune`, or any command that deletes data.
 4. **Validate file paths.** When reading log files, verify the path is within the project directory. Never read files outside the project root (e.g., `/etc/`, `~/.ssh/`, `/var/log/` on the host).
 5. **Sanitize evidence in reports.** When writing bug reports, redact any passwords, tokens, API keys, connection strings, or PII that appear in logs or stack traces. Replace with `[REDACTED]`.
 6. **No destructive actions.** Never restart, stop, or remove containers/services without explicit user approval for each action.
@@ -186,7 +186,7 @@ Based on the diagnostic depth and investigation mode, collect evidence:
 2. If the project has health endpoints, attempt to reach them:
    ```
    Check health endpoint?
-     Run: curl -s http://localhost:[port]/health
+     Run: curl -s --max-time 5 http://localhost:[port]/health
        [1] Approve
        [2] Skip
    ```
