@@ -36,6 +36,26 @@ Before asking the user to describe the feature:
 4. If the user describes something new: proceed normally to Step 1
 5. If roadmap.yml doesn't exist or has no planned features: skip to Step 1
 
+### Step 0b: Check bug registry
+Before asking for a feature description, check for open bugs:
+1. Read `.tyrex/bugs/` directory for `DEBUG-*.md` files.
+2. Parse each file for findings with `Status: open`.
+3. If open bugs exist, present structured choices:
+   ```
+   Open bugs found (N):
+     [!] CRITICAL  BUG-001: [title] (DEBUG-003)
+     [!] HIGH      BUG-002: [title] (DEBUG-005)
+     [!] MEDIUM    BUG-003: [title] (DEBUG-005)
+
+     [1] Fix bugs first — create a fix feature for selected bugs
+     [2] Continue to new feature — address bugs later
+   ```
+4. If "Fix bugs first": hand off to `/tyrex-quick` with selected bugs as context.
+5. If "Continue" or no open bugs: proceed to Step 1 normally.
+6. If `.tyrex/bugs/` doesn't exist or has no open bugs: skip to Step 1.
+
+Show at most 10 bugs sorted by severity (critical first). If more exist, note "and N more".
+
 ### Step 1: Describe the feature
 Ask the user: "Describe what you want to implement."
 Listen to their description. This is the WHAT and WHY.

@@ -39,8 +39,10 @@ TYREX Help
     /tyrex-do         Execute tasks [--auto-approve]
     /tyrex-review     Senior code review with 4 lenses [--do-all | --do-critical] [full]
 
-  Exploration:
+  Exploration & Debugging:
     /tyrex-discuss    Explore the project, ask questions, brainstorm architecture
+    /tyrex-debug      Diagnose problems, analyze logs, document bugs
+    /tyrex-research   Technical research — codebase + web
 
   Fast Track:
     /tyrex-quick      Unified new→plan→do from a single prompt [--auto-approve]
@@ -82,6 +84,10 @@ TYREX Help
   Review with auto-fix:
     /tyrex-review --do-all       (fix everything)
     /tyrex-review --do-critical  (fix only HIGH/CRITICAL)
+
+  Debugging:
+    /tyrex-debug  (diagnose problems, analyze logs → .tyrex/bugs/)
+    Bugs are shown in /tyrex-new and /tyrex-status
 
   Exploration (anytime):
     /tyrex-discuss  (explore the project, ask questions at any point)
@@ -126,7 +132,7 @@ All resolve to the same command.
 #### Step 1: Identify the command
 
 Strip any `/tyrex-` or `tyrex-` prefix from the argument. Match against the known commands:
-`init`, `new`, `plan`, `do`, `review`, `quick`, `status`, `resume`, `settings`, `evolve`, `skills`, `context`, `discuss`, `readme`, `openapi`, `wiki`, `help`
+`init`, `new`, `plan`, `do`, `review`, `quick`, `status`, `resume`, `settings`, `evolve`, `skills`, `context`, `discuss`, `debug`, `research`, `readme`, `openapi`, `wiki`, `help`
 
 Also match deprecated: `handoff` → redirect to `quick`.
 
@@ -181,6 +187,14 @@ Use the reference below for each command:
 - Steps: Detect mode (codebase/greenfield/hybrid) → Load skills → Multi-turn conversation → Save conclusions on demand (user-initiated only)
 - Prerequisites: `.tyrex/` initialized (recommended but not required for basic Q&A)
 - Next: `/tyrex-new` (to act on what was discussed) or `/tyrex-evolve` (to record decisions)
+
+**debug:**
+- What: Interactive debug session — diagnoses problems by analyzing logs, stack traces, and infrastructure. Documents findings as a persistent bug registry in `.tyrex/bugs/`. Two modes: user-directed (you describe the problem) or automatic (AI-driven broad scan). Flexible diagnostic depth (quick/standard/deep).
+- Flags: None
+- When: You encounter a bug, want to investigate an error, or need a broad diagnostic scan of your services.
+- Steps: Initialize session → Choose mode (directed/automatic) → Choose depth → Check infrastructure (docker, services) → Collect evidence (logs, traces) → Hypothesis loop → Document findings → Generate session report
+- Prerequisites: `.tyrex/` initialized. Docker optional.
+- Next: `/tyrex-quick` (to fix found bugs) or `/tyrex-new` (bugs shown before new features)
 
 **new:**
 - What: Starts a new feature. All decisions use structured choices adapted to the agent's interface. Checks the roadmap, captures requirements, analyzes required skills (including DevSec), configures docs/git, generates feature spec, and updates TYREX.md.

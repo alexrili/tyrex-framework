@@ -25,6 +25,7 @@ Read these files (in parallel where possible):
 8. `.tyrex/TYREX.md` — check completeness (sections filled or empty)
 9. `docs/` — scan for existing documentation files
 10. `.tyrex/map/security-audit.md` — security findings from init mapping (if exists)
+11. `.tyrex/bugs/` — debug session reports and open bugs (if exists)
 
 ### Step 2: Display comprehensive status
 
@@ -67,6 +68,13 @@ Active: 003-feature-name
   [!] LOW     Unescaped regex in bin/tyrex.js:102
   [x] LOW     Path containment in bin/tyrex.js:378  (resolved)
 
+─── Bugs ───────────────────────────────
+  Debug sessions: [N | none]
+  Open bugs:      [N (C critical, H high, M medium, L low) | none]
+
+  [!] CRITICAL  BUG-001: [title] (DEBUG-003)
+  [!] HIGH      BUG-002: [title] (DEBUG-005)
+
 ─── Documentation ──────────────────────
   CHANGELOG:      [present, up to date | present, stale | missing]
   ADRs:           [N (list numbers)] | none
@@ -94,6 +102,7 @@ Commands:
   /tyrex-do        Continue implementation (if active feature)
   /tyrex-review    Review completed feature (if all tasks done)
   /tyrex-new       Start new feature
+  /tyrex-debug     Diagnose problems, analyze logs, document bugs
   /tyrex-quick     Quick fix or small task
   /tyrex-skills    Create or list skills
   /tyrex-context   Add project context
@@ -132,6 +141,13 @@ Perform these quick checks and include results in the Health section:
    - Show resolved findings as `[x]` (collapsed or dimmed)
    - If no security-audit.md exists, show "No security audit found — run `/tyrex-init` to generate one"
 
+8. **Bug registry** — If `.tyrex/bugs/` exists:
+   - Count `DEBUG-*.md` files (total debug sessions)
+   - Parse each file for findings with `Status: open` vs `Status: resolved`
+   - Count open bugs by severity (critical, high, medium, low)
+   - Show each open bug with severity and title
+   - If no `.tyrex/bugs/` or no files: omit the Bugs section entirely
+
 ### Step 4: Actionable suggestions
 
 Based on the status, suggest the most relevant next actions:
@@ -146,6 +162,7 @@ Based on the status, suggest the most relevant next actions:
 - If stale branches exist: suggest cleanup
 - If roadmap has planned features: mention what's next
 - If security findings are pending: "N security findings pending. Fix now with `/tyrex-quick`? [y/N]" — if user says yes, list the pending findings and let them choose which to fix, then hand off to `/tyrex-quick`
+- If open bugs exist: "N open bugs found. Run `/tyrex-debug` to investigate more, or `/tyrex-quick` to fix."
 - Always include `/tyrex-discuss` in the commands list for Q&A availability
 
 ## Rules
