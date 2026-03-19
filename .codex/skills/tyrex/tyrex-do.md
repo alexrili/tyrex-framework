@@ -18,7 +18,7 @@ You may create, edit, and delete source code files following TDD, small commits,
 
 ## Adaptive Decision Format
 
-**ALL decisions in this command MUST use structured choices** adapted to the agent's interface. CLI agents (Claude Code, OpenCode): numbered quiz where the user types a number. Chat-based agents (Cursor, Codex): numbered list or direct question where the user responds naturally. Never ask open-ended questions when structured choices are possible. This applies to: parallelization choices, failure handling, commit approval, and any other decision point.
+**ALL decisions in this command MUST use structured choices** adapted to the agent's interface. CLI agents (Claude Code, OpenCode): numbered choices where the user types a number. Chat-based agents (Cursor, Codex): numbered list or direct question where the user responds naturally. Never ask open-ended questions when structured choices are possible. This applies to: parallelization choices, failure handling, commit approval, and any other decision point.
 
 ## Behavior
 
@@ -31,8 +31,8 @@ Read:
 5. `.tyrex/TYREX.md` → project context
 6. `.tyrex/constitution.md` → guardrails
 7. `.tyrex/context/` → project-level context files (if exists)
-8. `.tyrex/features/NNN-context.md` → demand-level context (if exists)
-9. `docs/srs/` and `docs/prd/` → SRS/PRD for the active demand (if exist)
+8. `.tyrex/features/NNN-context.md` → feature-level context (if exists)
+9. `docs/srs/` and `docs/prd/` → SRS/PRD for the active feature (if exist)
 
 ### Step 2: Identify executable tasks
 Find all tasks where:
@@ -63,7 +63,7 @@ For each ready task, one at a time:
 1. **Load SPEC (mandatory):**
    - Read the task's SPEC file (referenced in task state as `spec_file`, located in `docs/specs/`)
    - Use the SPEC's **Technical Approach** and **Constraints** to guide implementation
-   - Reference project-level context (`.tyrex/context/`) and demand-level context for informed decisions
+   - Reference project-level context (`.tyrex/context/`) and feature-level context for informed decisions
    - If SPEC file is missing, warn user and ask whether to generate one or proceed without
 2. **Load skill (if assigned):**
    - Check if the task has a `skill` attribute
@@ -82,7 +82,7 @@ For each ready task, one at a time:
    - Check the task's `quality` attribute (required | recommended | optional)
    - `required`: TDD mandatory — write tests first, implement, tests MUST pass
    - `recommended`: write tests alongside code, warn if skipped
-   - `optional`: present quiz: `[ ] Write tests for this task` / `[ ] Skip tests`
+   - `optional`: present choices: `[ ] Write tests for this task` / `[ ] Skip tests`
    - **If `--auto-approve`:** for `optional` quality, default to writing tests
    - Run lint if configured — it MUST pass
    - Run security scan if configured
@@ -95,7 +95,7 @@ For each ready task, one at a time:
      - Make the commit automatically (overrides `approve` mode from tyrex.yml)
    - **Else if commit mode is `approve`:**
      - Show: diff summary, commit message, changelog entry
-     - Present quiz: `[ ] Approve commit` / `[ ] Edit commit message` / `[ ] Reject and redo`
+     - Present choices: `[ ] Approve commit` / `[ ] Edit commit message` / `[ ] Reject and redo`
    - **Else if commit mode is `auto`:**
      - Make the commit automatically
    - Update cursor.yml: last_task_completed, tasks_summary, next_tasks
@@ -107,7 +107,7 @@ For each ready task, one at a time:
    - Update task state to `failed` with error details
    - Show the error to the user
    - **If `--auto-approve`:** automatically retry up to 3 times, then mark as `failed` and continue to next task
-   - **Otherwise, present quiz:**
+   - **Otherwise, present choices:**
      ```
      [ ] Fix and retry
      [ ] Skip this task
@@ -139,7 +139,7 @@ For each ready task, one at a time:
 
 ### Step 5: Feature completion
 When ALL tasks are `completed`:
-- Tell the user: "All tasks completed! Run /tyrex-review to review the implementation."
+- Tell the user: "All tasks completed. Run /tyrex-review to review the implementation."
 - Update feature status to `in_progress` (review pending)
 
 ## Important Rules

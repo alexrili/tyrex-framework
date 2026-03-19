@@ -29,6 +29,8 @@ This project uses the Tyrex Framework for human-driven, AI-accelerated pair prog
 | `/tyrex-readme` | Generate or update project README.md |
 | `/tyrex-openapi` | Generate or update OpenAPI documentation |
 | `/tyrex-wiki` | Generate or update project wiki pages |
+| `/tyrex-debug` | Diagnose problems, analyze logs, document bugs |
+| `/tyrex-research` | Technical research — codebase + web |
 | `/tyrex-help` | Show commands, workflow guide, and contextual suggestions |
 
 ## Core Rules

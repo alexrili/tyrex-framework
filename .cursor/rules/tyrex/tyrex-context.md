@@ -9,7 +9,7 @@ You are the Tyrex Framework orchestrator. The user wants to manage context — b
 Context is stored at two levels:
 
 - **Project-level:** `.tyrex/context/` directory — applies to all features
-- **Demand-level:** `.tyrex/features/NNN-context.md` — specific to one feature
+- **Feature-level:** `.tyrex/features/NNN-context.md` — specific to one feature
 
 ## Agent Mode
 
@@ -21,8 +21,8 @@ You MUST NOT write source code. You may create/modify only `.tyrex/context/` and
 ### Default (no arguments): Show existing context
 
 1. Scan `.tyrex/context/` for project-level context files
-2. Identify the active demand from `.tyrex/state/cursor.yml`
-3. Check for `.tyrex/features/NNN-context.md` matching the active demand
+2. Identify the active feature from `.tyrex/state/cursor.yml`
+3. Check for `.tyrex/features/NNN-context.md` matching the active feature
 4. Display:
 
 ```
@@ -33,10 +33,10 @@ Project Context
     2025-06-10-legacy-auth.md       Legacy auth system constraints
     2025-06-12-compliance-rules.md  PCI-DSS compliance requirements
 
-  Demand-level (feature 003):
+  Feature-level (feature 003):
     003-context.md                  Payment gateway migration notes
 
-  Total: 3 context files (2 project, 1 demand)
+  Total: 3 context files (2 project, 1 feature)
 
   Actions:
     /tyrex-context add    Add new context
@@ -47,9 +47,9 @@ Project Context
 
 ### /tyrex-context add
 
-1. Ask: "Is this context for the whole project, or for the current demand?"
+1. Ask: "Is this context for the whole project, or for the current feature?"
    - **Project** → store in `.tyrex/context/`
-   - **Demand** → store in `.tyrex/features/NNN-context.md`
+   - **Feature** → store in `.tyrex/features/NNN-context.md`
 
 2. Ask: "How do you want to provide context?"
    - **Free text** → user types or pastes a description
@@ -57,7 +57,7 @@ Project Context
    - **URL** → user provides URL(s) to external documentation
 
 3. Process by type:
-   - **Free text:** Ask for a short title. Save as `.tyrex/context/YYYY-MM-DD-[slug].md` (project) or append to `.tyrex/features/NNN-context.md` (demand). Include a YAML frontmatter with `title` and `date`.
+   - **Free text:** Ask for a short title. Save as `.tyrex/context/YYYY-MM-DD-[slug].md` (project) or append to `.tyrex/features/NNN-context.md` (feature). Include a YAML frontmatter with `title` and `date`.
    - **File:** Read the file(s), extract and summarize key points. Save the summary — never copy raw content verbatim.
    - **URL:** Fetch the URL content, summarize key points. Save the summary with the source URL noted.
 
@@ -81,8 +81,8 @@ All Context Files
   ─────       ────        ────                           ───────────
   project     2025-06-10  legacy-auth.md                 Legacy auth system constraints
   project     2025-06-12  compliance-rules.md            PCI-DSS compliance requirements
-  demand-003  2025-06-15  003-context.md                 Payment gateway migration notes
-  demand-005  2025-06-18  005-context.md                 Mobile app offline requirements
+  feature-003  2025-06-15  003-context.md                 Payment gateway migration notes
+  feature-005  2025-06-18  005-context.md                 Mobile app offline requirements
 ```
 
 ## Integration Points
@@ -90,7 +90,7 @@ All Context Files
 This command is also invoked from other commands:
 
 - **`/tyrex-init`** — after codebase mapping completes, offers to ingest additional project context
-- **`/tyrex-new`** — before documentation generation, offers to add demand-specific context
+- **`/tyrex-new`** — before documentation generation, offers to add feature-specific context
 
 Context files are consumed by:
 
@@ -103,5 +103,5 @@ Context files are consumed by:
 - Each context file must have a clear title and description in its frontmatter
 - Maximum context file size: 200 lines. Summarize further if exceeded
 - Context does NOT replace TYREX.md — TYREX.md captures project patterns and architecture; context captures situational knowledge (business rules, constraints, external references)
-- File naming: `YYYY-MM-DD-[slug].md` for project-level, `NNN-context.md` for demand-level
+- File naming: `YYYY-MM-DD-[slug].md` for project-level, `NNN-context.md` for feature-level
 - When multiple files or URLs are provided, create one consolidated summary — not one file per source

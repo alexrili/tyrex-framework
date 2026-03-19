@@ -134,7 +134,7 @@ Brief contributing guidelines or link to CONTRIBUTING.md.
 If a README.md already exists:
 1. Compare existing content with generated content
 2. Show a diff summary of what would change
-3. Ask: "Update README? [Y/n/merge]"
+3. Ask: "Update README? [Y] Replace [n] Cancel [m] Merge"
    - Y: Replace entirely
    - n: Cancel
    - merge: Keep user-written sections, update generated sections

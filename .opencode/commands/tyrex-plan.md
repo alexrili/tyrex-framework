@@ -13,7 +13,7 @@ You MUST NOT write source code. You may create/modify only `.tyrex/`, `docs/`, a
 
 ## Adaptive Decision Format
 
-**ALL decisions in this command MUST use structured choices** adapted to the agent's interface. CLI agents (Claude Code, OpenCode): numbered quiz where the user types a number. Chat-based agents (Cursor, Codex): numbered list or direct question where the user responds naturally. Never ask open-ended questions when structured choices are possible. This applies to: task approval, parallelism decisions, skill assignments, and any other decision point.
+**ALL decisions in this command MUST use structured choices** adapted to the agent's interface. CLI agents (Claude Code, OpenCode): numbered choices where the user types a number. Chat-based agents (Cursor, Codex): numbered list or direct question where the user responds naturally. Never ask open-ended questions when structured choices are possible. This applies to: task approval, parallelism decisions, skill assignments, and any other decision point.
 
 ## Behavior
 
@@ -25,11 +25,11 @@ Read (in this order):
 4. `.tyrex/constitution.md` → guardrails
 5. `.tyrex/skills/*.md` → available skills (scan names and `## Expertise` sections)
 6. `.tyrex/context/` → project-level context files (if any)
-7. `.tyrex/features/NNN-context.md` → demand-level context (if any)
-8. `docs/srs/NNN-*.md` → SRS for this demand (if generated during /tyrex-new)
-9. `docs/prd/NNN-*.md` → PRD for this demand (if generated during /tyrex-new)
+7. `.tyrex/features/NNN-context.md` → feature-level context (if any)
+8. `docs/srs/NNN-*.md` → SRS for this feature (if generated during /tyrex-new)
+9. `docs/prd/NNN-*.md` → PRD for this feature (if generated during /tyrex-new)
 
-If no active feature: present quiz:
+If no active feature: present choices:
 ```
 No active feature found.
   [ ] Select from existing features
@@ -40,7 +40,7 @@ No active feature found.
 
 **Before proposing tasks**, perform a security assessment of the feature:
 
-1. **Identify security-sensitive areas** in the demand:
+1. **Identify security-sensitive areas** in the feature:
    - Data handling (storage, transmission, processing)
    - User input (forms, APIs, file uploads)
    - Authentication/authorization flows
@@ -96,7 +96,7 @@ Analyze the feature — including all loaded context, SRS, PRD, and security con
    - Read each available skill's `## Expertise` section
    - Match expertise areas to the task's domain/technology
    - If a pre-selected skill matches the task, assign it
-   - If no pre-selected skill matches but another installed skill does, suggest it to the user via quiz
+   - If no pre-selected skill matches but another installed skill does, suggest it to the user via structured choices
    - If no skill matches at all, set "none"
 3. **Auto-assign devsec skill** to all tasks marked with security attributes
 4. The assigned skill is loaded by the agent before executing the task
@@ -104,7 +104,7 @@ Analyze the feature — including all loaded context, SRS, PRD, and security con
 **Quality strategy per task:**
 - `required` — TDD mandatory, tests MUST pass (default for: API, workers, data layer, security, any task with security attribute)
 - `recommended` — write tests, warn if skipped (default for: frontend, mobile UI)
-- `optional` — ask user via quiz "Write tests? [y/N]" (default for: infra, config, docs, migrations)
+- `optional` — ask user via structured choices "Write tests? [y/N]" (default for: infra, config, docs, migrations)
 - Read the project-level default from `tyrex.yml` quality section and override per task context
 
 **Rules for task decomposition:**
@@ -123,7 +123,7 @@ For EACH proposed task, generate a SPEC draft:
    - **Objective:** What this task achieves technically
    - **Technical Approach:** How it will be implemented, referencing context and SRS/PRD where relevant
    - **Security Considerations:** What security measures this task must implement (if security attribute is set)
-   - **Constraints & Trade-offs:** Informed by project context and demand context
+   - **Constraints & Trade-offs:** Informed by project context and feature context
    - **Dependencies:** Libraries, services, or other tasks
    - **Files Affected:** Same as task file list
    - **Edge Cases:** Identified from SRS/PRD and context
@@ -210,5 +210,5 @@ Tell the user: "Plan approved. Run /tyrex-do to start implementation."
 - If a task is large (estimate: large), suggest breaking it into smaller tasks
 - ALWAYS generate a SPEC draft per task — SPECs are mandatory documentation
 - Security considerations MUST be included in SPECs for security-sensitive tasks
-- Context files (project-level and demand-level) MUST be read and considered in task planning
+- Context files (project-level and feature-level) MUST be read and considered in task planning
 - SPECs should reference relevant context, SRS requirements, and PRD goals where applicable
