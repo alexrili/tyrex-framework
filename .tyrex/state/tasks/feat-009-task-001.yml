@@ -1,0 +1,19 @@
+task_id: "feat-009-task-001"
+feature: "009-debug-command"
+name: "Create /tyrex-debug command template"
+status: "completed"
+depends_on: []
+unlocks: ["feat-009-task-003", "feat-009-task-004", "feat-009-task-005", "feat-009-task-006"]
+parallel: false
+security: "full-audit"
+skill: "debugger.md, devsec.md"
+quality: "required"
+estimate: "large"
+spec_file: "docs/specs/009-task-001-debug-command-template.md"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: ["templates/commands/unified/tyrex-debug.md"]
+output: null
+errors: null

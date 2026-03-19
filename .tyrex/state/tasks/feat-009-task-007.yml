@@ -1,0 +1,19 @@
+task_id: "feat-009-task-007"
+feature: "009-debug-command"
+name: "Security hardening review"
+status: "completed"
+depends_on: ["feat-009-task-006"]
+unlocks: []
+parallel: false
+security: "full-audit"
+skill: "devsec.md"
+quality: "required"
+estimate: "small"
+spec_file: "docs/specs/009-task-007-security-hardening.md"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: ["templates/commands/unified/tyrex-debug.md"]
+output: null
+errors: null

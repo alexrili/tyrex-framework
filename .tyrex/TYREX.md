@@ -84,6 +84,9 @@ bin/tyrex.js (~427 lines, single-file CLI)
 - **Review scopes:** `/tyrex-review` supports `pr` (default, branch diff only) and `full` (codebase-wide re-scan) scopes
 - **OpenCode plugin for mechanical enforcement:** `.opencode/plugin.ts` uses OpenCode's native hooks (`command.execute.before`, `permission.ask`) to mechanically enforce plan/build mode switching. `opencode.json` defines two agents (`plan` with `edit: "deny"`, `build` with `edit: "allow"`). The plugin reads/writes `cursor.yml` and injects `AgentPart` to switch agents on command execution. This is a triple-layer enforcement: cursor.yml state + constitution rules + native permission system.
 - **Research command:** `/tyrex-research` enables structured technical research (codebase + web) with or without an active feature. Results are saved on demand — feature-scoped to `.tyrex/features/NNN-research-TOPIC.md`, standalone to `.tyrex/research/TOPIC.md`. Plan mode, read-only.
+- **Debug command:** `/tyrex-debug` provides structured, AI-assisted debugging. Two modes: user-directed (describe symptom) or automatic analysis (broad scan). Manages infrastructure (docker, services) with user permission. Flexible diagnostic depth (quick/standard/deep). Generates session-based bug reports in `.tyrex/bugs/DEBUG-NNN.md` with severity classification (critical/high/medium/low). Integrates with `/tyrex-new` (shows open bugs before new features) and `/tyrex-status` (bug summary). Ships with built-in debugger skill template. Plan mode, diagnose-only — never fixes code.
+- **Built-in Debugger skill:** `templates/skills/debugger.md` is a debug engineer skill template. Auto-suggested when `/tyrex-debug` is invoked. Systematic diagnosis, log analysis, container debugging, hypothesis testing.
+- **Bug registry:** `.tyrex/bugs/` stores debug session reports. One file per session (DEBUG-NNN.md) with multiple bug findings. Bugs have severity + status (open/resolved). Consumed by `/tyrex-new` (fix bugs first?) and `/tyrex-status` (summary).
 - **No scripts in package.json:** No `start`, `test`, `lint`, or `build` scripts defined yet
 
 ## Environment Variables
@@ -137,6 +140,7 @@ bin/tyrex.js (~427 lines, single-file CLI)
 | 2026-03-12 | Built-in Copywriter skill template       | `templates/skills/copywriter.md` for UX writing review. Professional and direct tone (Stripe/Vercel style) |
 | 2026-03-13 | Skill evolution via review (ADR-006)     | `/tyrex-review` Step 5b extracts patterns from findings, evolves skills, suggests new skills. Closes the learning loop between review and skills systems |
 | 2026-03-13 | /tyrex-research command                  | AI-powered research (codebase + web). Feature-scoped or standalone. Saves on demand. Command count: 19 (was 18) |
+| 2026-03-19 | Interactive debug command (ADR-007)       | `/tyrex-debug` for structured diagnosis with infrastructure management, persistent bug registry in `.tyrex/bugs/`, and `/tyrex-new` integration. Command count: 20 (was 19) |
 
 ## CI/CD
 

@@ -1,0 +1,19 @@
+task_id: "feat-009-task-002"
+feature: "009-debug-command"
+name: "Create debugger skill template"
+status: "completed"
+depends_on: []
+unlocks: ["feat-009-task-006"]
+parallel: true
+security: "none"
+skill: "debugger.md"
+quality: "optional"
+estimate: "small"
+spec_file: "docs/specs/009-task-002-debugger-skill-template.md"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: ["templates/skills/debugger.md"]
+output: null
+errors: null

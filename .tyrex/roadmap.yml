@@ -66,3 +66,10 @@ features:
     status: done
     referenced_in: ["002-skills-system"]
     depends_on: ["002"]
+
+  - id: "009"
+    name: "debug-command"
+    description: "/tyrex-debug — Interactive debug with persistent bug registry"
+    status: in_progress
+    referenced_in: ["ADR-007"]
+    depends_on: []
