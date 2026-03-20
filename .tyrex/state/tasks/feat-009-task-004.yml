@@ -1,0 +1,19 @@
+task_id: "feat-009-task-004"
+feature: "009-debug-command"
+name: "Update /tyrex-status — bug summary section"
+status: "completed"
+depends_on: ["feat-009-task-001"]
+unlocks: ["feat-009-task-006"]
+parallel: true
+security: "none"
+skill: "none"
+quality: "recommended"
+estimate: "small"
+spec_file: "docs/specs/009-task-004-tyrex-status-bug-summary.md"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: ["templates/commands/unified/tyrex-status.md"]
+output: null
+errors: null

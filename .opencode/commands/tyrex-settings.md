@@ -88,8 +88,8 @@ Documentation settings:
 
 **Adding a custom doc type:**
 1. Ask for the doc type name (e.g., "runbook", "test-plan", "release-notes")
-2. Ask for scope: "demand" (one per feature) or "task" (one per task)
-3. Ask if mandatory: always generated, or optional per demand
+2. Ask for scope: "feature" (one per feature) or "task" (one per task)
+3. Ask if mandatory: always generated, or optional per feature
 4. Generate a starter template in `.tyrex/templates/{name}.md` with:
    - Title placeholder
    - Date and project fields ({{DATE}}, {{PROJECT_NAME}})
@@ -108,7 +108,7 @@ Documentation settings:
 - `docs.changelog: true` is LOCKED and cannot be changed
 - `docs.spec: true` is LOCKED and cannot be changed — SPECs are mandatory per task
 - Warn the user if they try to disable TDD or security scan (but allow it)
-- Changes apply from the next demand onward
+- Changes apply from the next feature onward
 - Custom doc type names must be lowercase-hyphenated (e.g., "test-plan", not "Test Plan")
 - Custom templates are stored in `.tyrex/templates/` — do NOT overwrite built-in templates in `templates/`
 - Diagrams use D2 language (d2lang.com) — not Mermaid

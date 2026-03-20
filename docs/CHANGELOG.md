@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- Feature 010: Interactive Questions UX — "one question at a time" pattern
+- ADR-008: One question at a time interaction rule
+- Constitution rule: "one question at a time" in MUST section + batching prohibition in MUST NOT section
+- Adaptive Decision Format strengthened in all 6 interactive commands (new, quick, debug, review, plan, do)
+- "Wait for response" markers at key decision points in tyrex-new, tyrex-quick, tyrex-debug
+- Copywriter skill installed (`.tyrex/skills/copywriter.md`)
+
+### Previously added
+- Feature 009: `/tyrex-debug` — Interactive debug command with persistent bug registry
+- `/tyrex-debug` command template: two investigation modes (user-directed + automatic), flexible diagnostic depth (quick/standard/deep), infrastructure management with user approval, session-based bug reports in `.tyrex/bugs/`
+- Debugger skill template (`templates/skills/debugger.md`) — Senior Debug Engineer persona, ships with framework
+- DevSec skill (`.tyrex/skills/devsec.md`) — Security-First Developer persona
+- ADR-007: Interactive debug command design decisions
+- PRD, SRS, Wiki, and D2 sequence diagram for debug command
+- `/tyrex-new` Step 0b: checks bug registry for open bugs before starting a new feature
+- `/tyrex-status` Bugs section: shows debug session count and open bugs by severity
+- `/tyrex-help` updated with debug command reference and workflow diagram
+- Security hardening: curl timeout, localhost-only restriction, explicit command denylist
+
 ## [0.5.4] - 2026-03-16
 
 ### Fixed

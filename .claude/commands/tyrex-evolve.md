@@ -25,7 +25,6 @@ You MUST NOT write source code. You may modify only `.tyrex/TYREX.md` and `docs/
 5. Commit the update (following the configured commit mode)
 
 ## Rules
-- This is an investment that pays back in every future session
 - Be concise — agents read this on every interaction
 - Date all architecture decisions
 - Hurdles should have both the problem AND the solution

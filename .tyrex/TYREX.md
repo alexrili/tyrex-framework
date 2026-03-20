@@ -73,6 +73,7 @@ bin/tyrex.js (~427 lines, single-file CLI)
 - **Sync after every command update:** When updating commands in `templates/commands/unified/`, ALWAYS re-sync to all 4 agent directories as the LAST step — updates made after sync will be missed
 - **Agent mode (plan/build):** Every command declares its mode (`plan` or `build`) in an `## Agent Mode` section and sets `agent_mode` in `cursor.yml` as its first action. Plan mode = no source code writes. Build mode = full implementation with TDD. Enforced via triple layer: cursor.yml state + constitution rules + per-command instructions.
 - **Adaptive decision format:** ALL user decisions across ALL commands use structured choices adapted to the agent's interface. CLI agents (Claude Code, OpenCode): numbered choices. Chat agents (Cursor, Codex): numbered list or direct question. Never open-ended questions when structured choices are possible. (ADR-003)
+- **One question at a time:** Commands present ONE structured choice per message, then STOP and wait for the user's response. Never batch multiple choice blocks. Exception: configuration review blocks (docs bundle + git config) may be presented together as a single confirm action. Enforced in constitution.md + per-command ADF section. (ADR-008)
 - **Security-first planning:** `/tyrex-plan` performs a security assessment BEFORE proposing tasks. Security-sensitive tasks get `security` attribute, quality: `required`, and devsec skill auto-assigned. Every feature with security implications gets a dedicated security hardening task.
 - **4-lens senior review:** `/tyrex-review` evaluates through 4 lenses: Pattern Compliance, Code Quality & DRY, Business & Technical Compliance, Security First. Uses senior engineer persona for the project's tech stack.
 - **Review → Fix loop:** `/tyrex-review` with `--do-all` or `--do-critical` flags auto-creates requested-change tasks (prefixed `rc-`) within the same feature and enters plan/do loop. Includes mini re-review after fixes.
@@ -84,6 +85,9 @@ bin/tyrex.js (~427 lines, single-file CLI)
 - **Review scopes:** `/tyrex-review` supports `pr` (default, branch diff only) and `full` (codebase-wide re-scan) scopes
 - **OpenCode plugin for mechanical enforcement:** `.opencode/plugin.ts` uses OpenCode's native hooks (`command.execute.before`, `permission.ask`) to mechanically enforce plan/build mode switching. `opencode.json` defines two agents (`plan` with `edit: "deny"`, `build` with `edit: "allow"`). The plugin reads/writes `cursor.yml` and injects `AgentPart` to switch agents on command execution. This is a triple-layer enforcement: cursor.yml state + constitution rules + native permission system.
 - **Research command:** `/tyrex-research` enables structured technical research (codebase + web) with or without an active feature. Results are saved on demand — feature-scoped to `.tyrex/features/NNN-research-TOPIC.md`, standalone to `.tyrex/research/TOPIC.md`. Plan mode, read-only.
+- **Debug command:** `/tyrex-debug` provides structured, AI-assisted debugging. Two modes: user-directed (describe symptom) or automatic analysis (broad scan). Manages infrastructure (docker, services) with user permission. Flexible diagnostic depth (quick/standard/deep). Generates session-based bug reports in `.tyrex/bugs/DEBUG-NNN.md` with severity classification (critical/high/medium/low). Integrates with `/tyrex-new` (shows open bugs before new features) and `/tyrex-status` (bug summary). Ships with built-in debugger skill template. Plan mode, diagnose-only — never fixes code.
+- **Built-in Debugger skill:** `templates/skills/debugger.md` is a debug engineer skill template. Auto-suggested when `/tyrex-debug` is invoked. Systematic diagnosis, log analysis, container debugging, hypothesis testing.
+- **Bug registry:** `.tyrex/bugs/` stores debug session reports. One file per session (DEBUG-NNN.md) with multiple bug findings. Bugs have severity + status (open/resolved). Consumed by `/tyrex-new` (fix bugs first?) and `/tyrex-status` (summary).
 - **No scripts in package.json:** No `start`, `test`, `lint`, or `build` scripts defined yet
 
 ## Environment Variables
@@ -137,6 +141,8 @@ bin/tyrex.js (~427 lines, single-file CLI)
 | 2026-03-12 | Built-in Copywriter skill template       | `templates/skills/copywriter.md` for UX writing review. Professional and direct tone (Stripe/Vercel style) |
 | 2026-03-13 | Skill evolution via review (ADR-006)     | `/tyrex-review` Step 5b extracts patterns from findings, evolves skills, suggests new skills. Closes the learning loop between review and skills systems |
 | 2026-03-13 | /tyrex-research command                  | AI-powered research (codebase + web). Feature-scoped or standalone. Saves on demand. Command count: 19 (was 18) |
+| 2026-03-19 | Interactive debug command (ADR-007)       | `/tyrex-debug` for structured diagnosis with infrastructure management, persistent bug registry in `.tyrex/bugs/`, and `/tyrex-new` integration. Command count: 20 (was 19) |
+| 2026-03-19 | One question at a time (ADR-008)           | All commands must present ONE structured choice per message, then wait for response. Enforced in constitution + per-command Adaptive Decision Format. Exceptions: config review blocks and non-interactive output |
 
 ## CI/CD
 

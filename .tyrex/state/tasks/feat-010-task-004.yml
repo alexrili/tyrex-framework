@@ -1,0 +1,19 @@
+task_id: "feat-010-task-004"
+feature: "010-interactive-questions-ux"
+name: "Sync to all 4 agent directories"
+status: "completed"
+depends_on: ["feat-010-task-002", "feat-010-task-003"]
+unlocks: []
+parallel: false
+security: "none"
+skill: "none"
+quality: "optional"
+estimate: "small"
+spec_file: "docs/specs/010-task-004-sync-agents.md"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: [".claude/commands/", ".opencode/commands/", ".cursor/rules/tyrex/", ".codex/skills/tyrex/"]
+output: null
+errors: null

@@ -1,0 +1,19 @@
+task_id: "feat-010-task-002"
+feature: "010-interactive-questions-ux"
+name: "Update high-interaction commands (new, quick, debug)"
+status: "completed"
+depends_on: ["feat-010-task-001"]
+unlocks: ["feat-010-task-004"]
+parallel: true
+security: "none"
+skill: "copywriter.md"
+quality: "optional"
+estimate: "medium"
+spec_file: "docs/specs/010-task-002-high-interaction-commands.md"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: ["templates/commands/unified/tyrex-new.md", "templates/commands/unified/tyrex-quick.md", "templates/commands/unified/tyrex-debug.md"]
+output: null
+errors: null

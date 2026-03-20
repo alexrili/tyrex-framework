@@ -85,10 +85,10 @@ Here's what I understand:
   Stack:   [suggested or specified]
   Scope:   [MVP features]
   
-Does this look right? Want to adjust anything?
+Confirm or adjust:
 ```
 
-**Free sub-mode** — let the user drive. Listen, ask clarifying questions naturally, suggest and challenge ideas. Act as a technical co-founder brainstorming with a peer.
+**Free sub-mode** — let the user drive. Listen, ask clarifying questions naturally, suggest and challenge ideas. Respond as a technical peer.
 
 #### In Hybrid mode:
 - Combine both behaviors. Explore what exists, discuss what's next.
@@ -99,11 +99,16 @@ Does this look right? Want to adjust anything?
 Conclusions are NOT persisted automatically. When the user says "save", "persist", "save this", or "record this":
 
 1. **Ask what to save:**
-   - "What should I save? The last conclusion, a summary of this discussion, or something specific?"
+   - ```
+What to save?
+  [ ] Last conclusion
+  [ ] Discussion summary
+  [ ] Specific item
+```
 
 2. **Ask where to save:**
    - **Context** — save as a context file via `/tyrex-context add` flow
-     - Ask scope: project-level (`.tyrex/context/`) or demand-level (`.tyrex/features/NNN-context.md`)
+     - Ask scope: project-level (`.tyrex/context/`) or feature-level (`.tyrex/features/NNN-context.md`)
    - **TYREX.md** — update project patterns, architecture, stack, or decisions via `/tyrex-evolve` flow
    - **Both** — save detailed context AND update TYREX.md summary
 

@@ -1,0 +1,19 @@
+task_id: "feat-009-task-003"
+feature: "009-debug-command"
+name: "Update /tyrex-new — bug check integration"
+status: "completed"
+depends_on: ["feat-009-task-001"]
+unlocks: ["feat-009-task-006"]
+parallel: true
+security: "none"
+skill: "none"
+quality: "recommended"
+estimate: "small"
+spec_file: "docs/specs/009-task-003-tyrex-new-bug-check.md"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: ["templates/commands/unified/tyrex-new.md"]
+output: null
+errors: null

@@ -1,0 +1,19 @@
+task_id: "feat-009-task-006"
+feature: "009-debug-command"
+name: "Update CLI + templates + sync to agent directories"
+status: "completed"
+depends_on: ["feat-009-task-001", "feat-009-task-002", "feat-009-task-003", "feat-009-task-004", "feat-009-task-005"]
+unlocks: ["feat-009-task-007"]
+parallel: false
+security: "none"
+skill: "none"
+quality: "recommended"
+estimate: "medium"
+spec_file: "docs/specs/009-task-006-cli-templates-sync.md"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: ["templates/CLAUDE.md", "templates/AGENTS.md", ".claude/commands/", ".opencode/commands/", ".cursor/rules/tyrex/", ".codex/skills/tyrex/"]
+output: null
+errors: null

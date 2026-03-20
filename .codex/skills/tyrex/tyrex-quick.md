@@ -15,20 +15,22 @@ Update `agent_mode` in `cursor.yml` at each transition.
 
 ## Parameters
 
-- **`/tyrex-quick`** (default) — Interactive fast-track with quiz checkpoints for key decisions
+- **`/tyrex-quick`** (default) — Interactive fast-track with choice checkpoints for key decisions
 - **`/tyrex-quick --auto-approve`** — Full autopilot: captures the prompt, makes smart defaults for all decisions, and executes everything. Only stops on failures after 3 retries.
 
 ## Adaptive Decision Format
 
-**ALL decisions in this command MUST use structured choices** adapted to the agent's interface. CLI agents (Claude Code, OpenCode): numbered quiz where the user types a number. Chat-based agents (Cursor, Codex): numbered list or direct question where the user responds naturally. Never ask open-ended questions when structured choices are possible. This is the standard for every interaction point.
+**ALL decisions in this command MUST use structured choices** adapted to the agent's interface. CLI agents (Claude Code, OpenCode): numbered choices where the user types a number. Chat-based agents (Cursor, Codex): numbered list or direct question where the user responds naturally. Never ask open-ended questions when structured choices are possible. This is the standard for every interaction point.
+
+**One question at a time.** Present a single structured choice, then STOP and wait for the user's response before proceeding to the next question. Never combine multiple choice blocks in one message. Each step that contains a decision point ends at that choice — the next step begins only after the user responds. Exception: configuration review blocks may be presented together as a single "review and confirm" action.
 
 ## Behavior
 
-### Step 1: Capture the Demand
+### Step 1: Capture the Feature
 
 Ask: "What do you need done?"
 
-Listen to the user's description. This is the starting point.
+Listen to the user's description.
 
 **Clarification phase:** If the description is ambiguous or missing critical details, ask clarification questions **using structured choices** where possible. Examples:
 ```
@@ -48,11 +50,13 @@ Is there a specific requirement driving this?
   [ ] Performance issue
 ```
 
-Keep clarification to a maximum of 3 quiz rounds. The goal is speed with precision.
+Maximum 3 question rounds.
 
 **If `--auto-approve`:** Ask no clarification questions unless the prompt is critically ambiguous (e.g., no clear action or target). Use the prompt as-is and make reasonable inferences.
 
-### Step 2: Quick Configuration (via quiz)
+**Present Step 1 choices and wait for user response before continuing to Step 2.**
+
+### Step 2: Quick Configuration (via structured choices)
 
 **If `--auto-approve`:** Skip this step. Use smart defaults:
 - Branch: create `feat/quick-[slug]` from prompt
@@ -60,7 +64,7 @@ Keep clarification to a maximum of 3 quiz rounds. The goal is speed with precisi
 - Commits: auto mode
 - Skills: auto-detect and assign
 
-**Otherwise, present quick config quiz:**
+**Otherwise, present quick config choices:**
 ```
 Quick setup:
 
@@ -81,10 +85,10 @@ Commit mode:
 
 ### Step 3: Skill Analysis & Security Check
 
-1. **Auto-detect relevant skills** from the demand description by scanning `.tyrex/skills/`
-2. **Security-first check:** If the demand touches security-sensitive areas (auth, data, APIs, user input), check for `devsec.md` skill:
+1. **Auto-detect relevant skills** from the feature description by scanning `.tyrex/skills/`
+2. **Security-first check:** If the feature touches security-sensitive areas (auth, data, APIs, user input), check for `devsec.md` skill:
    - If exists: auto-assign to relevant tasks
-   - If doesn't exist: present quiz:
+   - If doesn't exist: present choices:
      ```
      This task touches security-sensitive code but no DevSec skill is installed.
        [ ] Create DevSec skill now (Recommended)
@@ -94,9 +98,11 @@ Commit mode:
 3. Generate feature spec (compact format, max 30 lines)
 4. Create branch (based on Step 2 config)
 
+**Present each choice in Steps 2-3 individually. Wait for user response before continuing.**
+
 ### Step 4: Quick Planning
 
-1. Analyze the demand and propose tasks (same logic as `/tyrex-plan` but streamlined)
+1. Analyze the feature and propose tasks (same logic as `/tyrex-plan` but streamlined)
 2. Each task gets:
    - Dependency ordering
    - Parallelism markers
@@ -111,8 +117,8 @@ Commit mode:
 
 4. Display compact execution plan:
    ```
-   Quick Plan: [demand summary]
-   ═══════════════════════════════
+   TYREX Quick Plan: [feature summary]
+════════════════════════════════════════
    
    [1] Setup data model          (sequential, required)
    [2] Implement business logic   (sequential, required)
@@ -123,7 +129,7 @@ Commit mode:
    ```
 
 5. **If `--auto-approve`:** skip approval, start executing immediately.
-   **Otherwise, present quiz:**
+   **Otherwise, present choices:**
    ```
    Approve this plan?
      [ ] Approve and start
@@ -146,15 +152,15 @@ After all tasks complete:
 - Update cursor.yml
 - Present completion summary:
   ```
-  Quick Task Complete
-  ═══════════════════════════════
+  TYREX Quick Complete
+   ════════════════════════════════════════
   
   Tasks: [N]/[N] completed
   Commits: [N]
   Files changed: [N]
   Tests: [N] passing
   
-  Run /tyrex-review to review, or you're done!
+  Run /tyrex-review to review.
   ```
 
 ### Step 6: Auto-update TYREX.md
@@ -167,21 +173,21 @@ If any macro documentation was generated or updated (ADR, PRD, SRS), automatical
 
 ## Escalation Rule
 
-At ANY point during Steps 1-4, if the demand appears too complex for quick-track:
+At ANY point during Steps 1-4, if the feature appears too complex for quick-track:
 - More than 8 tasks would be needed
 - Multiple modules/services affected
 - Significant architecture decisions required
 - Cross-team coordination needed
 
-Present quiz:
+Present choices:
 ```
-This seems complex for a quick task.
+This task exceeds quick-track scope.
   [ ] Continue with quick-track anyway
   [ ] Switch to full workflow (/tyrex-new → /tyrex-plan → /tyrex-do)
 ```
 
 ## Important Rules
-- Quick does NOT mean sloppy — all quality guardrails still apply
+- All quality guardrails apply.
 - TDD is still mandatory (per quality strategy)
 - CHANGELOG is still mandatory
 - SPEC is still mandatory (per task, even if compact)

@@ -1,0 +1,51 @@
+# Sequence Diagram — /tyrex-debug Flow
+# Render: d2 009-debug-command-sequence.d2 009-debug-command-sequence.svg
+
+shape: sequence_diagram
+
+# -- Actors --
+
+user: "Developer"
+agent: "Tyrex Agent"
+infra: "Infrastructure" {
+  shape: hexagon
+}
+logs: "Logs / Traces"
+bugs: ".tyrex/bugs/" {
+  shape: cylinder
+}
+skills: ".tyrex/skills/"
+
+# -- Flow --
+
+user -> agent: "1. /tyrex-debug"
+agent -> agent: "2. Set plan mode"
+agent -> skills: "3. Load debugger skill"
+skills -> agent: "4. Persona context"
+
+agent -> user: "5. Describe problem or auto mode?"
+user -> agent: "6. Problem description (or auto)"
+
+agent -> user: "7. Select depth: quick/standard/deep"
+user -> agent: "8. Depth choice"
+
+agent -> infra: "9. Check container/service status"
+infra -> agent: "10. Status report"
+
+agent -> user: "11. Container X not running. Start it?"
+user -> agent: "12. Approved"
+agent -> infra: "13. docker compose up"
+infra -> agent: "14. Service started"
+
+agent -> logs: "15. Read logs (ERROR/WARN/FATAL)"
+logs -> agent: "16. Log entries + stack traces"
+
+agent -> user: "17. Hypothesis: root cause is X"
+user -> agent: "18. Confirm / redirect"
+
+agent -> logs: "19. Targeted investigation"
+logs -> agent: "20. Additional evidence"
+
+agent -> bugs: "21. Write DEBUG-NNN.md"
+agent -> user: "22. Summary: N bugs found (severities)"
+agent -> user: "23. Fix now or defer to /tyrex-new?"

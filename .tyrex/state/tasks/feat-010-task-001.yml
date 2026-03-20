@@ -1,0 +1,19 @@
+task_id: "feat-010-task-001"
+feature: "010-interactive-questions-ux"
+name: "Update constitution.md — global interaction rule"
+status: "completed"
+depends_on: []
+unlocks: ["feat-010-task-002", "feat-010-task-003"]
+parallel: false
+security: "none"
+skill: "copywriter.md"
+quality: "optional"
+estimate: "small"
+spec_file: "docs/specs/010-task-001-constitution-interaction-rule.md"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: [".tyrex/constitution.md"]
+output: null
+errors: null
