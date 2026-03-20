@@ -20,6 +20,8 @@ You may create, edit, and delete source code files following TDD, small commits,
 
 **ALL decisions in this command MUST use structured choices** adapted to the agent's interface. CLI agents (Claude Code, OpenCode): numbered choices where the user types a number. Chat-based agents (Cursor, Codex): numbered list or direct question where the user responds naturally. Never ask open-ended questions when structured choices are possible. This applies to: parallelization choices, failure handling, commit approval, and any other decision point.
 
+**One question at a time.** Present a single structured choice, then STOP and wait for the user's response before proceeding to the next question. Never combine multiple choice blocks in one message.
+
 ## Behavior
 
 ### Step 1: Load state

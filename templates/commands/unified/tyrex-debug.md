@@ -15,6 +15,8 @@ You MUST NOT write or modify source code. You may read code, run diagnostic comm
 
 **ALL decisions in this command MUST use structured choices** adapted to the agent's interface. CLI agents (Claude Code, OpenCode): numbered choices where the user types a number. Chat-based agents (Cursor, Codex): numbered list or direct question where the user responds naturally. Never ask open-ended questions when structured choices are possible.
 
+**One question at a time.** Present a single structured choice, then STOP and wait for the user's response before proceeding to the next question. Never combine multiple choice blocks in one message. Each step that contains a decision point ends at that choice — the next step begins only after the user responds.
+
 ## Security Rules (MANDATORY)
 
 These rules are **inviolable** during debug sessions:
@@ -79,6 +81,8 @@ Listen to their description. Extract:
 
 If the description is too vague, ask ONE focused clarification question with structured choices based on what's ambiguous.
 
+**Present mode choice (Step 2) and wait for response. If user-directed, wait for problem description before continuing to Step 3.**
+
 #### Mode 2: Automatic Analysis
 
 The agent takes control of the investigation:
@@ -108,6 +112,8 @@ This determines which evidence sources the agent will analyze:
 | Quick    | yes  | yes  | no          | no    | no            | no      |
 | Standard | yes  | yes  | yes         | yes   | no            | no      |
 | Deep     | yes  | yes  | yes         | yes   | yes           | yes     |
+
+**Present depth choice and wait for response before continuing to Step 4.**
 
 ### Step 4: Infrastructure check
 

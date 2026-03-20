@@ -22,6 +22,8 @@ Update `agent_mode` in `cursor.yml` at each transition.
 
 **ALL decisions in this command MUST use structured choices** adapted to the agent's interface. CLI agents (Claude Code, OpenCode): numbered choices where the user types a number. Chat-based agents (Cursor, Codex): numbered list or direct question where the user responds naturally. Never ask open-ended questions when structured choices are possible. This is the standard for every interaction point.
 
+**One question at a time.** Present a single structured choice, then STOP and wait for the user's response before proceeding to the next question. Never combine multiple choice blocks in one message. Each step that contains a decision point ends at that choice — the next step begins only after the user responds. Exception: configuration review blocks may be presented together as a single "review and confirm" action.
+
 ## Behavior
 
 ### Step 1: Capture the Feature
@@ -51,6 +53,8 @@ Is there a specific requirement driving this?
 Maximum 3 question rounds.
 
 **If `--auto-approve`:** Ask no clarification questions unless the prompt is critically ambiguous (e.g., no clear action or target). Use the prompt as-is and make reasonable inferences.
+
+**Present Step 1 choices and wait for user response before continuing to Step 2.**
 
 ### Step 2: Quick Configuration (via structured choices)
 
@@ -93,6 +97,8 @@ Commit mode:
    - **If `--auto-approve`:** auto-create the DevSec skill from built-in template if it doesn't exist
 3. Generate feature spec (compact format, max 30 lines)
 4. Create branch (based on Step 2 config)
+
+**Present each choice in Steps 2-3 individually. Wait for user response before continuing.**
 
 ### Step 4: Quick Planning
 

@@ -15,6 +15,8 @@ You MUST NOT write source code. You may create/modify only `.tyrex/`, `docs/`, a
 
 **ALL decisions in this command MUST use structured choices** adapted to the agent's interface. CLI agents (Claude Code, OpenCode): numbered choices where the user types a number. Chat-based agents (Cursor, Codex): numbered list or direct question where the user responds naturally. Never ask open-ended questions when structured choices are possible. This applies to: roadmap selection, clarification questions, context ingestion, skill selection, documentation configuration, branch configuration, and any other decision point.
 
+**One question at a time.** Present a single structured choice, then STOP and wait for the user's response before proceeding to the next question. Never combine multiple choice blocks in one message. Each step that contains a decision point ends at that choice — the next step begins only after the user responds. Exception: configuration review blocks (e.g., docs bundle + git config in Step 4) may be presented together as a single "review and confirm" action.
+
 ## Behavior
 
 ### Step 0: Check roadmap
@@ -60,6 +62,8 @@ Show at most 10 bugs sorted by severity (critical first). If more exist, note "a
 Ask the user: "Describe what you want to implement."
 Listen to their description. This is the WHAT and WHY.
 
+**Present Step 1 and wait for user response before continuing.**
+
 ### Step 2: Clarification (max 5 questions, structured choices)
 Analyze the description and ask UP TO 5 targeted clarification questions **using structured choices**:
 
@@ -92,6 +96,8 @@ What's the expected data volume/scale?
 
 Adapt choices to the specific feature context. If the description is clear and complete, skip this step entirely. Do NOT ask trivial questions.
 
+**Present clarification questions ONE at a time. Wait for each response before asking the next.**
+
 ### Step 3: Context Ingestion
 Present choices to the user:
 ```
@@ -105,6 +111,8 @@ If yes: follow the `/tyrex-context add` flow with scope set to `feature`
 - Store in `.tyrex/features/NNN-context.md`
 - This context will inform documentation generation and planning
 Note: the user can always add more context later with `/tyrex-context`
+
+**Present context choice and wait for user response before continuing.**
 
 ### Step 3b: Skill Analysis & Suggestion
 After ingesting context, analyze the feature to identify relevant skills:
@@ -134,6 +142,8 @@ After ingesting context, analyze the feature to identify relevant skills:
    ```
    - If yes: For each missing skill, ask for a brief role description, then generate the skill file
 6. **Record selected skills** — they will be included in the feature spec (Step 6) as a `Skills:` field.
+
+**Present skill choices and wait for user response before continuing.**
 
 ### Step 4: Feature configuration (structured choices)
 Read defaults from `.tyrex/tyrex.yml` and present configuration with structured choices:
