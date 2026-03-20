@@ -40,4 +40,4 @@ Create an interactive debug command that systematically diagnoses problems (logs
 7. Security hardening review (small, after 6, security: full-audit)
 
 ## Status
-planned
+done

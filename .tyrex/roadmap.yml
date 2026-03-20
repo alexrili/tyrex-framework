@@ -70,6 +70,6 @@ features:
   - id: "009"
     name: "debug-command"
     description: "/tyrex-debug — Interactive debug with persistent bug registry"
-    status: in_progress
+    status: done
     referenced_in: ["ADR-007"]
     depends_on: []
