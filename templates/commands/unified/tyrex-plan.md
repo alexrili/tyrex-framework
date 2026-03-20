@@ -129,6 +129,17 @@ Analyze the feature — including all loaded context, SRS, PRD, and security con
 - Security tasks execute BEFORE or alongside the code they protect
 - Order: data model → business logic → interface → security hardening → tests (but tests can interleave)
 
+**Test-awareness rules (per task):**
+- For each implementation task with quality `required`: note that TDD applies — tests MUST be written first, then implementation
+- For each implementation task with quality `recommended`: note that tests should be written alongside the implementation
+- Critical flows identified from context, SRS, or PRD get dedicated test tasks (separate from the implementation task)
+- Test tasks CAN be parallel with other test tasks when they target different files
+
+**Cross-reference coverage gaps:**
+- If `.tyrex/tests/coverage-gaps.md` exists, read it and compare listed gaps against the files affected by proposed tasks
+- For any overlap between a coverage gap and a proposed task's files, add a note to the task: "Addresses GAP-NNN: [description]"
+- If `.tyrex/tests/coverage-gaps.md` does not exist, skip this sub-step silently
+
 ### Step 3b: Generate SPEC per task
 For EACH proposed task, generate a SPEC draft:
 

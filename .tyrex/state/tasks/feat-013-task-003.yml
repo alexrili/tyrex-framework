@@ -1,0 +1,21 @@
+task_id: "feat-013-task-003"
+feature: "013-tests-first-class"
+name: "Integrate test awareness into /tyrex-new and /tyrex-review"
+status: "completed"
+depends_on: ["feat-013-task-001"]
+unlocks: ["feat-013-task-005"]
+parallel: true
+security: "none"
+skill: "qa-engineer.md"
+quality: "required"
+estimate: "medium"
+spec_file: "docs/specs/013-task-003-new-review-tests.md"
+started_at: "2026-03-20T00:00:00Z"
+finished_at: "2026-03-20T00:00:00Z"
+agent: "claude-opus-4-6"
+commit: null
+files_changed:
+  - "templates/commands/unified/tyrex-new.md"
+  - "templates/commands/unified/tyrex-review.md"
+output: "Added Step 0d (test coverage gaps check) to tyrex-new and Lens 5 (test coverage) plus test suite execution to tyrex-review"
+errors: null

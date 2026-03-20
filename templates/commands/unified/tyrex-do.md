@@ -125,6 +125,28 @@ For each ready task, one at a time:
      6. Update the version in the manifest file
      7. Propagate version: grep for the old version string across all project files, update references in README, docs, badges, configs
      8. Stage the version changes alongside the task changes (same atomic commit)
+   - **Run tests before commit (mandatory for every task):**
+     1. Detect test framework and test command from the project's package manifest scripts (e.g., `test` script in `package.json`, `pytest` in `pyproject.toml`, etc.)
+     2. If a test command exists: run the full test suite
+     3. If tests **fail**:
+        - **If `--auto-approve`:** automatically retry once; if still failing, mark the task as `failed`
+        - **Otherwise, present structured choices:**
+          ```
+          Tests failed: N failures
+            [1] Fix and retry
+            [2] Skip tests (add note to commit)
+            [3] Abort task
+          ```
+     4. If tests **pass**: include the pass count in the task output: "Tests: N passed, 0 failed"
+     5. If **no test framework/command is detected**:
+        - **If `--auto-approve`:** skip with a note in the task output: "No test command detected — skipped"
+        - **Otherwise, present structured choices:**
+          ```
+          No test command detected.
+            [1] Continue without tests
+            [2] Specify test command
+          ```
+     - This step runs for EVERY task, not just security tasks — core principle: **never let an implementation pass without at least asking about tests**
    - **If `--auto-approve`:**
      - Make the commit automatically (overrides `approve` mode from tyrex.yml)
    - **Else if commit mode is `approve`:**

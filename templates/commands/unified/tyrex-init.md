@@ -39,6 +39,7 @@ Create the following directories:
 .tyrex/map/
 .tyrex/context/
 .tyrex/security/
+.tyrex/tests/
 docs/adrs/
 docs/rfcs/
 docs/wiki/
@@ -105,6 +106,65 @@ After the codebase analysis, set up the dedicated security directory:
 3. **Save initial scan results** from Step 1 to `.tyrex/security/audit.md` (if no migration occurred) and `.tyrex/security/SECURITY-001.md` (the first scan report).
    - The initial scan during init should be lightweight — not a full deep scan.
 4. **Note in summary:** Inform the user that a full security scan can be run anytime with `/tyrex-security-review`.
+
+**Step 1c: Test Infrastructure Detection**
+
+After the security setup, detect the project's test infrastructure:
+
+1. **Scan for test config files:**
+   - JavaScript/TypeScript: `jest.config.*`, `vitest.config.*`, `.mocharc.*`, `karma.conf.*`, `cypress.config.*`, `playwright.config.*`
+   - Python: `pytest.ini`, `pyproject.toml` (look for `[tool.pytest]`), `setup.cfg` (look for `[tool:pytest]`), `tox.ini`
+   - Ruby: `.rspec`, `Guardfile`, `test_helper.rb`
+   - PHP: `phpunit.xml`, `phpunit.xml.dist`
+   - Go: test files (`*_test.go`) — Go uses built-in testing
+   - Rust: test modules — Rust uses built-in testing (`#[cfg(test)]`)
+   - Java/Kotlin: `build.gradle` (look for test dependencies), `pom.xml` (look for surefire/junit)
+
+2. **Scan for test directories:**
+   - `test/`, `tests/`, `__tests__/`, `spec/`, `e2e/`, `integration/`, `cypress/`
+   - Note which ones exist and their approximate file count
+
+3. **Scan for test scripts in package manifest:**
+   - `package.json`: look for `test`, `test:unit`, `test:e2e`, `test:integration`, `test:watch` scripts
+   - `Makefile`: look for `test`, `test-unit`, `test-integration` targets
+   - `composer.json`: look for `test` scripts
+   - Check devDependencies for test framework packages (jest, vitest, mocha, pytest, rspec, phpunit, etc.)
+
+4. **Create `.tyrex/tests/`** directory if it doesn't already exist.
+
+5. **If test framework found:** Report what was detected in the summary:
+   ```
+   Test infrastructure detected:
+     Framework: Jest (jest.config.ts)
+     Directories: __tests__/, e2e/
+     Scripts: test, test:unit, test:e2e
+     Coverage: ~142 test files found
+   ```
+   - If multiple test frameworks are detected, list all of them.
+   - If a test framework is found in devDependencies but has no config file, note the discrepancy:
+     ```
+     Note: vitest found in devDependencies but no vitest.config.* detected.
+     ```
+
+6. **If NO test framework found:** Suggest a framework based on the detected project stack. Present structured choices:
+   - For Node.js/TypeScript projects:
+     ```
+     No test framework detected. Suggested options for your stack:
+       1. Vitest — fast, Vite-native, ESM-first (recommended for modern TS/JS)
+       2. Jest — widely adopted, rich ecosystem
+       3. Skip — set up testing later
+     ```
+   - For Python projects:
+     ```
+     No test framework detected. Suggested options for your stack:
+       1. pytest — powerful, flexible, widely adopted (recommended)
+       2. unittest — built-in, no extra dependencies
+       3. Skip — set up testing later
+     ```
+   - For Ruby projects: suggest RSpec or Minitest
+   - For PHP projects: suggest PHPUnit or Pest
+   - For Go/Rust projects: note that testing is built-in and suggest running existing conventions
+   - This is **informational only** — do NOT install anything or create test files.
 
 **Step 2: Generate Core Documents**
 - Generate `.tyrex/TYREX.md` based on the mapping (fill in the template with real data)

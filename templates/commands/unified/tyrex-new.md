@@ -74,6 +74,22 @@ Before asking for a feature description, check for pending security findings:
 
 **Present the choice and STOP. Wait for user response before continuing.**
 
+### Step 0d: Check test coverage gaps
+Before asking for a feature description, check for pending test coverage gaps:
+1. Read `.tyrex/tests/coverage-gaps.md` (if exists).
+2. Parse for pending gaps — entries not marked as resolved.
+3. If pending gaps exist, count by severity and present structured choices:
+   ```
+   N test coverage gaps identified (N critical, N important).
+     [1] Create feature to address test gaps
+     [2] Continue with new feature (gaps noted)
+   ```
+4. If "Create feature to address test gaps": use the selected gap(s) as the feature description and proceed to Step 1 with that context pre-filled.
+5. If "Continue" or no pending gaps: proceed to Step 1 normally.
+6. If `.tyrex/tests/coverage-gaps.md` doesn't exist or has no pending gaps: skip to Step 1.
+
+**Present the choice and STOP. Wait for user response before continuing.**
+
 ### Step 1: Describe the feature
 Ask the user: "Describe what you want to implement."
 Listen to their description. This is the WHAT and WHY.

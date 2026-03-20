@@ -1,0 +1,21 @@
+task_id: "feat-013-task-004"
+feature: "013-tests-first-class"
+name: "Integrate test awareness into /tyrex-plan and /tyrex-do"
+status: "completed"
+depends_on: ["feat-013-task-001"]
+unlocks: ["feat-013-task-005"]
+parallel: true
+security: "input-validation"
+skill: "qa-engineer.md"
+quality: "required"
+estimate: "medium"
+spec_file: "docs/specs/013-task-004-plan-do-tests.md"
+started_at: "2026-03-20"
+finished_at: "2026-03-20"
+agent: null
+commit: null
+files_changed:
+  - "templates/commands/unified/tyrex-plan.md"
+  - "templates/commands/unified/tyrex-do.md"
+output: "Added test-awareness rules and coverage-gaps cross-reference to /tyrex-plan Step 3. Added mandatory test execution step to /tyrex-do before commit."
+errors: null

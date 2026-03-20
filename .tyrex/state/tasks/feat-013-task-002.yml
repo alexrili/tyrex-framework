@@ -1,0 +1,20 @@
+task_id: "feat-013-task-002"
+feature: "013-tests-first-class"
+name: "Update /tyrex-init — detect test infrastructure"
+status: "completed"
+depends_on: ["feat-013-task-001"]
+unlocks: ["feat-013-task-005"]
+parallel: true
+security: "none"
+skill: "qa-engineer.md"
+quality: "recommended"
+estimate: "small"
+spec_file: "docs/specs/013-task-002-init-test-detection.md"
+started_at: "2026-03-20T00:00:00Z"
+finished_at: "2026-03-20T00:00:00Z"
+agent: null
+commit: null
+files_changed:
+  - "templates/commands/unified/tyrex-init.md"
+output: "Added Step 1c (Test Infrastructure Detection) to /tyrex-init and .tyrex/tests/ to directory list"
+errors: null
