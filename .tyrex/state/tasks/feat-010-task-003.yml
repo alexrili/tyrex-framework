@@ -1,0 +1,19 @@
+task_id: "feat-010-task-003"
+feature: "010-interactive-questions-ux"
+name: "Update remaining ADF commands (review, plan, do)"
+status: "completed"
+depends_on: ["feat-010-task-001"]
+unlocks: ["feat-010-task-004"]
+parallel: true
+security: "none"
+skill: "copywriter.md"
+quality: "optional"
+estimate: "small"
+spec_file: "docs/specs/010-task-003-remaining-adf-commands.md"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: ["templates/commands/unified/tyrex-review.md", "templates/commands/unified/tyrex-plan.md", "templates/commands/unified/tyrex-do.md"]
+output: null
+errors: null

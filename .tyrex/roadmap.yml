@@ -73,3 +73,10 @@ features:
     status: done
     referenced_in: ["ADR-007"]
     depends_on: []
+
+  - id: "010"
+    name: "interactive-questions-ux"
+    description: "One question at a time — fix inconsistent question batching across commands"
+    status: in_progress
+    referenced_in: ["ADR-008"]
+    depends_on: []

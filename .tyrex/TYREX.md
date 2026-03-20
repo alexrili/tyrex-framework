@@ -73,6 +73,7 @@ bin/tyrex.js (~427 lines, single-file CLI)
 - **Sync after every command update:** When updating commands in `templates/commands/unified/`, ALWAYS re-sync to all 4 agent directories as the LAST step — updates made after sync will be missed
 - **Agent mode (plan/build):** Every command declares its mode (`plan` or `build`) in an `## Agent Mode` section and sets `agent_mode` in `cursor.yml` as its first action. Plan mode = no source code writes. Build mode = full implementation with TDD. Enforced via triple layer: cursor.yml state + constitution rules + per-command instructions.
 - **Adaptive decision format:** ALL user decisions across ALL commands use structured choices adapted to the agent's interface. CLI agents (Claude Code, OpenCode): numbered choices. Chat agents (Cursor, Codex): numbered list or direct question. Never open-ended questions when structured choices are possible. (ADR-003)
+- **One question at a time:** Commands present ONE structured choice per message, then STOP and wait for the user's response. Never batch multiple choice blocks. Exception: configuration review blocks (docs bundle + git config) may be presented together as a single confirm action. Enforced in constitution.md + per-command ADF section. (ADR-008)
 - **Security-first planning:** `/tyrex-plan` performs a security assessment BEFORE proposing tasks. Security-sensitive tasks get `security` attribute, quality: `required`, and devsec skill auto-assigned. Every feature with security implications gets a dedicated security hardening task.
 - **4-lens senior review:** `/tyrex-review` evaluates through 4 lenses: Pattern Compliance, Code Quality & DRY, Business & Technical Compliance, Security First. Uses senior engineer persona for the project's tech stack.
 - **Review → Fix loop:** `/tyrex-review` with `--do-all` or `--do-critical` flags auto-creates requested-change tasks (prefixed `rc-`) within the same feature and enters plan/do loop. Includes mini re-review after fixes.
@@ -141,6 +142,7 @@ bin/tyrex.js (~427 lines, single-file CLI)
 | 2026-03-13 | Skill evolution via review (ADR-006)     | `/tyrex-review` Step 5b extracts patterns from findings, evolves skills, suggests new skills. Closes the learning loop between review and skills systems |
 | 2026-03-13 | /tyrex-research command                  | AI-powered research (codebase + web). Feature-scoped or standalone. Saves on demand. Command count: 19 (was 18) |
 | 2026-03-19 | Interactive debug command (ADR-007)       | `/tyrex-debug` for structured diagnosis with infrastructure management, persistent bug registry in `.tyrex/bugs/`, and `/tyrex-new` integration. Command count: 20 (was 19) |
+| 2026-03-19 | One question at a time (ADR-008)           | All commands must present ONE structured choice per message, then wait for response. Enforced in constitution + per-command Adaptive Decision Format. Exceptions: config review blocks and non-interactive output |
 
 ## CI/CD
 
