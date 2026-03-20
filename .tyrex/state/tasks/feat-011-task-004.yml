@@ -1,0 +1,21 @@
+task_id: "feat-011-task-004"
+feature: "011-security-review-command"
+name: "Integrate audit.md into /tyrex-plan and /tyrex-do"
+status: "completed"
+depends_on: ["feat-011-task-001"]
+unlocks: ["feat-011-task-005"]
+parallel: true
+security: "data-sanitization"
+skill: "devsec.md"
+quality: "required"
+estimate: "medium"
+spec_file: "docs/specs/011-task-004-plan-do-audit.md"
+started_at: "2026-03-20"
+finished_at: "2026-03-20"
+agent: null
+commit: null
+files_changed:
+  - "templates/commands/unified/tyrex-plan.md"
+  - "templates/commands/unified/tyrex-do.md"
+output: null
+errors: null

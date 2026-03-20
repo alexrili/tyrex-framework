@@ -61,7 +61,13 @@ No active feature found.
      [ ] Continue without DevSec skill
    ```
 
-3. **Generate security considerations** that will inform task planning:
+3. **Cross-reference audit findings:** If `.tyrex/security/audit.md` exists:
+   - Read the file and identify all pending findings (`[ ]`)
+   - Compare each finding's `files_affected` with the current feature's scope (files listed in the feature spec)
+   - For any overlap, note the finding ID and description — these will inform task proposals in Step 3
+   - If `.tyrex/security/audit.md` does not exist, skip this sub-step silently
+
+4. **Generate security considerations** that will inform task planning:
    - Input validation requirements per endpoint/form
    - Auth checks needed per operation
    - Data sanitization points
@@ -82,6 +88,12 @@ Analyze the feature — including all loaded context, SRS, PRD, and security con
 - **Quality:** required | recommended | optional
 - **Security:** [none | input-validation | auth-check | data-sanitization | encryption | full-audit]
 ```
+
+**Audit finding integration:**
+- If Step 2 identified pending audit findings that overlap with this feature's scope, incorporate them into the task list
+- When a proposed task addresses a known audit finding, add a note: "Addresses SECURITY-NNN finding: [description]"
+- Pre-populate security tasks from known pending findings that overlap with the feature's files
+- If multiple findings overlap with the same task, list all of them
 
 **Security-first task rules:**
 - Tasks with `security: input-validation` MUST include input validation in the implementation

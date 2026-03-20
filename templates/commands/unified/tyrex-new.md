@@ -58,6 +58,22 @@ Before asking for a feature description, check for open bugs:
 
 Show at most 10 bugs sorted by severity (critical first). If more exist, note "and N more".
 
+### Step 0c: Check security findings
+Before asking for a feature description, check for pending security findings:
+1. Read `.tyrex/security/audit.md` (if exists).
+2. Parse findings for pending `[ ]` vs resolved `[x]` status.
+3. If pending findings exist, count by severity and present structured choices:
+   ```
+   N pending security findings detected (N critical, N high, N medium, N low).
+     [1] Fix security findings first (create feature from finding)
+     [2] Continue with new feature (findings noted)
+   ```
+4. If "Fix security findings first": list the pending findings, let the user choose which to fix, then hand off to `/tyrex-quick` with selected findings as context.
+5. If "Continue" or no pending findings: proceed to Step 1 normally.
+6. If `.tyrex/security/audit.md` doesn't exist or has no pending findings: skip to Step 1.
+
+**Present the choice and STOP. Wait for user response before continuing.**
+
 ### Step 1: Describe the feature
 Ask the user: "Describe what you want to implement."
 Listen to their description. This is the WHAT and WHY.

@@ -91,6 +91,14 @@ For each ready task, one at a time:
 6. **On success:**
    - If the implementation deviated from the SPEC's draft, update the SPEC file to reflect the actual approach taken
    - Update task state to `completed` with files_changed and output
+   - **Resolve audit findings (if applicable):**
+     - If the completed task has a `security` attribute (not `none`) or its `task_id` has an `rc-*` prefix:
+       1. Check if `.tyrex/security/audit.md` exists; if not, skip silently
+       2. Read `.tyrex/security/audit.md`
+       3. Check if the task addresses a known finding (match via task metadata notes like "Addresses SECURITY-NNN" or overlap between `files_changed` and the finding's `files_affected`)
+       4. For each matched finding still marked `[ ]`, update it to `[x]` and append the resolution date (today's date in YYYY-MM-DD format)
+       5. Write the updated audit.md
+       6. **Validation:** only transition `[ ]` to `[x]`; never revert a finding that is already `[x]`
    - Prepare commit message (conventional format)
    - Update `docs/CHANGELOG.md` with what changed
    - **If `--auto-approve`:**

@@ -24,7 +24,7 @@ Read these files (in parallel where possible):
 7. `.tyrex/context/` — project context files (list directory)
 8. `.tyrex/TYREX.md` — check completeness (sections filled or empty)
 9. `docs/` — scan for existing documentation files
-10. `.tyrex/map/security-audit.md` — security findings from init mapping (if exists)
+10. `.tyrex/security/audit.md` — security findings from /tyrex-security-review (if exists)
 11. `.tyrex/bugs/` — debug session reports and open bugs (if exists)
 
 ### Step 2: Display comprehensive status
@@ -134,12 +134,14 @@ Perform these quick checks and include results in the Health section:
 
 6. **Roadmap awareness** — If `.tyrex/roadmap.yml` exists, show planned/discussed features. If it doesn't exist but feature specs reference future features in "Out of Scope" or "Related" sections, extract those references and display them with a note "(extracted from feature specs — consider creating roadmap.yml)".
 
-7. **Security findings** — If `.tyrex/map/security-audit.md` exists:
+7. **Security findings** — If `.tyrex/security/audit.md` exists:
    - Parse the findings table for `Status` column (`[ ]` = pending, `[x]` = resolved)
-   - Count pending vs resolved findings
+   - Count total findings, pending, and resolved
+   - Extract the last scan date from the audit.md header
    - Show each pending finding with severity and description
    - Show resolved findings as `[x]` (collapsed or dimmed)
-   - If no security-audit.md exists, show "No security audit found — run `/tyrex-init` to generate one"
+   - If all findings are resolved, show "All clear — no pending security findings"
+   - If no `.tyrex/security/audit.md` exists, show "No security scans yet. Run `/tyrex-security-review`."
 
 8. **Bug registry** — If `.tyrex/bugs/` exists:
    - Count `DEBUG-*.md` files (total debug sessions)

@@ -16,9 +16,14 @@ You MUST NOT write source code. You may create/modify only `.tyrex/`, `docs/`, a
 ### If `.tyrex/` already exists:
 1. Read `.tyrex/state/cursor.yml`
 2. Display current state summary to the user
-3. Ask: "Tyrex is already initialized. Resume from where you left off? [Y/n]"
-4. If yes: behave like `/tyrex-resume`
-5. If no: ask if they want to re-initialize (this will overwrite settings, NOT state)
+3. **Security migration check:** If `.tyrex/map/security-audit.md` exists but `.tyrex/security/audit.md` does NOT, offer to migrate:
+   - Create `.tyrex/security/` if it doesn't exist
+   - Copy content from `.tyrex/map/security-audit.md` to `.tyrex/security/audit.md`, preserving all `[x]` and `[ ]` statuses
+   - Do NOT delete the original file
+   - Inform the user: "Migrated security audit to `.tyrex/security/audit.md`. Run `/tyrex-security-review` for a fresh scan."
+4. Ask: "Tyrex is already initialized. Resume from where you left off? [Y/n]"
+5. If yes: behave like `/tyrex-resume`
+6. If no: ask if they want to re-initialize (this will overwrite settings, NOT state)
 
 ### If `.tyrex/` does NOT exist (fresh project):
 
@@ -33,6 +38,7 @@ Create the following directories:
 .tyrex/skills/
 .tyrex/map/
 .tyrex/context/
+.tyrex/security/
 docs/adrs/
 docs/rfcs/
 docs/wiki/
@@ -86,6 +92,19 @@ Perform a COMPLETE project mapping. This is the ONE phase where spending tokens 
 - `[ ]` = pending (unresolved)
 - `[x]` = resolved (fixed)
 - This format is consumed by `/tyrex-status` (to show pending findings) and `/tyrex-review` (to cross-reference with changes)
+
+**Step 1b: Security Directory Setup & Migration**
+
+After the codebase analysis, set up the dedicated security directory:
+
+1. **Create `.tyrex/security/`** if it doesn't already exist.
+2. **Migrate existing audit data:** If `.tyrex/map/security-audit.md` exists, copy its content to `.tyrex/security/audit.md`.
+   - Preserve all `[x]` (resolved) and `[ ]` (pending) statuses exactly as they are.
+   - Do NOT delete the original file — the user can clean it up manually.
+   - If `.tyrex/security/audit.md` already exists, do NOT overwrite it — skip migration and note it in the summary.
+3. **Save initial scan results** from Step 1 to `.tyrex/security/audit.md` (if no migration occurred) and `.tyrex/security/SECURITY-001.md` (the first scan report).
+   - The initial scan during init should be lightweight — not a full deep scan.
+4. **Note in summary:** Inform the user that a full security scan can be run anytime with `/tyrex-security-review`.
 
 **Step 2: Generate Core Documents**
 - Generate `.tyrex/TYREX.md` based on the mapping (fill in the template with real data)

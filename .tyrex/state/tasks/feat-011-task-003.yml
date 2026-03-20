@@ -1,0 +1,21 @@
+task_id: "feat-011-task-003"
+feature: "011-security-review-command"
+name: "Integrate audit.md into /tyrex-new and /tyrex-status"
+status: "completed"
+depends_on: ["feat-011-task-001"]
+unlocks: ["feat-011-task-005"]
+parallel: true
+security: "none"
+skill: "none"
+quality: "recommended"
+estimate: "small"
+spec_file: "docs/specs/011-task-003-new-status-audit.md"
+started_at: "2026-03-20"
+finished_at: "2026-03-20"
+agent: null
+commit: null
+files_changed:
+  - "templates/commands/unified/tyrex-new.md"
+  - "templates/commands/unified/tyrex-status.md"
+output: "Added Step 0c (security findings check) to /tyrex-new and updated Security section in /tyrex-status to read from .tyrex/security/audit.md"
+errors: null
