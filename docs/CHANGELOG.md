@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Session reports in `.tyrex/security/SECURITY-NNN.md` with consolidated audit tracking in `.tyrex/security/audit.md`
 - Automatic versioning in `/tyrex-do` — detects package manager, suggests semver bump, propagates version across files
 - Version bump verification in `/tyrex-review` — flags when CHANGELOG changed but version didn't
+- `/tyrex-test-review` — Scan for test coverage gaps with argued suggestions, persistent reports in `.tyrex/tests/`
 
 ## [0.6.0] - 2026-03-19
 

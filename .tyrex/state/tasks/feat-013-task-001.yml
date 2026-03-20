@@ -1,0 +1,19 @@
+task_id: "feat-013-task-001"
+feature: "013-tests-first-class"
+name: "Create /tyrex-test-review command template"
+status: "completed"
+depends_on: ["feat-012-task-003"]
+unlocks: ["feat-013-task-002", "feat-013-task-003", "feat-013-task-004"]
+parallel: false
+security: "input-validation"
+skill: "qa-engineer.md"
+quality: "required"
+estimate: "large"
+spec_file: "docs/specs/013-task-001-test-review-command.md"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: []
+output: null
+errors: null
