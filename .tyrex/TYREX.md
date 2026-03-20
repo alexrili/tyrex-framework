@@ -90,6 +90,9 @@ bin/tyrex.js (~427 lines, single-file CLI)
 - **Built-in Debugger skill:** `templates/skills/debugger.md` is a debug engineer skill template. Auto-suggested when `/tyrex-debug` is invoked. Systematic diagnosis, log analysis, container debugging, hypothesis testing.
 - **Bug registry:** `.tyrex/bugs/` stores debug session reports. One file per session (DEBUG-NNN.md) with multiple bug findings. Bugs have severity + status (open/resolved). Consumed by `/tyrex-new` (fix bugs first?) and `/tyrex-status` (summary).
 - **Automatic versioning:** `/tyrex-do` enforces version bump when CHANGELOG/ADR changes. Detects package manager (package.json, composer.json, pyproject.toml, etc.), suggests semver bump based on change type (feat=minor, fix=patch, BREAKING=major), propagates version to all files, includes in same commit. Human confirms or overrides. `/tyrex-review` flags missing version bumps.
+- **Test review command:** `/tyrex-test-review` scans for test coverage gaps with argued suggestions. Three-tier prioritization (critical/important/nice-to-have). Session reports in `.tyrex/tests/TEST-REVIEW-NNN.md`, consolidated view in `.tyrex/tests/coverage-gaps.md`. Integrated into `/tyrex-new` (show gaps), `/tyrex-plan` (test-aware decomposition), `/tyrex-do` (run tests before commit), `/tyrex-review` (Lens 5: Test Coverage), `/tyrex-init` (detect test infrastructure). Plan mode, read-only — never writes tests. (ADR-010)
+- **Test registry:** `.tyrex/tests/` stores test review reports and consolidated coverage gaps. One session file per scan (TEST-REVIEW-NNN.md). Gaps have tier + status (pending/resolved). Consumed by 5 commands.
+- **Tests as first-class citizen:** Core principle: the framework never lets an implementation pass without at least asking about tests. `/tyrex-do` runs test suite before every commit. `/tyrex-review` has Lens 5 (Test Coverage) checking for corresponding test files. `/tyrex-plan` includes test-awareness rules in task decomposition.
 - **No scripts in package.json:** No `start`, `test`, `lint`, or `build` scripts defined yet
 
 ## Environment Variables
@@ -147,6 +150,7 @@ bin/tyrex.js (~427 lines, single-file CLI)
 | 2026-03-19 | One question at a time (ADR-008)           | All commands must present ONE structured choice per message, then wait for response. Enforced in constitution + per-command Adaptive Decision Format. Exceptions: config review blocks and non-interactive output |
 | 2026-03-20 | Dedicated security review command (ADR-009)  | `/tyrex-security-review` for comprehensive scans. Reports in `.tyrex/security/`. Integrated into 5 commands. Command count: 21 (was 20) |
 | 2026-03-20 | Automatic versioning as framework directive | Version bump mandatory when CHANGELOG/ADR changes. Detect manifest, suggest bump, propagate, include in commit. Human decides final version. |
+| 2026-03-20 | Automated tests as first-class citizen (ADR-010) | `/tyrex-test-review` for gap scanning + test awareness in 5 commands. Core principle: never pass without asking about tests. Command count: 22 (was 21) |
 
 ## CI/CD
 

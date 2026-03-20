@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Automatic versioning in `/tyrex-do` — detects package manager, suggests semver bump, propagates version across files
 - Version bump verification in `/tyrex-review` — flags when CHANGELOG changed but version didn't
 - `/tyrex-test-review` — Scan for test coverage gaps with argued suggestions, persistent reports in `.tyrex/tests/`
+- Test awareness integrated into 5 commands: `/tyrex-init` (detect infrastructure), `/tyrex-new` (show gaps), `/tyrex-plan` (test-aware tasks), `/tyrex-do` (run tests before commit), `/tyrex-review` (Lens 5: Test Coverage)
+- QA Engineer skill template (`templates/skills/qa-engineer.md`) — ships with framework
+- ADR-010: Automated tests as first-class citizen
 
 ## [0.6.0] - 2026-03-19
 
