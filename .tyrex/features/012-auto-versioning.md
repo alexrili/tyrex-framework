@@ -35,4 +35,4 @@ Make version bumping a mandatory framework behavior: detect package manager, sug
 Wave 4: T1 → Wave 5: T2‖T3
 
 ## Status
-in_progress
+done

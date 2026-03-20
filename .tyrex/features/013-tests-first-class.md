@@ -39,4 +39,4 @@ Make test coverage a proactive framework concern: dedicated scan command for cov
 Wave 6: T1 → Wave 7: T2‖T3‖T4 → Wave 8: T5
 
 ## Status
-in_progress
+done
