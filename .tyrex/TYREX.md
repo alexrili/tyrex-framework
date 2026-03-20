@@ -81,7 +81,8 @@ bin/tyrex.js (~427 lines, single-file CLI)
 - **TYREX.md auto-update:** When macro docs (ADR, PRD, SRS) are generated or updated, commands auto-update TYREX.md with summaries in appropriate sections (Architecture Decisions, Business Rules, Requirements Summary)
 - **Quick = unified workflow:** `/tyrex-quick` is a fast-track `new → plan → do` pipeline from a single prompt. With `--auto-approve` it runs full autopilot. Replaces the old "no docs" quick approach.
 - **Handoff deprecated:** `/tyrex-handoff` replaced by `/tyrex-quick --auto-approve`
-- **Security finding tracking:** `.tyrex/map/security-audit.md` uses a `Status` column (`[ ]` pending, `[x]` resolved) consumed by `/tyrex-status` and `/tyrex-review`
+- **Security review command:** `/tyrex-security-review` provides comprehensive security scanning (secrets, logical vulns, OWASP Top 10, unprotected endpoints). Session reports in `.tyrex/security/SECURITY-NNN.md`, consolidated audit in `.tyrex/security/audit.md` with `[ ]`/`[x]` tracking. Integrated into `/tyrex-new` (pending findings check), `/tyrex-plan` (cross-reference audit), `/tyrex-do` (mark resolved), `/tyrex-status` (summary), `/tyrex-init` (initial scan + migration). Plan mode, read-only — never fixes code. (ADR-009)
+- **Security registry:** `.tyrex/security/` stores scan reports and consolidated audit. Replaces old `.tyrex/map/security-audit.md`. One session file per scan (SECURITY-NNN.md). Findings have severity + status (pending/resolved). Consumed by 5 commands.
 - **Review scopes:** `/tyrex-review` supports `pr` (default, branch diff only) and `full` (codebase-wide re-scan) scopes
 - **OpenCode plugin for mechanical enforcement:** `.opencode/plugin.ts` uses OpenCode's native hooks (`command.execute.before`, `permission.ask`) to mechanically enforce plan/build mode switching. `opencode.json` defines two agents (`plan` with `edit: "deny"`, `build` with `edit: "allow"`). The plugin reads/writes `cursor.yml` and injects `AgentPart` to switch agents on command execution. This is a triple-layer enforcement: cursor.yml state + constitution rules + native permission system.
 - **Research command:** `/tyrex-research` enables structured technical research (codebase + web) with or without an active feature. Results are saved on demand — feature-scoped to `.tyrex/features/NNN-research-TOPIC.md`, standalone to `.tyrex/research/TOPIC.md`. Plan mode, read-only.
@@ -143,6 +144,7 @@ bin/tyrex.js (~427 lines, single-file CLI)
 | 2026-03-13 | /tyrex-research command                  | AI-powered research (codebase + web). Feature-scoped or standalone. Saves on demand. Command count: 19 (was 18) |
 | 2026-03-19 | Interactive debug command (ADR-007)       | `/tyrex-debug` for structured diagnosis with infrastructure management, persistent bug registry in `.tyrex/bugs/`, and `/tyrex-new` integration. Command count: 20 (was 19) |
 | 2026-03-19 | One question at a time (ADR-008)           | All commands must present ONE structured choice per message, then wait for response. Enforced in constitution + per-command Adaptive Decision Format. Exceptions: config review blocks and non-interactive output |
+| 2026-03-20 | Dedicated security review command (ADR-009)  | `/tyrex-security-review` for comprehensive scans. Reports in `.tyrex/security/`. Integrated into 5 commands. Command count: 21 (was 20) |
 
 ## CI/CD
 

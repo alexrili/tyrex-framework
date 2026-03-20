@@ -1,0 +1,19 @@
+task_id: "feat-011-task-005"
+feature: "011-security-review-command"
+name: "Sync commands + update CLI, CHANGELOG, TYREX.md"
+status: "completed"
+depends_on: ["feat-011-task-002", "feat-011-task-003", "feat-011-task-004"]
+unlocks: []
+parallel: false
+security: "none"
+skill: "none"
+quality: "required"
+estimate: "small"
+spec_file: "docs/specs/011-task-005-sync-finalize.md"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: []
+output: null
+errors: null

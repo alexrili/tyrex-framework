@@ -32,6 +32,7 @@ This project uses the Tyrex Framework for human-driven, AI-accelerated pair prog
 | `/tyrex-wiki` | | Generate or update project wiki pages |
 | `/tyrex-debug` | | Diagnose problems, analyze logs, document bugs |
 | `/tyrex-research` | | Technical research — codebase + web |
+| `/tyrex-security-review` | | Comprehensive security scan — secrets, vulns, OWASP Top 10 |
 | `/tyrex-help` | `<command>` | Show commands, workflow guide, and contextual suggestions |
 | `/tyrex-handoff` | | **DEPRECATED** — use `/tyrex-quick --auto-approve` |
 
