@@ -101,6 +101,30 @@ For each ready task, one at a time:
        6. **Validation:** only transition `[ ]` to `[x]`; never revert a finding that is already `[x]`
    - Prepare commit message (conventional format)
    - Update `docs/CHANGELOG.md` with what changed
+   - **Version bump check (if CHANGELOG or ADR changed):**
+     1. Detect if `docs/CHANGELOG.md` or any `docs/adrs/*.md` was modified in this task
+     2. If yes, detect the project's package manager manifest:
+        - Scan for: `package.json`, `composer.json`, `pyproject.toml`, `Cargo.toml`, `mix.exs`, `go.mod`
+        - If no manifest found: skip versioning silently
+     3. Read the current version from the manifest
+     4. Suggest semver bump based on change type:
+        - `feat:` commit → minor bump
+        - `fix:` commit → patch bump
+        - `BREAKING CHANGE` or `!:` in commit → major bump
+        - `chore:`, `docs:`, `refactor:`, `test:` → patch bump
+     5. **If `--auto-approve`:** auto-accept the suggested bump
+        **Otherwise, present structured choices:**
+        ```
+        Version bump detected. Current: X.Y.Z
+          [1] Accept suggested: [type] → X.Y.Z+1
+          [2] Override: major
+          [3] Override: minor
+          [4] Override: patch
+          [5] Skip version bump
+        ```
+     6. Update the version in the manifest file
+     7. Propagate version: grep for the old version string across all project files, update references in README, docs, badges, configs
+     8. Stage the version changes alongside the task changes (same atomic commit)
    - **If `--auto-approve`:**
      - Make the commit automatically (overrides `approve` mode from tyrex.yml)
    - **Else if commit mode is `approve`:**

@@ -1,0 +1,19 @@
+task_id: "feat-012-task-001"
+feature: "012-auto-versioning"
+name: "Update /tyrex-do — version detection, bump, propagation"
+status: "completed"
+depends_on: ["feat-011-task-005"]
+unlocks: ["feat-012-task-002", "feat-012-task-003"]
+parallel: false
+security: "input-validation"
+skill: "release-engineer.md"
+quality: "required"
+estimate: "medium"
+spec_file: "docs/specs/012-task-001-do-versioning.md"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: []
+output: null
+errors: null
