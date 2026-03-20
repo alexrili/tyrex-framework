@@ -1,0 +1,20 @@
+task_id: "feat-012-task-002"
+feature: "012-auto-versioning"
+name: "Update /tyrex-review — flag missing version bump"
+status: "completed"
+depends_on: ["feat-012-task-001"]
+unlocks: ["feat-012-task-003"]
+parallel: true
+security: "none"
+skill: "release-engineer.md"
+quality: "recommended"
+estimate: "small"
+spec_file: "docs/specs/012-task-002-review-version-check.md"
+started_at: "2026-03-20T00:00:00Z"
+finished_at: "2026-03-20T00:00:00Z"
+agent: null
+commit: null
+files_changed:
+  - "templates/commands/unified/tyrex-review.md"
+output: "Added version bump verification check to Lens 1 (Pattern Compliance) in /tyrex-review"
+errors: null

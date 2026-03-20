@@ -116,6 +116,17 @@ Execute each lens in order. For each finding, assign a severity:
 #### Lens 1: Pattern Compliance
 Review against TYREX.md patterns. Flag deviations.
 
+**Version bump verification** (applies only if a package manifest exists):
+1. Check if `docs/CHANGELOG.md` or any `docs/adrs/*.md` was modified in the branch diff (PR scope: `git diff main...HEAD --name-only`; full scope: check recent commits on the current feature).
+2. Check if any package manifest version was bumped — look for version changes in: `package.json`, `composer.json`, `pyproject.toml`, `Cargo.toml`, `mix.exs`, `go.mod`.
+3. If CHANGELOG or ADR changed **but** no manifest version was bumped → flag as finding:
+   - **Severity: HIGH**
+   - Message: "CHANGELOG updated but version not bumped — ensure the package version is incremented to reflect the documented changes."
+4. If multiple manifests exist and their versions differ after bumping → flag as finding:
+   - **Severity: HIGH**
+   - Message: "Multiple package manifests detected with inconsistent versions."
+5. Skip this check entirely if no package manifest file is found in the project root.
+
 #### Lens 2: Code Quality & DRY
 Review code quality. Suggest refactoring where needed — but do NOT apply changes.
 

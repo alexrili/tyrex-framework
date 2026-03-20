@@ -89,6 +89,7 @@ bin/tyrex.js (~427 lines, single-file CLI)
 - **Debug command:** `/tyrex-debug` provides structured, AI-assisted debugging. Two modes: user-directed (describe symptom) or automatic analysis (broad scan). Manages infrastructure (docker, services) with user permission. Flexible diagnostic depth (quick/standard/deep). Generates session-based bug reports in `.tyrex/bugs/DEBUG-NNN.md` with severity classification (critical/high/medium/low). Integrates with `/tyrex-new` (shows open bugs before new features) and `/tyrex-status` (bug summary). Ships with built-in debugger skill template. Plan mode, diagnose-only — never fixes code.
 - **Built-in Debugger skill:** `templates/skills/debugger.md` is a debug engineer skill template. Auto-suggested when `/tyrex-debug` is invoked. Systematic diagnosis, log analysis, container debugging, hypothesis testing.
 - **Bug registry:** `.tyrex/bugs/` stores debug session reports. One file per session (DEBUG-NNN.md) with multiple bug findings. Bugs have severity + status (open/resolved). Consumed by `/tyrex-new` (fix bugs first?) and `/tyrex-status` (summary).
+- **Automatic versioning:** `/tyrex-do` enforces version bump when CHANGELOG/ADR changes. Detects package manager (package.json, composer.json, pyproject.toml, etc.), suggests semver bump based on change type (feat=minor, fix=patch, BREAKING=major), propagates version to all files, includes in same commit. Human confirms or overrides. `/tyrex-review` flags missing version bumps.
 - **No scripts in package.json:** No `start`, `test`, `lint`, or `build` scripts defined yet
 
 ## Environment Variables
@@ -145,6 +146,7 @@ bin/tyrex.js (~427 lines, single-file CLI)
 | 2026-03-19 | Interactive debug command (ADR-007)       | `/tyrex-debug` for structured diagnosis with infrastructure management, persistent bug registry in `.tyrex/bugs/`, and `/tyrex-new` integration. Command count: 20 (was 19) |
 | 2026-03-19 | One question at a time (ADR-008)           | All commands must present ONE structured choice per message, then wait for response. Enforced in constitution + per-command Adaptive Decision Format. Exceptions: config review blocks and non-interactive output |
 | 2026-03-20 | Dedicated security review command (ADR-009)  | `/tyrex-security-review` for comprehensive scans. Reports in `.tyrex/security/`. Integrated into 5 commands. Command count: 21 (was 20) |
+| 2026-03-20 | Automatic versioning as framework directive | Version bump mandatory when CHANGELOG/ADR changes. Detect manifest, suggest bump, propagate, include in commit. Human decides final version. |
 
 ## CI/CD
 

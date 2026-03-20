@@ -1,0 +1,22 @@
+task_id: "feat-012-task-003"
+feature: "012-auto-versioning"
+name: "Update constitution + TYREX.md + sync + finalize"
+status: "completed"
+depends_on: ["feat-012-task-001", "feat-012-task-002"]
+unlocks: []
+parallel: false
+security: "none"
+skill: "none"
+quality: "required"
+estimate: "small"
+spec_file: "docs/specs/012-task-003-constitution-sync.md"
+started_at: "2026-03-20"
+finished_at: "2026-03-20"
+agent: null
+commit: null
+files_changed:
+  - ".tyrex/constitution.md"
+  - ".tyrex/TYREX.md"
+  - "docs/CHANGELOG.md"
+output: null
+errors: null

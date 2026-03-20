@@ -13,6 +13,7 @@
 6. **CHANGELOG is mandatory** - every change updates docs/CHANGELOG.md
 7. **Small commits** - one task = one commit, atomic and revertible
 8. **Documentation first** - when configured, generate docs before code
+9. **Version bump is mandatory** — when CHANGELOG or ADR changes are committed, detect the package manager manifest, suggest a semver bump, propagate the version across all referencing files, and include the version change in the same atomic commit
 
 ## Stack-Specific Rules (Node.js / JavaScript)
 

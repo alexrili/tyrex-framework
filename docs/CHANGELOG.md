@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - `/tyrex-security-review` — Comprehensive security scanning command: secrets, logical vulns, OWASP Top 10, unprotected endpoints
 - Session reports in `.tyrex/security/SECURITY-NNN.md` with consolidated audit tracking in `.tyrex/security/audit.md`
+- Automatic versioning in `/tyrex-do` — detects package manager, suggests semver bump, propagates version across files
+- Version bump verification in `/tyrex-review` — flags when CHANGELOG changed but version didn't
 
 ## [0.6.0] - 2026-03-19
 
