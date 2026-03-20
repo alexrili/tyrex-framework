@@ -5,18 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.6.0] - 2026-03-19
 
 ### Added
-- Feature 010: Interactive Questions UX — "one question at a time" pattern
-- ADR-008: One question at a time interaction rule
-- Constitution rule: "one question at a time" in MUST section + batching prohibition in MUST NOT section
-- Adaptive Decision Format strengthened in all 6 interactive commands (new, quick, debug, review, plan, do)
-- "Wait for response" markers at key decision points in tyrex-new, tyrex-quick, tyrex-debug
-- Copywriter skill installed (`.tyrex/skills/copywriter.md`)
-
-### Previously added
-- Feature 009: `/tyrex-debug` — Interactive debug command with persistent bug registry
+- `/tyrex-debug` — Interactive debug command: diagnose problems, analyze logs/stack traces, manage Docker infrastructure, document bugs in `.tyrex/bugs/DEBUG-NNN.md`
+- Two investigation modes: user-directed (describe symptom) and automatic analysis (AI-driven broad scan)
+- Flexible diagnostic depth: quick, standard, deep
+- Bug registry integration: `/tyrex-new` shows open bugs before starting features, `/tyrex-status` shows bug summary
+- Debugger skill template (`templates/skills/debugger.md`) — ships with framework
+- ADR-007: Interactive debug command design decisions
+- "One question at a time" interaction rule — enforced in constitution.md and all 6 interactive commands
+- ADR-008: One question at a time interaction pattern
+- Copywriter skill template available (`templates/skills/copywriter.md`)
 - `/tyrex-debug` command template: two investigation modes (user-directed + automatic), flexible diagnostic depth (quick/standard/deep), infrastructure management with user approval, session-based bug reports in `.tyrex/bugs/`
 - Debugger skill template (`templates/skills/debugger.md`) — Senior Debug Engineer persona, ships with framework
 - DevSec skill (`.tyrex/skills/devsec.md`) — Security-First Developer persona
