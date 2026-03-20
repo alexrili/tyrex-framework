@@ -31,4 +31,4 @@ Fix inconsistent question batching across all Tyrex commands by enforcing a "one
 4. Sync to all 4 agent directories (small, after 2+3)
 
 ## Status
-planned
+done
