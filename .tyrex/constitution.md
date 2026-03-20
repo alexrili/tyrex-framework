@@ -29,6 +29,7 @@
 
 - Ask when in doubt instead of assuming
 - Present decisions as structured choices adapted to the agent's interface — CLI agents: numbered quiz; Chat agents: numbered list or direct question. Never open-ended questions when structured choices are possible
+- **One question at a time** — present a single structured choice, then STOP and wait for the user's response before proceeding to the next question. Never combine multiple choice blocks in a single message. Each step that contains a decision point ends at that choice — the next step begins only after the user responds. Exception: configuration review blocks (e.g., docs bundle + git config) may be presented together as a single "review and confirm" action
 - Propose the simplest solution first
 - Warn when something seems over-engineered
 - Follow patterns documented in TYREX.md
@@ -52,6 +53,7 @@
 - Push to remote without explicit human approval
 - Add runtime dependencies without explicit justification and approval
 - Ask open-ended questions when structured choices are possible
+- Batch multiple questions or choice blocks in a single message (exception: configuration review blocks that are a single confirm action)
 - Skip security analysis during planning phase
 
 ## On Parallelization
