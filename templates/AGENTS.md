@@ -21,7 +21,7 @@ This project uses the Tyrex Framework for human-driven, AI-accelerated pair prog
 | `/tyrex-new` | | Start a new feature/demand (structured choices workflow) |
 | `/tyrex-plan` | | Plan tasks with security-first analysis |
 | `/tyrex-do` | `--auto-approve` | Execute tasks (sequential or parallel, with TDD) |
-| `/tyrex-review` | `--do-all` `--do-critical` `full` | Senior code review with 4 lenses + auto-fix loop |
+| `/tyrex-review` | `--do-all` `--do-critical` `full` | Senior code review with 5 lenses + auto-fix loop |
 | `/tyrex-status` | | Show current project and feature status |
 | `/tyrex-resume` | | Resume from last session (fast recovery via cursor) |
 | `/tyrex-quick` | `--auto-approve` | Fast-track: unified new→plan→do from single prompt |
@@ -82,7 +82,7 @@ docs/
 ```
 Full workflow:
   /tyrex-init → /tyrex-new → /tyrex-plan → /tyrex-do → /tyrex-review
-              (choices)      (security)    [--auto]     (4 lenses)
+              (choices)      (security)    [--auto]     (5 lenses)
                                               ↑              │
                                               └── fix tasks ─┘
 

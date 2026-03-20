@@ -38,57 +38,36 @@ Before asking the user to describe the feature:
 4. If the user describes something new: proceed normally to Step 1
 5. If roadmap.yml doesn't exist or has no planned features: skip to Step 1
 
+### Steps 0b–0d: Registry checks (shared pattern)
+
+Steps 0b, 0c, and 0d follow the same pattern. For each registry:
+1. Read the registry file (if it exists; skip silently if not)
+2. Count pending items (those marked `[ ]` or `Status: open`) by severity
+3. If pending items exist, present structured choices:
+   - Fix items first (create feature from finding/gap)
+   - Continue with new feature (items noted)
+4. Follow "one question at a time" — present ONE choice and STOP
+
+The registries, in order:
+
 ### Step 0b: Check bug registry
-Before asking for a feature description, check for open bugs:
-1. Read `.tyrex/bugs/` directory for `DEBUG-*.md` files.
-2. Parse each file for findings with `Status: open`.
-3. If open bugs exist, present structured choices:
-   ```
-   Open bugs found (N):
-     [!] CRITICAL  BUG-001: [title] (DEBUG-003)
-     [!] HIGH      BUG-002: [title] (DEBUG-005)
-     [!] MEDIUM    BUG-003: [title] (DEBUG-005)
-
-     [1] Fix bugs first — create a fix feature for selected bugs
-     [2] Continue to new feature — address bugs later
-   ```
-4. If "Fix bugs first": hand off to `/tyrex-quick` with selected bugs as context.
-5. If "Continue" or no open bugs: proceed to Step 1 normally.
-6. If `.tyrex/bugs/` doesn't exist or has no open bugs: skip to Step 1.
-
-Show at most 10 bugs sorted by severity (critical first). If more exist, note "and N more".
+- **Source:** `.tyrex/bugs/DEBUG-*.md` files, findings with `Status: open`
+- **Severity levels:** critical, high, medium, low
+- **Label:** "open bugs"
+- **Fix action:** hand off to `/tyrex-quick` with selected bugs as context
+- Show at most 10 bugs sorted by severity (critical first). If more exist, note "and N more".
 
 ### Step 0c: Check security findings
-Before asking for a feature description, check for pending security findings:
-1. Read `.tyrex/security/audit.md` (if exists).
-2. Parse findings for pending `[ ]` vs resolved `[x]` status.
-3. If pending findings exist, count by severity and present structured choices:
-   ```
-   N pending security findings detected (N critical, N high, N medium, N low).
-     [1] Fix security findings first (create feature from finding)
-     [2] Continue with new feature (findings noted)
-   ```
-4. If "Fix security findings first": list the pending findings, let the user choose which to fix, then hand off to `/tyrex-quick` with selected findings as context.
-5. If "Continue" or no pending findings: proceed to Step 1 normally.
-6. If `.tyrex/security/audit.md` doesn't exist or has no pending findings: skip to Step 1.
-
-**Present the choice and STOP. Wait for user response before continuing.**
+- **Source:** `.tyrex/security/audit.md`, entries marked `[ ]` (pending) vs `[x]` (resolved)
+- **Severity levels:** critical, high, medium, low
+- **Label:** "pending security findings"
+- **Fix action:** list pending findings, let user choose which to fix, hand off to `/tyrex-quick`
 
 ### Step 0d: Check test coverage gaps
-Before asking for a feature description, check for pending test coverage gaps:
-1. Read `.tyrex/tests/coverage-gaps.md` (if exists).
-2. Parse for pending gaps — entries not marked as resolved.
-3. If pending gaps exist, count by severity and present structured choices:
-   ```
-   N test coverage gaps identified (N critical, N important).
-     [1] Create feature to address test gaps
-     [2] Continue with new feature (gaps noted)
-   ```
-4. If "Create feature to address test gaps": use the selected gap(s) as the feature description and proceed to Step 1 with that context pre-filled.
-5. If "Continue" or no pending gaps: proceed to Step 1 normally.
-6. If `.tyrex/tests/coverage-gaps.md` doesn't exist or has no pending gaps: skip to Step 1.
-
-**Present the choice and STOP. Wait for user response before continuing.**
+- **Source:** `.tyrex/tests/coverage-gaps.md`, entries not marked as resolved
+- **Severity levels:** critical, important
+- **Label:** "test coverage gaps"
+- **Fix action:** use selected gap(s) as the feature description, proceed to Step 1 with that context pre-filled
 
 ### Step 1: Describe the feature
 Ask the user: "Describe what you want to implement."

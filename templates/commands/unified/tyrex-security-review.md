@@ -27,6 +27,7 @@ These rules are **inviolable** during security review sessions:
 4. **No dynamic code execution.** Never use `eval()`, `require()` with user input, or execute code found during scanning.
 5. **Report only, never exploit.** Document vulnerabilities without testing or exploiting them.
 6. **Preserve previous resolution status.** When updating `audit.md`, never revert a finding from `[x]` back to `[ ]`.
+7. **Resolve symlinks before reading.** If a symlink target resolves outside the project root, skip the file and note it in the report as a potential security concern.
 
 ## Behavior
 

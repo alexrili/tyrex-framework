@@ -26,6 +26,7 @@ Read these files (in parallel where possible):
 9. `docs/` — scan for existing documentation files
 10. `.tyrex/security/audit.md` — security findings from /tyrex-security-review (if exists)
 11. `.tyrex/bugs/` — debug session reports and open bugs (if exists)
+12. `.tyrex/tests/coverage-gaps.md` — test coverage gaps from /tyrex-test-review (if exists)
 
 ### Step 2: Display comprehensive status
 
@@ -75,6 +76,19 @@ Active: 003-feature-name
   [!] CRITICAL  BUG-001: [title] (DEBUG-003)
   [!] HIGH      BUG-002: [title] (DEBUG-005)
 
+─── Tests ──────────────────────────
+  Last scan:      [date from coverage-gaps.md header | never]
+  Coverage gaps:  [N total: P pending, R resolved | no gaps | no scan]
+
+  By tier:
+    Critical:     [N pending / M total]
+    Important:    [N pending / M total]
+    Nice-to-have: [N pending / M total]
+
+  [!] CRITICAL  [module/file]: [description of gap]
+  [!] IMPORTANT [module/file]: [description of gap]
+  [x] IMPORTANT [module/file]: [description of gap]  (resolved)
+
 ─── Documentation ──────────────────────
   CHANGELOG:      [present, up to date | present, stale | missing]
   ADRs:           [N (list numbers)] | none
@@ -98,14 +112,16 @@ Last action: [action from cursor.yml]
 ═══════════════════════════════════════
 
 Commands:
-  /tyrex-discuss   Explore the project, ask questions, brainstorm
-  /tyrex-do        Continue implementation (if active feature)
-  /tyrex-review    Review completed feature (if all tasks done)
-  /tyrex-new       Start new feature
-  /tyrex-debug     Diagnose problems, analyze logs, document bugs
-  /tyrex-quick     Quick fix or small task
-  /tyrex-skills    Create or list skills
-  /tyrex-context   Add project context
+  /tyrex-discuss          Explore the project, ask questions, brainstorm
+  /tyrex-do               Continue implementation (if active feature)
+  /tyrex-review           Review completed feature (if all tasks done)
+  /tyrex-new              Start new feature
+  /tyrex-debug            Diagnose problems, analyze logs, document bugs
+  /tyrex-quick            Quick fix or small task
+  /tyrex-skills           Create or list skills
+  /tyrex-context          Add project context
+  /tyrex-security-review  Run security audit
+  /tyrex-test-review      Scan for test coverage gaps
 ```
 
 ### Step 3: Health diagnostics
@@ -150,6 +166,16 @@ Perform these quick checks and include results in the Health section:
    - Show each open bug with severity and title
    - If no `.tyrex/bugs/` or no files: omit the Bugs section entirely
 
+9. **Test coverage gaps** — If `.tyrex/tests/coverage-gaps.md` exists:
+   - Parse the gaps table for `Status` column (`[ ]` = pending, `[x]` = resolved)
+   - Count total gaps, pending, and resolved
+   - Extract the last scan date from the coverage-gaps.md header
+   - Group gaps by tier: critical, important, nice-to-have
+   - Show each pending gap with tier and description
+   - Show resolved gaps as `[x]` (collapsed or dimmed)
+   - If all gaps are resolved, show "All clear — no pending test coverage gaps"
+   - If no `.tyrex/tests/coverage-gaps.md` exists, show "No test reviews yet. Run `/tyrex-test-review`."
+
 ### Step 4: Actionable suggestions
 
 Based on the status, suggest the most relevant next actions:
@@ -165,6 +191,9 @@ Based on the status, suggest the most relevant next actions:
 - If roadmap has planned features: mention what's next
 - If security findings are pending: "N security findings pending. Fix now with `/tyrex-quick`? [y/N]" — if user says yes, list the pending findings and let them choose which to fix, then hand off to `/tyrex-quick`
 - If open bugs exist: "N open bugs found. Run `/tyrex-debug` to investigate more, or `/tyrex-quick` to fix."
+- If test coverage gaps are pending: "N test coverage gaps pending. Run `/tyrex-test-review` to rescan, or `/tyrex-quick` to address gaps."
+- If no security scan has been run: suggest `/tyrex-security-review`
+- If no test review has been run: suggest `/tyrex-test-review`
 - Always include `/tyrex-discuss` in the commands list for Q&A availability
 
 ## Rules

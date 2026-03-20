@@ -122,13 +122,15 @@ For each ready task, one at a time:
           [4] Override: patch
           [5] Skip version bump
         ```
-     6. Update the version in the manifest file
-     7. Propagate version: grep for the old version string across all project files, update references in README, docs, badges, configs
-     8. Stage the version changes alongside the task changes (same atomic commit)
+     6. Validate the resulting version string matches semver format (`MAJOR.MINOR.PATCH`, all numeric). If invalid, warn and ask for correction.
+     7. Update the version in the manifest file
+     8. Propagate version: grep for the old version string in known referencing files: README*, package manifest, TYREX.md, badge URLs, and documentation files. Exclude: `node_modules/`, lock files (`package-lock.json`, `yarn.lock`, `composer.lock`, `Cargo.lock`), vendor directories, and `.git/`.
+     9. Stage the version changes alongside the task changes (same atomic commit)
    - **Run tests before commit (mandatory for every task):**
      1. Detect test framework and test command from the project's package manifest scripts (e.g., `test` script in `package.json`, `pytest` in `pyproject.toml`, etc.)
-     2. If a test command exists: run the full test suite
-     3. If tests **fail**:
+     2. The test command is read from the project's own manifest and trusted as project-owned. In non-`--auto-approve` mode, display the exact command before running. Example: `Run: npm test [1] Approve [2] Skip`
+     3. If a test command exists: run the full test suite
+     4. If tests **fail**:
         - **If `--auto-approve`:** automatically retry once; if still failing, mark the task as `failed`
         - **Otherwise, present structured choices:**
           ```
@@ -137,8 +139,8 @@ For each ready task, one at a time:
             [2] Skip tests (add note to commit)
             [3] Abort task
           ```
-     4. If tests **pass**: include the pass count in the task output: "Tests: N passed, 0 failed"
-     5. If **no test framework/command is detected**:
+     5. If tests **pass**: include the pass count in the task output: "Tests: N passed, 0 failed"
+     6. If **no test framework/command is detected**:
         - **If `--auto-approve`:** skip with a note in the task output: "No test command detected — skipped"
         - **Otherwise, present structured choices:**
           ```

@@ -273,4 +273,5 @@ Update `cursor.yml`:
 - **No false gaps.** If code is genuinely trivial or already well-tested indirectly, don't flag it. Quality over quantity.
 - **Session reports are immutable.** Once written, a TEST-REVIEW-NNN.md report is not modified. New scans create new reports.
 - **coverage-gaps.md is the living document.** It's updated on every scan. It's the source of truth consumed by other commands.
+- **Path safety.** Never read files outside the project directory. Validate all file paths before reading. Resolve symlinks — if a symlink target resolves outside the project root, skip the file.
 - **The core principle:** The framework never lets an implementation pass without at least asking about tests. This command is the proactive arm of that principle.

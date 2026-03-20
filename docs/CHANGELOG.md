@@ -17,6 +17,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - QA Engineer skill template (`templates/skills/qa-engineer.md`) — ships with framework
 - ADR-010: Automated tests as first-class citizen
 
+### Fixed
+- `/tyrex-review` Lens 4 — 4 stale references to `.tyrex/map/security-audit.md` updated to `.tyrex/security/audit.md`
+- `/tyrex-do` — version propagation now validates semver format and scopes grep to known files (excludes node_modules, lock files)
+- `/tyrex-do` — test command displayed for approval before execution in non-auto-approve mode
+- `/tyrex-new` — consolidated 3 registry check blocks (bugs, security, tests) into DRY pattern
+- `/tyrex-status` — added test coverage gaps section (consistent with security + bugs pattern)
+- `/tyrex-security-review` — added symlink traversal rule to Security Rules
+- `/tyrex-test-review` — added path safety rule to Important Rules
+- `/tyrex-init` — added Adaptive Decision Format section (consistent with all interactive commands)
+- `CLAUDE.md` + `AGENTS.md` — updated "4 lenses" to "5 lenses" for `/tyrex-review`
+
 ## [0.6.0] - 2026-03-19
 
 ### Added

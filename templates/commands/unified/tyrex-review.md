@@ -72,7 +72,7 @@ Every review MUST evaluate the implementation through these 5 critical lenses, i
 - **Insecure data handling:** Sensitive data in logs, unencrypted storage, insecure transmission
 - **Dependency risks:** New dependencies added without justification, known vulnerabilities
 - **OWASP Top 10 check:** Verify against the latest OWASP Top 10 categories
-- Cross-reference with `.tyrex/map/security-audit.md` for existing findings
+- Cross-reference with `.tyrex/security/audit.md` for existing findings
 - **If no DevSec skill exists in `.tyrex/skills/`:** suggest creating one via `/tyrex-skills create devsec`
 
 ## Behavior
@@ -84,7 +84,7 @@ Every review MUST evaluate the implementation through these 5 critical lenses, i
    - `.tyrex/state/cursor.yml` → active feature
    - Active feature spec → acceptance criteria
    - `.tyrex/tyrex.yml` → documentation configuration for this feature
-   - `.tyrex/map/security-audit.md` → existing security findings (if exists)
+   - `.tyrex/security/audit.md` → existing security findings (if exists)
    - `.tyrex/TYREX.md` → project patterns (for Lens 1)
    - `docs/prd/` → PRD for active feature (for Lens 3)
    - `docs/srs/` → SRS for active feature (for Lens 3)
@@ -406,7 +406,7 @@ When changes are requested (via flag or structured choices), this command automa
 - NEVER skip the security review (Lens 4) — Security First is a core principle
 - NEVER write source code during the review phase (Steps 1-7) — only during Step 8 fix execution. Step 5b writes to skill files (`.tyrex/skills/`), which is allowed in plan mode.
 - For PR scope: always use `git diff` against the base branch to determine scope
-- For Full scope: always update `.tyrex/map/security-audit.md` with the complete re-scan results
+- For Full scope: always update `.tyrex/security/audit.md` with the complete re-scan results
 - When marking findings as resolved in `security-audit.md`, change `[ ]` to `[x]` — do not delete the row
 - Requested-change tasks (rc-*) are part of the SAME feature — they don't create a new feature
 - The review loop (review → fix → re-review) continues until clean or user approves
