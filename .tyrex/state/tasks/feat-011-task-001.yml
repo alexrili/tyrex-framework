@@ -1,0 +1,19 @@
+task_id: "feat-011-task-001"
+feature: "011-security-review-command"
+name: "Create /tyrex-security-review command template"
+status: "completed"
+depends_on: []
+unlocks: ["feat-011-task-002", "feat-011-task-003", "feat-011-task-004"]
+parallel: false
+security: "full-audit"
+skill: "devsec.md"
+quality: "required"
+estimate: "large"
+spec_file: "docs/specs/011-task-001-security-review-command.md"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: []
+output: null
+errors: null
