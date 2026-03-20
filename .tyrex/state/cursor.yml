@@ -1,23 +1,23 @@
 # .tyrex/state/cursor.yml - Session pointer for quick recovery
-last_updated: "2026-03-12T12:00:00Z"
+last_updated: "2026-03-20T00:00:00Z"
 session_id: null
 
 # Agent mode controls what the agent can do.
 # "plan"  — read, analyze, discuss, plan. MUST NOT write source code.
 # "build" — implement, test, commit. May write source code following TDD and commit rules.
 # Each /tyrex-* command sets this field as its FIRST action.
-agent_mode: "plan"  # set by /tyrex-review
+agent_mode: "build"  # set by /tyrex-do
 
-active_feature: null
-active_feature_file: null
+active_feature: "011,012,013"
+active_feature_file: ".tyrex/features/011-security-review-command.md"
 
-last_task_completed: "feat-010-task-004"
-last_commit: null
-last_action: "feature_010_completed"
+last_task_completed: "feat-013-task-005"
+last_commit: "2260967"
+last_action: "all_tasks_completed"
 
 tasks_summary:
-  total: 4
-  completed: 4
+  total: 13
+  completed: 13
   in_progress: 0
   pending: 0
   failed: 0
