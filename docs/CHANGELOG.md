@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.0] - 2026-03-22
+
+### Added
+- **3-Layer Session Recovery** — robust recovery when sessions end abruptly mid-development
+- Layer 1: Git-based inconsistency detection in `/tyrex-resume` — compares cursor.yml state vs actual git state (untracked commits, uncommitted changes), offers reconcile/inspect/rollback/stash/discard choices
+- Layer 2: Checkpoint eagerness in `/tyrex-do` — writes `current_task_in_progress`, `in_progress_since`, `in_progress_files_touched` to cursor.yml at task start, updates after file writes, clears on completion
+- Layer 3: Intelligent reconciliation in `/tyrex-resume` — cross-references checkpoint fields with git diff, stack-agnostic test runner detection (13 manifest types: package.json, pyproject.toml, Cargo.toml, go.mod, Makefile, mix.exs, build.gradle, pom.xml, Gemfile, composer.json, CMakeLists.txt, deno.json, bun.lockb), auto-completes if files match and tests pass
+- Parallel wave recovery — detects partially completed parallel task waves, recovers per-task
+- Decision matrix for recovery: auto-complete / show context / reset to pending based on file match + test results
+
 ## [0.7.0] - 2026-03-20
 
 ### Added

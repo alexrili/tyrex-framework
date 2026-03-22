@@ -93,6 +93,8 @@ bin/tyrex.js (~427 lines, single-file CLI)
 - **Test review command:** `/tyrex-test-review` scans for test coverage gaps with argued suggestions. Three-tier prioritization (critical/important/nice-to-have). Session reports in `.tyrex/tests/TEST-REVIEW-NNN.md`, consolidated view in `.tyrex/tests/coverage-gaps.md`. Integrated into `/tyrex-new` (show gaps), `/tyrex-plan` (test-aware decomposition), `/tyrex-do` (run tests before commit), `/tyrex-review` (Lens 5: Test Coverage), `/tyrex-init` (detect test infrastructure). Plan mode, read-only — never writes tests. (ADR-010)
 - **Test registry:** `.tyrex/tests/` stores test review reports and consolidated coverage gaps. One session file per scan (TEST-REVIEW-NNN.md). Gaps have tier + status (pending/resolved). Consumed by 5 commands.
 - **Tests as first-class citizen:** Core principle: the framework never lets an implementation pass without at least asking about tests. `/tyrex-do` runs test suite before every commit. `/tyrex-review` has Lens 5 (Test Coverage) checking for corresponding test files. `/tyrex-plan` includes test-awareness rules in task decomposition.
+- **3-layer session recovery:** `/tyrex-resume` uses git as the ultimate source of truth, not just cursor.yml. Layer 1: git consistency check (compare last_commit vs HEAD, detect dirty files). Layer 2: `/tyrex-do` writes checkpoint fields (`current_task_in_progress`, `in_progress_since`, `in_progress_files_touched`) to cursor.yml during execution. Layer 3: intelligent reconciliation with stack-agnostic test runner detection (13 manifest types) and decision matrix (auto-complete / ask / reset).
+- **Stack-agnostic test runner detection:** Resume and do commands detect test runner from project manifests (package.json, pyproject.toml, Cargo.toml, go.mod, Makefile, mix.exs, build.gradle, pom.xml, Gemfile, composer.json, CMakeLists.txt, deno.json, bun.lockb). Never hardcode a test command.
 - **No scripts in package.json:** No `start`, `test`, `lint`, or `build` scripts defined yet
 
 ## Environment Variables
@@ -151,6 +153,7 @@ bin/tyrex.js (~427 lines, single-file CLI)
 | 2026-03-20 | Dedicated security review command (ADR-009)  | `/tyrex-security-review` for comprehensive scans. Reports in `.tyrex/security/`. Integrated into 5 commands. Command count: 21 (was 20) |
 | 2026-03-20 | Automatic versioning as framework directive | Version bump mandatory when CHANGELOG/ADR changes. Detect manifest, suggest bump, propagate, include in commit. Human decides final version. |
 | 2026-03-20 | Automated tests as first-class citizen (ADR-010) | `/tyrex-test-review` for gap scanning + test awareness in 5 commands. Core principle: never pass without asking about tests. Command count: 22 (was 21) |
+| 2026-03-22 | 3-layer session recovery | Git-based inconsistency detection + checkpoint eagerness + intelligent reconciliation with stack-agnostic test runner detection. Git is the ultimate source of truth, cursor.yml is the fast-path |
 
 ## CI/CD
 
