@@ -8,7 +8,7 @@ You are the Tyrex Framework orchestrator. Execute tasks from the active feature'
 
 ## Agent Mode
 
-This command runs in **build** mode. Set `agent_mode: "build"` in `cursor.yml` as the FIRST action.
+This command runs in **build** mode. Set `agent_mode: "build"` and `last_active_feature` in `cursor.yml` as the FIRST action.
 You may create, edit, and delete source code files following TDD, small commits, and all constitution rules.
 
 ## Parameters
@@ -22,13 +22,23 @@ You may create, edit, and delete source code files following TDD, small commits,
 
 **One question at a time.** Present a single structured choice, then STOP and wait for the user's response before proceeding to the next question. Never combine multiple choice blocks in one message.
 
+## Feature Context Resolution
+
+**This command operates on an existing feature.** Resolve the active feature using this order:
+1. `--feature NNN` flag (if provided)
+2. Branch name detection: `feat/NNN-*` or `feature/NNN-*` → extract NNN
+3. Fallback: `last_active_feature` from `cursor.yml`
+4. No feature found: prompt user to select or create one
+
+Read the per-feature state file `.tyrex/state/features/NNN.yml` for task tracking, checkpoint fields, and progress.
+
 ## Behavior
 
 ### Step 1: Load state
 Read:
-1. `.tyrex/state/cursor.yml` → active feature, last task completed
+1. Resolve active feature using Feature Context Resolution (above). Read `.tyrex/state/features/NNN.yml` for task progress and checkpoint data.
 2. Active feature spec → task list
-3. `.tyrex/state/tasks/*.state` → status of all tasks
+3. `.tyrex/state/features/NNN/tasks/*.yml` → status of all tasks for this feature
 4. `.tyrex/tyrex.yml` → configuration (commit mode, parallel settings)
 5. `.tyrex/TYREX.md` → project context
 6. `.tyrex/constitution.md` → guardrails
@@ -79,7 +89,7 @@ For each ready task, one at a time:
      - If the skill's `## Expertise` doesn't match the current task's domain, log a note but still apply (the human selected it)
    - Before marking the task complete, use `## Review Criteria` from the skill as a self-check
 3. Update task state to `in_progress`
-4. Update cursor.yml with current task
+4. Update the per-feature state file with current task (set `current_task_in_progress`, `in_progress_since`, `in_progress_files_touched`)
 5. **Implement following quality strategy:**
    - Check the task's `quality` attribute (required | recommended | optional)
    - `required`: TDD mandatory — write tests first, implement, tests MUST pass
@@ -156,7 +166,7 @@ For each ready task, one at a time:
      - Present choices: `[ ] Approve commit` / `[ ] Edit commit message` / `[ ] Reject and redo`
    - **Else if commit mode is `auto`:**
      - Make the commit automatically
-   - Update cursor.yml: last_task_completed, tasks_summary, next_tasks
+   - Update the per-feature state file: last_task_completed, tasks_summary, next_tasks. Update cursor.yml only: `last_active_feature` and `agent_mode`.
    - **Auto-update TYREX.md:** If this task generated or updated any ADR, PRD, SRS, or other macro documentation, automatically update TYREX.md:
      - Add a summary entry in the appropriate section (Architecture Decisions for ADR, Business Rules for PRD, Requirements for SRS)
      - Add any new patterns discovered to the Patterns section
@@ -192,7 +202,7 @@ For each ready task, one at a time:
    - Validate the implementation (tests pass, lint clean)
    - Handle commits (based on mode: approve, auto, or `--auto-approve`)
    - Update CHANGELOG.md (sequentially, after all parallel tasks finish)
-5. Update cursor.yml with all completed tasks
+5. Update the per-feature state file with all completed tasks. Update cursor.yml only: `last_active_feature` and `agent_mode`.
 6. Check for newly unlocked tasks → go to Step 3
 
 ### Step 5: Feature completion
@@ -203,7 +213,7 @@ When ALL tasks are `completed`:
 ## Important Rules
 - NEVER skip tests. If tests fail, the task is NOT complete.
 - NEVER make a commit that breaks CI
-- ALWAYS update cursor.yml after each task — this enables session recovery
+- ALWAYS update the per-feature state file after each task — this enables session recovery. cursor.yml only tracks `agent_mode` and `last_active_feature`.
 - ALWAYS update CHANGELOG.md — it's mandatory
 - ALWAYS use structured choices for decisions — never open-ended questions when choices are possible
 - Sub-agents for parallel tasks should ONLY modify files listed in their task
