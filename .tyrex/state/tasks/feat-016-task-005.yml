@@ -1,0 +1,19 @@
+task_id: "feat-016-task-005"
+feature: "016-command-consistency"
+name: "Multi-demand updates — tyrex-do + tyrex-resume"
+status: "pending"
+depends_on: ["feat-016-task-003"]
+unlocks: ["feat-016-task-007"]
+parallel: false
+skill: "copywriter.md"
+quality: "optional"
+security: "none"
+estimate: "medium"
+spec_file: "docs/specs/016-task-005-do-resume-multi.md"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: []
+output: null
+errors: null

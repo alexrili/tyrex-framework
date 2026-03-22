@@ -23,4 +23,14 @@ Ensure all commands are agent-agnostic, structurally consistent, support multi-d
 - copywriter (UX text consistency)
 - product-manager (workflow clarity)
 
-## Status: spec
+## Tasks
+1. Define multi-demand state model (sequential)
+2. Agent-agnostic ADF text — 7 commands (sequential, after 1)
+3. Remove hardcoded skill paths — do+review (parallel, after 2)
+4. Multi-demand — new+plan (parallel, after 2)
+5. Multi-demand — do+resume (sequential, after 3)
+6. Multi-demand — status+help (parallel, after 2)
+7. Structural audit — all 22 commands (sequential, after 3-6)
+8. Sync + CHANGELOG + version (sequential, after 7)
+
+## Status: planned
