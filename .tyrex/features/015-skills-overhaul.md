@@ -25,4 +25,15 @@ Comprehensive rewrite of all 5 existing skills and creation of 3 new skills to e
 ## Skills
 - copywriter (for consistent tone in skill file text)
 
-## Status: spec
+## Tasks
+1. Rewrite qa-engineer (parallel)
+2. Rewrite release-engineer (parallel)
+3. Improve devsec (parallel)
+4. Improve debugger (parallel)
+5. Improve copywriter (parallel)
+6. Create backend-engineer (parallel)
+7. Create frontend-engineer (parallel)
+8. Create product-manager (parallel)
+9. Verify consistency & sync (after 1-8)
+
+## Status: planned

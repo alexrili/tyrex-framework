@@ -12,18 +12,26 @@ active_feature: "015"
 active_feature_file: ".tyrex/features/015-skills-overhaul.md"
 
 last_task_completed: null
-last_commit: null
-last_action: "feature_created"
+last_commit: "c9cc203"
+last_action: "plan_approved"
 
 tasks_summary:
-  total: 0
+  total: 9
   completed: 0
   in_progress: 0
-  pending: 0
+  pending: 9
   failed: 0
   blocked: 0
 
-next_tasks: []
+next_tasks:
+  - "feat-015-task-001"
+  - "feat-015-task-002"
+  - "feat-015-task-003"
+  - "feat-015-task-004"
+  - "feat-015-task-005"
+  - "feat-015-task-006"
+  - "feat-015-task-007"
+  - "feat-015-task-008"
 
 # v0.1.0 released — Features 001, 002, 003 complete
 # v0.1.1 released — 18 commands, 4 agents, roadmap system, skills, discuss
