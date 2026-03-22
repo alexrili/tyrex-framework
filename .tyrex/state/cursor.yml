@@ -1,5 +1,5 @@
 # .tyrex/state/cursor.yml - Session pointer for quick recovery
-last_updated: "2026-03-20T00:00:00Z"
+last_updated: "2026-03-22T00:00:00Z"
 session_id: null
 
 # Agent mode controls what the agent can do.
@@ -11,13 +11,13 @@ agent_mode: "build"  # set by /tyrex-quick (2026-03-22)
 active_feature: "014"
 active_feature_file: ".tyrex/features/014-session-recovery.md"
 
-last_task_completed: "feat-013-task-005"
-last_commit: "8e66ee2"
-last_action: "review_complete_features_done"
+last_task_completed: "feat-014-task-005"
+last_commit: "9733e6a"
+last_action: "quick_complete"
 
 tasks_summary:
-  total: 13
-  completed: 13
+  total: 5
+  completed: 5
   in_progress: 0
   pending: 0
   failed: 0
