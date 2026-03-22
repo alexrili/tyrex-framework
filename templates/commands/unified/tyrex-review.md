@@ -391,7 +391,7 @@ When changes are requested (via flag or structured choices), this command automa
 - Update `.tyrex/roadmap.yml`: set this feature's status to `done`
 - If skill files were modified or created in Step 5b:
   - Include `.tyrex/skills/*.md` changes in the final commit
-  - Sync updated/new skills to all provider directories (`.claude/skills/`, `.opencode/skills/`, `.cursor/rules/tyrex-skill-*.md`, `.codex/skills/tyrex/skill-*.md`)
+  - Sync updated/new skills: copy from `templates/skills/` to `.tyrex/skills/` and to all agent skill directories configured in the project
 - Final commit with documentation and skill updates
 - Update cursor.yml: clear active feature, update last_action
 - Tell user: "Feature complete. Run /tyrex-new for the next feature, or /tyrex-status for overview."

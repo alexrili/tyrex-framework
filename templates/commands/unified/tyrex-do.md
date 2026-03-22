@@ -70,7 +70,7 @@ For each ready task, one at a time:
 2. **Load skill (if assigned):**
    - Check if the task has a `skill` attribute
    - If yes: read the skill file from `.tyrex/skills/<name>.md`
-   - If skill not found: check `.claude/skills/<name>.md`, `.opencode/skills/<name>.md`, `.codex/skills/tyrex/<name>.md`
+   - If skill not found: check agent-specific skill directories (e.g., `.claude/skills/`, `.opencode/skills/`, `.cursor/rules/tyrex/`, `.codex/skills/tyrex/` — based on the agent executing the command). The agent knows its own directory structure.
    - If still not found: warn user and continue without skill
    - Apply the skill persona during implementation:
      - Read `## Role` to understand the persona perspective for this task
