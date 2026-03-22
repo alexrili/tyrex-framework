@@ -1,23 +1,23 @@
 # .tyrex/state/cursor.yml - Session pointer for quick recovery
-last_updated: "2026-03-20T00:00:00Z"
+last_updated: "2026-03-22T00:00:00Z"
 session_id: null
 
 # Agent mode controls what the agent can do.
 # "plan"  — read, analyze, discuss, plan. MUST NOT write source code.
 # "build" — implement, test, commit. May write source code following TDD and commit rules.
 # Each /tyrex-* command sets this field as its FIRST action.
-agent_mode: "plan"  # set by /tyrex-review (finalized)
+agent_mode: "plan"  # set by /tyrex-new (2026-03-22)
 
-active_feature: "011,012,013"
-active_feature_file: ".tyrex/features/011-security-review-command.md"
+active_feature: "016"
+active_feature_file: ".tyrex/features/016-command-consistency.md"
 
-last_task_completed: "feat-013-task-005"
-last_commit: "8e66ee2"
-last_action: "review_complete_features_done"
+last_task_completed: null
+last_commit: null
+last_action: "feature_created"
 
 tasks_summary:
-  total: 13
-  completed: 13
+  total: 0
+  completed: 0
   in_progress: 0
   pending: 0
   failed: 0
@@ -26,16 +26,6 @@ tasks_summary:
 next_tasks: []
 
 # v0.1.0 released — Features 001, 002, 003 complete
-# v0.1.1 released — 18 commands, 4 agents, roadmap system, skills, discuss
-# Agent mode enforcement added — plan/build, security tracking, review scopes
-# OpenCode plugin created — mechanical mode enforcement via native agent system
-# v0.2.0 — Framework simplification:
-#   - Interactive quiz pattern enforced across all commands
-#   - Security-first planning in /tyrex-plan
-#   - 4-lens senior code review in /tyrex-review
-#   - Review → Fix loop with --do-all/--do-critical
-#   - /tyrex-do --auto-approve flag
-#   - /tyrex-quick redesigned as unified new+plan+do pipeline
-#   - /tyrex-handoff deprecated (replaced by /tyrex-quick --auto-approve)
-#   - Built-in DevSec skill template
-#   - TYREX.md auto-update when macro docs generated
+# v0.7.0 — Security review, auto-versioning, tests first-class
+# v0.8.0 — 3-layer session recovery (branch feat/014)
+# v0.9.0 — Skills overhaul (branch feat/015)
