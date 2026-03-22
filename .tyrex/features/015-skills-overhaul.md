@@ -36,4 +36,4 @@ Comprehensive rewrite of all 5 existing skills and creation of 3 new skills to e
 8. Create product-manager (parallel)
 9. Verify consistency & sync (after 1-8)
 
-## Status: planned
+## Status: done
