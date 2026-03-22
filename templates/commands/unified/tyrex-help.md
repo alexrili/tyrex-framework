@@ -348,7 +348,7 @@ Use the reference below for each command:
 - Prerequisites: None
 - Next: Whatever is suggested
 
-## Rules
+## Important Rules
 - Keep the output concise and scannable — this is a help screen, not a manual
 - ALWAYS include the contextual suggestion (Step 4) — this is the most valuable part
 - When showing details for a specific command, do NOT dump the entire command file — summarize for humans

@@ -17,6 +17,10 @@ You MUST NOT write or modify source code. You may read code and create/modify on
 
 **One question at a time.** Present a single structured choice, then STOP and wait for the user's response before proceeding to the next question. Never combine multiple choice blocks in one message. Each step that contains a decision point ends at that choice — the next step begins only after the user responds.
 
+## Feature Context Resolution
+
+**This command can operate with or without an active feature.** If a feature is active (resolved via branch detection or `--feature` flag), use it for scoping. Otherwise, operate project-wide.
+
 ## Security Rules (MANDATORY)
 
 These rules are **inviolable** during security review sessions:

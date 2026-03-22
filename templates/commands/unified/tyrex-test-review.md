@@ -11,6 +11,10 @@ You are the Tyrex Framework orchestrator. The user wants to identify test covera
 This command runs in **plan** mode. Set `agent_mode: "plan"` in `cursor.yml` as the FIRST action.
 You MUST NOT write or modify source code or test files. You may read code and create/modify only `.tyrex/tests/` files and `cursor.yml`.
 
+## Feature Context Resolution
+
+**This command can operate with or without an active feature.** If a feature is active (resolved via branch detection or `--feature` flag), use it for scoping. Otherwise, operate project-wide.
+
 ## Adaptive Decision Format
 
 **ALL decisions in this command MUST use structured choices** adapted to the agent's interface. CLI-based agents: numbered choices where the user types a number. Chat-based agents: numbered list or direct question where the user responds naturally. Never ask open-ended questions when structured choices are possible.

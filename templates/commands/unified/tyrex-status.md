@@ -221,7 +221,7 @@ Based on the status, suggest the most relevant next actions:
 - If no test review has been run: suggest `/tyrex-test-review`
 - Always include `/tyrex-discuss` in the commands list for Q&A availability
 
-## Rules
+## Important Rules
 - Keep the output concise — this is a status check, not a full report
 - Highlight what's actionable (what can the user do next?)
 - Show blocked tasks and what they're waiting for

@@ -21,6 +21,16 @@ If `--do-all` or `--do-critical` flags are used and changes are approved, the co
 
 Flags can be combined: `/tyrex-review --do-all`, `/tyrex-review full --do-critical`
 
+## Feature Context Resolution
+
+**This command operates on an existing feature.** Resolve the active feature using this order:
+1. `--feature NNN` flag (if provided)
+2. Branch name detection: `feat/NNN-*` or `feature/NNN-*` → extract NNN
+3. Fallback: `last_active_feature` from `cursor.yml`
+4. No feature found: prompt user to select or create one
+
+Read the per-feature state file `.tyrex/state/features/NNN.yml` for task tracking, checkpoint fields, and progress.
+
 ## Adaptive Decision Format
 
 **ALL decisions in this command MUST use structured choices** adapted to the agent's interface. CLI-based agents: numbered choices where the user types a number. Chat-based agents: numbered list or direct question where the user responds naturally. Never ask open-ended questions when structured choices are possible. This includes: approval decisions, scope selection, change requests, and any other decision point.

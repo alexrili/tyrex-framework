@@ -158,7 +158,7 @@ curl -H "Authorization: Bearer <token>" \
 3. Update CHANGELOG.md
 4. Commit (following configured mode)
 
-## Rules
+## Important Rules
 - NEVER modify source code. This is a READ-ONLY analysis.
 - NEVER invent endpoints that don't exist in the code
 - If you can't determine a response schema, use `type: object` with a comment
