@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.0] - 2026-03-22
+
+### Added
+- **Skills Overhaul** — comprehensive rewrite of all skills with concrete patterns and expanded review criteria
+- 3 new skills: `backend-engineer` (connection pooling, N+1, caching, graceful shutdown, idempotency), `frontend-engineer` (a11y, Core Web Vitals, state management, error boundaries), `product-manager` (INVEST user stories, MoSCoW, MVP, scope control)
+- `qa-engineer` rewritten: AAA pattern, boundary testing, fixture factory, flaky test diagnosis (48→85 lines)
+- `release-engineer` rewritten: breaking change detection, hotfix workflow, rollback procedures, deprecation lifecycle (42→82 lines)
+- `devsec` improved: secure configuration, dependency audit, threat modeling, cryptographic key lifecycle patterns
+- `debugger` improved: performance regression analysis, memory leak diagnosis, profiling patterns
+- `copywriter` improved: confirmation dialog, progress indicator, table/list display patterns
+- All 8 skills now have consistent structure: Role, Expertise, Guidelines, Patterns, Review Criteria
+
 ## [0.7.0] - 2026-03-20
 
 ### Added
