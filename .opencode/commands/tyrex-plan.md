@@ -11,9 +11,17 @@ You are the Tyrex Framework orchestrator. The user wants to plan the implementat
 This command runs in **plan** mode. Set `agent_mode: "plan"` in `cursor.yml` as the FIRST action.
 You MUST NOT write source code. You may create/modify only `.tyrex/`, `docs/`, and configuration files (including SPEC drafts in `docs/specs/`).
 
+## Feature Context Resolution
+
+**This command operates on an existing feature.** Resolve the active feature using this order:
+1. `--feature NNN` flag (if provided)
+2. Branch name detection: `feat/NNN-*` or `feature/NNN-*` → extract NNN
+3. Fallback: `last_active_feature` from `cursor.yml`
+4. No feature found: prompt user to select or create one
+
 ## Adaptive Decision Format
 
-**ALL decisions in this command MUST use structured choices** adapted to the agent's interface. CLI agents (Claude Code, OpenCode): numbered choices where the user types a number. Chat-based agents (Cursor, Codex): numbered list or direct question where the user responds naturally. Never ask open-ended questions when structured choices are possible. This applies to: task approval, parallelism decisions, skill assignments, and any other decision point.
+**ALL decisions in this command MUST use structured choices** adapted to the agent's interface. CLI-based agents: numbered choices where the user types a number. Chat-based agents: numbered list or direct question where the user responds naturally. Never ask open-ended questions when structured choices are possible. This applies to: task approval, parallelism decisions, skill assignments, and any other decision point.
 
 **One question at a time.** Present a single structured choice, then STOP and wait for the user's response before proceeding to the next question. Never combine multiple choice blocks in one message.
 
@@ -21,7 +29,7 @@ You MUST NOT write source code. You may create/modify only `.tyrex/`, `docs/`, a
 
 ### Step 1: Load context
 Read (in this order):
-1. `.tyrex/state/cursor.yml` → identify active feature
+1. Resolve active feature using Feature Context Resolution (above). Read the per-feature state file `.tyrex/state/features/NNN.yml`.
 2. Active feature spec file
 3. `.tyrex/TYREX.md` → project patterns and context
 4. `.tyrex/constitution.md` → guardrails
@@ -61,7 +69,13 @@ No active feature found.
      [ ] Continue without DevSec skill
    ```
 
-3. **Generate security considerations** that will inform task planning:
+3. **Cross-reference audit findings:** If `.tyrex/security/audit.md` exists:
+   - Read the file and identify all pending findings (`[ ]`)
+   - Compare each finding's `files_affected` with the current feature's scope (files listed in the feature spec)
+   - For any overlap, note the finding ID and description — these will inform task proposals in Step 3
+   - If `.tyrex/security/audit.md` does not exist, skip this sub-step silently
+
+4. **Generate security considerations** that will inform task planning:
    - Input validation requirements per endpoint/form
    - Auth checks needed per operation
    - Data sanitization points
@@ -82,6 +96,12 @@ Analyze the feature — including all loaded context, SRS, PRD, and security con
 - **Quality:** required | recommended | optional
 - **Security:** [none | input-validation | auth-check | data-sanitization | encryption | full-audit]
 ```
+
+**Audit finding integration:**
+- If Step 2 identified pending audit findings that overlap with this feature's scope, incorporate them into the task list
+- When a proposed task addresses a known audit finding, add a note: "Addresses SECURITY-NNN finding: [description]"
+- Pre-populate security tasks from known pending findings that overlap with the feature's files
+- If multiple findings overlap with the same task, list all of them
 
 **Security-first task rules:**
 - Tasks with `security: input-validation` MUST include input validation in the implementation
@@ -116,6 +136,17 @@ Analyze the feature — including all loaded context, SRS, PRD, and security con
 - Migrations and schema changes are ALWAYS sequential and come first
 - Security tasks execute BEFORE or alongside the code they protect
 - Order: data model → business logic → interface → security hardening → tests (but tests can interleave)
+
+**Test-awareness rules (per task):**
+- For each implementation task with quality `required`: note that TDD applies — tests MUST be written first, then implementation
+- For each implementation task with quality `recommended`: note that tests should be written alongside the implementation
+- Critical flows identified from context, SRS, or PRD get dedicated test tasks (separate from the implementation task)
+- Test tasks CAN be parallel with other test tasks when they target different files
+
+**Cross-reference coverage gaps:**
+- If `.tyrex/tests/coverage-gaps.md` exists, read it and compare listed gaps against the files affected by proposed tasks
+- For any overlap between a coverage gap and a proposed task's files, add a note to the task: "Addresses GAP-NNN: [description]"
+- If `.tyrex/tests/coverage-gaps.md` does not exist, skip this sub-step silently
 
 ### Step 3b: Generate SPEC per task
 For EACH proposed task, generate a SPEC draft:
@@ -172,7 +203,7 @@ The human MUST approve before proceeding. Do NOT start implementation.
 
 ### Step 6: Save the plan
 Update the feature spec file with the tasks section.
-Create `.tyrex/state/tasks/` state files for each task:
+Create `.tyrex/state/features/NNN/tasks/` state files for each task:
 
 ```yaml
 task_id: "feat-NNN-task-MMM"
@@ -194,10 +225,14 @@ errors: null
 ```
 
 ### Step 7: Update state
+Update per-feature state file `.tyrex/state/features/NNN.yml`:
+- `tasks_summary`: with counts (total, pending, parallel, sequential)
+- `status`: "planned"
+
 Update cursor.yml:
+- `last_active_feature`: "NNN"
+- `agent_mode`: "plan"
 - `last_action`: "plan_approved"
-- `tasks_summary`: with counts
-- `next_tasks`: list of tasks ready to execute (no unmet dependencies)
 
 Tell the user: "Plan approved. Run /tyrex-do to start implementation."
 

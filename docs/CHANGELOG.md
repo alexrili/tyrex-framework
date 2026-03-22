@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0] - 2026-03-22
+
+### Added
+- **Multi-demand support (ADR-011)** — multiple features open simultaneously on different branches. Branch-based context detection (`feat/NNN-*`) with `--feature NNN` flag override
+- Per-feature state files in `.tyrex/state/features/NNN.yml` replace global cursor.yml task tracking
+- Feature Context Resolution algorithm: flag → branch → fallback → prompt. Shared reference in `templates/commands/shared/`
+- `/tyrex-help` now shows "Two ways to work" — full workflow (new→plan→do→review) vs fast lane (quick)
+- `/tyrex-status` shows all open features in a multi-feature table with current branch marker
+
+### Changed
+- **Agent-agnostic** — removed hardcoded agent names (Claude Code, OpenCode, Cursor, Codex) from all 10 ADF sections. Now uses generic "CLI-based agents" / "Chat-based agents"
+- Removed hardcoded skill lookup paths from `/tyrex-do` and skill sync paths from `/tyrex-review`
+- All 22 commands now have consistent structure: frontmatter, title, intro, Agent Mode, Behavior, Important Rules
+- 12 commands now include Feature Context Resolution section
+- 8 commands: renamed `## Rules` to `## Important Rules` for consistency
+- `cursor.yml` slimmed to global-only fields: `agent_mode`, `session_id`, `last_active_feature`
+
+### Fixed
+- `/tyrex-handoff` (deprecated) now has proper intro and Agent Mode section
+
 ## [0.7.0] - 2026-03-20
 
 ### Added

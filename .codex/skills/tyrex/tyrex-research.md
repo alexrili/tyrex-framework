@@ -11,6 +11,10 @@ You are the Tyrex Framework orchestrator. The user wants to research a technical
 This command runs in **plan** mode. Set `agent_mode: "plan"` in `cursor.yml` as the FIRST action.
 You MUST NOT write source code. You may read the codebase and fetch web content for research purposes only.
 
+## Feature Context Resolution
+
+**This command can operate with or without an active feature.** If a feature is active (resolved via branch detection or `--feature` flag), use it for scoping. Otherwise, operate project-wide.
+
 ## Behavior
 
 ### Step 1: Detect context

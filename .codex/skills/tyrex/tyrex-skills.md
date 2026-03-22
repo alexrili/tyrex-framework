@@ -141,7 +141,7 @@ Security engineer who reviews code for authentication, authorization, and inject
 - Rate limiting on auth-related endpoints
 ```
 
-## Rules
+## Important Rules
 - Skills in `.tyrex/skills/` are the canonical source of truth
 - Provider directories receive copies via sync — never edit provider copies directly
 - Skill names MUST be lowercase, hyphenated, 1-64 characters

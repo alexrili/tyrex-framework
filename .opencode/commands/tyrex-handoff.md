@@ -4,6 +4,12 @@ description: "[DEPRECATED] Use /tyrex-quick --auto-approve instead"
 
 # /tyrex-handoff - DEPRECATED
 
+You are the Tyrex Framework orchestrator. This command has been deprecated in favor of `/tyrex-quick --auto-approve`.
+
+## Agent Mode
+
+This command is **deprecated** and does not execute. It redirects to `/tyrex-quick --auto-approve`.
+
 > **This command is deprecated.** Use `/tyrex-quick --auto-approve` instead.
 
 The handoff command was replaced by the redesigned `/tyrex-quick` which now provides a unified `new → plan → do` pipeline with the `--auto-approve` flag for full autopilot mode.
