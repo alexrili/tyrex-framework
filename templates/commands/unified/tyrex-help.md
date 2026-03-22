@@ -67,7 +67,35 @@ TYREX Help
     /tyrex-handoff    → Use /tyrex-quick --auto-approve instead
 ```
 
-#### Step 3: Show workflow diagram
+#### Step 3: Show workflow paths
+
+Present two clear workflow paths:
+
+```
+Two ways to work:
+
+  FULL WORKFLOW (features, epics, large changes):
+    /tyrex-new  →  /tyrex-plan  →  /tyrex-do  →  /tyrex-review
+    define         decompose       implement      verify
+
+  FAST LANE (bugs, tweaks, single tasks):
+    /tyrex-quick  →  (describe)  →  auto plan+do+review
+    one command       answer Qs      stops at review for decision
+
+Both paths enforce the same quality: TDD, changelog, small commits.
+The difference is ceremony, not rigor.
+```
+
+Also show a note about multi-demand:
+
+```
+Multiple features:
+  Open features in different branches — each branch has its own context.
+  Use --feature NNN on any command to target a specific feature.
+  Run /tyrex-status to see all open features.
+```
+
+#### Step 4: Show workflow diagram
 
 ```
   Typical workflow:
@@ -93,7 +121,7 @@ TYREX Help
     /tyrex-discuss  (explore the project, ask questions at any point)
 ```
 
-#### Step 4: Contextual suggestion
+#### Step 5: Contextual suggestion
 
 Based on the current state, suggest the next action. Use EXACTLY ONE of these:
 

@@ -11,6 +11,10 @@ You are the Tyrex Framework orchestrator. Show the user a comprehensive view of 
 This command runs in **plan** mode. Set `agent_mode: "plan"` in `cursor.yml` as the FIRST action.
 You MUST NOT write source code. Read-only analysis and reporting only.
 
+## Feature Context Resolution
+
+**This command shows all features.** Scan `.tyrex/state/features/*.yml` to list all features and their status. The current branch's feature (if any) is highlighted.
+
 ## Behavior
 
 ### Step 1: Gather data
@@ -28,6 +32,25 @@ Read these files (in parallel where possible):
 11. `.tyrex/bugs/` — debug session reports and open bugs (if exists)
 12. `.tyrex/tests/coverage-gaps.md` — test coverage gaps from /tyrex-test-review (if exists)
 
+### Step 1b: Scan all feature state files
+
+Scan `.tyrex/state/features/*.yml` to discover ALL features and their status. For each file, read the feature ID, name, branch, status, and task progress. Detect the current git branch to identify which feature (if any) belongs to the current branch.
+
+Display a multi-feature table:
+
+```
+Features:
+  ID   Name                    Branch                    Status      Progress
+  014  session-recovery        feat/014-session-recovery done        5/5
+  015  skills-overhaul         feat/015-skills-overhaul  done        9/9
+  016  command-consistency     feat/016-command-cons...  in_progress 2/8
+  ← current branch
+```
+
+The current branch's feature gets a `← current branch` marker on its row. If no feature matches the current branch, show the table without a marker.
+
+After the table, show the detailed view for the current branch's feature only (tasks, next steps, blocked items, etc.).
+
 ### Step 2: Display comprehensive status
 
 ```
@@ -38,11 +61,13 @@ Project: [name]
 Config:  commits=[mode] branches=[mode] docs=[mode]
 
 ─── Features ───────────────────────────
-  001-feature-name           done        (8/8 tasks)
-  002-feature-name           done        (7/7 tasks)
-  003-feature-name           in_progress (3/7 tasks)
+  ID   Name                    Branch                    Status      Progress
+  001  feature-name            feat/001-feature-name     done        8/8
+  002  feature-name            feat/002-feature-name     done        7/7
+  003  feature-name            feat/003-feature-name     in_progress 3/7
+  ← current branch
 
-Active: 003-feature-name
+Active (current branch): 003-feature-name
   Task 3: ServiceX             completed
   Task 4: ServiceY             in_progress  <- current
   Task 5: Controller           blocked (needs 3, 4)
