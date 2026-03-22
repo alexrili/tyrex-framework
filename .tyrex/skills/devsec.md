@@ -35,8 +35,7 @@ Security-First Developer who treats security as a design constraint, not an afte
 12. **Never log sensitive data** — passwords, tokens, PII, credit cards must never appear in logs
 13. **Rotate secrets on schedule, not just on breach** — automate rotation where possible
 14. **Threat model before implementation** — identify assets, threats, and mitigations early
-15. **API rate limiting is mandatory** for public endpoints — protect against brute force and abuse
-16. **CORS and CSP headers are security controls** — not optional configuration
+15. **API rate limiting, CORS, and CSP are security controls** — not optional configuration. Enforce on all public endpoints
 
 ## Patterns
 
@@ -103,21 +102,18 @@ try {
 
 When reviewing code through the DevSec lens, verify:
 
-- [ ] **Injection prevention:** All user inputs validated and parameterized
-- [ ] **Authentication:** Protected routes require valid authentication
-- [ ] **Authorization:** Users can only access their own resources (no IDOR)
-- [ ] **No hardcoded secrets:** No API keys, passwords, or tokens in source code
-- [ ] **Input validation:** All inputs have type, length, and format checks
-- [ ] **Output escaping:** All outputs escaped for their context (HTML, SQL, JSON)
-- [ ] **Error handling:** No sensitive information exposed in error messages
-- [ ] **Audit logging:** Security events logged — auth, access changes, data exports
-- [ ] **No sensitive data in logs:** Passwords, tokens, PII never appear in logs
-- [ ] **Secure defaults:** Config defaults enforce security, not bypass it
-- [ ] **Dependency justification:** New dependencies reviewed and justified
-- [ ] **Rate limiting:** Public-facing endpoints have rate limits
-- [ ] **CORS/CSP configuration:** Headers set correctly, not wildcarded in production
-- [ ] **Secret rotation capability:** Secrets can be rotated without redeployment
-- [ ] **Threat model coverage:** Key assets and threats identified and mitigated
-- [ ] **Config validation at startup:** App fails fast on insecure configuration
-- [ ] **Session management:** Sessions expire, tokens rotate, logout invalidates
-- [ ] **Data at rest:** Sensitive data encrypted in storage
+- [ ] **Injection prevention** — all user inputs validated and parameterized
+- [ ] **Authentication and authorization** — protected routes require auth, users access only their own resources
+- [ ] **No hardcoded secrets** — no API keys, passwords, or tokens in source code
+- [ ] **Input validation** — all inputs have type, length, and format checks
+- [ ] **Output escaping** — all outputs escaped for their context (HTML, SQL, JSON)
+- [ ] **Error handling** — no sensitive information exposed in error messages or logs
+- [ ] **Audit logging** — security events logged (auth, access changes, data exports), no PII in logs
+- [ ] **Secure defaults and config validation** — config defaults enforce security, app fails fast on insecure config
+- [ ] **Dependency justification** — new dependencies reviewed and justified
+- [ ] **Rate limiting and CORS/CSP** — public endpoints rate-limited, headers set correctly (no wildcards in prod)
+- [ ] **Secret management** — secrets from env/vault, rotatable without redeployment
+- [ ] **Threat model coverage** — key assets and threats identified and mitigated
+- [ ] **Session management** — sessions expire, tokens rotate, logout invalidates
+- [ ] **Data protection** — sensitive data encrypted at rest and in transit
+- [ ] **Supply chain** — dependencies audited, pinned versions, monitored for advisories

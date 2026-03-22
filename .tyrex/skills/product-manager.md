@@ -89,19 +89,18 @@ Won't have:  [explicitly excluded from this scope]
 5. If no: add to backlog, do not block current feature.
 
 ## Review Criteria
-
-1. User problem is clearly stated in one sentence.
-2. Acceptance criteria are testable with pass/fail checks.
-3. MoSCoW prioritization is present and complete.
-4. MVP scope is defined with explicit boundaries.
-5. Success metrics are defined before implementation starts.
-6. "Won't have" items are documented, not silently omitted.
-7. User stories follow INVEST criteria.
-8. Edge cases are covered in acceptance criteria.
-9. Requirements are outcome-focused, not implementation-focused.
-10. No scope creep against the original spec.
-11. Release notes describe user value, not technical details.
-12. Risk assessment exists for high-impact features.
-13. Feedback plan is defined (how and when to measure).
-14. One feature maps to one user problem.
-15. Technical constraints are documented and inform scope decisions.
+- [ ] **User problem** — clearly stated in one sentence
+- [ ] **Acceptance criteria** — testable with pass/fail checks
+- [ ] **MoSCoW prioritization** — present and complete
+- [ ] **MVP scope** — defined with explicit boundaries
+- [ ] **Success metrics** — defined before implementation starts
+- [ ] **Won't have items** — documented, not silently omitted
+- [ ] **User stories** — follow INVEST criteria
+- [ ] **Edge cases** — covered in acceptance criteria
+- [ ] **Outcome-focused** — requirements describe outcomes, not implementation
+- [ ] **Scope discipline** — no creep against the original spec
+- [ ] **Release notes** — describe user value, not technical details
+- [ ] **Risk assessment** — exists for high-impact features
+- [ ] **Feedback plan** — how and when to measure defined
+- [ ] **One feature = one problem** — no bundled unrelated changes
+- [ ] **Technical constraints** — documented and inform scope decisions

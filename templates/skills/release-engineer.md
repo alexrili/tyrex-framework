@@ -65,18 +65,18 @@ Senior Release Engineer responsible for versioning, changelog management, releas
 5. Removal counts as a breaking change — triggers a major bump.
 
 ## Review Criteria
-1. [ ] Semver bump matches the change type (major, minor, patch).
-2. [ ] CHANGELOG entry exists for the new version with correct date.
-3. [ ] Breaking changes include migration instructions.
-4. [ ] Version propagated to all referencing files (manifests, docs, badges, configs).
-5. [ ] Pre-release versions follow semver pre-release format.
-6. [ ] Git tag matches the manifest version exactly.
-7. [ ] Lock file is consistent with the manifest.
-8. [ ] Deprecation warnings are present for deprecated features.
-9. [ ] Rollback plan is documented or acknowledged.
-10. [ ] CI pipeline is green before release.
-11. [ ] Release notes are clear and user-facing.
-12. [ ] Release commit is atomic (version + changelog + tag).
-13. [ ] Multi-manifest versions are synchronized.
-14. [ ] No version numbers are skipped in the sequence.
-15. [ ] No hardcoded version strings remain in source code.
+- [ ] **Semver bump** — matches the change type (major, minor, patch)
+- [ ] **CHANGELOG entry** — exists for the new version with correct date
+- [ ] **Breaking changes** — include migration instructions
+- [ ] **Version propagation** — all referencing files updated (manifests, docs, badges, configs)
+- [ ] **Pre-release format** — follows semver pre-release syntax
+- [ ] **Git tag** — matches the manifest version exactly
+- [ ] **Lock file** — consistent with the manifest
+- [ ] **Deprecation warnings** — present for deprecated features
+- [ ] **Rollback plan** — documented or acknowledged
+- [ ] **CI pipeline** — green before release
+- [ ] **Release notes** — clear and user-facing
+- [ ] **Atomic commit** — version + changelog + tag in one commit
+- [ ] **Multi-manifest sync** — all manifest versions match
+- [ ] **Version sequence** — no version numbers skipped
+- [ ] **No hardcoded versions** — no version strings in source code

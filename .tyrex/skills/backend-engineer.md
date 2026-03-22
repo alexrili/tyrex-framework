@@ -86,24 +86,18 @@ Prefer cache-aside for most use cases. Use write-through only when stale reads a
 Apply idempotency to all state-mutating operations. GET requests are inherently idempotent; POST, PUT, and DELETE require explicit handling. Store idempotency keys in a fast lookup store with automatic expiry.
 
 ## Review Criteria
-- [ ] Connections, file handles, and transactions have explicit open/close pairs
-- [ ] No N+1 queries — batch or join patterns used for related data loading
-- [ ] Caches have eviction policies with TTL and max size configured
-- [ ] Every external call has connect, read, and overall timeouts set
-- [ ] Shutdown handler drains in-flight work before closing resources
-- [ ] Write operations are idempotent — safe to retry without side effects
-- [ ] Logs are structured (JSON) with correlation IDs for request tracing
-- [ ] Health endpoints check all critical dependencies and report degraded states
-- [ ] Database migrations are additive — no edits to previously deployed migrations
-- [ ] Transactions are scoped minimally — no long-held locks or broad table locks
-- [ ] Public endpoints enforce rate limits with appropriate 429 responses
-- [ ] Error responses use a consistent envelope and hide internal details
-- [ ] Background jobs handle crashes gracefully — resumable, no corrupted state
-- [ ] Connection pool sizes are justified by load testing or concurrency analysis
-- [ ] API versioning strategy is documented and applied consistently
-- [ ] Input validation rejects malformed requests at the boundary before processing
-- [ ] Pagination uses cursor-based or keyset approach for large or dynamic datasets
-- [ ] Secrets and credentials are loaded from environment or vault, never hardcoded
-- [ ] Retry logic uses exponential backoff with jitter to prevent thundering herds
-- [ ] Sensitive operations produce audit log entries with actor, action, and resource
-- [ ] Database indexes support the actual query patterns, not speculative ones
+- [ ] **Resource lifecycle** — connections, file handles, and transactions have explicit open/close pairs
+- [ ] **No N+1 queries** — batch or join patterns used for related data loading
+- [ ] **Cache management** — eviction policies with TTL and max size configured
+- [ ] **Timeouts** — every external call has connect, read, and overall timeouts set
+- [ ] **Graceful shutdown** — handler drains in-flight work before closing resources
+- [ ] **Idempotency** — write operations safe to retry without side effects
+- [ ] **Structured logging** — JSON logs with correlation IDs for request tracing
+- [ ] **Health checks** — endpoints check all critical dependencies, report degraded states
+- [ ] **Migration safety** — database migrations are additive, no edits to deployed ones
+- [ ] **Transaction scope** — minimal locking, no long-held locks or broad table locks
+- [ ] **Rate limiting** — public endpoints enforce limits with appropriate 429 responses
+- [ ] **Error responses** — consistent envelope, hide internal details
+- [ ] **Background jobs** — handle crashes gracefully, resumable, no corrupted state
+- [ ] **Connection pools** — sized by load testing, alerts on exhaustion
+- [ ] **Resilience** — retry logic with exponential backoff and jitter, cursor-based pagination for large datasets

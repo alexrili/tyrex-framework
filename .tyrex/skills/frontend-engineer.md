@@ -80,19 +80,18 @@ Senior Frontend Engineer focused on building accessible, performant, and maintai
 5. Provide explicit success feedback: a confirmation message or a redirect.
 
 ## Review Criteria
-
-1. Semantic HTML: native elements used before custom abstractions.
-2. Keyboard accessibility: all interactive elements reachable and operable via keyboard.
-3. Alt text and ARIA: images labeled, icons annotated, landmarks defined.
-4. Core Web Vitals: LCP, INP, and CLS within acceptable thresholds.
-5. Bundle size: initial JS payload within the defined budget.
-6. Code splitting: routes and heavy components lazy-loaded.
-7. State separation: UI state, server state, and URL state managed independently.
-8. Error handling: loading, success, and error states present for every async operation.
-9. Responsive design: layouts adapt using relative units and container queries.
-10. Reduced motion: non-essential animations disabled when `prefers-reduced-motion` is active.
-11. Layout stability: async content has reserved dimensions or skeleton placeholders.
-12. Form UX: validation on blur/submit, errors inline, input preserved on failure.
-13. Focus management: modals trap focus, navigation restores focus, skip links present.
-14. Debouncing: expensive event handlers throttled or debounced appropriately.
-15. Component API: props are minimal, typed, and pass data rather than behavior.
+- [ ] **Semantic HTML** — native elements used before custom abstractions
+- [ ] **Keyboard accessibility** — all interactive elements reachable and operable via keyboard
+- [ ] **Alt text and ARIA** — images labeled, icons annotated, landmarks defined
+- [ ] **Core Web Vitals** — LCP, INP, and CLS within acceptable thresholds
+- [ ] **Bundle size** — initial JS payload within the defined budget
+- [ ] **Code splitting** — routes and heavy components lazy-loaded
+- [ ] **State separation** — UI state, server state, and URL state managed independently
+- [ ] **Error handling** — loading, success, and error states present for every async operation
+- [ ] **Responsive design** — layouts adapt using relative units and container queries
+- [ ] **Reduced motion** — non-essential animations disabled when `prefers-reduced-motion` is active
+- [ ] **Layout stability** — async content has reserved dimensions or skeleton placeholders
+- [ ] **Form UX** — validation on blur/submit, errors inline, input preserved on failure
+- [ ] **Focus management** — modals trap focus, navigation restores focus, skip links present
+- [ ] **Debouncing** — expensive event handlers throttled or debounced appropriately
+- [ ] **Component API** — props are minimal, typed, and pass data rather than behavior
