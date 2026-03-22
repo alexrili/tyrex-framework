@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Parallel wave recovery — detects partially completed parallel task waves, recovers per-task
 - Decision matrix for recovery: auto-complete / show context / reset to pending based on file match + test results
 
+### Fixed
+- `/tyrex-do` — test runner detection now uses the same comprehensive 13-manifest table as `/tyrex-resume` (was a brief description)
+- `/tyrex-do` — checkpoint recovery fields now cleared on task failure path (was only cleared on success, causing stale data on resume)
+
 ## [0.7.0] - 2026-03-20
 
 ### Added

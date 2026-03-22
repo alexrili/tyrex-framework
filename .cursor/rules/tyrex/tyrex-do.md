@@ -139,8 +139,27 @@ For each ready task, one at a time:
      8. Propagate version: grep for the old version string in known referencing files: README*, package manifest, TYREX.md, badge URLs, and documentation files. Exclude: `node_modules/`, lock files (`package-lock.json`, `yarn.lock`, `composer.lock`, `Cargo.lock`), vendor directories, and `.git/`.
      9. Stage the version changes alongside the task changes (same atomic commit)
    - **Run tests before commit (mandatory for every task):**
-     1. Detect test framework and test command from the project's package manifest scripts (e.g., `test` script in `package.json`, `pytest` in `pyproject.toml`, etc.)
-     2. The test command is read from the project's own manifest and trusted as project-owned. In non-`--auto-approve` mode, display the exact command before running. Example: `Run: npm test [1] Approve [2] Skip`
+     1. **Stack-agnostic test runner detection** — scan the project root for known manifest files and extract the test command. Check in this order (first match wins):
+
+        | Manifest File | How to detect test command |
+        |---------------|--------------------------|
+        | `package.json` | Read `scripts.test` — if it exists and is not the default `echo "Error: no test specified" && exit 1`, use it (run via `npm test` or `yarn test` based on lockfile presence) |
+        | `pyproject.toml` | Check for `[tool.pytest]` or `[tool.pytest.ini_options]` section → `pytest`; or check `[project.scripts]` for a test entry |
+        | `Makefile` / `GNUmakefile` | Check for a `test:` target → `make test` |
+        | `Cargo.toml` | Rust project → `cargo test` |
+        | `go.mod` | Go project → `go test ./...` |
+        | `mix.exs` | Elixir project → `mix test` |
+        | `build.gradle` / `build.gradle.kts` | Gradle project → `./gradlew test` |
+        | `pom.xml` | Maven project → `mvn test` |
+        | `Gemfile` | Ruby project → check for `rake` task: `bundle exec rake test` or `bundle exec rspec` |
+        | `composer.json` | Check `scripts.test` → `composer test`; or check for `phpunit.xml` → `./vendor/bin/phpunit` |
+        | `CMakeLists.txt` | C/C++ project → `ctest` (if build dir exists) |
+        | `deno.json` / `deno.jsonc` | Deno project → `deno test` |
+        | `bun.lockb` | Bun project → `bun test` |
+
+        - If **multiple manifests** exist: prefer the one matching the project's primary stack (check TYREX.md `## Tech Stack` if available).
+        - If **no test command** is detected: note it and skip test validation.
+     2. **Security:** The test command is read from the project's own manifest and trusted as project-owned. In non-`--auto-approve` mode, display the exact command before running. Example: `Run: npm test [1] Approve [2] Skip`
      3. If a test command exists: run the full test suite
      4. If tests **fail**:
         - **If `--auto-approve`:** automatically retry once; if still failing, mark the task as `failed`
@@ -177,6 +196,7 @@ For each ready task, one at a time:
      - This keeps TYREX.md as the living index of all project knowledge
 7. **On failure:**
    - Update task state to `failed` with error details
+   - **Clear recovery fields:** remove `current_task_in_progress`, `in_progress_since`, and `in_progress_files_touched` from cursor.yml (same as on success — prevents stale checkpoint data on next resume)
    - Show the error to the user
    - **If `--auto-approve`:** automatically retry up to 3 times, then mark as `failed` and continue to next task
    - **Otherwise, present choices:**
@@ -185,7 +205,7 @@ For each ready task, one at a time:
      [ ] Skip this task
      [ ] Stop execution
      ```
-   - If retry: fix and go back to step 3 of the task
+   - If retry: fix and go back to step 3 of the task (checkpoint fields will be re-written at task start)
    - If skip: mark as `failed`, check if any tasks are now `blocked`
 
 8. After task completion, check for newly unlocked tasks
