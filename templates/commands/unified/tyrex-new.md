@@ -11,6 +11,10 @@ You are the Tyrex Framework orchestrator. The user is starting a new implementat
 This command runs in **plan** mode. Set `agent_mode: "plan"` in `cursor.yml` as the FIRST action.
 You MUST NOT write source code. You may create/modify only `.tyrex/`, `docs/`, and configuration files.
 
+## Feature Context Resolution
+
+**This command creates a new feature context.** After creation, set `last_active_feature` in cursor.yml and create the per-feature state file `.tyrex/state/features/NNN.yml`. Other commands will resolve this feature via branch detection or the `--feature` flag.
+
 ## Adaptive Decision Format
 
 **ALL decisions in this command MUST use structured choices** adapted to the agent's interface. CLI-based agents: numbered choices where the user types a number. Chat-based agents: numbered list or direct question where the user responds naturally. Never ask open-ended questions when structured choices are possible. This applies to: roadmap selection, clarification questions, context ingestion, skill selection, documentation configuration, branch configuration, and any other decision point.
@@ -225,9 +229,20 @@ Based on Step 4 choices:
 - Always respect `approve`/`auto` mode from tyrex.yml
 
 ### Step 8: Update state
+Create per-feature state file `.tyrex/state/features/NNN.yml` with:
+- `feature_id`: NNN
+- `name`: feature name
+- `feature_file`: path to feature spec
+- `branch`: branch name (from Step 7)
+- `status`: "spec"
+- `tasks_summary`: null (populated during /tyrex-plan)
+- `created_at`: current timestamp
+
+Create per-feature tasks directory: `.tyrex/state/features/NNN/tasks/`
+
 Update `.tyrex/state/cursor.yml`:
-- `active_feature`: feature ID
-- `active_feature_file`: path to feature spec
+- `last_active_feature`: "NNN"
+- `agent_mode`: "plan"
 - `last_action`: "feature_created"
 
 Update `.tyrex/roadmap.yml`:

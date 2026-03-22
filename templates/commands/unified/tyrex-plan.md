@@ -11,6 +11,14 @@ You are the Tyrex Framework orchestrator. The user wants to plan the implementat
 This command runs in **plan** mode. Set `agent_mode: "plan"` in `cursor.yml` as the FIRST action.
 You MUST NOT write source code. You may create/modify only `.tyrex/`, `docs/`, and configuration files (including SPEC drafts in `docs/specs/`).
 
+## Feature Context Resolution
+
+**This command operates on an existing feature.** Resolve the active feature using this order:
+1. `--feature NNN` flag (if provided)
+2. Branch name detection: `feat/NNN-*` or `feature/NNN-*` → extract NNN
+3. Fallback: `last_active_feature` from `cursor.yml`
+4. No feature found: prompt user to select or create one
+
 ## Adaptive Decision Format
 
 **ALL decisions in this command MUST use structured choices** adapted to the agent's interface. CLI-based agents: numbered choices where the user types a number. Chat-based agents: numbered list or direct question where the user responds naturally. Never ask open-ended questions when structured choices are possible. This applies to: task approval, parallelism decisions, skill assignments, and any other decision point.
@@ -21,7 +29,7 @@ You MUST NOT write source code. You may create/modify only `.tyrex/`, `docs/`, a
 
 ### Step 1: Load context
 Read (in this order):
-1. `.tyrex/state/cursor.yml` → identify active feature
+1. Resolve active feature using Feature Context Resolution (above). Read the per-feature state file `.tyrex/state/features/NNN.yml`.
 2. Active feature spec file
 3. `.tyrex/TYREX.md` → project patterns and context
 4. `.tyrex/constitution.md` → guardrails
@@ -195,7 +203,7 @@ The human MUST approve before proceeding. Do NOT start implementation.
 
 ### Step 6: Save the plan
 Update the feature spec file with the tasks section.
-Create `.tyrex/state/tasks/` state files for each task:
+Create `.tyrex/state/features/NNN/tasks/` state files for each task:
 
 ```yaml
 task_id: "feat-NNN-task-MMM"
@@ -217,10 +225,14 @@ errors: null
 ```
 
 ### Step 7: Update state
+Update per-feature state file `.tyrex/state/features/NNN.yml`:
+- `tasks_summary`: with counts (total, pending, parallel, sequential)
+- `status`: "planned"
+
 Update cursor.yml:
+- `last_active_feature`: "NNN"
+- `agent_mode`: "plan"
 - `last_action`: "plan_approved"
-- `tasks_summary`: with counts
-- `next_tasks`: list of tasks ready to execute (no unmet dependencies)
 
 Tell the user: "Plan approved. Run /tyrex-do to start implementation."
 
