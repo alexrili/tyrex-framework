@@ -78,7 +78,7 @@ Perform a COMPLETE project mapping. This is the ONE phase where spending tokens 
   - If no test framework: suggest `default: "optional"` and ask if they want to set one up
   - Identify project areas (API, frontend, mobile, workers, infra) and set per-area strategy
 - **Scan for existing skills:**
-  - Check `.claude/skills/`, `.opencode/skills/`, `.agents/skills/`, `.cursor/rules/`
+  - Detect installed agents by scanning for config directories (`.claude/`, `.opencode/`, `.cursor/`, `.codex/`). Check each agent's skill directory for existing skill files.
   - Report any found and offer to sync to `.tyrex/skills/`
   - Suggest running `/tyrex-skills suggest` for auto-detection
 - Save results to `.tyrex/map/`:
