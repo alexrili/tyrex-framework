@@ -84,20 +84,41 @@ features:
   - id: "011"
     name: "security-review-command"
     description: "/tyrex-security-review — Dedicated security scanning with persistent reports and lifecycle integration"
-    status: in_progress
+    status: done
     referenced_in: ["ADR-009"]
     depends_on: []
 
   - id: "012"
     name: "auto-versioning"
     description: "Automatic semver versioning — detect package manager, suggest bump, propagate across all files"
-    status: in_progress
+    status: done
     referenced_in: []
     depends_on: []
 
   - id: "013"
     name: "tests-first-class"
     description: "/tyrex-test-review + test awareness across all commands — never ship without asking about tests"
-    status: in_progress
+    status: done
     referenced_in: ["ADR-010"]
+    depends_on: []
+
+  - id: "014"
+    name: "session-recovery"
+    description: "3-layer session recovery — git consistency check, checkpoint eagerness, intelligent reconciliation"
+    status: done
+    referenced_in: []
+    depends_on: []
+
+  - id: "015"
+    name: "skills-overhaul"
+    description: "Skills overhaul — 5 rewrites + 3 new skills (backend-engineer, frontend-engineer, product-manager)"
+    status: done
+    referenced_in: []
+    depends_on: []
+
+  - id: "016"
+    name: "command-consistency"
+    description: "Command consistency, agent-agnosticism, multi-demand support, structural audit"
+    status: done
+    referenced_in: ["ADR-011"]
     depends_on: []
