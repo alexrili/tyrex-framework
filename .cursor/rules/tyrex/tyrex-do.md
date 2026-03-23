@@ -79,7 +79,13 @@ For each ready task, one at a time:
      - If the skill's `## Expertise` doesn't match the current task's domain, log a note but still apply (the human selected it)
    - Before marking the task complete, use `## Review Criteria` from the skill as a self-check
 3. Update task state to `in_progress`
-4. Update cursor.yml with current task
+4. **Checkpoint: task start** — update cursor.yml with recovery fields:
+   ```yaml
+   current_task_in_progress: "feat-NNN-task-MMM"
+   in_progress_since: "YYYY-MM-DDTHH:MM:SSZ"  # current ISO timestamp
+   in_progress_files_touched: []                # empty initially
+   ```
+   Also update: `last_action: "task_started"`, `agent_mode: "build"`
 5. **Implement following quality strategy:**
    - Check the task's `quality` attribute (required | recommended | optional)
    - `required`: TDD mandatory — write tests first, implement, tests MUST pass
@@ -88,11 +94,92 @@ For each ready task, one at a time:
    - **If `--auto-approve`:** for `optional` quality, default to writing tests
    - Run lint if configured — it MUST pass
    - Run security scan if configured
+   - **Checkpoint: files touched** — after each source file is created or modified, append the file path to `in_progress_files_touched` in cursor.yml. This enables recovery if the session dies mid-implementation. Example:
+     ```yaml
+     in_progress_files_touched:
+       - "src/api/handler.js"
+       - "tests/api/handler.test.js"
+     ```
 6. **On success:**
    - If the implementation deviated from the SPEC's draft, update the SPEC file to reflect the actual approach taken
    - Update task state to `completed` with files_changed and output
+   - **Resolve audit findings (if applicable):**
+     - If the completed task has a `security` attribute (not `none`) or its `task_id` has an `rc-*` prefix:
+       1. Check if `.tyrex/security/audit.md` exists; if not, skip silently
+       2. Read `.tyrex/security/audit.md`
+       3. Check if the task addresses a known finding (match via task metadata notes like "Addresses SECURITY-NNN" or overlap between `files_changed` and the finding's `files_affected`)
+       4. For each matched finding still marked `[ ]`, update it to `[x]` and append the resolution date (today's date in YYYY-MM-DD format)
+       5. Write the updated audit.md
+       6. **Validation:** only transition `[ ]` to `[x]`; never revert a finding that is already `[x]`
    - Prepare commit message (conventional format)
    - Update `docs/CHANGELOG.md` with what changed
+   - **Version bump check (if CHANGELOG or ADR changed):**
+     1. Detect if `docs/CHANGELOG.md` or any `docs/adrs/*.md` was modified in this task
+     2. If yes, detect the project's package manager manifest:
+        - Scan for: `package.json`, `composer.json`, `pyproject.toml`, `Cargo.toml`, `mix.exs`, `go.mod`
+        - If no manifest found: skip versioning silently
+     3. Read the current version from the manifest
+     4. Suggest semver bump based on change type:
+        - `feat:` commit → minor bump
+        - `fix:` commit → patch bump
+        - `BREAKING CHANGE` or `!:` in commit → major bump
+        - `chore:`, `docs:`, `refactor:`, `test:` → patch bump
+     5. **If `--auto-approve`:** auto-accept the suggested bump
+        **Otherwise, present structured choices:**
+        ```
+        Version bump detected. Current: X.Y.Z
+          [1] Accept suggested: [type] → X.Y.Z+1
+          [2] Override: major
+          [3] Override: minor
+          [4] Override: patch
+          [5] Skip version bump
+        ```
+     6. Validate the resulting version string matches semver format (`MAJOR.MINOR.PATCH`, all numeric). If invalid, warn and ask for correction.
+     7. Update the version in the manifest file
+     8. Propagate version: grep for the old version string in known referencing files: README*, package manifest, TYREX.md, badge URLs, and documentation files. Exclude: `node_modules/`, lock files (`package-lock.json`, `yarn.lock`, `composer.lock`, `Cargo.lock`), vendor directories, and `.git/`.
+     9. Stage the version changes alongside the task changes (same atomic commit)
+   - **Run tests before commit (mandatory for every task):**
+     1. **Stack-agnostic test runner detection** — scan the project root for known manifest files and extract the test command. Check in this order (first match wins):
+
+        | Manifest File | How to detect test command |
+        |---------------|--------------------------|
+        | `package.json` | Read `scripts.test` — if it exists and is not the default `echo "Error: no test specified" && exit 1`, use it (run via `npm test` or `yarn test` based on lockfile presence) |
+        | `pyproject.toml` | Check for `[tool.pytest]` or `[tool.pytest.ini_options]` section → `pytest`; or check `[project.scripts]` for a test entry |
+        | `Makefile` / `GNUmakefile` | Check for a `test:` target → `make test` |
+        | `Cargo.toml` | Rust project → `cargo test` |
+        | `go.mod` | Go project → `go test ./...` |
+        | `mix.exs` | Elixir project → `mix test` |
+        | `build.gradle` / `build.gradle.kts` | Gradle project → `./gradlew test` |
+        | `pom.xml` | Maven project → `mvn test` |
+        | `Gemfile` | Ruby project → check for `rake` task: `bundle exec rake test` or `bundle exec rspec` |
+        | `composer.json` | Check `scripts.test` → `composer test`; or check for `phpunit.xml` → `./vendor/bin/phpunit` |
+        | `CMakeLists.txt` | C/C++ project → `ctest` (if build dir exists) |
+        | `deno.json` / `deno.jsonc` | Deno project → `deno test` |
+        | `bun.lockb` | Bun project → `bun test` |
+
+        - If **multiple manifests** exist: prefer the one matching the project's primary stack (check TYREX.md `## Tech Stack` if available).
+        - If **no test command** is detected: note it and skip test validation.
+     2. **Security:** The test command is read from the project's own manifest and trusted as project-owned. In non-`--auto-approve` mode, display the exact command before running. Example: `Run: npm test [1] Approve [2] Skip`
+     3. If a test command exists: run the full test suite
+     4. If tests **fail**:
+        - **If `--auto-approve`:** automatically retry once; if still failing, mark the task as `failed`
+        - **Otherwise, present structured choices:**
+          ```
+          Tests failed: N failures
+            [1] Fix and retry
+            [2] Skip tests (add note to commit)
+            [3] Abort task
+          ```
+     5. If tests **pass**: include the pass count in the task output: "Tests: N passed, 0 failed"
+     6. If **no test framework/command is detected**:
+        - **If `--auto-approve`:** skip with a note in the task output: "No test command detected — skipped"
+        - **Otherwise, present structured choices:**
+          ```
+          No test command detected.
+            [1] Continue without tests
+            [2] Specify test command
+          ```
+     - This step runs for EVERY task, not just security tasks — core principle: **never let an implementation pass without at least asking about tests**
    - **If `--auto-approve`:**
      - Make the commit automatically (overrides `approve` mode from tyrex.yml)
    - **Else if commit mode is `approve`:**
@@ -100,13 +187,16 @@ For each ready task, one at a time:
      - Present choices: `[ ] Approve commit` / `[ ] Edit commit message` / `[ ] Reject and redo`
    - **Else if commit mode is `auto`:**
      - Make the commit automatically
-   - Update cursor.yml: last_task_completed, tasks_summary, next_tasks
+   - **Checkpoint: task complete** — update cursor.yml:
+     - Set `last_task_completed`, `tasks_summary`, `next_tasks` as before
+     - **Clear recovery fields:** remove `current_task_in_progress`, `in_progress_since`, and `in_progress_files_touched` from cursor.yml (set to `null` or delete the keys). This signals a clean completion — if these fields are present on next resume, the session ended mid-task.
    - **Auto-update TYREX.md:** If this task generated or updated any ADR, PRD, SRS, or other macro documentation, automatically update TYREX.md:
      - Add a summary entry in the appropriate section (Architecture Decisions for ADR, Business Rules for PRD, Requirements for SRS)
      - Add any new patterns discovered to the Patterns section
      - This keeps TYREX.md as the living index of all project knowledge
 7. **On failure:**
    - Update task state to `failed` with error details
+   - **Clear recovery fields:** remove `current_task_in_progress`, `in_progress_since`, and `in_progress_files_touched` from cursor.yml (same as on success — prevents stale checkpoint data on next resume)
    - Show the error to the user
    - **If `--auto-approve`:** automatically retry up to 3 times, then mark as `failed` and continue to next task
    - **Otherwise, present choices:**
@@ -115,14 +205,21 @@ For each ready task, one at a time:
      [ ] Skip this task
      [ ] Stop execution
      ```
-   - If retry: fix and go back to step 3 of the task
+   - If retry: fix and go back to step 3 of the task (checkpoint fields will be re-written at task start)
    - If skip: mark as `failed`, check if any tasks are now `blocked`
 
 8. After task completion, check for newly unlocked tasks
 9. If new parallel tasks are available, go back to Step 3 (ask about parallelization)
 
 **For PARALLEL execution:**
-1. For each parallel task, spawn a sub-agent (Task tool) with:
+1. **Checkpoint: parallel wave start** — update cursor.yml:
+   ```yaml
+   current_task_in_progress: "parallel-wave"
+   in_progress_since: "YYYY-MM-DDTHH:MM:SSZ"
+   in_progress_parallel_tasks: ["feat-NNN-task-A", "feat-NNN-task-B", "feat-NNN-task-C"]
+   in_progress_files_touched: []  # aggregated from all sub-agents after completion
+   ```
+2. For each parallel task, spawn a sub-agent (Task tool) with:
    - The specific task description and files
    - TYREX.md content (read-only context)
    - constitution.md content (read-only guardrails)
@@ -130,14 +227,14 @@ For each ready task, one at a time:
    - Instruction: "Implement this task following the skill guidelines. Write results to the specified state file."
    - The sub-agent should: implement, test, and report results
 
-2. Wait for all sub-agents to complete
-3. Collect results from task state files
-4. For each completed sub-task:
+3. Wait for all sub-agents to complete
+4. Collect results from task state files
+5. For each completed sub-task:
    - Validate the implementation (tests pass, lint clean)
    - Handle commits (based on mode: approve, auto, or `--auto-approve`)
    - Update CHANGELOG.md (sequentially, after all parallel tasks finish)
-5. Update cursor.yml with all completed tasks
-6. Check for newly unlocked tasks → go to Step 3
+6. **Checkpoint: parallel wave complete** — update cursor.yml with all completed tasks. Clear `current_task_in_progress`, `in_progress_since`, `in_progress_parallel_tasks`, and `in_progress_files_touched`.
+7. Check for newly unlocked tasks → go to Step 3
 
 ### Step 5: Feature completion
 When ALL tasks are `completed`:
@@ -148,6 +245,7 @@ When ALL tasks are `completed`:
 - NEVER skip tests. If tests fail, the task is NOT complete.
 - NEVER make a commit that breaks CI
 - ALWAYS update cursor.yml after each task — this enables session recovery
+- ALWAYS write checkpoint fields (`current_task_in_progress`, `in_progress_since`, `in_progress_files_touched`) at task start and clear them on completion — this enables precise recovery if the session dies mid-task
 - ALWAYS update CHANGELOG.md — it's mandatory
 - ALWAYS use structured choices for decisions — never open-ended questions when choices are possible
 - Sub-agents for parallel tasks should ONLY modify files listed in their task
