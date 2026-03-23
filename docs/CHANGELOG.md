@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-03-22
+
+### Changed
+- `/tyrex-debug` rewritten — autonomous investigation, 45% smaller (346→189 lines, 10→5 steps)
+- Removed mode selection (user-directed vs automatic) — always autonomous
+- Removed depth selection (quick/standard/deep) — auto-detects available resources
+- Batch command approval replaces per-command approval
+- `--auto` flag for zero-pause investigation
+- Evidence trail chaining: up to 10 follow-up actions without pausing
+- Single report at the end instead of incremental documentation
+
 ## [1.1.0] - 2026-03-22
 
 ### Added
