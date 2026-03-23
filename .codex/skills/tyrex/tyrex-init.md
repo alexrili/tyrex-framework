@@ -28,7 +28,7 @@ You MUST NOT write source code. You may create/modify only `.tyrex/`, `docs/`, a
    - Do NOT delete the original file
    - Inform the user: "Migrated security audit to `.tyrex/security/audit.md`. Run `/tyrex-security-review` for a fresh scan."
 4. Ask: "Tyrex is already initialized. Resume from where you left off? [Y/n]"
-5. If yes: behave like `/tyrex-resume`
+5. If yes: resume from the last session: read the per-feature state file for the active feature, display the resume summary (project, last session, active feature, progress, next tasks), and ask the user to confirm before continuing execution.
 6. If no: ask if they want to re-initialize (this will overwrite settings, NOT state)
 
 ### If `.tyrex/` does NOT exist (fresh project):
@@ -203,10 +203,11 @@ Save answers to `.tyrex/tyrex.yml`.
 After the automated mapping is complete, offer the user a chance to provide additional project context that the codebase analysis cannot detect:
 
 1. Ask: "Add project context? (business rules, constraints, integrations) [y/N]"
-2. If yes: follow the `/tyrex-context add` flow with scope set to `project`
-   - Accept free text, file paths, or URLs
-   - Store in `.tyrex/context/`
-   - This context will be read by `/tyrex-plan` and `/tyrex-do` for informed decisions
+2. If yes: ingest project context:
+     - Ask input type: `[1] Free text` / `[2] File path` / `[3] URL`
+     - Process: free text saved as-is (200 line max), file path read and summarized, URL fetched and summarized
+     - Save to `.tyrex/context/YYYY-MM-DD-[slug].md` with YAML frontmatter (source, added date, scope: project)
+     - Confirm: show file path, line count, 2-line preview
 3. If no: proceed to summary
 4. The user can always add more context later with `/tyrex-context`
 

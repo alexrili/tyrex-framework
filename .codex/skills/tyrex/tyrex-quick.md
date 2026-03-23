@@ -107,20 +107,26 @@ Commit mode:
 
 ### Step 4: Quick Planning
 
-1. Analyze the feature and propose tasks (same logic as `/tyrex-plan` but streamlined)
-2. Each task gets:
+1. **Planning checklist** (same rigor as `/tyrex-plan`, fewer steps):
+   - **Security-first analysis** — identify security-sensitive areas. If detected and no `devsec.md` exists, create it. Cross-reference `.tyrex/security/audit.md` pending findings with feature scope.
+   - **Cross-reference coverage gaps** — if `.tyrex/tests/coverage-gaps.md` exists, note overlaps with proposed tasks.
+   - Each task completable in ONE commit. Same-file tasks CANNOT be parallel. Security tasks execute first.
+   - Quality strategy: `required` for API/workers/data/security. `recommended` for frontend. `optional` for infra/docs.
+   - Security tasks are mandatory and never skippable.
+2. Analyze the feature and propose tasks
+3. Each task gets:
    - Dependency ordering
    - Parallelism markers
    - Skill assignment
    - Quality strategy (security areas = `required`, others follow project defaults)
    - SPEC draft (compact — objective + approach + files + testing)
-3. **Security-first in planning:** For every task, evaluate if it has security implications:
+4. **Security-first in planning:** For every task, evaluate if it has security implications:
    - Data handling → input validation task
    - API endpoints → auth/authz verification task
    - User input → sanitization task
    - If security concerns detected, ensure they're addressed in the task or add a security sub-task
 
-4. Display compact execution plan:
+5. Display compact execution plan:
    ```
    TYREX Quick Plan: [feature summary]
 ════════════════════════════════════════
@@ -133,7 +139,7 @@ Commit mode:
    Estimated: [N] tasks, [N] commits
    ```
 
-5. **If `--auto`:** skip approval, start executing immediately.
+6. **If `--auto`:** skip approval, start executing immediately.
    **Otherwise, present choices:**
    ```
    Approve this plan?
@@ -142,16 +148,31 @@ Commit mode:
      [ ] Cancel — switch to full /tyrex-new workflow
    ```
 
-### Step 5: Execute (same as /tyrex-do)
+### Step 5: Execute
 
-Execute all tasks following the exact same rules as `/tyrex-do`:
-- TDD enforcement per quality strategy
-- Commits (auto or approve based on config)
-- CHANGELOG updates (mandatory)
-- State management (cursor.yml, task states)
-- Parallelization (if applicable)
+For EACH task, execute this sequence:
 
-**If `--auto`:** all checkpoints during execution are auto-approved (same behavior as `/tyrex-do --auto`).
+1. **Load SPEC** — read the task's SPEC file from `docs/specs/`. Use Technical Approach to guide implementation.
+2. **Load skill** — if the task has a `skill` attribute, read `.tyrex/skills/<name>.md`. Apply its Role, Guidelines, and Patterns during implementation. Use its Review Criteria as a self-check before marking complete.
+3. **Checkpoint: task start** — update the per-feature state file: set `current_task_in_progress`, `in_progress_since`, `in_progress_files_touched: []`.
+4. **Implement following quality strategy:**
+   - `required`: TDD — write tests first, implement, tests MUST pass
+   - `recommended`: write tests alongside code, warn if skipped
+   - `optional`: default to writing tests in `--auto` mode
+5. **Checkpoint: files touched** — after each file write, append path to `in_progress_files_touched`.
+6. **On success — pre-commit sequence:**
+   a. Update task state to `completed` with `files_changed` and output
+   b. **Resolve audit findings** — if task has `security` attribute: read `.tyrex/security/audit.md`, match `files_changed` to pending findings, flip `[ ]` to `[x]` with date
+   c. Prepare commit message (conventional format)
+   d. **Update CHANGELOG** — mandatory for every task
+   e. **Version bump check** — if CHANGELOG or ADR changed: detect package manifest (`package.json`, `pyproject.toml`, `Cargo.toml`, etc.), read current version, suggest semver bump (feat→minor, fix→patch, BREAKING→major), auto-accept in `--auto` mode, validate semver format, propagate version to all referencing files, stage alongside task changes
+   f. **Run tests before commit** — detect test runner stack-agnostically (scan for package.json scripts.test, pyproject.toml pytest, Makefile test target, Cargo.toml, go.mod, mix.exs, build.gradle, pom.xml, Gemfile, composer.json, deno.json, bun.lockb). If tests fail + `--auto`: retry once, then mark `failed`. If no test runner: skip with note.
+   g. **Commit** — auto in `--auto` mode, present diff+message for approval otherwise
+   h. **Checkpoint: task complete** — clear recovery fields from per-feature state. Update `last_task_completed`, `tasks_summary`.
+   i. **Auto-update TYREX.md** — if ADR/PRD/SRS generated, add summary to appropriate section
+7. **On failure:** clear checkpoint fields, mark task `failed`. In `--auto`: retry up to 3 times. Interactive: present fix/skip/stop choices.
+
+**If `--auto`:** all checkpoints and approvals are automatic.
 
 After all tasks complete:
 - Update cursor.yml

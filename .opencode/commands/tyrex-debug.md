@@ -55,7 +55,7 @@ If critically ambiguous (no clear symptom), ask ONE clarifying question. Otherwi
 Scan the project silently (no output to user):
 - Docker: `docker-compose.yml`, `compose.yml` → container status available
 - Logs: `logs/`, `log/`, `*.log`, `storage/logs/`, docker logs
-- Tests: detect test runner from manifests (same stack-agnostic table as `/tyrex-resume`)
+- Tests: detect test runner stack-agnostically by scanning project manifests (package.json scripts.test, pyproject.toml pytest, Makefile test target, Cargo.toml → cargo test, go.mod → go test ./..., mix.exs → mix test, build.gradle → ./gradlew test, pom.xml → mvn test, Gemfile → bundle exec rspec, composer.json scripts.test, deno.json → deno test, bun.lockb → bun test)
 - Health endpoints: parse docker-compose for health checks, scan for `/health` or `/healthz` in code
 - Source code: always available
 

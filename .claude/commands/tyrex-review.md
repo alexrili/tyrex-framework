@@ -388,10 +388,16 @@ When changes are requested (via flag or structured choices), this command automa
      [ ] Cancel — I'll fix manually
    ```
 
-5. **Execute fixes** following the same rules as `/tyrex-do`:
+5. **Execute fixes** using the canonical execution sequence:
    - Set `agent_mode: "build"` for the fix execution phase
-   - TDD, commits, CHANGELOG updates all apply
-   - If `--do-all` or `--do-critical` was used, auto-approve all fix commits too
+   - For EACH fix task:
+     a. Load SPEC, load skill (if assigned)
+     b. Checkpoint: task start (set `current_task_in_progress`, `in_progress_since`, `in_progress_files_touched`)
+     c. Implement following quality strategy (security findings = `required`)
+     d. Pre-commit: update task state → resolve audit findings → commit message → update CHANGELOG → version bump check (if CHANGELOG/ADR changed: detect manifest, suggest semver, propagate) → run tests (stack-agnostic detection) → commit
+     e. Checkpoint: task complete (clear recovery fields, update state)
+     f. On failure: retry up to 3x in `--do-all`/`--do-critical`, or present choices
+   - If `--do-all` or `--do-critical` was used, auto-approve all checkpoints
 
 6. **After all fixes complete:** automatically run a **mini re-review** (only on the changed files from the fixes) to verify no regressions were introduced. If clean → go to Step 9. If new issues → present choices to continue fixing or approve.
 
