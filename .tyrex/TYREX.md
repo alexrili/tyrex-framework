@@ -6,7 +6,7 @@
 
 ## Project Overview
 
-Tyrex Framework is a human-driven, AI-accelerated pair programming workflow orchestrator distributed as an npm CLI tool. It scaffolds configuration files and markdown-based slash commands into projects, enabling structured AI-assisted development across multiple AI coding agents (Claude Code, OpenCode, Cursor, Codex). The framework enforces TDD, changelogs, small atomic commits, and documentation-first practices.
+Tyrex Framework is a human-driven, AI-accelerated pair programming workflow orchestrator distributed as an npm CLI tool. It scaffolds configuration files and markdown-based slash commands into projects, enabling structured AI-assisted development across multiple AI coding agents. The framework is agent-agnostic — it works with any CLI-based or chat-based AI coding agent. It enforces TDD, changelogs, small atomic commits, and documentation-first practices.
 
 ## Tech Stack
 
@@ -46,12 +46,14 @@ bin/tyrex.js (~427 lines, single-file CLI)
 ```
 
 **Supported Agents:**
-| Agent       | Commands Dir             | Instructions     |
-|-------------|--------------------------|------------------|
-| Claude Code | `.claude/commands/`      | `CLAUDE.md`      |
-| OpenCode    | `.opencode/commands/`    | `AGENTS.md`      |
-| Cursor      | `.cursor/rules/tyrex/`   | `CLAUDE.md`      |
-| Codex       | `.codex/skills/tyrex/`   | `CLAUDE.md`      |
+Tyrex auto-detects installed agents by scanning for their config directories. Commands and skills are synced to each detected agent's directory. New agents can be added by creating their config directory — no framework changes needed.
+
+| Agent Type  | Config Dir     | Commands Dir             | Instructions     |
+|-------------|----------------|--------------------------|------------------|
+| CLI-based   | `.claude/`     | `.claude/commands/`      | `CLAUDE.md`      |
+| CLI-based   | `.opencode/`   | `.opencode/commands/`    | `AGENTS.md`      |
+| Chat-based  | `.cursor/`     | `.cursor/rules/tyrex/`   | `CLAUDE.md`      |
+| Chat-based  | `.codex/`      | `.codex/skills/tyrex/`   | `CLAUDE.md`      |
 
 ## Project Patterns
 
@@ -74,7 +76,7 @@ bin/tyrex.js (~427 lines, single-file CLI)
 - **Multi-demand support:** Multiple features can be open simultaneously on different branches. Commands resolve feature context via: (1) `--feature NNN` flag, (2) branch name detection (`feat/NNN-*`), (3) fallback to `last_active_feature` in cursor.yml. Per-feature state in `.tyrex/state/features/NNN.yml`. Global cursor.yml retains only agent_mode and session metadata. Lock-free by convention — conflicts resolved by git merge. (ADR-011)
 - **Feature Context Resolution:** Shared algorithm defined in `templates/commands/shared/feature-context-resolution.md`. Every command that operates on a feature MUST resolve context before proceeding. Resolution order: flag → branch → fallback → prompt user.
 - **Agent mode (plan/build):** Every command declares its mode (`plan` or `build`) in an `## Agent Mode` section and sets `agent_mode` in `cursor.yml` as its first action. Plan mode = no source code writes. Build mode = full implementation with TDD. Enforced via triple layer: cursor.yml state + constitution rules + per-command instructions.
-- **Adaptive decision format:** ALL user decisions across ALL commands use structured choices adapted to the agent's interface. CLI agents (Claude Code, OpenCode): numbered choices. Chat agents (Cursor, Codex): numbered list or direct question. Never open-ended questions when structured choices are possible. (ADR-003)
+- **Adaptive decision format:** ALL user decisions across ALL commands use structured choices adapted to the agent's interface. CLI-based agents: numbered choices. Chat-based agents: numbered list or direct question. Never open-ended questions when structured choices are possible. (ADR-003)
 - **One question at a time:** Commands present ONE structured choice per message, then STOP and wait for the user's response. Never batch multiple choice blocks. Exception: configuration review blocks (docs bundle + git config) may be presented together as a single confirm action. Enforced in constitution.md + per-command ADF section. (ADR-008)
 - **Security-first planning:** `/tyrex-plan` performs a security assessment BEFORE proposing tasks. Security-sensitive tasks get `security` attribute, quality: `required`, and devsec skill auto-assigned. Every feature with security implications gets a dedicated security hardening task.
 - **4-lens senior review:** `/tyrex-review` evaluates through 4 lenses: Pattern Compliance, Code Quality & DRY, Business & Technical Compliance, Security First. Uses senior engineer persona for the project's tech stack.
