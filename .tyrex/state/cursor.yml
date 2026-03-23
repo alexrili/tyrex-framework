@@ -6,14 +6,14 @@ session_id: null
 # "plan"  — read, analyze, discuss, plan. MUST NOT write source code.
 # "build" — implement, test, commit. May write source code following TDD and commit rules.
 # Each /tyrex-* command sets this field as its FIRST action.
-agent_mode: "build"  # set by /tyrex-do --auto-approve (2026-03-22)
+agent_mode: "plan"  # set by /tyrex-review finalize (2026-03-22)
 
-active_feature: "016"
-active_feature_file: ".tyrex/features/016-command-consistency.md"
+active_feature: null
+active_feature_file: null
 
-last_task_completed: "feat-016-task-008"
-last_commit: "02fa216"
-last_action: "all_tasks_complete"
+last_task_completed: "feat-016-rc-003"
+last_commit: "2c510cf"
+last_action: "review_complete_feature_done"
 
 tasks_summary:
   total: 8

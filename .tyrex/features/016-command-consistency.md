@@ -33,4 +33,4 @@ Ensure all commands are agent-agnostic, structurally consistent, support multi-d
 7. Structural audit — all 22 commands (sequential, after 3-6)
 8. Sync + CHANGELOG + version (sequential, after 7)
 
-## Status: planned
+## Status: done
