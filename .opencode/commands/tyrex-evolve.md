@@ -11,6 +11,10 @@ You are the Tyrex Framework orchestrator. The user wants to update the living do
 This command runs in **plan** mode. Set `agent_mode: "plan"` in `cursor.yml` as the FIRST action.
 You MUST NOT write source code. You may modify only `.tyrex/TYREX.md` and `docs/` files.
 
+## Feature Context Resolution
+
+**This command can operate with or without an active feature.** If a feature is active (resolved via branch detection or `--feature` flag), use it for scoping. Otherwise, operate project-wide.
+
 ## Behavior
 
 1. Ask: "What did you discover? (new pattern, hurdle, decision, or context)"
@@ -24,7 +28,7 @@ You MUST NOT write source code. You may modify only `.tyrex/TYREX.md` and `docs/
 4. Keep TYREX.md under 300 lines — if it's getting long, summarize older entries
 5. Commit the update (following the configured commit mode)
 
-## Rules
+## Important Rules
 - Be concise — agents read this on every interaction
 - Date all architecture decisions
 - Hurdles should have both the problem AND the solution

@@ -5,30 +5,44 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0] - 2026-03-22
+
+### Added
+- **Multi-demand support (ADR-011)** — multiple features open simultaneously on different branches. Branch-based context detection (`feat/NNN-*`) with `--feature NNN` flag override
+- Per-feature state files in `.tyrex/state/features/NNN.yml` replace global cursor.yml task tracking
+- Feature Context Resolution algorithm: flag → branch → fallback → prompt. Shared reference in `templates/commands/shared/`
+- `/tyrex-help` now shows "Two ways to work" — full workflow (new→plan→do→review) vs fast lane (quick)
+- `/tyrex-status` shows all open features in a multi-feature table with current branch marker
+
+### Changed
+- **Agent-agnostic** — removed hardcoded agent names (Claude Code, OpenCode, Cursor, Codex) from all 10 ADF sections. Now uses generic "CLI-based agents" / "Chat-based agents"
+- Removed hardcoded skill lookup paths from `/tyrex-do` and skill sync paths from `/tyrex-review`
+- All 22 commands now have consistent structure: frontmatter, title, intro, Agent Mode, Behavior, Important Rules
+- 12 commands now include Feature Context Resolution section
+- 8 commands: renamed `## Rules` to `## Important Rules` for consistency
+- `cursor.yml` slimmed to global-only fields: `agent_mode`, `session_id`, `last_active_feature`
+
+### Fixed
+- `/tyrex-handoff` (deprecated) now has proper intro and Agent Mode section
+
+## [0.9.0] - 2026-03-22
+
+### Added
+- **Skills Overhaul** — 5 rewrites + 3 new skills with concrete patterns and expanded review criteria
+- New skills: `backend-engineer`, `frontend-engineer`, `product-manager`
+- All 8 skills: consistent structure (Role, Expertise, Guidelines, Patterns, Review Criteria), stack-agnostic
+
 ## [0.8.0] - 2026-03-22
 
 ### Added
 - **3-Layer Session Recovery** — robust recovery when sessions end abruptly mid-development
-- Layer 1: Git-based inconsistency detection in `/tyrex-resume` — compares cursor.yml state vs actual git state (untracked commits, uncommitted changes), offers reconcile/inspect/rollback/stash/discard choices
-- Layer 2: Checkpoint eagerness in `/tyrex-do` — writes `current_task_in_progress`, `in_progress_since`, `in_progress_files_touched` to cursor.yml at task start, updates after file writes, clears on completion
-- Layer 3: Intelligent reconciliation in `/tyrex-resume` — cross-references checkpoint fields with git diff, stack-agnostic test runner detection (13 manifest types: package.json, pyproject.toml, Cargo.toml, go.mod, Makefile, mix.exs, build.gradle, pom.xml, Gemfile, composer.json, CMakeLists.txt, deno.json, bun.lockb), auto-completes if files match and tests pass
-- Parallel wave recovery — detects partially completed parallel task waves, recovers per-task
-- Decision matrix for recovery: auto-complete / show context / reset to pending based on file match + test results
+- Layer 1: Git-based inconsistency detection in `/tyrex-resume`
+- Layer 2: Checkpoint eagerness in `/tyrex-do`
+- Layer 3: Intelligent reconciliation with stack-agnostic test runner detection (13 manifest types)
 
 ### Fixed
-- `/tyrex-do` — test runner detection now uses the same comprehensive 13-manifest table as `/tyrex-resume` (was a brief description)
-- `/tyrex-do` — checkpoint recovery fields now cleared on task failure path (was only cleared on success, causing stale data on resume)
-## [0.9.0] - 2026-03-22
-
-### Added
-- **Skills Overhaul** — comprehensive rewrite of all skills with concrete patterns and expanded review criteria
-- 3 new skills: `backend-engineer` (connection pooling, N+1, caching, graceful shutdown, idempotency), `frontend-engineer` (a11y, Core Web Vitals, state management, error boundaries), `product-manager` (INVEST user stories, MoSCoW, MVP, scope control)
-- `qa-engineer` rewritten: AAA pattern, boundary testing, fixture factory, flaky test diagnosis (48→85 lines)
-- `release-engineer` rewritten: breaking change detection, hotfix workflow, rollback procedures, deprecation lifecycle (42→82 lines)
-- `devsec` improved: secure configuration, dependency audit, threat modeling, cryptographic key lifecycle patterns
-- `debugger` improved: performance regression analysis, memory leak diagnosis, profiling patterns
-- `copywriter` improved: confirmation dialog, progress indicator, table/list display patterns
-- All 8 skills now have consistent structure: Role, Expertise, Guidelines, Patterns, Review Criteria
+- `/tyrex-do` — test runner detection uses comprehensive 13-manifest table
+- `/tyrex-do` — checkpoint recovery fields cleared on failure path
 
 ## [0.7.0] - 2026-03-20
 

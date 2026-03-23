@@ -105,7 +105,7 @@ If wiki pages already exist:
 Update CHANGELOG.md with the wiki change.
 Handle commit based on configured mode (auto/approve).
 
-## Rules
+## Important Rules
 - Every wiki page MUST include D2 diagrams where architecture or flow is described (d2lang.com). Use templates/diagrams/*.d2 as base
 - Pages should be self-contained — a developer should be able to read one page and understand that area
 - Cross-reference between pages using relative links

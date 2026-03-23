@@ -103,7 +103,7 @@ Documentation settings:
 3. Remove from `tyrex.yml` docs.custom array
 4. Ask: "Also delete the template file? [y/N]"
 
-## Rules
+## Important Rules
 - `changelog: always` is LOCKED and cannot be changed
 - `docs.changelog: true` is LOCKED and cannot be changed
 - `docs.spec: true` is LOCKED and cannot be changed — SPECs are mandatory per task

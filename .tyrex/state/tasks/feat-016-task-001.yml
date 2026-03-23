@@ -1,0 +1,19 @@
+task_id: "feat-016-task-001"
+feature: "016-command-consistency"
+name: "Define multi-demand state model"
+status: "pending"
+depends_on: []
+unlocks: ["feat-016-task-002"]
+parallel: false
+skill: "copywriter.md"
+quality: "optional"
+security: "none"
+estimate: "medium"
+spec_file: "docs/specs/016-task-001-state-model.md"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: []
+output: null
+errors: null

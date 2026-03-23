@@ -1,19 +1,21 @@
-# .tyrex/state/cursor.yml - Session pointer for quick recovery
+# .tyrex/state/cursor.yml - Global session state (slimmed for multi-demand)
 last_updated: "2026-03-22T00:00:00Z"
 session_id: null
 
 # Agent mode controls what the agent can do.
 # "plan"  — read, analyze, discuss, plan. MUST NOT write source code.
 # "build" — implement, test, commit. May write source code following TDD and commit rules.
-# Each /tyrex-* command sets this field as its FIRST action.
 agent_mode: "plan"
 
+# Last active feature — fallback for Feature Context Resolution
+last_active_feature: null
+
+# Legacy fields (kept for backward compatibility during transition)
 active_feature: null
 active_feature_file: null
-
-last_task_completed: "feat-015-rc-007"
+last_task_completed: null
 last_commit: null
-last_action: "merge_complete"
+last_action: "merge_all_features"
 
 tasks_summary:
   total: 0
@@ -25,7 +27,7 @@ tasks_summary:
 
 next_tasks: []
 
-# v0.1.0 released — Features 001, 002, 003 complete
 # v0.7.0 — Security review, auto-versioning, tests first-class
 # v0.8.0 — 3-layer session recovery
 # v0.9.0 — Skills overhaul (8 skills)
+# v1.0.0 — Multi-demand, agent-agnostic, command consistency

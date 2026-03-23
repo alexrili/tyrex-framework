@@ -11,6 +11,10 @@ You are the Tyrex Framework orchestrator. Show the user a comprehensive view of 
 This command runs in **plan** mode. Set `agent_mode: "plan"` in `cursor.yml` as the FIRST action.
 You MUST NOT write source code. Read-only analysis and reporting only.
 
+## Feature Context Resolution
+
+**This command shows all features.** Scan `.tyrex/state/features/*.yml` to list all features and their status. The current branch's feature (if any) is highlighted.
+
 ## Behavior
 
 ### Step 1: Gather data
@@ -24,8 +28,28 @@ Read these files (in parallel where possible):
 7. `.tyrex/context/` — project context files (list directory)
 8. `.tyrex/TYREX.md` — check completeness (sections filled or empty)
 9. `docs/` — scan for existing documentation files
-10. `.tyrex/map/security-audit.md` — security findings from init mapping (if exists)
+10. `.tyrex/security/audit.md` — security findings from /tyrex-security-review (if exists)
 11. `.tyrex/bugs/` — debug session reports and open bugs (if exists)
+12. `.tyrex/tests/coverage-gaps.md` — test coverage gaps from /tyrex-test-review (if exists)
+
+### Step 1b: Scan all feature state files
+
+Scan `.tyrex/state/features/*.yml` to discover ALL features and their status. For each file, read the feature ID, name, branch, status, and task progress. Detect the current git branch to identify which feature (if any) belongs to the current branch.
+
+Display a multi-feature table:
+
+```
+Features:
+  ID   Name                    Branch                    Status      Progress
+  014  session-recovery        feat/014-session-recovery done        5/5
+  015  skills-overhaul         feat/015-skills-overhaul  done        9/9
+  016  command-consistency     feat/016-command-cons...  in_progress 2/8
+  ← current branch
+```
+
+The current branch's feature gets a `← current branch` marker on its row. If no feature matches the current branch, show the table without a marker.
+
+After the table, show the detailed view for the current branch's feature only (tasks, next steps, blocked items, etc.).
 
 ### Step 2: Display comprehensive status
 
@@ -37,11 +61,13 @@ Project: [name]
 Config:  commits=[mode] branches=[mode] docs=[mode]
 
 ─── Features ───────────────────────────
-  001-feature-name           done        (8/8 tasks)
-  002-feature-name           done        (7/7 tasks)
-  003-feature-name           in_progress (3/7 tasks)
+  ID   Name                    Branch                    Status      Progress
+  001  feature-name            feat/001-feature-name     done        8/8
+  002  feature-name            feat/002-feature-name     done        7/7
+  003  feature-name            feat/003-feature-name     in_progress 3/7
+  ← current branch
 
-Active: 003-feature-name
+Active (current branch): 003-feature-name
   Task 3: ServiceX             completed
   Task 4: ServiceY             in_progress  <- current
   Task 5: Controller           blocked (needs 3, 4)
@@ -75,6 +101,19 @@ Active: 003-feature-name
   [!] CRITICAL  BUG-001: [title] (DEBUG-003)
   [!] HIGH      BUG-002: [title] (DEBUG-005)
 
+─── Tests ──────────────────────────
+  Last scan:      [date from coverage-gaps.md header | never]
+  Coverage gaps:  [N total: P pending, R resolved | no gaps | no scan]
+
+  By tier:
+    Critical:     [N pending / M total]
+    Important:    [N pending / M total]
+    Nice-to-have: [N pending / M total]
+
+  [!] CRITICAL  [module/file]: [description of gap]
+  [!] IMPORTANT [module/file]: [description of gap]
+  [x] IMPORTANT [module/file]: [description of gap]  (resolved)
+
 ─── Documentation ──────────────────────
   CHANGELOG:      [present, up to date | present, stale | missing]
   ADRs:           [N (list numbers)] | none
@@ -98,14 +137,16 @@ Last action: [action from cursor.yml]
 ═══════════════════════════════════════
 
 Commands:
-  /tyrex-discuss   Explore the project, ask questions, brainstorm
-  /tyrex-do        Continue implementation (if active feature)
-  /tyrex-review    Review completed feature (if all tasks done)
-  /tyrex-new       Start new feature
-  /tyrex-debug     Diagnose problems, analyze logs, document bugs
-  /tyrex-quick     Quick fix or small task
-  /tyrex-skills    Create or list skills
-  /tyrex-context   Add project context
+  /tyrex-discuss          Explore the project, ask questions, brainstorm
+  /tyrex-do               Continue implementation (if active feature)
+  /tyrex-review           Review completed feature (if all tasks done)
+  /tyrex-new              Start new feature
+  /tyrex-debug            Diagnose problems, analyze logs, document bugs
+  /tyrex-quick            Quick fix or small task
+  /tyrex-skills           Create or list skills
+  /tyrex-context          Add project context
+  /tyrex-security-review  Run security audit
+  /tyrex-test-review      Scan for test coverage gaps
 ```
 
 ### Step 3: Health diagnostics
@@ -134,12 +175,14 @@ Perform these quick checks and include results in the Health section:
 
 6. **Roadmap awareness** — If `.tyrex/roadmap.yml` exists, show planned/discussed features. If it doesn't exist but feature specs reference future features in "Out of Scope" or "Related" sections, extract those references and display them with a note "(extracted from feature specs — consider creating roadmap.yml)".
 
-7. **Security findings** — If `.tyrex/map/security-audit.md` exists:
+7. **Security findings** — If `.tyrex/security/audit.md` exists:
    - Parse the findings table for `Status` column (`[ ]` = pending, `[x]` = resolved)
-   - Count pending vs resolved findings
+   - Count total findings, pending, and resolved
+   - Extract the last scan date from the audit.md header
    - Show each pending finding with severity and description
    - Show resolved findings as `[x]` (collapsed or dimmed)
-   - If no security-audit.md exists, show "No security audit found — run `/tyrex-init` to generate one"
+   - If all findings are resolved, show "All clear — no pending security findings"
+   - If no `.tyrex/security/audit.md` exists, show "No security scans yet. Run `/tyrex-security-review`."
 
 8. **Bug registry** — If `.tyrex/bugs/` exists:
    - Count `DEBUG-*.md` files (total debug sessions)
@@ -147,6 +190,16 @@ Perform these quick checks and include results in the Health section:
    - Count open bugs by severity (critical, high, medium, low)
    - Show each open bug with severity and title
    - If no `.tyrex/bugs/` or no files: omit the Bugs section entirely
+
+9. **Test coverage gaps** — If `.tyrex/tests/coverage-gaps.md` exists:
+   - Parse the gaps table for `Status` column (`[ ]` = pending, `[x]` = resolved)
+   - Count total gaps, pending, and resolved
+   - Extract the last scan date from the coverage-gaps.md header
+   - Group gaps by tier: critical, important, nice-to-have
+   - Show each pending gap with tier and description
+   - Show resolved gaps as `[x]` (collapsed or dimmed)
+   - If all gaps are resolved, show "All clear — no pending test coverage gaps"
+   - If no `.tyrex/tests/coverage-gaps.md` exists, show "No test reviews yet. Run `/tyrex-test-review`."
 
 ### Step 4: Actionable suggestions
 
@@ -163,9 +216,12 @@ Based on the status, suggest the most relevant next actions:
 - If roadmap has planned features: mention what's next
 - If security findings are pending: "N security findings pending. Fix now with `/tyrex-quick`? [y/N]" — if user says yes, list the pending findings and let them choose which to fix, then hand off to `/tyrex-quick`
 - If open bugs exist: "N open bugs found. Run `/tyrex-debug` to investigate more, or `/tyrex-quick` to fix."
+- If test coverage gaps are pending: "N test coverage gaps pending. Run `/tyrex-test-review` to rescan, or `/tyrex-quick` to address gaps."
+- If no security scan has been run: suggest `/tyrex-security-review`
+- If no test review has been run: suggest `/tyrex-test-review`
 - Always include `/tyrex-discuss` in the commands list for Q&A availability
 
-## Rules
+## Important Rules
 - Keep the output concise — this is a status check, not a full report
 - Highlight what's actionable (what can the user do next?)
 - Show blocked tasks and what they're waiting for

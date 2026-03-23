@@ -1,0 +1,19 @@
+task_id: "feat-016-task-002"
+feature: "016-command-consistency"
+name: "Agent-agnostic ADF text"
+status: "pending"
+depends_on: ["feat-016-task-001"]
+unlocks: ["feat-016-task-003", "feat-016-task-004", "feat-016-task-006"]
+parallel: false
+skill: "copywriter.md"
+quality: "optional"
+security: "none"
+estimate: "medium"
+spec_file: "docs/specs/016-task-002-adf-agnostic.md"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: []
+output: null
+errors: null

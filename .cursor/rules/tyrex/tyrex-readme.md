@@ -144,7 +144,7 @@ If a README.md already exists:
 Update CHANGELOG.md with the README change.
 Handle commit based on configured mode (auto/approve).
 
-## Rules
+## Important Rules
 - D2 diagrams are REQUIRED for architecture section (d2lang.com). Use templates/diagrams/architecture.d2 as base
 - Quick Start steps MUST be copy-pasteable and actually work
 - Do NOT invent features or capabilities — only document what exists

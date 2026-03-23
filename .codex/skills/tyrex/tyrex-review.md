@@ -1,5 +1,5 @@
 ---
-description: "Review completed implementation — senior code review with 4 critical lenses"
+description: "Review completed implementation — senior code review with 5 critical lenses"
 ---
 
 # /tyrex-review - Senior Code Review
@@ -21,15 +21,25 @@ If `--do-all` or `--do-critical` flags are used and changes are approved, the co
 
 Flags can be combined: `/tyrex-review --do-all`, `/tyrex-review full --do-critical`
 
+## Feature Context Resolution
+
+**This command operates on an existing feature.** Resolve the active feature using this order:
+1. `--feature NNN` flag (if provided)
+2. Branch name detection: `feat/NNN-*` or `feature/NNN-*` → extract NNN
+3. Fallback: `last_active_feature` from `cursor.yml`
+4. No feature found: prompt user to select or create one
+
+Read the per-feature state file `.tyrex/state/features/NNN.yml` for task tracking, checkpoint fields, and progress.
+
 ## Adaptive Decision Format
 
-**ALL decisions in this command MUST use structured choices** adapted to the agent's interface. CLI agents (Claude Code, OpenCode): numbered choices where the user types a number. Chat-based agents (Cursor, Codex): numbered list or direct question where the user responds naturally. Never ask open-ended questions when structured choices are possible. This includes: approval decisions, scope selection, change requests, and any other decision point.
+**ALL decisions in this command MUST use structured choices** adapted to the agent's interface. CLI-based agents: numbered choices where the user types a number. Chat-based agents: numbered list or direct question where the user responds naturally. Never ask open-ended questions when structured choices are possible. This includes: approval decisions, scope selection, change requests, and any other decision point.
 
 **One question at a time.** Present a single structured choice, then STOP and wait for the user's response before proceeding to the next question. Never combine multiple choice blocks in one message.
 
-## The 4 Review Lenses
+## The 5 Review Lenses
 
-Every review MUST evaluate the implementation through these 4 critical lenses, in order:
+Every review MUST evaluate the implementation through these 5 critical lenses, in order:
 
 ### Lens 1: Pattern Compliance
 > "Does this follow the project's established patterns?"
@@ -72,7 +82,7 @@ Every review MUST evaluate the implementation through these 4 critical lenses, i
 - **Insecure data handling:** Sensitive data in logs, unencrypted storage, insecure transmission
 - **Dependency risks:** New dependencies added without justification, known vulnerabilities
 - **OWASP Top 10 check:** Verify against the latest OWASP Top 10 categories
-- Cross-reference with `.tyrex/map/security-audit.md` for existing findings
+- Cross-reference with `.tyrex/security/audit.md` for existing findings
 - **If no DevSec skill exists in `.tyrex/skills/`:** suggest creating one via `/tyrex-skills create devsec`
 
 ## Behavior
@@ -84,7 +94,7 @@ Every review MUST evaluate the implementation through these 4 critical lenses, i
    - `.tyrex/state/cursor.yml` → active feature
    - Active feature spec → acceptance criteria
    - `.tyrex/tyrex.yml` → documentation configuration for this feature
-   - `.tyrex/map/security-audit.md` → existing security findings (if exists)
+   - `.tyrex/security/audit.md` → existing security findings (if exists)
    - `.tyrex/TYREX.md` → project patterns (for Lens 1)
    - `docs/prd/` → PRD for active feature (for Lens 3)
    - `docs/srs/` → SRS for active feature (for Lens 3)
@@ -105,7 +115,16 @@ Run and report:
 - [ ] Security scan clean (if configured — e.g., `npm audit`, `bundler-audit`, etc.)
 - [ ] All acceptance criteria addressed (map each criterion to implementation) — PR scope only
 
-### Step 3: Apply the 4 Review Lenses
+**Test suite execution:** If a test framework is detected (e.g., `jest`, `pytest`, `go test`, `mix test`, `cargo test` — inferred from project config files like `package.json`, `pyproject.toml`, `Cargo.toml`, etc.), present a structured choice before running:
+```
+Test framework detected: [framework name]
+  [1] Run test suite now
+  [2] Skip test execution
+```
+If "Run": execute the project's configured test command, capture results (passing, failing, skipped counts), and include them in the review summary. Use a reasonable timeout (120s default). If tests exceed the timeout, report partial results and note the timeout.
+If "Skip" or no test framework detected: continue without test execution, note "Tests: not executed" in the summary.
+
+### Step 3: Apply the 5 Review Lenses
 
 Execute each lens in order. For each finding, assign a severity:
 - **CRITICAL** — Security vulnerability, data loss risk, or breaking change
@@ -115,6 +134,17 @@ Execute each lens in order. For each finding, assign a severity:
 
 #### Lens 1: Pattern Compliance
 Review against TYREX.md patterns. Flag deviations.
+
+**Version bump verification** (applies only if a package manifest exists):
+1. Check if `docs/CHANGELOG.md` or any `docs/adrs/*.md` was modified in the branch diff (PR scope: `git diff main...HEAD --name-only`; full scope: check recent commits on the current feature).
+2. Check if any package manifest version was bumped — look for version changes in: `package.json`, `composer.json`, `pyproject.toml`, `Cargo.toml`, `mix.exs`, `go.mod`.
+3. If CHANGELOG or ADR changed **but** no manifest version was bumped → flag as finding:
+   - **Severity: HIGH**
+   - Message: "CHANGELOG updated but version not bumped — ensure the package version is incremented to reflect the documented changes."
+4. If multiple manifests exist and their versions differ after bumping → flag as finding:
+   - **Severity: HIGH**
+   - Message: "Multiple package manifests detected with inconsistent versions."
+5. Skip this check entirely if no package manifest file is found in the project root.
 
 #### Lens 2: Code Quality & DRY
 Review code quality. Suggest refactoring where needed — but do NOT apply changes.
@@ -135,6 +165,35 @@ Perform deep security analysis using the DevSec skill (if available) or the buil
 - Generate updated `security-audit.md` preserving resolved status
 - Remove findings for deleted code
 - Update the `> Generated by` date header
+
+### Lens 5: Test Coverage
+> "Does every changed file have corresponding tests?"
+
+For each file changed in the branch (from `git diff main...HEAD --name-only`):
+1. Identify if the file is an implementation file (not a test, config, doc, or asset).
+2. Check if a corresponding test file exists using common conventions:
+   - JavaScript/TypeScript: `foo.test.js`, `foo.spec.js`, `foo.test.ts`, `foo.spec.ts`, `__tests__/foo.js`
+   - Python: `test_foo.py`, `tests/test_foo.py`, `foo_test.py`
+   - Go: `foo_test.go`
+   - Rust: inline `#[cfg(test)]` module or `tests/foo.rs`
+   - Ruby: `spec/foo_spec.rb`, `test/foo_test.rb`
+   - Elixir: `test/foo_test.exs`
+   - Other languages: adapt to detected conventions in the project
+3. For each implementation file with no corresponding test file, flag as a finding:
+   - **CRITICAL** — core business logic, security-sensitive, or data-handling files
+   - **HIGH** — API endpoints, service layer, utilities used broadly
+   - **MEDIUM** — helpers, formatters, non-critical modules
+   - **LOW** — configuration wrappers, simple DTOs, generated code
+4. If `.tyrex/tests/coverage-gaps.md` exists, cross-reference — note if the gap was already known.
+
+Include in the review summary:
+```
+Lens 5 — Test Coverage:
+  [OK | N findings]
+  Files without tests: [N]/[total changed implementation files]
+  [!] HIGH    No tests for src/services/payment.js (core business logic)
+  [!] MEDIUM  No tests for src/utils/formatter.js
+```
 
 ### Step 4: Documentation finalization
 
@@ -214,7 +273,7 @@ Extract patterns from review findings and evolve existing skills. Skip this step
 
 ### Step 6: Present review summary
 
-Present the complete review using the 4-lens format:
+Present the complete review using the 5-lens format:
 
 ```
 Senior Code Review — Feature: [name]
@@ -248,6 +307,11 @@ Lens 4 — Security First:
   Pending (prior):   [N]
   Resolved:          [N]
   [!] CRITICAL  SQL injection risk in src/db/query.js:78 — unsanitized user input
+
+Lens 5 — Test Coverage:
+  [OK | N findings]
+  Files without tests: [N]/[total]
+  [!] HIGH    No tests for src/services/payment.js (core business logic)
 
 Documentation:
   CHANGELOG: [updated/missing]
@@ -337,7 +401,7 @@ When changes are requested (via flag or structured choices), this command automa
 - Update `.tyrex/roadmap.yml`: set this feature's status to `done`
 - If skill files were modified or created in Step 5b:
   - Include `.tyrex/skills/*.md` changes in the final commit
-  - Sync updated/new skills to all provider directories (`.claude/skills/`, `.opencode/skills/`, `.cursor/rules/tyrex-skill-*.md`, `.codex/skills/tyrex/skill-*.md`)
+  - Sync updated/new skills: copy from `templates/skills/` to `.tyrex/skills/` and to all agent skill directories configured in the project
 - Final commit with documentation and skill updates
 - Update cursor.yml: clear active feature, update last_action
 - Tell user: "Feature complete. Run /tyrex-new for the next feature, or /tyrex-status for overview."
@@ -345,14 +409,14 @@ When changes are requested (via flag or structured choices), this command automa
 ## Important Rules
 - ALWAYS check CHANGELOG.md is updated — it's mandatory
 - ALWAYS use structured choices for ALL decisions — never open-ended questions when choices are possible
-- ALWAYS apply all 4 review lenses — never skip any
+- ALWAYS apply all 5 review lenses — never skip any
 - ALWAYS use senior engineer persona for the project's tech stack
 - The review phase is where documentation gets FINALIZED, not skipped
 - Refactoring suggestions should be actionable and specific during review (plan mode)
 - NEVER skip the security review (Lens 4) — Security First is a core principle
 - NEVER write source code during the review phase (Steps 1-7) — only during Step 8 fix execution. Step 5b writes to skill files (`.tyrex/skills/`), which is allowed in plan mode.
 - For PR scope: always use `git diff` against the base branch to determine scope
-- For Full scope: always update `.tyrex/map/security-audit.md` with the complete re-scan results
+- For Full scope: always update `.tyrex/security/audit.md` with the complete re-scan results
 - When marking findings as resolved in `security-audit.md`, change `[ ]` to `[x]` — do not delete the row
 - Requested-change tasks (rc-*) are part of the SAME feature — they don't create a new feature
 - The review loop (review → fix → re-review) continues until clean or user approves

@@ -21,9 +21,19 @@ If `--do-all` or `--do-critical` flags are used and changes are approved, the co
 
 Flags can be combined: `/tyrex-review --do-all`, `/tyrex-review full --do-critical`
 
+## Feature Context Resolution
+
+**This command operates on an existing feature.** Resolve the active feature using this order:
+1. `--feature NNN` flag (if provided)
+2. Branch name detection: `feat/NNN-*` or `feature/NNN-*` → extract NNN
+3. Fallback: `last_active_feature` from `cursor.yml`
+4. No feature found: prompt user to select or create one
+
+Read the per-feature state file `.tyrex/state/features/NNN.yml` for task tracking, checkpoint fields, and progress.
+
 ## Adaptive Decision Format
 
-**ALL decisions in this command MUST use structured choices** adapted to the agent's interface. CLI agents (Claude Code, OpenCode): numbered choices where the user types a number. Chat-based agents (Cursor, Codex): numbered list or direct question where the user responds naturally. Never ask open-ended questions when structured choices are possible. This includes: approval decisions, scope selection, change requests, and any other decision point.
+**ALL decisions in this command MUST use structured choices** adapted to the agent's interface. CLI-based agents: numbered choices where the user types a number. Chat-based agents: numbered list or direct question where the user responds naturally. Never ask open-ended questions when structured choices are possible. This includes: approval decisions, scope selection, change requests, and any other decision point.
 
 **One question at a time.** Present a single structured choice, then STOP and wait for the user's response before proceeding to the next question. Never combine multiple choice blocks in one message.
 
@@ -391,7 +401,7 @@ When changes are requested (via flag or structured choices), this command automa
 - Update `.tyrex/roadmap.yml`: set this feature's status to `done`
 - If skill files were modified or created in Step 5b:
   - Include `.tyrex/skills/*.md` changes in the final commit
-  - Sync updated/new skills to all provider directories (`.claude/skills/`, `.opencode/skills/`, `.cursor/rules/tyrex-skill-*.md`, `.codex/skills/tyrex/skill-*.md`)
+  - Sync updated/new skills: copy from `templates/skills/` to `.tyrex/skills/` and to all agent skill directories configured in the project
 - Final commit with documentation and skill updates
 - Update cursor.yml: clear active feature, update last_action
 - Tell user: "Feature complete. Run /tyrex-new for the next feature, or /tyrex-status for overview."

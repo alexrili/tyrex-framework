@@ -13,7 +13,7 @@ You MUST NOT write source code. You may create/modify only `.tyrex/`, `docs/`, a
 
 ## Adaptive Decision Format
 
-**ALL decisions in this command MUST use structured choices** adapted to the agent's interface. CLI agents (Claude Code, OpenCode): numbered choices where the user types a number. Chat-based agents (Cursor, Codex): numbered list or direct question where the user responds naturally. Never ask open-ended questions when structured choices are possible.
+**ALL decisions in this command MUST use structured choices** adapted to the agent's interface. CLI-based agents: numbered choices where the user types a number. Chat-based agents: numbered list or direct question where the user responds naturally. Never ask open-ended questions when structured choices are possible.
 
 **One question at a time.** Present a single structured choice, then STOP and wait for the user's response before proceeding to the next question. Never combine multiple choice blocks in one message.
 
@@ -78,7 +78,7 @@ Perform a COMPLETE project mapping. This is the ONE phase where spending tokens 
   - If no test framework: suggest `default: "optional"` and ask if they want to set one up
   - Identify project areas (API, frontend, mobile, workers, infra) and set per-area strategy
 - **Scan for existing skills:**
-  - Check `.claude/skills/`, `.opencode/skills/`, `.agents/skills/`, `.cursor/rules/`
+  - Detect installed agents by scanning for config directories (`.claude/`, `.opencode/`, `.cursor/`, `.codex/`). Check each agent's skill directory for existing skill files.
   - Report any found and offer to sync to `.tyrex/skills/`
   - Suggest running `/tyrex-skills suggest` for auto-detection
 - Save results to `.tyrex/map/`:

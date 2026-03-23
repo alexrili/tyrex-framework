@@ -18,9 +18,13 @@ Update `agent_mode` in `cursor.yml` at each transition.
 - **`/tyrex-quick`** (default) — Interactive fast-track with choice checkpoints for key decisions
 - **`/tyrex-quick --auto-approve`** — Full autopilot: captures the prompt, makes smart defaults for all decisions, and executes everything. Only stops on failures after 3 retries.
 
+## Feature Context Resolution
+
+**This command creates a new feature context.** After creation, set `last_active_feature` in cursor.yml and create the per-feature state file `.tyrex/state/features/NNN.yml`. Other commands will resolve this feature via branch detection or the `--feature` flag.
+
 ## Adaptive Decision Format
 
-**ALL decisions in this command MUST use structured choices** adapted to the agent's interface. CLI agents (Claude Code, OpenCode): numbered choices where the user types a number. Chat-based agents (Cursor, Codex): numbered list or direct question where the user responds naturally. Never ask open-ended questions when structured choices are possible. This is the standard for every interaction point.
+**ALL decisions in this command MUST use structured choices** adapted to the agent's interface. CLI-based agents: numbered choices where the user types a number. Chat-based agents: numbered list or direct question where the user responds naturally. Never ask open-ended questions when structured choices are possible. This is the standard for every interaction point.
 
 **One question at a time.** Present a single structured choice, then STOP and wait for the user's response before proceeding to the next question. Never combine multiple choice blocks in one message. Each step that contains a decision point ends at that choice — the next step begins only after the user responds. Exception: configuration review blocks may be presented together as a single "review and confirm" action.
 

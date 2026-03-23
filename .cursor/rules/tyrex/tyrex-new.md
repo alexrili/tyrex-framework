@@ -11,9 +11,13 @@ You are the Tyrex Framework orchestrator. The user is starting a new implementat
 This command runs in **plan** mode. Set `agent_mode: "plan"` in `cursor.yml` as the FIRST action.
 You MUST NOT write source code. You may create/modify only `.tyrex/`, `docs/`, and configuration files.
 
+## Feature Context Resolution
+
+**This command creates a new feature context.** After creation, set `last_active_feature` in cursor.yml and create the per-feature state file `.tyrex/state/features/NNN.yml`. Other commands will resolve this feature via branch detection or the `--feature` flag.
+
 ## Adaptive Decision Format
 
-**ALL decisions in this command MUST use structured choices** adapted to the agent's interface. CLI agents (Claude Code, OpenCode): numbered choices where the user types a number. Chat-based agents (Cursor, Codex): numbered list or direct question where the user responds naturally. Never ask open-ended questions when structured choices are possible. This applies to: roadmap selection, clarification questions, context ingestion, skill selection, documentation configuration, branch configuration, and any other decision point.
+**ALL decisions in this command MUST use structured choices** adapted to the agent's interface. CLI-based agents: numbered choices where the user types a number. Chat-based agents: numbered list or direct question where the user responds naturally. Never ask open-ended questions when structured choices are possible. This applies to: roadmap selection, clarification questions, context ingestion, skill selection, documentation configuration, branch configuration, and any other decision point.
 
 **One question at a time.** Present a single structured choice, then STOP and wait for the user's response before proceeding to the next question. Never combine multiple choice blocks in one message. Each step that contains a decision point ends at that choice — the next step begins only after the user responds. Exception: configuration review blocks (e.g., docs bundle + git config in Step 4) may be presented together as a single "review and confirm" action.
 
@@ -38,25 +42,36 @@ Before asking the user to describe the feature:
 4. If the user describes something new: proceed normally to Step 1
 5. If roadmap.yml doesn't exist or has no planned features: skip to Step 1
 
+### Steps 0b–0d: Registry checks (shared pattern)
+
+Steps 0b, 0c, and 0d follow the same pattern. For each registry:
+1. Read the registry file (if it exists; skip silently if not)
+2. Count pending items (those marked `[ ]` or `Status: open`) by severity
+3. If pending items exist, present structured choices:
+   - Fix items first (create feature from finding/gap)
+   - Continue with new feature (items noted)
+4. Follow "one question at a time" — present ONE choice and STOP
+
+The registries, in order:
+
 ### Step 0b: Check bug registry
-Before asking for a feature description, check for open bugs:
-1. Read `.tyrex/bugs/` directory for `DEBUG-*.md` files.
-2. Parse each file for findings with `Status: open`.
-3. If open bugs exist, present structured choices:
-   ```
-   Open bugs found (N):
-     [!] CRITICAL  BUG-001: [title] (DEBUG-003)
-     [!] HIGH      BUG-002: [title] (DEBUG-005)
-     [!] MEDIUM    BUG-003: [title] (DEBUG-005)
+- **Source:** `.tyrex/bugs/DEBUG-*.md` files, findings with `Status: open`
+- **Severity levels:** critical, high, medium, low
+- **Label:** "open bugs"
+- **Fix action:** hand off to `/tyrex-quick` with selected bugs as context
+- Show at most 10 bugs sorted by severity (critical first). If more exist, note "and N more".
 
-     [1] Fix bugs first — create a fix feature for selected bugs
-     [2] Continue to new feature — address bugs later
-   ```
-4. If "Fix bugs first": hand off to `/tyrex-quick` with selected bugs as context.
-5. If "Continue" or no open bugs: proceed to Step 1 normally.
-6. If `.tyrex/bugs/` doesn't exist or has no open bugs: skip to Step 1.
+### Step 0c: Check security findings
+- **Source:** `.tyrex/security/audit.md`, entries marked `[ ]` (pending) vs `[x]` (resolved)
+- **Severity levels:** critical, high, medium, low
+- **Label:** "pending security findings"
+- **Fix action:** list pending findings, let user choose which to fix, hand off to `/tyrex-quick`
 
-Show at most 10 bugs sorted by severity (critical first). If more exist, note "and N more".
+### Step 0d: Check test coverage gaps
+- **Source:** `.tyrex/tests/coverage-gaps.md`, entries not marked as resolved
+- **Severity levels:** critical, important
+- **Label:** "test coverage gaps"
+- **Fix action:** use selected gap(s) as the feature description, proceed to Step 1 with that context pre-filled
 
 ### Step 1: Describe the feature
 Ask the user: "Describe what you want to implement."
@@ -214,9 +229,20 @@ Based on Step 4 choices:
 - Always respect `approve`/`auto` mode from tyrex.yml
 
 ### Step 8: Update state
+Create per-feature state file `.tyrex/state/features/NNN.yml` with:
+- `feature_id`: NNN
+- `name`: feature name
+- `feature_file`: path to feature spec
+- `branch`: branch name (from Step 7)
+- `status`: "spec"
+- `tasks_summary`: null (populated during /tyrex-plan)
+- `created_at`: current timestamp
+
+Create per-feature tasks directory: `.tyrex/state/features/NNN/tasks/`
+
 Update `.tyrex/state/cursor.yml`:
-- `active_feature`: feature ID
-- `active_feature_file`: path to feature spec
+- `last_active_feature`: "NNN"
+- `agent_mode`: "plan"
 - `last_action`: "feature_created"
 
 Update `.tyrex/roadmap.yml`:

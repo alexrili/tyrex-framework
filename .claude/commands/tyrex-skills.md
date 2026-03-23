@@ -20,10 +20,7 @@ You MUST NOT write source code. You may create/modify only `.tyrex/skills/` and 
 Scan all known skill locations:
 
 1. `.tyrex/skills/*.md` (canonical source of truth)
-2. `.claude/skills/*.md`
-3. `.opencode/skills/*.md`
-4. `.cursor/rules/tyrex-skill-*.md`
-5. `.codex/skills/tyrex/skill-*.md`
+2. Agent-specific skill directories — detect which agents are installed by scanning for their config directories (`.claude/`, `.opencode/`, `.cursor/`, `.codex/`). For each detected agent, check its skill directory for additional skill files.
 
 For each `.md` file found, read the `## Role` line to extract the one-line description.
 
@@ -33,17 +30,14 @@ Display:
 Installed Skills
 ════════════════════════════════════════
 
-  .tyrex/skills/
+  .tyrex/skills/ (canonical)
     backend-engineer     Backend engineer focused on API correctness and performance
     security-reviewer    Security engineer who catches auth and injection issues
 
-  .claude/skills/
+  [agent-name] skills/
     frontend-engineer    React/TypeScript UI specialist       [not synced to .tyrex/]
 
-  .cursor/rules/
-    tyrex-skill-dba.md   Database expert for migrations and queries  [not synced to .tyrex/]
-
-  Total: 4 skills (2 canonical, 2 provider-specific)
+  Total: 3 skills (2 canonical, 1 agent-specific)
 
   Actions:
     /tyrex-skills create     Create a new skill
@@ -68,15 +62,12 @@ Interactive skill creation:
 
 Synchronize skills across provider directories:
 
-1. Read all skills from `.tyrex/skills/*.md`
-2. For each provider directory that exists in the project:
-   - `.claude/skills/` → copy as `{name}.md`
-   - `.opencode/skills/` → copy as `{name}.md`
-   - `.cursor/rules/` → copy as `tyrex-skill-{name}.md`
-   - `.codex/skills/tyrex/` → copy as `skill-{name}.md`
-3. Check for provider-specific skills NOT in `.tyrex/skills/`:
+1. Read all skills from `.tyrex/skills/*.md` (canonical source)
+2. Detect installed agents by scanning for their config directories (`.claude/`, `.opencode/`, `.cursor/`, `.codex/`)
+3. For each detected agent, copy skills to its skill directory using the agent's naming convention
+4. Check for agent-specific skills NOT in `.tyrex/skills/`:
    - Offer to import them to canonical location
-4. Report what was synced
+5. Report what was synced
 
 ## Skill File Format
 
@@ -141,7 +132,7 @@ Security engineer who reviews code for authentication, authorization, and inject
 - Rate limiting on auth-related endpoints
 ```
 
-## Rules
+## Important Rules
 - Skills in `.tyrex/skills/` are the canonical source of truth
 - Provider directories receive copies via sync — never edit provider copies directly
 - Skill names MUST be lowercase, hyphenated, 1-64 characters
