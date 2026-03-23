@@ -69,7 +69,24 @@ If the user confirms:
 - Load TYREX.md and constitution.md (for context)
 - Load project-level context from `.tyrex/context/` and feature-level context from `.tyrex/features/NNN-context.md`
 - Load SPEC files for pending tasks, SRS and PRD for the active feature
-- Continue as if `/tyrex-do` was called — pick up from the next pending task
+- Pick up from the next pending task and execute using the canonical sequence:
+  1. **Load SPEC** — read the task's SPEC file from `docs/specs/`.
+  2. **Load skill** — if task has a `skill` attribute, read `.tyrex/skills/<name>.md`. Apply its persona during implementation.
+  3. **Checkpoint: task start** — set `current_task_in_progress`, `in_progress_since`, `in_progress_files_touched: []` in per-feature state.
+  4. **Implement following quality strategy:** `required` = TDD mandatory, `recommended` = tests alongside, `optional` = default to tests in `--auto`.
+  5. **Checkpoint: files touched** — append each written file path to `in_progress_files_touched`.
+  6. **Pre-commit sequence:**
+     - Update task state to `completed`
+     - Resolve audit findings (if security task)
+     - Prepare conventional commit message
+     - Update CHANGELOG (mandatory)
+     - Version bump check (if CHANGELOG/ADR changed: detect manifest, suggest semver, auto-accept in `--auto`, propagate)
+     - Run tests before commit (stack-agnostic detection: package.json, pyproject.toml, Cargo.toml, go.mod, Makefile, mix.exs, etc.)
+     - Commit (auto in `--auto`, approval otherwise)
+     - Checkpoint: task complete — clear recovery fields, update `last_task_completed`
+     - Auto-update TYREX.md if macro docs generated
+  7. **On failure:** clear checkpoints, mark `failed`. Retry up to 3x in `--auto`, or present fix/skip/stop choices.
+  8. After each task, check for newly unlocked tasks and continue.
 - If there were parallel tasks in progress when the session ended, check their state files to see if any completed
 
 If the user says no:

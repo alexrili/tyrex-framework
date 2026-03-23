@@ -121,10 +121,11 @@ Do you have additional context for this feature?
   [ ] No — proceed with what I described
 ```
 
-If yes: follow the `/tyrex-context add` flow with scope set to `feature`
-- Accept free text, file paths, or URLs
-- Store in `.tyrex/features/NNN-context.md`
-- This context will inform documentation generation and planning
+If yes: ingest feature context:
+   - Ask input type: `[1] Free text` / `[2] File path` / `[3] URL`
+   - Process: free text saved as-is (200 line max), file path read and summarized, URL fetched and summarized
+   - Save to `.tyrex/features/NNN-context.md` with YAML frontmatter (source, added date, scope: feature)
+   - Confirm: show file path, line count, 2-line preview
 Note: the user can always add more context later with `/tyrex-context`
 
 **Present context choice and wait for user response before continuing.**

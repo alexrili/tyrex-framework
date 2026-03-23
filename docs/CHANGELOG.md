@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2026-03-23
+
+### Fixed
+- **Self-contained commands** — 8 cross-references where commands delegated behavior to other commands by name ("same rules as /tyrex-do") without including the actual rules inline. Agents could silently skip version bumps, test execution, audit resolution, and checkpoint updates.
+- `/tyrex-quick` Step 4: inlined planning checklist (security-first analysis, coverage gaps, quality strategy)
+- `/tyrex-quick` Step 5: inlined full execution sequence (SPEC, skill, checkpoints, version bump, tests, audit)
+- `/tyrex-resume` Step 3: inlined execution procedure (was "continue as if /tyrex-do was called")
+- `/tyrex-review` Step 8.5: inlined fix execution sequence (was "same rules as /tyrex-do")
+- `/tyrex-init`: inlined resume behavior + context ingestion procedure
+- `/tyrex-new`: inlined context ingestion procedure
+- `/tyrex-debug`: inlined test runner detection table (was pointing to non-existent table in /tyrex-resume)
+
+### Added
+- Canonical shared reference blocks in `templates/commands/shared/`: execution-checklist.md, planning-checklist.md, context-add-inline.md
+
 ## [1.2.0] - 2026-03-22
 
 ### Changed
