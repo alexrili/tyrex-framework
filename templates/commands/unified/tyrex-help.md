@@ -36,7 +36,7 @@ TYREX Help
     /tyrex-init       Initialize Tyrex in a project (map codebase, configure)
     /tyrex-new        Start a new feature (structured choices)
     /tyrex-plan       Plan tasks with security-first approach
-    /tyrex-do         Execute tasks [--auto-approve]
+    /tyrex-do         Execute tasks [--auto]
     /tyrex-review     Senior code review with 4 lenses [--do-all | --do-critical] [full]
 
   Exploration & Debugging:
@@ -45,7 +45,7 @@ TYREX Help
     /tyrex-research   Technical research — codebase + web
 
   Fast Track:
-    /tyrex-quick      Unified new→plan→do from a single prompt [--auto-approve]
+    /tyrex-quick      Unified new→plan→do from a single prompt [--auto]
 
   Management:
     /tyrex-status     Show current project and feature status
@@ -64,7 +64,7 @@ TYREX Help
     /tyrex-help       This command. Use /tyrex-help <command> for details.
 
   Deprecated:
-    /tyrex-handoff    → Use /tyrex-quick --auto-approve instead
+    /tyrex-handoff    → Use /tyrex-quick --auto instead
 ```
 
 #### Step 3: Show workflow paths
@@ -106,7 +106,7 @@ Multiple features:
                                                 └── fix tasks ─┘
 
   Fast track (from single prompt):
-    /tyrex-quick [--auto-approve]
+    /tyrex-quick [--auto]
       = /tyrex-new + /tyrex-plan + /tyrex-do in one command
 
   Review with auto-fix:
@@ -135,7 +135,7 @@ Based on the current state, suggest the next action. Use EXACTLY ONE of these:
   > "You have a feature spec ready. Run `/tyrex-plan` to plan the implementation tasks."
 
 - **Active feature with status `planned` (plan approved, no tasks started):**
-  > "Your plan is approved. Run `/tyrex-do` to start implementing, or `/tyrex-do --auto-approve` for autopilot."
+  > "Your plan is approved. Run `/tyrex-do` to start implementing, or `/tyrex-do --auto` for autopilot."
 
 - **Active feature with tasks `in_progress` or `pending`:**
   > "You have tasks in progress. Run `/tyrex-do` to continue, or `/tyrex-resume` if this is a new session."
@@ -242,7 +242,7 @@ Use the reference below for each command:
 
 **do:**
 - What: Executes tasks from the plan. Handles TDD, parallelization, commits, and state updates. Auto-updates TYREX.md when macro docs are generated.
-- Flags: `--auto-approve` (skip ALL human checkpoints, full autopilot)
+- Flags: `--auto` (skip ALL human checkpoints, full autopilot)
 - When: After the plan is approved with `/tyrex-plan`.
 - Steps: Load state → Find ready tasks → Parallelization (choices or auto) → Execute with TDD → Commit (choices or auto) → Update state + TYREX.md → Repeat
 - Prerequisites: Active feature with approved plan
@@ -258,7 +258,7 @@ Use the reference below for each command:
 
 **quick:**
 - What: Fast-track workflow — unified new/plan/do from a single prompt. Same quality guardrails, fewer steps. All decisions via structured choices.
-- Flags: `--auto-approve` (full autopilot from prompt to implementation)
+- Flags: `--auto` (full autopilot from prompt to implementation)
 - When: Bug fixes, config tweaks, small features — anything that doesn't need extensive ceremony but still needs quality.
 - Steps: Capture feature (choices) → Quick config (choices) → Skill + security check → Quick plan (choices) → Execute (same as /tyrex-do) → Update TYREX.md
 - Prerequisites: `.tyrex/` initialized
@@ -337,8 +337,8 @@ Use the reference below for each command:
 - Next: Nothing specific
 
 **handoff (DEPRECATED):**
-- What: Replaced by `/tyrex-quick --auto-approve`. See migration guide in the command file.
-- When: Never — use `/tyrex-quick --auto-approve` instead.
+- What: Replaced by `/tyrex-quick --auto`. See migration guide in the command file.
+- When: Never — use `/tyrex-quick --auto` instead.
 
 **help:**
 - What: This command. Shows all available commands and suggests what to do next.

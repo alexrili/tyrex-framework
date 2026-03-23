@@ -83,7 +83,7 @@ Tyrex auto-detects installed agents by scanning for their config directories. Co
 - **Review → Fix loop:** `/tyrex-review` with `--do-all` or `--do-critical` flags auto-creates requested-change tasks (prefixed `rc-`) within the same feature and enters plan/do loop. Includes mini re-review after fixes.
 - **Command flags:** Commands support flags: `/tyrex-do --auto-approve`, `/tyrex-review --do-all|--do-critical|full`, `/tyrex-quick --auto-approve`
 - **TYREX.md auto-update:** When macro docs (ADR, PRD, SRS) are generated or updated, commands auto-update TYREX.md with summaries in appropriate sections (Architecture Decisions, Business Rules, Requirements Summary)
-- **Quick = unified workflow:** `/tyrex-quick` is a fast-track `new → plan → do` pipeline from a single prompt. With `--auto-approve` it runs full autopilot. Replaces the old "no docs" quick approach.
+- **Quick = unified workflow:** `/tyrex-quick` is a fast-track `new → plan → do` pipeline from a single prompt. With `--auto` it runs full autopilot. Replaces the old "no docs" quick approach.
 - **Handoff deprecated:** `/tyrex-handoff` replaced by `/tyrex-quick --auto-approve`
 - **Security review command:** `/tyrex-security-review` provides comprehensive security scanning (secrets, logical vulns, OWASP Top 10, unprotected endpoints). Session reports in `.tyrex/security/SECURITY-NNN.md`, consolidated audit in `.tyrex/security/audit.md` with `[ ]`/`[x]` tracking. Integrated into `/tyrex-new` (pending findings check), `/tyrex-plan` (cross-reference audit), `/tyrex-do` (mark resolved), `/tyrex-status` (summary), `/tyrex-init` (initial scan + migration). Plan mode, read-only — never fixes code. (ADR-009)
 - **Security registry:** `.tyrex/security/` stores scan reports and consolidated audit. Replaces old `.tyrex/map/security-audit.md`. One session file per scan (SECURITY-NNN.md). Findings have severity + status (pending/resolved). Consumed by 5 commands.
@@ -136,9 +136,9 @@ Tyrex auto-detects installed agents by scanning for their config directories. Co
 | 2026-03-10 | Security-first planning                  | `/tyrex-plan` performs security assessment before task decomposition. Security-sensitive tasks auto-get devsec skill and quality: required |
 | 2026-03-10 | 4-lens senior code review                | `/tyrex-review` evaluates Pattern Compliance, Code Quality, Business Compliance, and Security. Senior engineer persona per tech stack |
 | 2026-03-10 | Review → Fix loop                        | `/tyrex-review --do-all/--do-critical` auto-creates `rc-` prefixed tasks within same feature and enters plan/do loop |
-| 2026-03-10 | Command flags (--auto-approve, etc.)     | Commands support flags for automation: `--auto-approve` (skip all checkpoints), `--do-all`/`--do-critical` (auto-fix review findings) |
+| 2026-03-10 | Command flags (--auto-approve, etc.)     | Commands support flags for automation: `--auto` (skip all checkpoints), `--do-all`/`--do-critical` (auto-fix review findings) |
 | 2026-03-10 | TYREX.md as living knowledge index       | Auto-updated when macro docs (ADR, PRD, SRS) are generated. Sections: Architecture Decisions, Business Rules, Requirements Summary, Patterns |
-| 2026-03-10 | Quick = unified new+plan+do              | `/tyrex-quick` redesigned as fast-track pipeline. Same quality, fewer steps. `--auto-approve` for full autopilot |
+| 2026-03-10 | Quick = unified new+plan+do              | `/tyrex-quick` redesigned as fast-track pipeline. Same quality, fewer steps. `--auto` for full autopilot |
 | 2026-03-10 | Handoff deprecated                       | Replaced by `/tyrex-quick --auto-approve`. One command for same behavior, cleaner mental model |
 | 2026-03-10 | Built-in DevSec skill template           | `templates/skills/devsec.md` ships with framework. Auto-suggested when security areas detected. OWASP/SANS coverage |
 | 2026-03-12 | D2 diagrams replace Mermaid (ADR-004)     | D2 language for all diagrams. 4 template types (architecture, sequence, data-flow, ER). Always offered during `/tyrex-new` |
