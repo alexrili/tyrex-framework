@@ -1,0 +1,19 @@
+task_id: "feat-015-task-006"
+feature: "015-skills-overhaul"
+name: "Create backend-engineer skill"
+status: "pending"
+depends_on: []
+unlocks: ["feat-015-task-009"]
+parallel: true
+skill: "copywriter.md"
+quality: "optional"
+security: "none"
+estimate: "medium"
+spec_file: "docs/specs/015-task-006-backend-engineer.md"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: []
+output: null
+errors: null

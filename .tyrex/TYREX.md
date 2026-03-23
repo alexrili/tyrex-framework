@@ -68,6 +68,7 @@ bin/tyrex.js (~427 lines, single-file CLI)
 - **Skills as personas:** Skills in `.tyrex/skills/` are markdown persona files (Role, Expertise, Guidelines, Patterns, Review Criteria). Auto-suggested during `/tyrex-new`, assigned to tasks during `/tyrex-plan`, loaded as context during `/tyrex-do`
 - **Built-in DevSec skill:** `templates/skills/devsec.md` is a built-in security skill template. Auto-suggested when security-sensitive areas are detected during `/tyrex-new` and `/tyrex-plan`. Copied to `.tyrex/skills/devsec.md` on creation.
 - **Built-in Copywriter skill:** `templates/skills/copywriter.md` is a UX writing skill template. Used for text review and tone consistency enforcement. Voice: professional and direct (Stripe/Vercel style).
+- **8 built-in skills:** qa-engineer, release-engineer, devsec, debugger, copywriter (rewritten), backend-engineer, frontend-engineer, product-manager (new). All have consistent structure: Role, Expertise, Guidelines (~15), Patterns (3-5 concrete), Review Criteria (~15). Stack-agnostic with language-specific notes.
 - **Terminology standard:** User-facing text uses "feature" (never "demand"), "choices" (never "quiz"). Professional tone, active voice, actionable errors, no exclamation marks.
 - **Skill evolution via review:** `/tyrex-review` Step 5b extracts patterns from review findings and evolves skills. CRITICAL/HIGH findings always become pattern candidates. Findings appearing 2+ times become candidates. Skills have a 150-line limit with summarization. User approval required (auto-approved with `--do-all`). New skills suggested when findings match no existing skill. (ADR-006)
 - **Sync after every command update:** When updating commands in `templates/commands/unified/`, ALWAYS re-sync to all 4 agent directories as the LAST step — updates made after sync will be missed
@@ -154,6 +155,7 @@ bin/tyrex.js (~427 lines, single-file CLI)
 | 2026-03-20 | Automatic versioning as framework directive | Version bump mandatory when CHANGELOG/ADR changes. Detect manifest, suggest bump, propagate, include in commit. Human decides final version. |
 | 2026-03-20 | Automated tests as first-class citizen (ADR-010) | `/tyrex-test-review` for gap scanning + test awareness in 5 commands. Core principle: never pass without asking about tests. Command count: 22 (was 21) |
 | 2026-03-22 | 3-layer session recovery | Git-based inconsistency detection + checkpoint eagerness + intelligent reconciliation with stack-agnostic test runner detection. Git is the ultimate source of truth, cursor.yml is the fast-path |
+| 2026-03-22 | Skills overhaul — 8 built-in skills | All skills rewritten with concrete patterns, expanded review criteria, consistent structure. 3 new: backend-engineer, frontend-engineer, product-manager. Stack-agnostic throughout |
 
 ## CI/CD
 

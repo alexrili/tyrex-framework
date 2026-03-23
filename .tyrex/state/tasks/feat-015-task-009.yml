@@ -1,0 +1,19 @@
+task_id: "feat-015-task-009"
+feature: "015-skills-overhaul"
+name: "Verify consistency and sync all skills"
+status: "pending"
+depends_on: ["feat-015-task-001","feat-015-task-002","feat-015-task-003","feat-015-task-004","feat-015-task-005","feat-015-task-006","feat-015-task-007","feat-015-task-008"]
+unlocks: []
+parallel: false
+skill: "copywriter.md"
+quality: "optional"
+security: "none"
+estimate: "medium"
+spec_file: "docs/specs/015-task-009-verify-sync.md"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: []
+output: null
+errors: null
