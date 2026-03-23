@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- **External tracker integration** — bidirectional sync with Jira, Linear, GitHub Issues via MCP
+  - `integrations.tracker` config section in `tyrex.yml`
+  - Shared sync algorithm: `external-tracker-sync.md` (forward-only status, lifecycle boundary, comment trail)
+  - `external_ref` and `external_task_ref` state fields in feature context resolution
+  - Tracker config questions in `tyrex init` interactive flow
+
 ## [1.3.0] - 2026-03-23
 
 ### Fixed

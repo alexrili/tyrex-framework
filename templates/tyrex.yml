@@ -77,3 +77,12 @@ git:
   branch_prefix: "{{BRANCH_PREFIX}}"
   commit_style: "{{COMMIT_STYLE}}"   # "conventional" | "descriptive"
   auto_push: false                   # Never auto-push by default
+
+# External tracker integration (Jira, Linear, GitHub Issues)
+# Requires an MCP server configured in your AI agent for the chosen provider.
+# Auth is managed by the MCP server — Tyrex stores only identity config.
+integrations:
+  tracker:
+    provider: {{TRACKER_PROVIDER}}   # "jira" | "linear" | "github-issues" | null
+    project: "{{TRACKER_PROJECT}}"   # Default project key (e.g., "HOT", "PROJ")
+    user: "{{TRACKER_USER}}"         # User email/handle for assignments and comments
