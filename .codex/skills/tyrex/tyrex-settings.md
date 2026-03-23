@@ -57,6 +57,11 @@ Git:
   Branch prefix: feat/
   Commit style:  conventional
   Auto push:     false
+
+Integrations:
+  Tracker:     [provider] or "not configured"
+  Project:     [project key] or "(none)"
+  User:        [user email/handle] or "(none)"
 ```
 
 3. Ask: "What would you like to change? (or 'done' to exit)"
@@ -102,6 +107,32 @@ Documentation settings:
 2. Ask which to remove
 3. Remove from `tyrex.yml` docs.custom array
 4. Ask: "Also delete the template file? [y/N]"
+
+### Tracker integration management
+
+When the user wants to change tracker settings, present:
+
+```
+Tracker integration:
+  1. Set provider      [currently: jira | linear | github-issues | not configured]
+  2. Set project key   [currently: HOT]
+  3. Set user          [currently: alex@company.com]
+  4. Remove tracker    [disable integration]
+```
+
+**Setting provider:**
+```
+Tracker provider:
+  [1] Jira (requires Jira MCP server in your agent)
+  [2] Linear (requires Linear MCP server)
+  [3] GitHub Issues (requires GitHub MCP server)
+```
+
+**Setting project key:** Ask for the default project key (e.g., "HOT", "PROJ"). This is used as the default in `/tyrex-new` import.
+
+**Setting user:** Ask for the user email or handle used for assignments and comment trail.
+
+**Removing tracker:** Set `integrations.tracker.provider` to `null`. Note: existing features with `external_ref` are not affected — they retain their sync state but no new sync operations will be initiated.
 
 ## Important Rules
 - `changelog: always` is LOCKED and cannot be changed

@@ -34,7 +34,15 @@ Read these files (in parallel where possible):
 
 ### Step 1b: Scan all feature state files
 
-Scan `.tyrex/state/features/*.yml` to discover ALL features and their status. For each file, read the feature ID, name, branch, status, and task progress. Detect the current git branch to identify which feature (if any) belongs to the current branch.
+Scan `.tyrex/state/features/*.yml` to discover ALL features and their status. For each file, read the feature ID, name, branch, status, task progress, and `external_ref` (if present). Detect the current git branch to identify which feature (if any) belongs to the current branch.
+
+**Tracker column:** For each feature with `external_ref`, show the issue key and mode (e.g., `HOT-1234 (build)`). For features without `external_ref`, show `—`. Only show the Tracker column if at least one feature has `external_ref`.
+
+**Active feature tracker detail:** For the current branch's feature, if `external_ref` is present, show:
+- Tracker issue link (source + ID + URL)
+- Mode (read-only / build)
+- Last sync timestamp
+- Subtask sync count: how many tasks have `external_task_ref` vs total tasks
 
 Display a multi-feature table:
 
@@ -61,10 +69,10 @@ Project: [name]
 Config:  commits=[mode] branches=[mode] docs=[mode]
 
 ─── Features ───────────────────────────
-  ID   Name                    Branch                    Status      Progress
-  001  feature-name            feat/001-feature-name     done        8/8
-  002  feature-name            feat/002-feature-name     done        7/7
-  003  feature-name            feat/003-feature-name     in_progress 3/7
+  ID   Name                    Branch                    Status      Progress  Tracker
+  001  feature-name            feat/001-feature-name     done        8/8       —
+  002  feature-name            feat/002-feature-name     done        7/7       —
+  003  feature-name            feat/003-feature-name     in_progress 3/7       HOT-1234 (build)
   ← current branch
 
 Active (current branch): 003-feature-name
@@ -73,6 +81,10 @@ Active (current branch): 003-feature-name
   Task 5: Controller           blocked (needs 3, 4)
   Task 6: Tests A              pending (can parallel after 5)
   Task 7: Tests B              pending (can parallel after 5)
+
+  Tracker: HOT-1234 (build) — https://company.atlassian.net/browse/HOT-1234
+  Last sync: 2026-03-23 10:00
+  Subtasks synced: 4/7
 
 ─── Roadmap ────────────────────────────
   004-feature-name           planned     (depends on 003)

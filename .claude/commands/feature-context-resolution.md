@@ -42,6 +42,23 @@ tasks_dir: ".tyrex/state/features/NNN/tasks/"
 
 created_at: "YYYY-MM-DDTHH:MM:SSZ"
 updated_at: "YYYY-MM-DDTHH:MM:SSZ"
+
+# External tracker integration (optional — present only if imported from tracker)
+# See external-tracker-sync.md for sync algorithm and MCP tool mapping.
+external_ref:
+  source: "jira"              # "jira" | "linear" | "github-issues"
+  id: "PROJ-1234"             # Issue key in the tracker
+  url: "https://..."          # Direct link to the issue
+  mode: "build"               # "read-only" | "build"
+  synced_at: "YYYY-MM-DDTHH:MM:SSZ"
+```
+
+**Per-task state file** (`.tyrex/state/features/NNN/tasks/task-MMM.yml`) may also include:
+```yaml
+# External tracker subtask ref (optional — present only if subtask created in tracker)
+external_task_ref:
+  id: "PROJ-1235"             # Subtask key in the tracker
+  url: "https://..."          # Direct link to the subtask
 ```
 
 **Global cursor.yml** (slimmed down):
