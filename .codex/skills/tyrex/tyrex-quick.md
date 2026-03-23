@@ -16,7 +16,8 @@ Update `agent_mode` in `cursor.yml` at each transition.
 ## Parameters
 
 - **`/tyrex-quick`** (default) — Interactive fast-track with choice checkpoints for key decisions
-- **`/tyrex-quick --auto-approve`** — Full autopilot: captures the prompt, makes smart defaults for all decisions, and executes everything. Only stops on failures after 3 retries.
+- **`/tyrex-quick --auto`** — Full autopilot: captures the prompt, makes smart defaults for all decisions, and executes everything. Only stops on failures after 3 retries.
+- `--auto-approve` is accepted as an alias for `--auto` (deprecated, will be removed in v2)
 
 ## Feature Context Resolution
 
@@ -56,13 +57,13 @@ Is there a specific requirement driving this?
 
 Maximum 3 question rounds.
 
-**If `--auto-approve`:** Ask no clarification questions unless the prompt is critically ambiguous (e.g., no clear action or target). Use the prompt as-is and make reasonable inferences.
+**If `--auto`:** Ask no clarification questions unless the prompt is critically ambiguous (e.g., no clear action or target). Use the prompt as-is and make reasonable inferences.
 
 **Present Step 1 choices and wait for user response before continuing to Step 2.**
 
 ### Step 2: Quick Configuration (via structured choices)
 
-**If `--auto-approve`:** Skip this step. Use smart defaults:
+**If `--auto`:** Skip this step. Use smart defaults:
 - Branch: create `feat/quick-[slug]` from prompt
 - Docs: CHANGELOG + SPEC only (mandatory minimums)
 - Commits: auto mode
@@ -98,7 +99,7 @@ Commit mode:
        [ ] Create DevSec skill now (Recommended)
        [ ] Continue without DevSec skill
      ```
-   - **If `--auto-approve`:** auto-create the DevSec skill from built-in template if it doesn't exist
+   - **If `--auto`:** auto-create the DevSec skill from built-in template if it doesn't exist
 3. Generate feature spec (compact format, max 30 lines)
 4. Create branch (based on Step 2 config)
 
@@ -132,7 +133,7 @@ Commit mode:
    Estimated: [N] tasks, [N] commits
    ```
 
-5. **If `--auto-approve`:** skip approval, start executing immediately.
+5. **If `--auto`:** skip approval, start executing immediately.
    **Otherwise, present choices:**
    ```
    Approve this plan?
@@ -150,7 +151,7 @@ Execute all tasks following the exact same rules as `/tyrex-do`:
 - State management (cursor.yml, task states)
 - Parallelization (if applicable)
 
-**If `--auto-approve`:** all checkpoints during execution are auto-approved (same behavior as `/tyrex-do --auto-approve`).
+**If `--auto`:** all checkpoints during execution are auto-approved (same behavior as `/tyrex-do --auto`).
 
 After all tasks complete:
 - Update cursor.yml
@@ -198,6 +199,6 @@ This task exceeds quick-track scope.
 - Security checks are still mandatory
 - ALWAYS create a separate branch (never work on main/master)
 - ALWAYS use structured choices for ALL decisions — adapt format to agent interface
-- `--auto-approve` is full autopilot: prompt → implementation with zero human interaction (except on failures)
+- `--auto` is full autopilot: prompt → implementation with zero human interaction (except on failures)
 - If the task grows beyond quick-track scope, suggest escalating to the full workflow
 - This replaces the old "quick = no docs" approach. Quick now means "same quality, fewer steps"

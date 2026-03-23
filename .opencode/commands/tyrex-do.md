@@ -14,7 +14,8 @@ You may create, edit, and delete source code files following TDD, small commits,
 ## Parameters
 
 - **`/tyrex-do`** (default) — Execute tasks with human approval at each checkpoint
-- **`/tyrex-do --auto-approve`** — Execute ALL tasks automatically: commits, parallelism decisions, and all checkpoints are auto-approved. Only stops on failures after 3 retries.
+- **`/tyrex-do --auto`** — Execute ALL tasks automatically: commits, parallelism decisions, and all checkpoints are auto-approved. Only stops on failures after 3 retries.
+- `--auto-approve` is accepted as an alias for `--auto` (deprecated, will be removed in v2)
 
 ## Adaptive Decision Format
 
@@ -56,7 +57,7 @@ These are the "ready" tasks.
 ### Step 3: Parallelization decision
 If there are MULTIPLE ready tasks that are marked as `parallel: true`:
 
-**If `--auto-approve`:** automatically choose parallel execution for all eligible tasks.
+**If `--auto`:** automatically choose parallel execution for all eligible tasks.
 
 **Otherwise, present structured choices:**
 ```
@@ -95,7 +96,7 @@ For each ready task, one at a time:
    - `required`: TDD mandatory — write tests first, implement, tests MUST pass
    - `recommended`: write tests alongside code, warn if skipped
    - `optional`: present choices: `[ ] Write tests for this task` / `[ ] Skip tests`
-   - **If `--auto-approve`:** for `optional` quality, default to writing tests
+   - **If `--auto`:** for `optional` quality, default to writing tests
    - Run lint if configured — it MUST pass
    - Run security scan if configured
 6. **On success:**
@@ -122,7 +123,7 @@ For each ready task, one at a time:
         - `fix:` commit → patch bump
         - `BREAKING CHANGE` or `!:` in commit → major bump
         - `chore:`, `docs:`, `refactor:`, `test:` → patch bump
-     5. **If `--auto-approve`:** auto-accept the suggested bump
+     5. **If `--auto`:** auto-accept the suggested bump
         **Otherwise, present structured choices:**
         ```
         Version bump detected. Current: X.Y.Z
@@ -138,10 +139,10 @@ For each ready task, one at a time:
      9. Stage the version changes alongside the task changes (same atomic commit)
    - **Run tests before commit (mandatory for every task):**
      1. Detect test framework and test command from the project's package manifest scripts (e.g., `test` script in `package.json`, `pytest` in `pyproject.toml`, etc.)
-     2. The test command is read from the project's own manifest and trusted as project-owned. In non-`--auto-approve` mode, display the exact command before running. Example: `Run: npm test [1] Approve [2] Skip`
+     2. The test command is read from the project's own manifest and trusted as project-owned. In non-`--auto` mode, display the exact command before running. Example: `Run: npm test [1] Approve [2] Skip`
      3. If a test command exists: run the full test suite
      4. If tests **fail**:
-        - **If `--auto-approve`:** automatically retry once; if still failing, mark the task as `failed`
+        - **If `--auto`:** automatically retry once; if still failing, mark the task as `failed`
         - **Otherwise, present structured choices:**
           ```
           Tests failed: N failures
@@ -151,7 +152,7 @@ For each ready task, one at a time:
           ```
      5. If tests **pass**: include the pass count in the task output: "Tests: N passed, 0 failed"
      6. If **no test framework/command is detected**:
-        - **If `--auto-approve`:** skip with a note in the task output: "No test command detected — skipped"
+        - **If `--auto`:** skip with a note in the task output: "No test command detected — skipped"
         - **Otherwise, present structured choices:**
           ```
           No test command detected.
@@ -159,7 +160,7 @@ For each ready task, one at a time:
             [2] Specify test command
           ```
      - This step runs for EVERY task, not just security tasks — core principle: **never let an implementation pass without at least asking about tests**
-   - **If `--auto-approve`:**
+   - **If `--auto`:**
      - Make the commit automatically (overrides `approve` mode from tyrex.yml)
    - **Else if commit mode is `approve`:**
      - Show: diff summary, commit message, changelog entry
@@ -174,7 +175,7 @@ For each ready task, one at a time:
 7. **On failure:**
    - Update task state to `failed` with error details
    - Show the error to the user
-   - **If `--auto-approve`:** automatically retry up to 3 times, then mark as `failed` and continue to next task
+   - **If `--auto`:** automatically retry up to 3 times, then mark as `failed` and continue to next task
    - **Otherwise, present choices:**
      ```
      [ ] Fix and retry
@@ -200,7 +201,7 @@ For each ready task, one at a time:
 3. Collect results from task state files
 4. For each completed sub-task:
    - Validate the implementation (tests pass, lint clean)
-   - Handle commits (based on mode: approve, auto, or `--auto-approve`)
+   - Handle commits (based on mode: approve, auto, or `--auto`)
    - Update CHANGELOG.md (sequentially, after all parallel tasks finish)
 5. Update the per-feature state file with all completed tasks. Update cursor.yml only: `last_active_feature` and `agent_mode`.
 6. Check for newly unlocked tasks → go to Step 3
@@ -220,5 +221,5 @@ When ALL tasks are `completed`:
 - If two parallel tasks need to modify the same file, they CANNOT be parallel — execute sequentially
 - The orchestrator (you) handles commits and state updates, NOT sub-agents
 - If the user interrupts ("stop", "wait", "pause"), immediately save state and stop
-- `--auto-approve` is a trust accelerator — it skips ALL human checkpoints but still runs all quality checks (tests, lint, security)
+- `--auto` is a trust accelerator — it skips ALL human checkpoints but still runs all quality checks (tests, lint, security)
 - When macro docs (ADR, PRD, SRS) are created/updated, ALWAYS update TYREX.md with a summary
