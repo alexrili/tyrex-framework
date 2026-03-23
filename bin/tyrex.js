@@ -18,7 +18,7 @@ const AGENTS = {
     commandsSrc: "commands/unified",
     rulesFile: "CLAUDE.md",
     rulesTemplate: "CLAUDE.md",
-    needsProjectSymlink: false, // reads from ~/ natively
+    needsProjectSymlink: true, // symlink to global for auto-updates
   },
   opencode: {
     name: "OpenCode",
@@ -26,7 +26,7 @@ const AGENTS = {
     commandsSrc: "commands/unified",
     rulesFile: "AGENTS.md",
     rulesTemplate: "AGENTS.md",
-    needsProjectSymlink: false, // reads from ~/ natively
+    needsProjectSymlink: true, // symlink to global for auto-updates
   },
   cursor: {
     name: "Cursor",
@@ -34,7 +34,7 @@ const AGENTS = {
     commandsSrc: "commands/unified",
     rulesFile: "CLAUDE.md",
     rulesTemplate: "CLAUDE.md",
-    needsProjectSymlink: true, // needs project-local files
+    needsProjectSymlink: true, // symlink to global for auto-updates
   },
   codex: {
     name: "Codex",
@@ -42,7 +42,7 @@ const AGENTS = {
     commandsSrc: "commands/unified",
     rulesFile: "CLAUDE.md",
     rulesTemplate: "CLAUDE.md",
-    needsProjectSymlink: true, // needs project-local files
+    needsProjectSymlink: true, // symlink to global for auto-updates
   },
 };
 
@@ -223,7 +223,7 @@ function installGlobalTemplates() {
     }
   }
 
-  // Skills templates
+  // Skills templates (inside templates dir for backward compat)
   const skillsSrc = path.join(TEMPLATES_DIR, "skills");
   if (fs.existsSync(skillsSrc)) {
     const skillsTarget = path.join(globalTemplatesDir, "skills");
@@ -235,6 +235,20 @@ function installGlobalTemplates() {
         path.join(skillsTarget, file)
       );
     }
+  }
+
+  // Skills — dedicated global dir for project symlinking
+  if (fs.existsSync(skillsSrc)) {
+    const globalSkillsDir = path.join(GLOBAL_TYREX_DIR, "skills");
+    ensureDir(globalSkillsDir);
+    const skillFiles = fs.readdirSync(skillsSrc);
+    for (const file of skillFiles) {
+      fs.copyFileSync(
+        path.join(skillsSrc, file),
+        path.join(globalSkillsDir, file)
+      );
+    }
+    console.log(c("green", `  Installed skills to ~/.tyrex/skills/`));
   }
 
   console.log(c("green", `  Installed templates to ~/.tyrex/templates/`));
@@ -295,8 +309,8 @@ function initProject(projectDir, config, force = false) {
 
   // Project-specific directories
   ensureDir(path.join(tyrexDir, "state", "tasks"));
+  ensureDir(path.join(tyrexDir, "state", "features"));
   ensureDir(path.join(tyrexDir, "features"));
-  ensureDir(path.join(tyrexDir, "skills"));
   ensureDir(path.join(tyrexDir, "map"));
   ensureDir(path.join(tyrexDir, "context"));
 
@@ -332,6 +346,24 @@ function initProject(projectDir, config, force = false) {
   const globalTemplates = path.join(GLOBAL_TYREX_DIR, "templates");
   createDirSymlink(globalTemplates, templatesLink);
 
+  // Skills — symlink to global (auto-updates on npm install -g)
+  // If .tyrex/skills/ already exists as a regular directory (customized), preserve it
+  const skillsLink = path.join(tyrexDir, "skills");
+  const globalSkills = path.join(GLOBAL_TYREX_DIR, "skills");
+  if (fs.existsSync(globalSkills)) {
+    try {
+      const stat = fs.lstatSync(skillsLink);
+      if (stat.isDirectory() && !stat.isSymbolicLink()) {
+        console.log(c("dim", `  Skills dir exists (customized) — preserved. Symlink skipped.`));
+      } else {
+        createDirSymlink(globalSkills, skillsLink);
+      }
+    } catch (err) {
+      // Does not exist yet — create symlink
+      createDirSymlink(globalSkills, skillsLink);
+    }
+  }
+
   // Rules files — copied (customizable per project)
   const installedRules = new Set();
   const detectedAgents = detectGlobalAgents();
@@ -347,14 +379,12 @@ function initProject(projectDir, config, force = false) {
     }
   }
 
-  // Agent symlinks — for agents that need project-local commands
+  // Agent symlinks — ALL agents get symlinks to global commands for auto-updates
   for (const agentKey of detectedAgents) {
     const agentConfig = AGENTS[agentKey];
-    if (agentConfig.needsProjectSymlink) {
-      const globalCommandsDir = path.join(HOME_DIR, agentConfig.commandsDir);
-      const localCommandsDir = path.join(projectDir, agentConfig.commandsDir);
-      createDirSymlink(globalCommandsDir, localCommandsDir);
-    }
+    const globalCommandsDir = path.join(HOME_DIR, agentConfig.commandsDir);
+    const localCommandsDir = path.join(projectDir, agentConfig.commandsDir);
+    createDirSymlink(globalCommandsDir, localCommandsDir);
   }
 
   // CHANGELOG.md — never overwrite

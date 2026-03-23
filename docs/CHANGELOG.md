@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-03-22
+
+### Added
+- **Symlink-first architecture** — all framework-owned files (commands, templates, skills) are symlinks to the global installation. Projects auto-update when `npm install -g tyrex-framework@latest` is run
+- All 4 agents now use symlinks for command directories (was only Cursor/Codex)
+- `.tyrex/skills/` starts as symlink to `~/.tyrex/skills/`; preserved as local dir if customized
+- `~/.tyrex/skills/` created during global install for project symlinking
+- `.tyrex/state/features/` directory created during `tyrex init` (multi-demand support)
+- `--auto` flag as primary shorthand for `--auto-approve` (deprecated, kept as alias until v2)
+
+### Changed
+- `bin/tyrex.js` — all agents set `needsProjectSymlink: true` (was false for Claude Code and OpenCode)
+- `tyrex init` — creates symlinks for all detected agent command dirs, not just Cursor/Codex
+
 ## [1.0.0] - 2026-03-22
 
 ### Added

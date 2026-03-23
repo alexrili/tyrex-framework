@@ -58,6 +58,7 @@ Tyrex auto-detects installed agents by scanning for their config directories. Co
 ## Project Patterns
 
 - **Global-only installation:** `tyrex` installs globally to `~/`, `tyrex init` sets up each project with symlinks to global templates/commands. No duplication across projects. (ADR-005)
+- **Symlink-first architecture:** All framework-owned files (commands, templates, skills) are symlinks to `~/.tyrex/`. Projects auto-update on `npm install -g`. Only project-specific files (config, state, features, context) are local. Skills dir starts as symlink; preserved as local dir on first customization.
 - **Single-file CLI:** All runtime logic in `bin/tyrex.js`
 - **Template-driven output:** All scaffolded files use `{{PLACEHOLDER}}` interpolation via `copyTemplate()`
 - **Two template modes:** Core files (tyrex.yml, TYREX.md, etc.) are interpolated at install time; user templates (spec.md, adr.md, etc.) are copied as-is with placeholders intact for AI agents to fill at generation time
