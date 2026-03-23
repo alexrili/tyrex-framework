@@ -42,6 +42,68 @@ Before asking the user to describe the feature:
 4. If the user describes something new: proceed normally to Step 1
 5. If roadmap.yml doesn't exist or has no planned features: skip to Step 1
 
+### Step 0e: Import from external tracker (optional)
+
+**Before registry checks**, if `integrations.tracker.provider` in `.tyrex/tyrex.yml` is not `null`:
+
+1. Present structured choices:
+   ```
+   Start from:
+     [1] Describe a new feature
+     [2] Import from roadmap
+     [3] Import from external tracker
+   ```
+   (Roadmap option only shown if planned features exist. Tracker option only shown if provider is configured.)
+
+2. If the user picks **Import from external tracker**:
+
+   **Step 0e-i: Issue reference**
+   - Read default project from `integrations.tracker.project`
+   - Ask: "Issue ID (e.g., HOT-1234):" — pre-fill project prefix if configured
+   - Parse project key and issue number from the input
+
+   **Step 0e-ii: Fetch & confirm**
+   - Instruct the agent to use the appropriate MCP tool to fetch the issue (see [External Tracker Sync](../shared/external-tracker-sync.md) for provider-to-tool mapping)
+   - Display a summary:
+     ```
+     Found: HOT-1234 — "Implement rate limiting on API endpoints"
+     Priority: High | Type: Story | Assignee: unassigned
+     Description: [first 3 lines or summary]
+     ```
+   - Ask: "Is this the correct issue? [Y/n]"
+   - If issue not found: "Issue not found. [1] Try another ID [2] Describe manually"
+
+   **Step 0e-iii: Import mode**
+   ```
+   Import mode:
+     [1] Read-only — use issue data as context, no sync back
+     [2] Build — assign to me, sync status bidirectionally
+   ```
+
+   **Step 0e-iv: Assignment (build mode only)**
+   - Read `integrations.tracker.user` from config
+   - Instruct the agent to assign the issue to the configured user via MCP tool
+   - Instruct the agent to set the issue status to "in_progress" (see sync algorithm for provider mapping)
+   - Add comment: "Updated by {user} — powered by Tyrex Framework"
+
+   **Step 0e-v: Pre-populate**
+   - Use issue title as the feature name suggestion
+   - Use issue description as the starting point for Step 1 (the user can refine)
+   - Use issue acceptance criteria (if present) as a starting point for the feature spec
+   - Store `external_ref` in the per-feature state file (Step 8):
+     ```yaml
+     external_ref:
+       source: "{provider}"
+       id: "{issue-key}"
+       url: "{issue-url}"
+       mode: "{read-only|build}"
+       synced_at: "{timestamp}"
+     ```
+   - If read-only mode: skip assignment, no sync back, proceed with pre-populated data
+   - Continue to Step 1 with pre-populated description (user can edit)
+
+   **Graceful degradation:** If the MCP tool call fails (server unavailable, auth error), warn the user and offer: "[1] Try again [2] Describe manually". Never block the workflow.
+
 ### Steps 0b–0d: Registry checks (shared pattern)
 
 Steps 0b, 0c, and 0d follow the same pattern. For each registry:

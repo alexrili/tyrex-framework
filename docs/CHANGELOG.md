@@ -13,6 +13,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Shared sync algorithm: `external-tracker-sync.md` (forward-only status, lifecycle boundary, comment trail)
   - `external_ref` and `external_task_ref` state fields in feature context resolution
   - Tracker config questions in `tyrex init` interactive flow
+  - `/tyrex-new` Step 0e: import from external tracker (fetch issue, choose mode, assign, pre-populate)
+  - `/tyrex-plan` Step 6b: create subtasks in tracker for each planned task
+  - `/tyrex-do`: auto-sync subtask status on task completion (forward-only)
+  - `/tyrex-review` Step 8b: push parent issue to "review" status (max, never "done")
+  - `/tyrex-settings`: view/modify tracker integration config
+  - `/tyrex-status`: show tracker sync state per feature
 
 ## [1.3.0] - 2026-03-23
 
