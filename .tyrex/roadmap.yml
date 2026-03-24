@@ -143,3 +143,10 @@ features:
     status: done
     referenced_in: ["ADR-014"]
     depends_on: []
+
+  - id: "022"
+    name: "plan-granular-tasks"
+    description: "Remove artificial 15-task limit from /tyrex-plan, add directives for proactive task splitting"
+    status: in_progress
+    referenced_in: []
+    depends_on: []
