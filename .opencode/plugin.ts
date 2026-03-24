@@ -36,7 +36,7 @@ const COMMAND_MODES: Record<string, "plan" | "build"> = {
   "tyrex-context": "plan",
   "tyrex-do": "build",
   "tyrex-quick": "build",
-  // tyrex-resume and tyrex-handoff are dynamic — handled separately
+  // tyrex-recover and tyrex-handoff are dynamic — handled separately
 };
 
 function readCursorYml(directory: string): string | null {
@@ -110,7 +110,7 @@ export const TyrexPlugin: Plugin = async (ctx) => {
 
       let targetMode: "plan" | "build";
 
-      if (command === "tyrex-resume") {
+      if (command === "tyrex-recover") {
         targetMode = resolveResumeMode(directory);
       } else if (command === "tyrex-handoff") {
         // Handoff starts in plan mode (phases 0-3)

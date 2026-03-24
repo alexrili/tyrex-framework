@@ -21,7 +21,7 @@ This project uses the Tyrex Framework for human-driven, AI-accelerated pair prog
 | `/tyrex-do` | Execute tasks (sequential or parallel, with TDD) |
 | `/tyrex-review` | Review implementation with 5 lenses, finalize docs, refactor |
 | `/tyrex-status` | Show current project and feature status |
-| `/tyrex-resume` | Resume from last session (fast recovery via cursor) |
+| `/tyrex-recover` | Recover from crashed session or resume from last session |
 | `/tyrex-quick` | Quick task without full ceremony (bug fixes, tweaks) |
 | `/tyrex-evolve` | Update TYREX.md with new patterns/knowledge |
 | `/tyrex-handoff` | Deterministic autopilot (chains new→plan→do→review) |
