@@ -1,0 +1,125 @@
+# Architecture Diagram — Tyrex Recover (Crash Recovery)
+# Render: d2 020-tyrex-recover-architecture.d2 020-tyrex-recover-architecture.svg
+
+direction: down
+
+# ── Crash Scenario ──────────────────────────────────
+
+crash: "Session Crash" {
+  style.fill: "#fce4ec"
+  style.stroke: "#e53935"
+
+  network: "Network failure"
+  auth: "Auth expiry"
+  outage: "LLM service outage"
+}
+
+# ── Evidence Sources ────────────────────────────────
+
+evidence: "Evidence Sources" {
+  style.fill: "#e8f4fd"
+
+  git: "Git State" {
+    style.fill: "#bbdefb"
+    branch: "Current branch\n(feat/NNN-*)"
+    diff: "Uncommitted changes\n(git diff)"
+    staged: "Staged files\n(git diff --cached)"
+    log: "Last commit\n(git log -1)"
+  }
+
+  tyrex: "Tyrex State (.tyrex/)" {
+    style.fill: "#c8e6c9"
+    cursor: "cursor.yml\n(last_updated, task)" {
+      shape: page
+    }
+    feature: "features/NNN.yml\n(status, tasks)" {
+      shape: page
+    }
+    tasks: "tasks/task-NNN.yml\n(status per task)" {
+      shape: page
+    }
+  }
+}
+
+# ── Recovery Engine ─────────────────────────────────
+
+engine: "Recovery Engine (/tyrex-recover)" {
+  style.fill: "#fff3e0"
+
+  detect: "1. Crash Detection" {
+    style.fill: "#ffe0b2"
+    signal-a: "Dirty tree +\nstale cursor"
+    signal-b: "Task state\nmismatch"
+    signal-c: "Timestamp\ndrift"
+  }
+
+  forensics: "2. Forensic Analysis" {
+    style.fill: "#ffe0b2"
+    map-branch: "Map branch → feature"
+    map-files: "Map changed files → task"
+    classify: "Classify changes"
+  }
+
+  diagnostic: "3. Diagnostic Summary" {
+    style.fill: "#ffe0b2"
+    summary: "Feature, task, files,\ntest status, % complete"
+  }
+
+  choices: "4. User Choices" {
+    style.fill: "#ffe0b2"
+    keep: "Keep + continue"
+    stash: "Stash for later"
+    discard: "Discard changes"
+  }
+
+  autofix: "5. Auto-Fix (optional)" {
+    style.fill: "#ffe0b2"
+    validate: "Run tests"
+    complete: "Complete task"
+    commit: "Offer commit"
+  }
+}
+
+# ── Pre-flight Check ───────────────────────────────
+
+preflight: "Pre-flight (all /tyrex-* commands)" {
+  style.fill: "#f3e5f5"
+  style.stroke-dash: 3
+
+  check: "Lightweight crash\nsignal check (<2s)"
+  suggest: "Suggest /tyrex-recover\nif signals found"
+}
+
+# ── Outcome ─────────────────────────────────────────
+
+outcome: "Recovered State" {
+  style.fill: "#c8e6c9"
+
+  cursor-ok: "cursor.yml updated" {shape: page}
+  task-ok: "Task state corrected" {shape: page}
+  resume: "Ready to continue\n(/tyrex-do or /tyrex-plan)"
+}
+
+# ── Connections ─────────────────────────────────────
+
+crash -> evidence: "leaves behind" {style.stroke: "#e53935"; style.stroke-dash: 3}
+
+evidence.git.branch -> engine.forensics.map-branch
+evidence.git.diff -> engine.forensics.map-files
+evidence.git.diff -> engine.detect.signal-a
+evidence.tyrex.cursor -> engine.detect.signal-a
+evidence.tyrex.cursor -> engine.detect.signal-b
+evidence.tyrex.tasks -> engine.detect.signal-b
+evidence.tyrex.cursor -> engine.detect.signal-c
+
+engine.detect -> engine.forensics: "signals found"
+engine.forensics -> engine.diagnostic
+engine.diagnostic -> engine.choices
+engine.choices.keep -> engine.autofix: "if coherent"
+
+engine.autofix -> outcome: "state restored"
+engine.choices.keep -> outcome: "manual continue" {style.stroke-dash: 3}
+engine.choices.stash -> outcome: "clean slate"
+engine.choices.discard -> outcome: "fresh start"
+
+preflight.check -> engine.detect: "delegates to" {style.stroke: "#7b1fa2"; style.stroke-dash: 3}

@@ -122,3 +122,17 @@ features:
     status: done
     referenced_in: ["ADR-011"]
     depends_on: []
+
+  - id: "019"
+    name: "external-tracker-integration"
+    description: "Bidirectional external tracker integration (Jira, Linear, GitHub Issues) via MCP — import, subtasks, forward-only status sync"
+    status: done
+    referenced_in: ["ADR-012"]
+    depends_on: []
+
+  - id: "020"
+    name: "tyrex-recover"
+    description: "Forensic crash recovery replacing /tyrex-resume — evidence-based state reconstruction, auto-detection in all commands, auto-fix"
+    status: done
+    referenced_in: ["ADR-013"]
+    depends_on: []

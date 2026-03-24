@@ -25,6 +25,10 @@ You MUST NOT write source code. You may create/modify only `.tyrex/`, `docs/`, a
 
 **One question at a time.** Present a single structured choice, then STOP and wait for the user's response before proceeding to the next question. Never combine multiple choice blocks in one message.
 
+## Pre-flight: Crash Detection
+
+Before proceeding, check for crash signals per `templates/commands/shared/crash-detection.md`. Quick exit if: no `.tyrex/`, not on `feat/*` branch, or clean working tree. If crash signals detected: present "Inconsistent state detected. Run /tyrex-recover or continue anyway?" If `--auto`: log warning and continue.
+
 ## Behavior
 
 ### Step 1: Load context
@@ -223,6 +227,42 @@ files_changed: []
 output: null
 errors: null
 ```
+
+### Step 6b: Sync subtasks to external tracker (if applicable)
+
+After saving the plan, check if the feature has `external_ref` in the per-feature state file:
+
+1. If `external_ref` is absent or `external_ref.mode` is `read-only`: skip this step silently.
+2. If `external_ref.mode` is `build`:
+   - Read `integrations.tracker` config from `tyrex.yml`
+   - Present structured choices:
+     ```
+     Create subtasks in {provider} for each task?
+     Parent issue: {external_ref.id}
+       [1] Yes — create subtasks
+       [2] No — keep tasks only in Tyrex
+     ```
+   - **If `--auto`:** auto-select "Yes"
+   - If "Yes":
+     a. For each task in the plan, instruct the agent to call the `createSubtask` MCP tool (see [External Tracker Sync](../shared/external-tracker-sync.md) for provider mapping) with:
+        - Parent issue: `external_ref.id`
+        - Title: task name
+        - Description: task objective from SPEC
+     b. For each created subtask, store `external_task_ref` in the task state file:
+        ```yaml
+        external_task_ref:
+          id: "{subtask-key}"
+          url: "{subtask-url}"
+        ```
+     c. Add a comment to the parent issue listing all created subtasks:
+        ```
+        Subtasks created by Tyrex:
+        - {subtask-key}: {task-name}
+        - {subtask-key}: {task-name}
+        Updated by {user} — powered by Tyrex Framework
+        ```
+     d. Update `external_ref.synced_at` in the per-feature state file
+   - **Graceful degradation:** If subtask creation fails for some tasks, warn and continue. Note which tasks failed. The workflow is not blocked.
 
 ### Step 7: Update state
 Update per-feature state file `.tyrex/state/features/NNN.yml`:

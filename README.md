@@ -118,7 +118,7 @@ The first command updates the package. The second reinstalls global command file
 | Command | Purpose |
 |---------|---------|
 | `/tyrex-status` | Dashboard: features, roadmap, health, docs coverage |
-| `/tyrex-resume` | Resume from last session (fast recovery via cursor.yml) |
+| `/tyrex-recover` | Recover from crashed session or resume from last session |
 | `/tyrex-settings` | View/modify configuration |
 | `/tyrex-evolve` | Record new patterns or decisions in TYREX.md |
 

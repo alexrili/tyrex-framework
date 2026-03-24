@@ -1,0 +1,18 @@
+task_id: "feat-019-task-009"
+feature: "019-external-tracker-integration"
+name: "Sync commands to agent directories"
+status: "completed"
+depends_on: ["task-003", "task-004", "task-005", "task-006", "task-007", "task-008"]
+unlocks: []
+parallel: false
+skill: "none"
+quality: "optional"
+security: "none"
+spec_file: "docs/specs/019-task-009-agent-dir-sync.md"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: []
+output: null
+errors: null

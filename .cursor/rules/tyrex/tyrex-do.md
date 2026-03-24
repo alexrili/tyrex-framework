@@ -33,6 +33,10 @@ You may create, edit, and delete source code files following TDD, small commits,
 
 Read the per-feature state file `.tyrex/state/features/NNN.yml` for task tracking, checkpoint fields, and progress.
 
+## Pre-flight: Crash Detection
+
+Before proceeding, check for crash signals per `templates/commands/shared/crash-detection.md`. Quick exit if: no `.tyrex/`, not on `feat/*` branch, or clean working tree. If crash signals detected: present "Inconsistent state detected. Run /tyrex-recover or continue anyway?" If `--auto-approve`: log warning and continue.
+
 ## Behavior
 
 ### Step 1: Load state
@@ -110,6 +114,16 @@ For each ready task, one at a time:
        4. For each matched finding still marked `[ ]`, update it to `[x]` and append the resolution date (today's date in YYYY-MM-DD format)
        5. Write the updated audit.md
        6. **Validation:** only transition `[ ]` to `[x]`; never revert a finding that is already `[x]`
+   - **Sync subtask status to external tracker (if applicable):**
+     - Check if the completed task has `external_task_ref` in its task state file
+     - If absent: skip silently
+     - If present AND the feature's `external_ref.mode` is `build`:
+       1. **Pull** current subtask status via MCP tool (see [External Tracker Sync](../shared/external-tracker-sync.md))
+       2. **Compare** — the subtask is now complete locally. Target remote status: subtask → `done` (subtasks CAN be marked done — the lifecycle boundary applies only to the parent issue)
+       3. **Push** only if moving forward (if remote is already `done` or beyond, skip)
+       4. **Comment:** "Task completed. Updated by {user} — powered by Tyrex Framework"
+       5. Update `external_ref.synced_at` in the per-feature state file
+     - **Graceful degradation:** If MCP tool call fails, warn and continue. Never block the commit.
    - Prepare commit message (conventional format)
    - Update `docs/CHANGELOG.md` with what changed
    - **Version bump check (if CHANGELOG or ADR changed):**

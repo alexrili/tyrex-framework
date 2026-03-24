@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+## [1.5.0] - 2026-03-24
+
+### Added
+- **Tyrex Recover** — forensic crash recovery replacing `/tyrex-resume` (Feature 020)
+  - New command: `/tyrex-recover` with forensic analysis, diagnostic summary, and auto-fix assessment
+  - Shared crash detection algorithm: `crash-detection.md` (3 signals: dirty tree, task mismatch, timestamp drift)
+  - Pre-flight crash detection added to 11 feature-operating commands
+  - User choices for uncommitted changes: keep, stash, discard
+  - Auto-fix when changes are coherent, tests pass, and SPEC exists
+  - Normal resume as fast-path (no crash = read cursor + continue)
+  - Removed `/tyrex-resume` — all references updated across codebase
+  - ADR-013, PRD, SRS, architecture diagram (D2)
+
+- **External tracker integration** — bidirectional sync with Jira, Linear, GitHub Issues via MCP (Feature 019)
+  - `integrations.tracker` config section in `tyrex.yml`
+  - Shared sync algorithm: `external-tracker-sync.md` (forward-only status, lifecycle boundary, comment trail)
+  - `external_ref` and `external_task_ref` state fields in feature context resolution
+  - Tracker config questions in `tyrex init` interactive flow
+  - `/tyrex-new` Step 0e: import from external tracker (fetch issue, choose mode, assign, pre-populate)
+  - `/tyrex-plan` Step 6b: create subtasks in tracker for each planned task
+  - `/tyrex-do`: auto-sync subtask status on task completion (forward-only)
+  - `/tyrex-review` Step 8b: push parent issue to "review" status (max, never "done")
+  - `/tyrex-settings`: view/modify tracker integration config
+  - `/tyrex-status`: show tracker sync state per feature
+
 ## [1.3.0] - 2026-03-23
 
 ### Fixed

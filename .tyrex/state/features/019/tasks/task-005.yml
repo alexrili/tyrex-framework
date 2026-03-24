@@ -1,0 +1,18 @@
+task_id: "feat-019-task-005"
+feature: "019-external-tracker-integration"
+name: "tyrex-do — forward-only status sync"
+status: "completed"
+depends_on: ["task-001", "task-002"]
+unlocks: ["task-009"]
+parallel: true
+skill: "product-manager"
+quality: "optional"
+security: "none"
+spec_file: "docs/specs/019-task-005-tyrex-do-sync.md"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: []
+output: null
+errors: null

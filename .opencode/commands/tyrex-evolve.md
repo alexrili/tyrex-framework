@@ -15,6 +15,10 @@ You MUST NOT write source code. You may modify only `.tyrex/TYREX.md` and `docs/
 
 **This command can operate with or without an active feature.** If a feature is active (resolved via branch detection or `--feature` flag), use it for scoping. Otherwise, operate project-wide.
 
+## Pre-flight: Crash Detection
+
+Before proceeding, check for crash signals per `templates/commands/shared/crash-detection.md`. Quick exit if: no `.tyrex/`, not on `feat/*` branch, or clean working tree. If crash signals detected: present "Inconsistent state detected. Run /tyrex-recover or continue anyway?"
+
 ## Behavior
 
 1. Ask: "What did you discover? (new pattern, hurdle, decision, or context)"

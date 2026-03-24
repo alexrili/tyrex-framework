@@ -99,6 +99,10 @@ Tyrex auto-detects installed agents by scanning for their config directories. Co
 - **Test registry:** `.tyrex/tests/` stores test review reports and consolidated coverage gaps. One session file per scan (TEST-REVIEW-NNN.md). Gaps have tier + status (pending/resolved). Consumed by 5 commands.
 - **Tests as first-class citizen:** Core principle: the framework never lets an implementation pass without at least asking about tests. `/tyrex-do` runs test suite before every commit. `/tyrex-review` has Lens 5 (Test Coverage) checking for corresponding test files. `/tyrex-plan` includes test-awareness rules in task decomposition.
 - **No scripts in package.json:** No `start`, `test`, `lint`, or `build` scripts defined yet
+- **External tracker integration:** Bidirectional sync with Jira/Linear/GitHub Issues via MCP. MCP-only (zero dependencies — agent delegates all tracker calls). Shared sync algorithm in `templates/commands/shared/external-tracker-sync.md`. Config in `tyrex.yml` `integrations.tracker` (provider, project, user). Two modes: read-only (context only) and build (assign + sync). Forward-only status push — max is `review`, never `done` (lifecycle boundary: dev done ≠ delivery done). Comment trail on every update. Woven into 6 existing commands + `tyrex init` — no new commands. (ADR-012)
+- **Forensic crash recovery:** `/tyrex-recover` replaces `/tyrex-resume`. Evidence-based state reconstruction from git diff + `.tyrex/` state instead of trusting cursor.yml alone. Three crash signals: dirty_tree_stale_cursor, task_state_mismatch, timestamp_drift. Two modes: crash recovery (forensics → diagnostic → user choices → auto-fix) and normal resume (fast-path when no crash detected). Shared crash detection in `templates/commands/shared/crash-detection.md`. (ADR-013)
+- **Pre-flight crash detection:** All 11 feature-operating commands include a lightweight crash detection pre-flight check (< 2s) before `## Behavior`. Detects inconsistent state proactively. Skips silently when clean. Commands with `--auto` flags log warning and continue. Standalone commands (init, help, debug, research, security-review, test-review, readme, openapi, wiki) are excluded.
+- **Session recovery hierarchy:** Three layers: (1) per-feature state file is primary recovery point, (2) cursor.yml is secondary (global pointer), (3) task state files are tertiary (individual status). If all state is lost, git log + branch name + feature spec can reconstruct enough to resume.
 
 ## Environment Variables
 
@@ -157,6 +161,8 @@ Tyrex auto-detects installed agents by scanning for their config directories. Co
 | 2026-03-20 | Automatic versioning as framework directive | Version bump mandatory when CHANGELOG/ADR changes. Detect manifest, suggest bump, propagate, include in commit. Human decides final version. |
 | 2026-03-20 | Automated tests as first-class citizen (ADR-010) | `/tyrex-test-review` for gap scanning + test awareness in 5 commands. Core principle: never pass without asking about tests. Command count: 22 (was 21) |
 | 2026-03-22 | Multi-demand branch-based context (ADR-011) | Branch detection (`feat/NNN-*`) + `--feature NNN` flag override. Per-feature state files. Concurrent features on different branches. Lock-free by convention. |
+| 2026-03-23 | External tracker integration via MCP (ADR-012) | Bidirectional sync with Jira/Linear/GitHub Issues via MCP-only. No new commands — woven into 6 existing commands. Forward-only status (max push: `review`, never `done`). Provider-agnostic. Zero dependencies. |
+| 2026-03-24 | Forensic crash recovery replacing resume (ADR-013) | `/tyrex-recover` replaces `/tyrex-resume`. Evidence-based state reconstruction from git diff + `.tyrex/` state. Pre-flight crash detection in all commands. Auto-fix with user confirmation. Three crash signals: dirty tree + stale cursor, task state mismatch, timestamp drift. |
 
 ## CI/CD
 

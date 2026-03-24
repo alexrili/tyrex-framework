@@ -85,6 +85,10 @@ Every review MUST evaluate the implementation through these 5 critical lenses, i
 - Cross-reference with `.tyrex/security/audit.md` for existing findings
 - **If no DevSec skill exists in `.tyrex/skills/`:** suggest creating one via `/tyrex-skills create devsec`
 
+## Pre-flight: Crash Detection
+
+Before proceeding, check for crash signals per `templates/commands/shared/crash-detection.md`. Quick exit if: no `.tyrex/`, not on `feat/*` branch, or clean working tree. If crash signals detected: present "Inconsistent state detected. Run /tyrex-recover or continue anyway?"
+
 ## Behavior
 
 ### Step 1: Detect scope and load context
@@ -400,6 +404,19 @@ When changes are requested (via flag or structured choices), this command automa
    - If `--do-all` or `--do-critical` was used, auto-approve all checkpoints
 
 6. **After all fixes complete:** automatically run a **mini re-review** (only on the changed files from the fixes) to verify no regressions were introduced. If clean → go to Step 9. If new issues → present choices to continue fixing or approve.
+
+### Step 8b: Sync parent issue to external tracker (if applicable)
+
+After all fixes are complete (or if no fixes were needed), check if the feature has `external_ref`:
+
+1. If `external_ref` is absent or `external_ref.mode` is `read-only`: skip silently.
+2. If `external_ref.mode` is `build`:
+   a. **Pull** current parent issue status via MCP tool (see [External Tracker Sync](../shared/external-tracker-sync.md) for provider mapping)
+   b. **Compare** — target status is `review` (maximum Tyrex pushes, NEVER `done`)
+   c. **Push** only if moving forward. If remote is already at `review` or beyond (e.g., "QA Passed"), skip the status push
+   d. **Comment:** "All development tasks completed. Ready for review. Updated by {user} — powered by Tyrex Framework"
+   e. Update `external_ref.synced_at` in the per-feature state file
+3. **Graceful degradation:** If MCP call fails, warn and continue to Step 9. Never block finalization.
 
 ### Step 9: Finalize
 

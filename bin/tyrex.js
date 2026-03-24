@@ -332,6 +332,9 @@ function initProject(projectDir, config, force = false) {
     MAX_AGENTS: String(config.maxAgents || 5),
     COMMIT_STYLE: config.commitStyle || "conventional",
     BRANCH_PREFIX: config.branchPrefix || "feat/",
+    TRACKER_PROVIDER: config.trackerProvider || "null",
+    TRACKER_PROJECT: config.trackerProject || "",
+    TRACKER_USER: config.trackerUser || "",
   };
 
   // Core config files — project-specific, copied with interpolation
@@ -461,6 +464,9 @@ async function main() {
         maxAgents: 5,
         commitStyle: "conventional",
         branchPrefix: "feat/",
+        trackerProvider: null,
+        trackerProject: "",
+        trackerUser: "",
       };
     } else {
       console.log(c("bold", "  Configuration\n"));
@@ -481,6 +487,23 @@ async function main() {
         { label: "Minimal", desc: "Only CHANGELOG (mandatory) + TYREX.md" },
       ]);
 
+      // Tracker integration (optional)
+      let trackerProvider = null;
+      let trackerProject = "";
+      let trackerUser = "";
+
+      const useTracker = await confirm("Configure external tracker integration (Jira, Linear, GitHub Issues)?", false);
+      if (useTracker) {
+        const providerChoice = await choose("Tracker provider:", [
+          { label: "Jira", desc: "Atlassian Jira (requires Jira MCP server)", default: true },
+          { label: "Linear", desc: "Linear (requires Linear MCP server)" },
+          { label: "GitHub Issues", desc: "GitHub Issues (requires GitHub MCP server)" },
+        ]);
+        trackerProvider = { Jira: "jira", Linear: "linear", "GitHub Issues": "github-issues" }[providerChoice.label];
+        trackerProject = await ask(`  ${c("cyan", "Default project key")} ${c("dim", "(e.g., HOT, PROJ):")} `);
+        trackerUser = await ask(`  ${c("cyan", "User email/handle")} ${c("dim", "(for assignments):")} `);
+      }
+
       config = {
         projectName: path.basename(process.cwd()),
         commits: commitMode.label.toLowerCase(),
@@ -489,6 +512,9 @@ async function main() {
         maxAgents: 5,
         commitStyle: "conventional",
         branchPrefix: "feat/",
+        trackerProvider,
+        trackerProject,
+        trackerUser,
       };
     }
 

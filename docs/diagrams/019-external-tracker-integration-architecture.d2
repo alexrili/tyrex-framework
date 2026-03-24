@@ -1,0 +1,115 @@
+# Architecture Diagram — External Tracker Integration
+# Render: d2 019-external-tracker-integration-architecture.d2 019-external-tracker-integration-architecture.svg
+
+direction: right
+
+# ── Local (Developer Machine) ──────────────────────
+
+local: "Local Environment" {
+  style.fill: "#e8f4fd"
+
+  tyrex-cli: "tyrex CLI" {
+    style.fill: "#bbdefb"
+    init: "tyrex init"
+    settings: "tyrex.yml"
+  }
+
+  commands: "Tyrex Commands (markdown)" {
+    style.fill: "#bbdefb"
+    new: "/tyrex-new\nStep 0: Import"
+    plan: "/tyrex-plan\nCreate subtasks"
+    do: "/tyrex-do\nSync on completion"
+    review: "/tyrex-review\nPush → review"
+  }
+
+  state: "Feature State (.tyrex/)" {
+    style.fill: "#c8e6c9"
+    feature-yml: "NNN.yml\nexternal_ref" {
+      shape: page
+    }
+    task-yml: "task-NNN.yml\nexternal_task_ref" {
+      shape: page
+    }
+  }
+}
+
+# ── AI Agent ───────────────────────────────────────
+
+agent: "AI Agent" {
+  style.fill: "#fff3e0"
+
+  llm: "LLM (Claude, Cursor, etc.)"
+  mcp-client: "MCP Client"
+}
+
+# ── MCP Servers ────────────────────────────────────
+
+mcp: "MCP Servers" {
+  style.fill: "#f3e5f5"
+
+  jira-mcp: "Jira MCP\n(Atlassian Rovo)"
+  linear-mcp: "Linear MCP"
+  github-mcp: "GitHub Issues MCP"
+}
+
+# ── External Trackers ─────────────────────────────
+
+trackers: "External Trackers" {
+  style.fill: "#fce4ec"
+
+  jira: "Jira Cloud" {
+    shape: cylinder
+  }
+  linear: "Linear" {
+    shape: cylinder
+  }
+  github: "GitHub Issues" {
+    shape: cylinder
+  }
+}
+
+# ── Post-Dev Pipeline (outside Tyrex) ─────────────
+
+pipeline: "Post-Dev Pipeline" {
+  style.fill: "#efebe9"
+  style.stroke-dash: 3
+
+  code-review: "Human Code Review"
+  qa: "QA / Testing"
+  staging: "Staging"
+  prod: "Production"
+  done: "→ Done (human sets)"
+}
+
+# ── Connections ────────────────────────────────────
+
+# Config flow
+local.tyrex-cli.init -> local.tyrex-cli.settings: "writes config" {style.stroke-dash: 3}
+local.tyrex-cli.settings -> local.commands.new: "reads provider,\nproject, user"
+
+# Command → State
+local.commands.new -> local.state.feature-yml: "writes external_ref"
+local.commands.plan -> local.state.task-yml: "writes external_task_ref"
+local.commands.do -> local.state.task-yml: "reads ref, syncs"
+local.commands.review -> local.state.feature-yml: "reads ref, syncs"
+
+# Commands instruct Agent
+local.commands.new -> agent.llm: "instructs:\nfetch issue" {style.stroke: "#ff9800"}
+local.commands.plan -> agent.llm: "instructs:\ncreate subtasks" {style.stroke: "#ff9800"}
+local.commands.do -> agent.llm: "instructs:\npull → push status" {style.stroke: "#ff9800"}
+local.commands.review -> agent.llm: "instructs:\npush → review" {style.stroke: "#ff9800"}
+
+# Agent → MCP
+agent.llm -> agent.mcp-client: "tool calls"
+agent.mcp-client -> mcp.jira-mcp: "getIssue, setStatus,\ncreateSubtask, addComment"
+agent.mcp-client -> mcp.linear-mcp
+agent.mcp-client -> mcp.github-mcp
+
+# MCP → Trackers
+mcp.jira-mcp -> trackers.jira: "REST API"
+mcp.linear-mcp -> trackers.linear: "GraphQL"
+mcp.github-mcp -> trackers.github: "REST API"
+
+# Lifecycle boundary
+trackers.jira -> pipeline.code-review: "status: review\n(Tyrex stops here)" {style.stroke: "#e53935"; style.stroke-dash: 3}
+pipeline.code-review -> pipeline.qa -> pipeline.staging -> pipeline.prod -> pipeline.done: "" {style.stroke: "#9e9e9e"}

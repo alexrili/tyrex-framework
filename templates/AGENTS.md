@@ -23,7 +23,7 @@ This project uses the Tyrex Framework for human-driven, AI-accelerated pair prog
 | `/tyrex-do` | `--auto-approve` | Execute tasks (sequential or parallel, with TDD) |
 | `/tyrex-review` | `--do-all` `--do-critical` `full` | Senior code review with 5 lenses + auto-fix loop |
 | `/tyrex-status` | | Show current project and feature status |
-| `/tyrex-resume` | | Resume from last session (fast recovery via cursor) |
+| `/tyrex-recover` | | Recover from crashed session or resume from last session |
 | `/tyrex-quick` | `--auto-approve` | Fast-track: unified new→plan→do from single prompt |
 | `/tyrex-evolve` | | Update TYREX.md with new patterns/knowledge |
 | `/tyrex-skills` | `create` `sync` | Manage and apply reusable skills |

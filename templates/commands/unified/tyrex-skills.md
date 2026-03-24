@@ -13,6 +13,10 @@ Skills are **not** tech-stack checklists. They are **agent personas**: a role, e
 This command runs in **plan** mode. Set `agent_mode: "plan"` in `cursor.yml` as the FIRST action.
 You MUST NOT write source code. You may create/modify only `.tyrex/skills/` and agent provider skill directories.
 
+## Pre-flight: Crash Detection
+
+Before proceeding, check for crash signals per `templates/commands/shared/crash-detection.md`. Quick exit if: no `.tyrex/`, not on `feat/*` branch, or clean working tree. If crash signals detected: present "Inconsistent state detected. Run /tyrex-recover or continue anyway?"
+
 ## Behavior
 
 ### Default (no arguments): List installed skills
