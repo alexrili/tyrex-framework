@@ -1,0 +1,14 @@
+# Per-feature state — Feature 020: Tyrex Recover
+feature_id: "020"
+feature_name: "tyrex-recover"
+feature_file: ".tyrex/features/020-tyrex-recover.md"
+branch: "feat/020-tyrex-recover"
+status: "in_progress"
+last_commit: null
+current_task_in_progress: null
+in_progress_since: null
+in_progress_files_touched: []
+tasks_total: 6
+tasks_completed: 2
+tasks_in_progress: 0
+tasks_pending: 4

@@ -159,6 +159,7 @@ Tyrex auto-detects installed agents by scanning for their config directories. Co
 | 2026-03-20 | Automated tests as first-class citizen (ADR-010) | `/tyrex-test-review` for gap scanning + test awareness in 5 commands. Core principle: never pass without asking about tests. Command count: 22 (was 21) |
 | 2026-03-22 | Multi-demand branch-based context (ADR-011) | Branch detection (`feat/NNN-*`) + `--feature NNN` flag override. Per-feature state files. Concurrent features on different branches. Lock-free by convention. |
 | 2026-03-23 | External tracker integration via MCP (ADR-012) | Bidirectional sync with Jira/Linear/GitHub Issues via MCP-only. No new commands — woven into 6 existing commands. Forward-only status (max push: `review`, never `done`). Provider-agnostic. Zero dependencies. |
+| 2026-03-24 | Forensic crash recovery replacing resume (ADR-013) | `/tyrex-recover` replaces `/tyrex-resume`. Evidence-based state reconstruction from git diff + `.tyrex/` state. Pre-flight crash detection in all commands. Auto-fix with user confirmation. Three crash signals: dirty tree + stale cursor, task state mismatch, timestamp drift. |
 
 ## CI/CD
 

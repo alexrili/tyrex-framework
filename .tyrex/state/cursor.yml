@@ -5,27 +5,29 @@ session_id: null
 # Agent mode controls what the agent can do.
 # "plan"  — read, analyze, discuss, plan. MUST NOT write source code.
 # "build" — implement, test, commit. May write source code following TDD and commit rules.
-agent_mode: "plan"  # set by /tyrex-review finalize (2026-03-24)
+agent_mode: "build"  # set by /tyrex-do (2026-03-24)
 
 # Last active feature — fallback for Feature Context Resolution
-last_active_feature: null
+last_active_feature: "020"
 
 # Legacy fields (kept for backward compatibility during transition)
-active_feature: null
-active_feature_file: null
+active_feature: "020"
+active_feature_file: ".tyrex/features/020-tyrex-recover.md"
 last_task_completed: null
 last_commit: "aaf0a67"
-last_action: "feature_completed"
+last_action: "plan_approved"
 
 tasks_summary:
-  total: 0
+  total: 6
   completed: 0
   in_progress: 0
-  pending: 0
+  pending: 6
   failed: 0
   blocked: 0
 
-next_tasks: []
+next_tasks:
+  - "feat-020-task-001"
+  - "feat-020-task-002"
 
 # v0.7.0 — Security review, auto-versioning, tests first-class
 # v0.8.0 — 3-layer session recovery

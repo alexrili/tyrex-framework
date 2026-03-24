@@ -1,0 +1,18 @@
+task_id: "feat-020-task-001"
+feature: "020-tyrex-recover"
+name: "Shared crash detection algorithm"
+status: "completed"
+depends_on: []
+unlocks: ["feat-020-task-002", "feat-020-task-003", "feat-020-task-004"]
+parallel: true
+security: "none"
+skill: "backend-engineer"
+quality: "optional"
+spec_file: "docs/specs/020-task-001-shared-crash-detection.md"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: []
+output: null
+errors: null
