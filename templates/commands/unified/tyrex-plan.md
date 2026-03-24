@@ -176,6 +176,21 @@ After proposing implementation tasks, check if any of these are relevant for thi
 
 If relevant, suggest adding them as final tasks (after all implementation and test tasks). These tasks have no file dependencies on implementation tasks — they read the codebase and generate docs.
 
+### Step 3d: Doc Impact Analysis (predictive)
+After all tasks are proposed (including Step 3c), run the Doc Impact Analysis in **predictive mode** per `templates/commands/shared/doc-impact-analysis.md`:
+
+1. Collect the `Files` list from ALL proposed tasks
+2. Read the current content of those files (if they exist)
+3. Based on each task's SPEC, identify values likely to change (ports, routes, env vars, CLI commands, config values)
+4. Scan all doc targets (README, wiki, OpenAPI, diagrams, TYREX.md, config files) for those values
+5. **If matches found:** auto-add a **"Documentation consistency update"** task as the LAST task in the plan:
+   - Quality: `optional`
+   - Skill: `none`
+   - Depends on: all other implementation tasks
+   - SPEC lists: specific docs that may need updating, with the values to check
+6. **If no matches found:** skip silently — no doc update task needed
+7. **If `--auto`:** add the task automatically. Otherwise, present as a recommendation in the plan review.
+
 ### Step 4: Show execution graph
 Display the execution waves visually:
 
