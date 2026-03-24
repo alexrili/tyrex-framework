@@ -147,6 +147,6 @@ features:
   - id: "022"
     name: "plan-granular-tasks"
     description: "Remove artificial 15-task limit from /tyrex-plan, add directives for proactive task splitting"
-    status: in_progress
+    status: done
     referenced_in: []
     depends_on: []

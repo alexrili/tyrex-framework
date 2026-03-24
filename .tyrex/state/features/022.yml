@@ -3,7 +3,7 @@ feature_id: "022"
 name: "plan-granular-tasks"
 feature_file: ".tyrex/features/022-plan-granular-tasks.md"
 branch: "feat/022-plan-granular-tasks"
-status: "in_progress"
+status: "done"
 skills:
   - product-manager
 tasks_summary:

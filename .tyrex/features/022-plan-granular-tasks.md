@@ -23,4 +23,4 @@ Remove the artificial 15-task limit from `/tyrex-plan` and add directives for br
 - CHANGELOG + SPEC only
 
 ## Status
-spec
+done
