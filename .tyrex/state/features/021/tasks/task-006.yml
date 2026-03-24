@@ -1,0 +1,21 @@
+task_id: "feat-021-task-006"
+feature: "021-quick-rewrite-doc-impact"
+name: "Update project metadata (TYREX.md, CHANGELOG, version bump)"
+status: "completed"
+depends_on: ["feat-021-task-002", "feat-021-task-003", "feat-021-task-004", "feat-021-task-005"]
+unlocks: ["feat-021-task-007"]
+parallel: false
+skill: "none"
+quality: "optional"
+security: "none"
+spec_file: "docs/specs/021-task-006-update-project-metadata.md"
+started_at: "2026-03-24T00:00:00Z"
+finished_at: "2026-03-24T00:00:00Z"
+agent: null
+commit: null
+files_changed:
+  - "docs/CHANGELOG.md"
+  - ".tyrex/TYREX.md"
+  - "package.json"
+output: "CHANGELOG updated, TYREX.md patterns updated (quick + doc impact + 6 lenses), version bumped 1.5.0 → 1.6.0"
+errors: null
