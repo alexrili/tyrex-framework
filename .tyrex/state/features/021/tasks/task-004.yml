@@ -1,0 +1,19 @@
+task_id: "feat-021-task-004"
+feature: "021-quick-rewrite-doc-impact"
+name: "Add doc impact analysis to tyrex-do.md"
+status: "completed"
+depends_on: ["feat-021-task-001"]
+unlocks: ["feat-021-task-006"]
+parallel: true
+skill: "backend-engineer.md"
+quality: "optional"
+security: "none"
+spec_file: "docs/specs/021-task-004-add-doc-impact-to-do.md"
+started_at: "2026-03-24T00:00:00Z"
+finished_at: "2026-03-24T00:00:00Z"
+agent: null
+commit: null
+files_changed:
+  - "templates/commands/unified/tyrex-do.md"
+output: "Added Step 4b: Doc Impact Analysis (post-implementation) before completion summary"
+errors: null

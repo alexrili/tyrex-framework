@@ -220,8 +220,29 @@ For each ready task, one at a time:
 5. Update the per-feature state file with all completed tasks. Update cursor.yml only: `last_active_feature` and `agent_mode`.
 6. Check for newly unlocked tasks → go to Step 3
 
+### Step 4b: Doc Impact Analysis (post-implementation)
+
+After ALL implementation tasks are `completed` (before the completion summary), run the Doc Impact Analysis in **actual mode** per `templates/commands/shared/doc-impact-analysis.md`:
+
+1. Collect `files_changed` from ALL completed tasks in this feature
+2. For each changed file, extract the actual diff (old values → new values)
+3. Scan all doc targets (README, wiki, OpenAPI, diagrams, TYREX.md, config files) for old values that still appear in docs
+4. **If inconsistencies found:**
+   - **If `--auto`:** auto-create fix task(s) and execute them immediately. Each fix task follows the same commit rules (CHANGELOG, version bump, tests).
+   - **Otherwise, present structured choices:**
+     ```
+     Doc inconsistencies detected:
+       - README.md:15 — references port 3000 (changed to 3008)
+       - docker-compose.yml:8 — references PORT=3000
+
+       [1] Fix now (create and execute fix tasks)
+       [2] Skip (add to backlog)
+     ```
+   - Fix tasks run BEFORE the completion summary
+5. **If no inconsistencies found:** add note to completion summary: "Doc consistency: OK"
+
 ### Step 5: Feature completion
-When ALL tasks are `completed`:
+When ALL tasks are `completed` (including any doc fix tasks from Step 4b):
 - Tell the user: "All tasks completed. Run /tyrex-review to review the implementation."
 - Update feature status to `in_progress` (review pending)
 
