@@ -8,12 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- **Tyrex Recover** — forensic crash recovery replacing `/tyrex-resume` (Feature 020 started)
-  - PRD, SRS, ADR-013, architecture diagram generated
-  - Detects crash signals from git state vs `.tyrex/` state divergence
-  - Pre-flight crash detection in all `/tyrex-*` commands
+- **Tyrex Recover** — forensic crash recovery replacing `/tyrex-resume` (Feature 020)
+  - New command: `/tyrex-recover` with forensic analysis, diagnostic summary, and auto-fix assessment
+  - Shared crash detection algorithm: `crash-detection.md` (3 signals: dirty tree, task mismatch, timestamp drift)
+  - Pre-flight crash detection added to 11 feature-operating commands
   - User choices for uncommitted changes: keep, stash, discard
-  - Auto-fix for coherent interrupted tasks
+  - Auto-fix when changes are coherent, tests pass, and SPEC exists
+  - Normal resume as fast-path (no crash = read cursor + continue)
+  - Removed `/tyrex-resume` — all references updated across codebase
+  - ADR-013, PRD, SRS, architecture diagram (D2)
 
 - **External tracker integration** — bidirectional sync with Jira, Linear, GitHub Issues via MCP
   - `integrations.tracker` config section in `tyrex.yml`
