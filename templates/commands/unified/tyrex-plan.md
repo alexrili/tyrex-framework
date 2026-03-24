@@ -134,12 +134,14 @@ Analyze the feature — including all loaded context, SRS, PRD, and security con
 - Read the project-level default from `tyrex.yml` quality section and override per task context
 
 **Rules for task decomposition:**
-- Each task should be completable in ONE commit
+- Each task MUST be completable in ONE focused commit — if it's too big for one commit, split it
+- A task that touches >3 files or spans multiple concerns (data + logic + API) MUST be split into separate tasks
 - Tasks that modify the SAME file CANNOT be parallel
 - Tests CAN be parallel if they test independent units
 - Migrations and schema changes are ALWAYS sequential and come first
 - Security tasks execute BEFORE or alongside the code they protect
 - Order: data model → business logic → interface → security hardening → tests (but tests can interleave)
+- When splitting a large task, keep flat numbering (task-001, task-002, ...) with clear dependency chains
 
 **Test-awareness rules (per task):**
 - For each implementation task with quality `required`: note that TDD applies — tests MUST be written first, then implementation
@@ -292,14 +294,16 @@ Update cursor.yml:
 Tell the user: "Plan approved. Run /tyrex-do to start implementation."
 
 ## Important Rules
-- NEVER propose more than 15 tasks for a single feature (break into multiple features if needed)
+- **No artificial task count limit.** Task count scales with feature complexity. A simple bug fix may need 2 tasks; a complex feature may need 30+. Each case is different.
+- **Granularity over brevity.** Prefer many small precise tasks over few large vague ones. Each task should be implementable in ONE focused commit.
+- **A task is too large if:** it modifies more than 3 files, spans multiple concerns (e.g., data model + API + validation in one task), or the SPEC's Technical Approach exceeds 10 lines. Split it.
+- **Tasks with estimate `large` MUST be split** into 2+ smaller tasks before the plan is approved. No large tasks allowed in the final plan.
+- **Escalation to multiple features:** If a feature would need 30+ tasks or spans multiple services/domains, suggest splitting into separate features — but this is a suggestion, not a hard limit. The user decides.
 - NEVER start implementing during the plan phase
-- The plan section in the feature spec should stay under 50 lines
 - ALWAYS use structured choices for ALL decisions — never open-ended questions when choices are possible
 - ALWAYS perform security-first analysis before proposing tasks
 - ALWAYS suggest DevSec skill if security areas are detected and no skill exists
 - Always identify what can be parallelized — this is a core Tyrex differentiator
-- If a task is large (estimate: large), suggest breaking it into smaller tasks
 - ALWAYS generate a SPEC draft per task — SPECs are mandatory documentation
 - Security considerations MUST be included in SPECs for security-sensitive tasks
 - Context files (project-level and feature-level) MUST be read and considered in task planning

@@ -1,0 +1,20 @@
+task_id: "feat-022-task-001"
+feature: "022-plan-granular-tasks"
+name: "Update tyrex-plan.md task granularity directives"
+status: "completed"
+depends_on: []
+unlocks: ["feat-022-task-002"]
+parallel: false
+skill: "product-manager.md"
+quality: "optional"
+security: "none"
+spec_file: "docs/specs/022-task-001-update-plan-directives.md"
+started_at: "2026-03-24T00:00:00Z"
+finished_at: "2026-03-24T00:00:00Z"
+agent: null
+commit: null
+files_changed:
+  - "templates/commands/unified/tyrex-plan.md"
+  - ".tyrex/constitution.md"
+output: "Removed 15-task limit, added splitting directives, updated constitution"
+errors: null

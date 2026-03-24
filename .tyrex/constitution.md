@@ -48,7 +48,7 @@
 - Add features, libraries, or tools not requested
 - Make commits that break CI
 - Skip tests
-- Generate specs or plans longer than 50 lines per feature
+- Generate feature specs longer than 50 lines (plans are uncapped — task count scales with complexity)
 - Modify constitution.md without explicit human approval
 - Ignore the "Out of Scope" section in feature specs
 - Push to remote without explicit human approval

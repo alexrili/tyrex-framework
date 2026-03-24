@@ -1,0 +1,21 @@
+task_id: "feat-022-task-002"
+feature: "022-plan-granular-tasks"
+name: "Update project metadata (TYREX.md, CHANGELOG, version bump)"
+status: "completed"
+depends_on: ["feat-022-task-001"]
+unlocks: ["feat-022-task-003"]
+parallel: false
+skill: "none"
+quality: "optional"
+security: "none"
+spec_file: "docs/specs/022-task-002-update-metadata.md"
+started_at: "2026-03-24T00:00:00Z"
+finished_at: "2026-03-24T00:00:00Z"
+agent: null
+commit: null
+files_changed:
+  - "docs/CHANGELOG.md"
+  - ".tyrex/TYREX.md"
+  - "package.json"
+output: "CHANGELOG v1.6.1, TYREX.md pattern added, version bumped"
+errors: null

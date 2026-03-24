@@ -1,0 +1,22 @@
+task_id: "feat-022-task-003"
+feature: "022-plan-granular-tasks"
+name: "Sync commands to all 4 agent directories"
+status: "completed"
+depends_on: ["feat-022-task-002"]
+unlocks: []
+parallel: false
+skill: "none"
+quality: "optional"
+security: "none"
+spec_file: "docs/specs/022-task-003-sync-agent-dirs.md"
+started_at: "2026-03-24T00:00:00Z"
+finished_at: "2026-03-24T00:00:00Z"
+agent: null
+commit: null
+files_changed:
+  - ".claude/commands/"
+  - ".cursor/rules/tyrex/"
+  - ".codex/skills/tyrex/"
+  - ".opencode/commands/"
+output: "All 4 agent directories synced"
+errors: null
