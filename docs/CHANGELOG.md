@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.1] - 2026-03-24
+
+### Changed
+- **`/tyrex-plan` task granularity** — removed artificial 15-task limit (Feature 022)
+  - Task count now scales with feature complexity (2 tasks for a bug fix, 30+ for complex features)
+  - Tasks touching >3 files or spanning multiple concerns MUST be split
+  - Tasks with estimate `large` MUST be broken into smaller tasks before plan approval
+  - Escalation at 30+ tasks suggests splitting into multiple features (suggestion, not hard limit)
+  - Constitution updated: plan size uncapped, only feature spec stays under 50 lines
+
 ## [1.6.0] - 2026-03-24
 
 ### Changed
