@@ -122,3 +122,10 @@ features:
     status: done
     referenced_in: ["ADR-011"]
     depends_on: []
+
+  - id: "019"
+    name: "external-tracker-integration"
+    description: "Bidirectional external tracker integration (Jira, Linear, GitHub Issues) via MCP — import, subtasks, forward-only status sync"
+    status: done
+    referenced_in: ["ADR-012"]
+    depends_on: []

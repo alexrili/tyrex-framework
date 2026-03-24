@@ -1,0 +1,18 @@
+task_id: "feat-019-task-006"
+feature: "019-external-tracker-integration"
+name: "tyrex-review — push parent to review"
+status: "completed"
+depends_on: ["task-001", "task-002"]
+unlocks: ["task-009"]
+parallel: true
+skill: "product-manager"
+quality: "optional"
+security: "none"
+spec_file: "docs/specs/019-task-006-tyrex-review-parent.md"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: []
+output: null
+errors: null

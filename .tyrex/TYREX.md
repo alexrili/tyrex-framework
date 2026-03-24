@@ -99,6 +99,7 @@ Tyrex auto-detects installed agents by scanning for their config directories. Co
 - **Test registry:** `.tyrex/tests/` stores test review reports and consolidated coverage gaps. One session file per scan (TEST-REVIEW-NNN.md). Gaps have tier + status (pending/resolved). Consumed by 5 commands.
 - **Tests as first-class citizen:** Core principle: the framework never lets an implementation pass without at least asking about tests. `/tyrex-do` runs test suite before every commit. `/tyrex-review` has Lens 5 (Test Coverage) checking for corresponding test files. `/tyrex-plan` includes test-awareness rules in task decomposition.
 - **No scripts in package.json:** No `start`, `test`, `lint`, or `build` scripts defined yet
+- **External tracker integration:** Bidirectional sync with Jira/Linear/GitHub Issues via MCP. MCP-only (zero dependencies — agent delegates all tracker calls). Shared sync algorithm in `templates/commands/shared/external-tracker-sync.md`. Config in `tyrex.yml` `integrations.tracker` (provider, project, user). Two modes: read-only (context only) and build (assign + sync). Forward-only status push — max is `review`, never `done` (lifecycle boundary: dev done ≠ delivery done). Comment trail on every update. Woven into 6 existing commands + `tyrex init` — no new commands. (ADR-012)
 
 ## Environment Variables
 
@@ -157,6 +158,7 @@ Tyrex auto-detects installed agents by scanning for their config directories. Co
 | 2026-03-20 | Automatic versioning as framework directive | Version bump mandatory when CHANGELOG/ADR changes. Detect manifest, suggest bump, propagate, include in commit. Human decides final version. |
 | 2026-03-20 | Automated tests as first-class citizen (ADR-010) | `/tyrex-test-review` for gap scanning + test awareness in 5 commands. Core principle: never pass without asking about tests. Command count: 22 (was 21) |
 | 2026-03-22 | Multi-demand branch-based context (ADR-011) | Branch detection (`feat/NNN-*`) + `--feature NNN` flag override. Per-feature state files. Concurrent features on different branches. Lock-free by convention. |
+| 2026-03-23 | External tracker integration via MCP (ADR-012) | Bidirectional sync with Jira/Linear/GitHub Issues via MCP-only. No new commands — woven into 6 existing commands. Forward-only status (max push: `review`, never `done`). Provider-agnostic. Zero dependencies. |
 
 ## CI/CD
 

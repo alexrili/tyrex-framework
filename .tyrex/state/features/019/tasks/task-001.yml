@@ -1,0 +1,18 @@
+task_id: "feat-019-task-001"
+feature: "019-external-tracker-integration"
+name: "Config foundation — tyrex.yml, feature-context-resolution, bin/tyrex.js"
+status: "completed"
+depends_on: []
+unlocks: ["task-003", "task-004", "task-005", "task-006", "task-007", "task-008"]
+parallel: true
+skill: "backend-engineer"
+quality: "optional"
+security: "none"
+spec_file: "docs/specs/019-task-001-config-foundation.md"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: []
+output: null
+errors: null

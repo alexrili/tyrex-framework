@@ -1,11 +1,11 @@
 # .tyrex/state/cursor.yml - Global session state (slimmed for multi-demand)
-last_updated: "2026-03-22T00:00:00Z"
+last_updated: "2026-03-24T00:00:00Z"
 session_id: null
 
 # Agent mode controls what the agent can do.
 # "plan"  — read, analyze, discuss, plan. MUST NOT write source code.
 # "build" — implement, test, commit. May write source code following TDD and commit rules.
-agent_mode: "plan"  # set by /tyrex-discuss (2026-03-22)
+agent_mode: "plan"  # set by /tyrex-review finalize (2026-03-24)
 
 # Last active feature — fallback for Feature Context Resolution
 last_active_feature: null
@@ -14,8 +14,8 @@ last_active_feature: null
 active_feature: null
 active_feature_file: null
 last_task_completed: null
-last_commit: null
-last_action: "merge_all_features"
+last_commit: "aaf0a67"
+last_action: "feature_completed"
 
 tasks_summary:
   total: 0
