@@ -3,7 +3,7 @@ feature_id: "021"
 name: "quick-rewrite-doc-impact"
 feature_file: ".tyrex/features/021-quick-rewrite-doc-impact.md"
 branch: "feat/021-quick-rewrite-doc-impact"
-status: "in_progress"
+status: "done"
 skills:
   - product-manager
   - backend-engineer
