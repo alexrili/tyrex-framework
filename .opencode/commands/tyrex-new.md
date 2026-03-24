@@ -23,46 +23,30 @@ You MUST NOT write source code. You may create/modify only `.tyrex/`, `docs/`, a
 
 ## Behavior
 
-### Step 0: Check roadmap
+### Step 0: Feature source
+
 Before asking the user to describe the feature:
 1. Read `.tyrex/roadmap.yml` (if exists) and check for `planned` features.
-2. If there are planned features, present structured choices:
-   ```
-   Start a planned feature or describe something new?
-   
-     [ ] 003-discuss-command — Structured technical discussions
-     [ ] 004-review-knowledge — Skill evolution via /tyrex-review
-     [ ] 005-research-command — AI-powered research
-     [ ] Describe a new feature
-   ```
-3. If the user picks a roadmap feature:
-   - Use its description as the starting point for Step 1
-   - Update `.tyrex/roadmap.yml`: change its status from `planned` to `in_progress`
-   - Pre-fill the feature number from the roadmap ID
-4. If the user describes something new: proceed normally to Step 1
-5. If roadmap.yml doesn't exist or has no planned features: skip to Step 1
-
-### Step 0e: Import from external tracker (optional)
-
-**Before registry checks**, if `integrations.tracker.provider` in `.tyrex/tyrex.yml` is not `null`:
-
-1. Present structured choices:
+2. Read `integrations.tracker.provider` from `.tyrex/tyrex.yml`.
+3. Present structured choices (adapt to what's available):
    ```
    Start from:
      [1] Describe a new feature
-     [2] Import from roadmap
-     [3] Import from external tracker
+     [2] Import from roadmap          ← only if planned features exist
+     [3] Import from external tracker  ← only if tracker provider is configured
    ```
-   (Roadmap option only shown if planned features exist. Tracker option only shown if provider is configured.)
+   If only one source is available (no roadmap, no tracker), skip to Step 1 directly.
 
-2. If the user picks **Import from external tracker**:
+4. **If roadmap:** use the selected feature's description as the starting point for Step 1. Update `.tyrex/roadmap.yml`: change status from `planned` to `in_progress`. Pre-fill the feature number from the roadmap ID.
 
-   **Step 0e-i: Issue reference**
+5. **If external tracker:**
+
+   **Step 0-i: Issue reference**
    - Read default project from `integrations.tracker.project`
    - Ask: "Issue ID (e.g., HOT-1234):" — pre-fill project prefix if configured
    - Parse project key and issue number from the input
 
-   **Step 0e-ii: Fetch & confirm**
+   **Step 0-ii: Fetch & confirm**
    - Instruct the agent to use the appropriate MCP tool to fetch the issue (see [External Tracker Sync](../shared/external-tracker-sync.md) for provider-to-tool mapping)
    - Display a summary:
      ```
@@ -73,20 +57,20 @@ Before asking the user to describe the feature:
    - Ask: "Is this the correct issue? [Y/n]"
    - If issue not found: "Issue not found. [1] Try another ID [2] Describe manually"
 
-   **Step 0e-iii: Import mode**
+   **Step 0-iii: Import mode**
    ```
    Import mode:
      [1] Read-only — use issue data as context, no sync back
      [2] Build — assign to me, sync status bidirectionally
    ```
 
-   **Step 0e-iv: Assignment (build mode only)**
+   **Step 0-iv: Assignment (build mode only)**
    - Read `integrations.tracker.user` from config
    - Instruct the agent to assign the issue to the configured user via MCP tool
    - Instruct the agent to set the issue status to "in_progress" (see sync algorithm for provider mapping)
    - Add comment: "Updated by {user} — powered by Tyrex Framework"
 
-   **Step 0e-v: Pre-populate**
+   **Step 0-v: Pre-populate**
    - Use issue title as the feature name suggestion
    - Use issue description as the starting point for Step 1 (the user can refine)
    - Use issue acceptance criteria (if present) as a starting point for the feature spec
@@ -103,6 +87,8 @@ Before asking the user to describe the feature:
    - Continue to Step 1 with pre-populated description (user can edit)
 
    **Graceful degradation:** If the MCP tool call fails (server unavailable, auth error), warn the user and offer: "[1] Try again [2] Describe manually". Never block the workflow.
+
+6. **If describe new:** proceed normally to Step 1.
 
 ### Steps 0b–0d: Registry checks (shared pattern)
 
