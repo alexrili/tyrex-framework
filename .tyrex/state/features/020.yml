@@ -3,7 +3,7 @@ feature_id: "020"
 feature_name: "tyrex-recover"
 feature_file: ".tyrex/features/020-tyrex-recover.md"
 branch: "feat/020-tyrex-recover"
-status: "in_progress"
+status: "done"
 last_commit: null
 current_task_in_progress: null
 in_progress_since: null

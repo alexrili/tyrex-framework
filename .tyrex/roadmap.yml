@@ -133,6 +133,6 @@ features:
   - id: "020"
     name: "tyrex-recover"
     description: "Forensic crash recovery replacing /tyrex-resume — evidence-based state reconstruction, auto-detection in all commands, auto-fix"
-    status: in_progress
+    status: done
     referenced_in: ["ADR-013"]
     depends_on: []

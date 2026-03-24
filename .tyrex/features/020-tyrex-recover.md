@@ -39,4 +39,4 @@ Wave 1: [1] + [2] parallel | Wave 2: [3] sequential | Wave 3: [4] sequential | W
 - Branch: feat/020-tyrex-recover
 - Commits: approve
 
-## Status: planned
+## Status: done
