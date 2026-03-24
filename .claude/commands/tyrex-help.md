@@ -49,7 +49,7 @@ TYREX Help
 
   Management:
     /tyrex-status     Show current project and feature status
-    /tyrex-resume     Resume from last session (fast recovery)
+    /tyrex-recover    Recover from crashed session or resume from last session
     /tyrex-settings   View/modify Tyrex configuration
     /tyrex-evolve     Update TYREX.md with new patterns/knowledge
 
@@ -138,7 +138,7 @@ Based on the current state, suggest the next action. Use EXACTLY ONE of these:
   > "Your plan is approved. Run `/tyrex-do` to start implementing, or `/tyrex-do --auto` for autopilot."
 
 - **Active feature with tasks `in_progress` or `pending`:**
-  > "You have tasks in progress. Run `/tyrex-do` to continue, or `/tyrex-resume` if this is a new session."
+  > "You have tasks in progress. Run `/tyrex-do` to continue, or `/tyrex-recover` if this is a new session."
 
 - **Active feature with ALL tasks `completed`:**
   > "All tasks are done! Run `/tyrex-review` to review, or `/tyrex-review --do-all` to review and auto-fix."

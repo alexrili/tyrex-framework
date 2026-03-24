@@ -1,0 +1,18 @@
+task_id: "feat-020-task-006"
+feature: "020-tyrex-recover"
+name: "Sync commands to agent directories"
+status: "completed"
+depends_on: ["feat-020-task-005"]
+unlocks: []
+parallel: false
+security: "none"
+skill: "backend-engineer"
+quality: "optional"
+spec_file: "docs/specs/020-task-006-sync-agent-directories.md"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: []
+output: null
+errors: null

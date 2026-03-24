@@ -85,6 +85,10 @@ Every review MUST evaluate the implementation through these 5 critical lenses, i
 - Cross-reference with `.tyrex/security/audit.md` for existing findings
 - **If no DevSec skill exists in `.tyrex/skills/`:** suggest creating one via `/tyrex-skills create devsec`
 
+## Pre-flight: Crash Detection
+
+Before proceeding, check for crash signals per `templates/commands/shared/crash-detection.md`. Quick exit if: no `.tyrex/`, not on `feat/*` branch, or clean working tree. If crash signals detected: present "Inconsistent state detected. Run /tyrex-recover or continue anyway?"
+
 ## Behavior
 
 ### Step 1: Detect scope and load context

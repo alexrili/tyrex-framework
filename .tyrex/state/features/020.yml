@@ -9,6 +9,6 @@ current_task_in_progress: null
 in_progress_since: null
 in_progress_files_touched: []
 tasks_total: 6
-tasks_completed: 5
+tasks_completed: 6
 tasks_in_progress: 0
-tasks_pending: 1
+tasks_pending: 0

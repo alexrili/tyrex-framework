@@ -15,19 +15,17 @@ active_feature: "020"
 active_feature_file: ".tyrex/features/020-tyrex-recover.md"
 last_task_completed: null
 last_commit: "aaf0a67"
-last_action: "plan_approved"
+last_action: "all_tasks_completed"
 
 tasks_summary:
   total: 6
-  completed: 0
+  completed: 6
   in_progress: 0
-  pending: 6
+  pending: 0
   failed: 0
   blocked: 0
 
-next_tasks:
-  - "feat-020-task-001"
-  - "feat-020-task-002"
+next_tasks: []
 
 # v0.7.0 — Security review, auto-versioning, tests first-class
 # v0.8.0 — 3-layer session recovery

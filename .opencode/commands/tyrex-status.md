@@ -15,6 +15,10 @@ You MUST NOT write source code. Read-only analysis and reporting only.
 
 **This command shows all features.** Scan `.tyrex/state/features/*.yml` to list all features and their status. The current branch's feature (if any) is highlighted.
 
+## Pre-flight: Crash Detection
+
+Before proceeding, check for crash signals per `templates/commands/shared/crash-detection.md`. Quick exit if: no `.tyrex/`, not on `feat/*` branch, or clean working tree. If crash signals detected: present "Inconsistent state detected. Run /tyrex-recover or continue anyway?"
+
 ## Behavior
 
 ### Step 1: Gather data

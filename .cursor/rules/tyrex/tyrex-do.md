@@ -33,6 +33,10 @@ You may create, edit, and delete source code files following TDD, small commits,
 
 Read the per-feature state file `.tyrex/state/features/NNN.yml` for task tracking, checkpoint fields, and progress.
 
+## Pre-flight: Crash Detection
+
+Before proceeding, check for crash signals per `templates/commands/shared/crash-detection.md`. Quick exit if: no `.tyrex/`, not on `feat/*` branch, or clean working tree. If crash signals detected: present "Inconsistent state detected. Run /tyrex-recover or continue anyway?" If `--auto-approve`: log warning and continue.
+
 ## Behavior
 
 ### Step 1: Load state
