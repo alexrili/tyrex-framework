@@ -136,3 +136,10 @@ features:
     status: done
     referenced_in: ["ADR-013"]
     depends_on: []
+
+  - id: "021"
+    name: "quick-rewrite-doc-impact"
+    description: "Rewrite /tyrex-quick as orchestrator (new→plan→do with auto-approve) + Doc Impact Analysis shared algorithm (plan, do, review)"
+    status: done
+    referenced_in: ["ADR-014"]
+    depends_on: []

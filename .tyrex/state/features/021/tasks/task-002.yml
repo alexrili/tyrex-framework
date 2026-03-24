@@ -1,0 +1,19 @@
+task_id: "feat-021-task-002"
+feature: "021-quick-rewrite-doc-impact"
+name: "Rewrite tyrex-quick.md as orchestrator"
+status: "completed"
+depends_on: []
+unlocks: ["feat-021-task-006"]
+parallel: false
+skill: "product-manager.md"
+quality: "optional"
+security: "none"
+spec_file: "docs/specs/021-task-002-rewrite-tyrex-quick.md"
+started_at: "2026-03-24T00:00:00Z"
+finished_at: "2026-03-24T00:00:00Z"
+agent: null
+commit: null
+files_changed:
+  - "templates/commands/unified/tyrex-quick.md"
+output: "Full rewrite — delegates to new/plan/do instead of reimplementing. Clear --auto semantics."
+errors: null

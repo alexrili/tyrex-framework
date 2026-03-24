@@ -1,0 +1,22 @@
+task_id: "feat-021-task-007"
+feature: "021-quick-rewrite-doc-impact"
+name: "Sync commands to all 4 agent directories"
+status: "completed"
+depends_on: ["feat-021-task-006"]
+unlocks: []
+parallel: false
+skill: "none"
+quality: "optional"
+security: "none"
+spec_file: "docs/specs/021-task-007-sync-agent-directories.md"
+started_at: "2026-03-24T00:00:00Z"
+finished_at: "2026-03-24T00:00:00Z"
+agent: null
+commit: null
+files_changed:
+  - ".claude/commands/"
+  - ".cursor/rules/tyrex/"
+  - ".codex/skills/tyrex/"
+  - ".opencode/commands/"
+output: "All 4 agent directories synced with unified + shared commands"
+errors: null

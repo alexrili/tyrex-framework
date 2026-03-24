@@ -1,0 +1,122 @@
+# Architecture Diagram — Quick Rewrite & Doc Impact Analysis
+# Render: d2 021-quick-rewrite-doc-impact-architecture.d2 021-quick-rewrite-doc-impact-architecture.svg
+
+direction: down
+
+# ── /tyrex-quick as Orchestrator ──────────────────
+
+quick: "/tyrex-quick" {
+  style.fill: "#e8f5e9"
+  style.stroke: "#2e7d32"
+  style.font-size: 18
+
+  prompt: "User prompt"
+  auto: "--auto flag\n(skip approvals only)"
+}
+
+# ── Delegated Stages (same commands, full logic) ──
+
+stages: "Full Pipeline (no stages skipped)" {
+  style.fill: "#e3f2fd"
+
+  new: "/tyrex-new (--auto)" {
+    style.fill: "#bbdefb"
+    feature: "Feature spec"
+    branch: "Branch creation"
+    docs: "PRD / SRS / ADR / Diagram"
+    clarify: "Clarify ambiguities\n(STILL ASKS)"
+    style.font-size: 14
+  }
+
+  plan: "/tyrex-plan (--auto)" {
+    style.fill: "#bbdefb"
+    security: "Security analysis"
+    tasks: "Task decomposition"
+    specs: "SPEC per task"
+    doc_impact: "Doc Impact Analysis\n(predictive)"
+    style.font-size: 14
+  }
+
+  do: "/tyrex-do (--auto)" {
+    style.fill: "#bbdefb"
+    tdd: "TDD implementation"
+    changelog: "CHANGELOG update"
+    version: "Version bump"
+    commits: "Atomic commits"
+    doc_scan: "Doc Impact Analysis\n(post-implementation)"
+    style.font-size: 14
+  }
+}
+
+quick.prompt -> stages.new: "1. Create feature"
+stages.new -> stages.plan: "2. Plan tasks"
+stages.plan -> stages.do: "3. Execute"
+
+# ── Doc Impact Analysis (shared algorithm) ────────
+
+dia: "Doc Impact Analysis\n(shared algorithm)" {
+  style.fill: "#fff3e0"
+  style.stroke: "#e65100"
+
+  scan: "Scan Targets" {
+    style.fill: "#ffe0b2"
+    readme: "README.md"
+    wiki: "docs/wiki/*"
+    openapi: "OpenAPI specs"
+    diagrams: "Diagrams"
+    tyrex_md: ".tyrex/TYREX.md"
+    config: "docker-compose\n.env.example\nDockerfile"
+  }
+
+  match: "Match Against" {
+    style.fill: "#ffe0b2"
+    ports: "Ports (3000, 8080)"
+    routes: "Routes (/api/v1/*)"
+    env: "Env vars (PORT, DB_URL)"
+    cli: "CLI args"
+    values: "Config values"
+  }
+
+  output: "Output" {
+    style.fill: "#ffcc80"
+    list: "Inconsistency list\n{file, line, old_value}"
+    action: "Auto-create fix tasks"
+  }
+}
+
+dia.scan -> dia.match: "grep patterns\nin changed files"
+dia.match -> dia.output: "found drift?"
+
+# ── Integration Points ────────────────────────────
+
+integrations: "Integration Points" {
+  style.fill: "#f3e5f5"
+
+  plan_step: "/tyrex-plan\nStep: after task decomposition\nAction: add doc update task" {
+    style.fill: "#ce93d8"
+  }
+  do_step: "/tyrex-do\nStep: after all tasks complete\nAction: scan + auto-fix tasks" {
+    style.fill: "#ce93d8"
+  }
+  review_step: "/tyrex-review\nLens 6: Documentation Consistency\nAction: flag + rc- tasks" {
+    style.fill: "#ce93d8"
+  }
+}
+
+dia.output -> integrations.plan_step: "predictive"
+dia.output -> integrations.do_step: "post-implementation"
+dia.output -> integrations.review_step: "validation"
+
+# ── What --auto skips vs keeps ────────────────────
+
+legend: "Quick --auto behavior" {
+  style.fill: "#fafafa"
+  style.stroke: "#9e9e9e"
+
+  skipped: "Auto-approved (skipped):\n• Doc bundle confirmation\n• Plan approval\n• Commit diff approval\n• Branch name confirmation" {
+    style.fill: "#e8f5e9"
+  }
+  kept: "Still executed:\n• All doc generation\n• All SPECs\n• All planning\n• All TDD\n• Ambiguity questions\n• Version bump\n• Doc Impact Analysis" {
+    style.fill: "#fff9c4"
+  }
+}

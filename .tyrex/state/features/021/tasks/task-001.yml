@@ -1,0 +1,19 @@
+task_id: "feat-021-task-001"
+feature: "021-quick-rewrite-doc-impact"
+name: "Create shared doc-impact-analysis.md algorithm"
+status: "completed"
+depends_on: []
+unlocks: ["feat-021-task-003", "feat-021-task-004", "feat-021-task-005"]
+parallel: false
+skill: "backend-engineer.md"
+quality: "optional"
+security: "none"
+spec_file: "docs/specs/021-task-001-shared-doc-impact-analysis.md"
+started_at: "2026-03-24T00:00:00Z"
+finished_at: "2026-03-24T00:00:00Z"
+agent: null
+commit: null
+files_changed:
+  - "templates/commands/shared/doc-impact-analysis.md"
+output: "Created shared algorithm file (75 lines, under 100-line limit)"
+errors: null

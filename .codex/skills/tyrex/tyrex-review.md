@@ -1,5 +1,5 @@
 ---
-description: "Review completed implementation — senior code review with 5 critical lenses"
+description: "Review completed implementation — senior code review with 6 critical lenses"
 ---
 
 # /tyrex-review - Senior Code Review
@@ -37,9 +37,9 @@ Read the per-feature state file `.tyrex/state/features/NNN.yml` for task trackin
 
 **One question at a time.** Present a single structured choice, then STOP and wait for the user's response before proceeding to the next question. Never combine multiple choice blocks in one message.
 
-## The 5 Review Lenses
+## The 6 Review Lenses
 
-Every review MUST evaluate the implementation through these 5 critical lenses, in order:
+Every review MUST evaluate the implementation through these 6 critical lenses, in order:
 
 ### Lens 1: Pattern Compliance
 > "Does this follow the project's established patterns?"
@@ -128,7 +128,7 @@ Test framework detected: [framework name]
 If "Run": execute the project's configured test command, capture results (passing, failing, skipped counts), and include them in the review summary. Use a reasonable timeout (120s default). If tests exceed the timeout, report partial results and note the timeout.
 If "Skip" or no test framework detected: continue without test execution, note "Tests: not executed" in the summary.
 
-### Step 3: Apply the 5 Review Lenses
+### Step 3: Apply the 6 Review Lenses
 
 Execute each lens in order. For each finding, assign a severity:
 - **CRITICAL** — Security vulnerability, data loss risk, or breaking change
@@ -198,6 +198,31 @@ Lens 5 — Test Coverage:
   [!] HIGH    No tests for src/services/payment.js (core business logic)
   [!] MEDIUM  No tests for src/utils/formatter.js
 ```
+
+### Lens 6: Documentation Consistency
+> "Does the documentation still reflect reality after these changes?"
+
+Run the Doc Impact Analysis in **actual mode** per `templates/commands/shared/doc-impact-analysis.md`:
+
+1. Collect the full branch diff (`git diff main...HEAD`)
+2. Extract changed values (ports, routes, env vars, CLI commands, config values, function names)
+3. Scan all doc targets (README, wiki, OpenAPI, diagrams, TYREX.md, config files) for old values
+4. For each inconsistency found, report as a finding:
+   - **HIGH** — config file drift (docker-compose, .env.example, Dockerfile, nginx.conf) — these break deployments
+   - **MEDIUM** — documentation drift (README, wiki, OpenAPI, diagrams) — these cause confusion
+5. Cross-reference: if a doc update task already ran during `/tyrex-do` Step 4b, only flag NEW inconsistencies not already addressed
+
+Include in the review summary:
+```
+Lens 6 — Documentation Consistency:
+  [OK | N findings]
+  [!] HIGH    docker-compose.yml:8 — references PORT=3000 (changed to 3008 in src/config.js)
+  [!] MEDIUM  README.md:42 — references /api/v1/users (changed to /api/v2/users)
+```
+
+Findings from Lens 6 feed into the existing review → fix loop:
+- `--do-all`: auto-create `rc-` prefixed tasks for ALL doc inconsistency findings
+- `--do-critical`: auto-create `rc-` tasks only for HIGH severity findings (config file drift)
 
 ### Step 4: Documentation finalization
 

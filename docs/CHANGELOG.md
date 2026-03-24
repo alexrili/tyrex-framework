@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.0] - 2026-03-24
+
+### Changed
+- **`/tyrex-quick` rewritten as orchestrator** — delegates to full `/tyrex-new` → `/tyrex-plan` → `/tyrex-do` pipeline instead of reimplementing them in abbreviated form (Feature 021, ADR-014)
+  - `--auto` now means auto-approve confirmations, NOT skip stages
+  - All docs, SPECs, planning, TDD, and quality checks run in full
+  - Clarification questions for genuine ambiguities still asked even with `--auto`
+  - Uses `tyrex.yml` defaults for documentation config (not reduced to "minimal")
+- **`/tyrex-review` expanded from 5 to 6 review lenses** — new Lens 6: Documentation Consistency
+
+### Added
+- **Doc Impact Analysis** — shared algorithm (`doc-impact-analysis.md`) for detecting documentation drift (Feature 021, ADR-014)
+  - Scans 3 categories: project docs (README, wiki, OpenAPI), framework docs (TYREX.md), config files (docker-compose, .env.example, Dockerfile)
+  - Matches against: ports, routes, env vars, CLI commands, config values, function names
+  - `/tyrex-plan` Step 3d: predictive scan — auto-adds doc update task when drift is likely
+  - `/tyrex-do` Step 4b: post-implementation scan — auto-creates fix tasks before feature close
+  - `/tyrex-review` Lens 6: validation scan — reports inconsistencies as HIGH (config) or MEDIUM (docs) findings
+
 ## [1.5.0] - 2026-03-24
 
 ### Added
