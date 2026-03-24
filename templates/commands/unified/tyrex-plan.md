@@ -25,6 +25,10 @@ You MUST NOT write source code. You may create/modify only `.tyrex/`, `docs/`, a
 
 **One question at a time.** Present a single structured choice, then STOP and wait for the user's response before proceeding to the next question. Never combine multiple choice blocks in one message.
 
+## Pre-flight: Crash Detection
+
+Before proceeding, check for crash signals per `templates/commands/shared/crash-detection.md`. Quick exit if: no `.tyrex/`, not on `feat/*` branch, or clean working tree. If crash signals detected: present "Inconsistent state detected. Run /tyrex-recover or continue anyway?" If `--auto`: log warning and continue.
+
 ## Behavior
 
 ### Step 1: Load context

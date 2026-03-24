@@ -1,0 +1,18 @@
+task_id: "feat-020-task-004"
+feature: "020-tyrex-recover"
+name: "Add crash detection pre-flight to all commands"
+status: "completed"
+depends_on: ["feat-020-task-001", "feat-020-task-003"]
+unlocks: ["feat-020-task-005"]
+parallel: false
+security: "none"
+skill: "backend-engineer"
+quality: "optional"
+spec_file: "docs/specs/020-task-004-add-preflight-all-commands.md"
+started_at: null
+finished_at: null
+agent: null
+commit: null
+files_changed: []
+output: null
+errors: null
