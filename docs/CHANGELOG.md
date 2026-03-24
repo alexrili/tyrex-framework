@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.0] - 2026-03-24
+
 ### Added
 - **Tyrex Recover** — forensic crash recovery replacing `/tyrex-resume` (Feature 020)
   - New command: `/tyrex-recover` with forensic analysis, diagnostic summary, and auto-fix assessment
@@ -18,7 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Removed `/tyrex-resume` — all references updated across codebase
   - ADR-013, PRD, SRS, architecture diagram (D2)
 
-- **External tracker integration** — bidirectional sync with Jira, Linear, GitHub Issues via MCP
+- **External tracker integration** — bidirectional sync with Jira, Linear, GitHub Issues via MCP (Feature 019)
   - `integrations.tracker` config section in `tyrex.yml`
   - Shared sync algorithm: `external-tracker-sync.md` (forward-only status, lifecycle boundary, comment trail)
   - `external_ref` and `external_task_ref` state fields in feature context resolution
