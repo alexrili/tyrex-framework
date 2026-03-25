@@ -2,7 +2,7 @@
 feature_id: 23
 feature_name: "postinstall-auto-upgrade"
 branch: "feat/023-postinstall-auto-upgrade"
-status: "in_progress"
+status: "done"
 created: "2026-03-24"
 
 tasks:
