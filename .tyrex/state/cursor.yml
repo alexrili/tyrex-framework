@@ -8,14 +8,14 @@ session_id: null
 agent_mode: "plan"  # set by /tyrex-review (2026-03-24)
 
 # Last active feature — fallback for Feature Context Resolution
-last_active_feature: null
+last_active_feature: 23
 
 # Legacy fields (kept for backward compatibility during transition)
 active_feature: null
 active_feature_file: null
 last_task_completed: null
 last_commit: "4746682"
-last_action: "feature_completed"
+last_action: "review_approved"
 
 tasks_summary:
   total: 7
