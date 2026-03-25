@@ -5,7 +5,6 @@ const path = require("path");
 const os = require("os");
 const { execFileSync } = require("child_process");
 
-const VERSION = require("../package.json").version;
 const GLOBAL_TYREX_DIR = path.join(os.homedir(), ".tyrex");
 
 if (fs.existsSync(GLOBAL_TYREX_DIR)) {
@@ -20,5 +19,6 @@ if (fs.existsSync(GLOBAL_TYREX_DIR)) {
   }
 } else {
   // First-time install — show setup message
-  console.log(`\n\x1b[36m  [tyrex]\x1b[0m v${VERSION} installed. Run \x1b[1mtyrex --all\x1b[0m to set up.\n`);
+  const version = require("../package.json").version;
+  console.log(`\n\x1b[36m  [tyrex]\x1b[0m v${version} installed. Run \x1b[1mtyrex --all\x1b[0m to set up.\n`);
 }
