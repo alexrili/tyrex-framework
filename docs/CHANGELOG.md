@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.7.0] - 2026-03-24
+
+### Added
+- **Postinstall auto-upgrade** — `npm install -g tyrex-framework` now automatically syncs commands and templates for already-configured agents (Feature 023)
+  - Existing installs (`~/.tyrex/` present): runs `tyrex --upgrade` silently
+  - First-time installs: shows setup message recommending `tyrex --all`
+  - New `--upgrade` flag for silent, non-interactive re-sync of all detected agents
+
 ## [1.6.1] - 2026-03-24
 
 ### Changed

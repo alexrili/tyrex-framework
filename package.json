@@ -1,6 +1,6 @@
 {
   "name": "tyrex-framework",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "description": "Human-driven, AI-accelerated pair programming framework. Orchestrates AI agents with guardrails, parallelization, and shared memory.",
   "bin": {
     "tyrex": "./bin/tyrex.js"
@@ -27,6 +27,7 @@
     "node": ">=18.0.0"
   },
   "scripts": {
+    "postinstall": "node bin/postinstall.js",
     "postpublish": "npm deprecate tyrex-framework@\"<$npm_package_version\" \"This version is outdated. Upgrade: npm install -g tyrex-framework@latest && tyrex --all\""
   },
   "files": [

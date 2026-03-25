@@ -420,7 +420,25 @@ async function main() {
     uninstall: args.includes("--uninstall"),
     defaults: args.includes("--defaults") || args.includes("-d"),
     force: args.includes("--force") || args.includes("-f"),
+    upgrade: args.includes("--upgrade"),
   };
+
+  // ─── Silent upgrade (called by postinstall) ───
+  if (flags.upgrade) {
+    rl.close();
+    const detectedAgents = detectGlobalAgents();
+    if (detectedAgents.length === 0) {
+      // No agents configured — nothing to upgrade
+      process.exit(0);
+    }
+    for (const a of detectedAgents) {
+      installCommandsGlobal(a);
+    }
+    installGlobalTemplates();
+    installGlobalRulesTemplates();
+    console.log(c("green", `\n  [tyrex] v${VERSION} — commands synced for ${detectedAgents.map((a) => AGENTS[a].name).join(", ")}.`));
+    process.exit(0);
+  }
 
   console.log("");
   console.log(c("bold", "  ╔══════════════════════════════════════╗"));
@@ -630,6 +648,7 @@ function printHelp() {
   console.log(`  ${c("bold", "Other flags:")}`);
   console.log(`    --defaults, -d          Skip configuration questions, use defaults`);
   console.log(`    --force, -f             Overwrite core files on re-install/re-init`);
+  console.log(`    --upgrade               Silent re-sync for already-configured agents`);
   console.log(`    --uninstall             Remove global Tyrex installation`);
   console.log(`    --version, -v           Show version`);
   console.log(`    --help, -h              Show this help`);

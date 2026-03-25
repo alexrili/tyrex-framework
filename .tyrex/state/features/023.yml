@@ -1,0 +1,17 @@
+# Feature 023 — Postinstall Auto-Upgrade
+feature_id: 23
+feature_name: "postinstall-auto-upgrade"
+branch: "feat/023-postinstall-auto-upgrade"
+status: "in_progress"
+created: "2026-03-24"
+
+tasks:
+  - id: 1
+    name: "Add --upgrade flag to bin/tyrex.js"
+    status: "pending"
+  - id: 2
+    name: "Create bin/postinstall.js"
+    status: "pending"
+  - id: 3
+    name: "Update package.json"
+    status: "pending"
