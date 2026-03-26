@@ -1,6 +1,6 @@
 id: BL-008
 title: "Integração bidirecional discuss <> backlog"
-status: ready
+status: done
 priority: high
 epic: EP-003
 effort: M
@@ -26,5 +26,5 @@ acceptance_criteria:
   - Item gerado é estruturado (title, description, acceptance_criteria)
 origin: "discuss session 2026-03-26"
 created: "2026-03-26"
-feature_id: null
+feature_id: 25
 note: "Absorbs BL-012 scope. Confirmed ready 2026-03-26."

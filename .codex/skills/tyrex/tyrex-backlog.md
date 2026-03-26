@@ -229,18 +229,19 @@ Filter by:
      [1] Edit
      [2] Mark as ready
      [3] Pick for execution
-     [4] Discuss (explore with /tyrex-discuss)
+     [4] Discuss — enrich with /tyrex-discuss --backlog BL-NNN
      [5] Back to list
    ```
+3. **If user selects [4] Discuss:** hand off to `/tyrex-discuss --backlog BL-NNN`. This opens a focused discussion scoped to the item, where the user can explore, refine, and enrich the item's description and acceptance criteria. When done, the user returns to the backlog.
 
 ## Integration Points
 
 **Active integrations (implemented):**
 - **`/tyrex-status`:** Show backlog summary section with counts by status.
+- **`/tyrex-discuss`:** Proactive mid-conversation offer to save ideas to backlog. `--backlog BL-NNN` flag focuses discussion on a specific item with enrichment flow. Detail view [4] Discuss hands off to focused discuss.
 
 **Planned integrations (not yet implemented — requires future backlog items):**
 - **`/tyrex-new` Step 0** *(planned — BL-009):* After registry checks, if `.tyrex/backlog/items/` has items with `status: ready`, present: "N backlog items ready. Start from backlog? [Y/n]". If yes, show pick list.
-- **`/tyrex-discuss`** *(planned — BL-008):* When conclusions are actionable, offer: "Save to backlog? [Y/n]". When invoked with `--backlog BL-NNN`, focus discussion on enriching that item.
 - **`/tyrex-review`** *(planned — BL-010):* When findings represent improvements (not bugs), offer: "Create backlog item for this finding? [Y/n]"
 - **`/tyrex-quick --backlog`** *(planned — BL-009):* Execute all `ready` items sequentially — pick → quick pipeline → next item.
 

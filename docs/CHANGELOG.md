@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.9.0] - 2026-03-26
+
+### Added
+- **Discuss ↔ backlog integration** — `/tyrex-discuss --backlog BL-NNN` focuses discussion on a specific backlog item with enrichment flow (BL-008)
+- **Proactive backlog offer** — discuss detects actionable ideas mid-conversation and offers to save to backlog (non-intrusive, frequency-controlled) (BL-008/BL-012)
+- **Backlog as save target** — discuss persistence step now offers backlog alongside context and TYREX.md
+- **Backlog detail Discuss action** — `[4] Discuss` in detail view hands off to focused discuss with `--backlog` flag
+
 ## [1.8.0] - 2026-03-26
 
 ### Added
