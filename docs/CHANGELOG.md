@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.12.1] - 2026-03-26
+
+### Changed
+- **Quick now includes review** — `/tyrex-quick` lifecycle is now `new→plan→do→review→accept/reject`. Review runs 6 lenses on branch diff. With `--auto`: auto-accepts if 0 CRITICAL/HIGH findings, stops otherwise. Final report includes review summary.
+
 ## [1.12.0] - 2026-03-26
 
 ### Added
