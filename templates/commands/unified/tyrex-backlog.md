@@ -235,11 +235,14 @@ Filter by:
 
 ## Integration Points
 
-- **`/tyrex-new` Step 0:** After registry checks, if `.tyrex/backlog/items/` has items with `status: ready`, present: "N backlog items ready. Start from backlog? [Y/n]". If yes, show pick list.
-- **`/tyrex-discuss`:** When conclusions are actionable, offer: "Save to backlog? [Y/n]". When invoked with `--backlog BL-NNN`, focus discussion on enriching that item.
-- **`/tyrex-review`:** When findings represent improvements (not bugs), offer: "Create backlog item for this finding? [Y/n]"
+**Active integrations (implemented):**
 - **`/tyrex-status`:** Show backlog summary section with counts by status.
-- **`/tyrex-quick --backlog`:** Execute all `ready` items sequentially — pick → quick pipeline → next item.
+
+**Planned integrations (not yet implemented — requires future backlog items):**
+- **`/tyrex-new` Step 0** *(planned — BL-009):* After registry checks, if `.tyrex/backlog/items/` has items with `status: ready`, present: "N backlog items ready. Start from backlog? [Y/n]". If yes, show pick list.
+- **`/tyrex-discuss`** *(planned — BL-008):* When conclusions are actionable, offer: "Save to backlog? [Y/n]". When invoked with `--backlog BL-NNN`, focus discussion on enriching that item.
+- **`/tyrex-review`** *(planned — BL-010):* When findings represent improvements (not bugs), offer: "Create backlog item for this finding? [Y/n]"
+- **`/tyrex-quick --backlog`** *(planned — BL-009):* Execute all `ready` items sequentially — pick → quick pipeline → next item.
 
 ## File Formats
 

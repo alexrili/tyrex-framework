@@ -22,11 +22,11 @@ Next step: /tyrex-[command] — [context summary]
 | `/tyrex-do` | Some tasks remain | `/tyrex-do` (continue) | "N/M tasks completed — next: [task name]" |
 | `/tyrex-review` | Approved, no findings | `/tyrex-new` or `/tyrex-backlog view` | "Feature NNN done. Backlog: N items ready" |
 | `/tyrex-review` | Findings to fix | `/tyrex-review --do-all` | "N findings (C critical, H high) — fix now?" |
-| `/tyrex-discuss` | Conclusions reached | `/tyrex-backlog add` or `/tyrex-new` | "Save conclusions to backlog, or start implementing?" |
+| `/tyrex-discuss` | Conclusions reached | `/tyrex-new` or `/tyrex-backlog add` | "Start implementing, or save conclusions to backlog?" |
 | `/tyrex-status` | Active feature exists | `/tyrex-do` or `/tyrex-review` | Based on feature progress |
 | `/tyrex-status` | No active feature | `/tyrex-backlog view` or `/tyrex-new` | "N backlog items ready. Start one?" |
 | `/tyrex-backlog` | Items marked ready | `/tyrex-quick` or `/tyrex-new` | "N items ready for execution" |
-| `/tyrex-backlog` | Items still draft | `/tyrex-discuss --backlog BL-NNN` | "Enrich items before marking ready" |
+| `/tyrex-backlog` | Items still draft | `/tyrex-discuss` | "Enrich items before marking ready — use `/tyrex-discuss` to explore, then `/tyrex-backlog edit BL-NNN`" |
 | `/tyrex-quick` | Pipeline complete | `/tyrex-review` | "Feature NNN delivered — N tasks, N commits" |
 | `/tyrex-recover` | State recovered | `/tyrex-do` or `/tyrex-status` | Based on recovered state |
 | `/tyrex-debug` | Bugs documented | `/tyrex-quick` or `/tyrex-new` | "N bugs found — fix now?" |
