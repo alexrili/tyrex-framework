@@ -1,6 +1,6 @@
 id: BL-015
 title: "Git como memória do projeto"
-status: draft
+status: discarded
 priority: medium
 epic: EP-004
 effort: L
@@ -23,3 +23,4 @@ acceptance_criteria:
 origin: "discuss session 2026-03-26"
 created: "2026-03-26"
 feature_id: null
+note: "Absorbed into BL-014. Tags (sub-item A) and commits (sub-item B) merged. Recovery (sub-item C) deferred to Phase 5."

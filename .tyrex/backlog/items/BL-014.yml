@@ -1,25 +1,37 @@
 id: BL-014
-title: "Commit de decisões e discussões"
-status: draft
+title: "Git como espinha dorsal — commits semânticos + tags automáticas"
+status: ready
 priority: high
 epic: EP-004
 effort: M
 phase: 3
 description: |
-  Discuss, backlog e plan geram commits de contexto (.tyrex/ only, nunca código).
-  Mensagens de commit semânticas:
-  - backlog: add BL-007 — Comando /tyrex-backlog
-  - discuss: enrich BL-005 — pipeline completo
-  - plan: roadmap v2 — reorder phases
-  - backlog: ready BL-001 — checkpoint system confirmed
+  Consolidação de BL-014 + BL-015. Git como audit trail completo do projeto.
 
-  Audit trail completo via git log. Tudo rastreável.
+  A) Commits semânticos automáticos — discuss, backlog e plan geram commits
+     de contexto (.tyrex/ only, nunca código). Mensagens com prefixo semântico:
+     - backlog: add BL-017 — nova ideia
+     - discuss: enrich BL-005 — pipeline completo
+     - plan: roadmap v3 — reorder phases
+     - backlog: ready BL-001 — checkpoint system confirmed
+     Configurável via tyrex.yml: auto-commit ou batch no final do comando.
+
+  B) Tags automáticas em milestones:
+     - tyrex-feature-NNN-done → quando feature aprovada no review
+     - tyrex-phase-N-done → quando todas as features de uma phase completam
+     - tyrex-vX.Y.Z → quando version bump acontece
+     git tag --list 'tyrex-*' mostra progresso completo do projeto.
+
+  C) Recovery enriquecido via git log — DEFERRED para Phase 5.
+     Branch history como evolução de ideias vem grátis com os commits semânticos.
 acceptance_criteria:
-  - Comandos de planejamento geram commits automaticamente
-  - Commits são .tyrex/ only — nunca código
-  - Mensagens seguem prefixo semântico (backlog:, discuss:, plan:)
-  - Git log mostra histórico completo de decisões
-  - Configurável: auto-commit ou batch
+  - Comandos plan-mode geram commits automáticos (.tyrex/ only)
+  - Prefixos semânticos: backlog:, discuss:, plan:
+  - Configurável via tyrex.yml (auto-commit ou batch)
+  - Tags criadas em: feature approved, phase completed, version bump
+  - Tags seguem padrão: tyrex-feature-NNN-done, tyrex-phase-N-done, tyrex-vX.Y.Z
+  - git tag --list 'tyrex-*' mostra progresso completo
 origin: "discuss session 2026-03-26"
 created: "2026-03-26"
 feature_id: null
+note: "Consolidates BL-014 + BL-015. BL-015b (recovery via git) deferred to Phase 5. Confirmed ready 2026-03-26."
