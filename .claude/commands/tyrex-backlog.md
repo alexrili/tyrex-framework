@@ -239,11 +239,12 @@ Filter by:
 **Active integrations (implemented):**
 - **`/tyrex-status`:** Show backlog summary section with counts by status.
 - **`/tyrex-discuss`:** Proactive mid-conversation offer to save ideas to backlog. `--backlog BL-NNN` flag focuses discussion on a specific item with enrichment flow. Detail view [4] Discuss hands off to focused discuss.
+- **`/tyrex-new` Step 0:** After registry checks, offers ready backlog items as feature source. On selection: updates status to in-progress, pre-fills description from item.
+- **`/tyrex-quick --backlog`:** Executes all ready items sequentially — pick → full pipeline → mark done → next. Status updates automatically (ready→in-progress→done). Safe revert on rejection.
+- **`/tyrex-quick`:** Visual roadmap before execution, final report with accept/reject, checkpoint tag for safe revert.
 
 **Planned integrations (not yet implemented — requires future backlog items):**
-- **`/tyrex-new` Step 0** *(planned — BL-009):* After registry checks, if `.tyrex/backlog/items/` has items with `status: ready`, present: "N backlog items ready. Start from backlog? [Y/n]". If yes, show pick list.
 - **`/tyrex-review`** *(planned — BL-010):* When findings represent improvements (not bugs), offer: "Create backlog item for this finding? [Y/n]"
-- **`/tyrex-quick --backlog`** *(planned — BL-009):* Execute all `ready` items sequentially — pick → quick pipeline → next item.
 
 ## File Formats
 

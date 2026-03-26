@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.11.0] - 2026-03-26
+
+### Added
+- **Visual roadmap before execution** — `/tyrex-quick` shows task execution graph with BL-item source before starting. User confirms or modifies (BL-016)
+- **Safe revert via git checkpoint** — `/tyrex-quick` creates `tyrex-checkpoint-NNN` tag before execution. Reject = `git reset --hard` to checkpoint. No partial state (BL-006)
+- **Accept/reject flow** — `/tyrex-quick` final report with consolidated delivery summary. Without `--auto`: user must accept or reject. Rejection reverts everything (BL-005)
+- **`--backlog` flag on `/tyrex-quick`** — executes all `ready` backlog items sequentially with full pipeline per item. Combined summary at end (BL-009)
+- **Backlog source in `/tyrex-new` Step 0** — offers ready backlog items as feature source alongside roadmap and external tracker (BL-009)
+- **Automatic backlog status updates** — ready→in-progress→done follows the pipeline automatically (BL-009)
+
 ## [1.10.0] - 2026-03-26
 
 ### Added
