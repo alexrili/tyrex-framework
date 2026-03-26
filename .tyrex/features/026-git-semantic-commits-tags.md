@@ -24,4 +24,4 @@ Make git the audit trail for all project decisions. Plan-mode commands auto-comm
 ## Backlog Items
 - BL-014 (consolidated with BL-015)
 
-## Status: spec
+## Status: done
