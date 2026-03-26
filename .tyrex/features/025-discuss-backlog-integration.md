@@ -25,4 +25,4 @@ Integrate /tyrex-discuss with the backlog system bidirectionally: focus discussi
 ## Backlog Items
 - BL-008 (consolidated with BL-012)
 
-## Status: spec
+## Status: done

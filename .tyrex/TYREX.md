@@ -113,6 +113,7 @@ Tyrex auto-detects installed agents by scanning for their config directories. Co
 - **Quick pipeline with visual roadmap:** `/tyrex-quick` shows visual roadmap (tasks + BL-items) before executing. Presents consolidated final report. Without `--auto`: commits but waits for accept/reject. Rejection triggers safe revert via git.
 - **Safe revert via git:** Safe-points (branch, tags, checkpoints) enable full rollback of rejected executions. No data lost — commits preserved in reflog or branch.
 - **Prompt structuring:** Framework never loses an idea — always offers to save actionable ideas to backlog during discuss.
+- **Discuss ↔ backlog integration:** `/tyrex-discuss --backlog BL-NNN` focuses discussion on a specific item with enrichment flow (update description, acceptance criteria). Proactive mid-conversation offer detects actionable ideas and offers to save — non-intrusive, frequency-controlled (max once every 3-4 exchanges). Backlog detail view [4] Discuss hands off to focused discuss. Persistence step offers backlog as save target alongside context and TYREX.md.
 
 ## Environment Variables
 
@@ -179,6 +180,7 @@ Tyrex auto-detects installed agents by scanning for their config directories. Co
 | 2026-03-26 | Git as project audit trail | Semantic commits for decisions/discussions/planning (.tyrex/ only). Git tags for milestones. Git log as complementary recovery source. Tyrex + Git + LLM = quality development triad. |
 | 2026-03-26 | Quick visual roadmap + accept/reject | Quick shows visual roadmap before executing. Final consolidated report. Accept/reject flow with safe git revert on rejection. |
 | 2026-03-26 | Command resilience + backlog system (ADR-015) | Guardrails inline (~120 tokens), checkpoint reminders every N tasks, next-action suggestions on all commands. `/tyrex-backlog` command with CRUD, epics, roadmap. Command count: 23 (was 22). |
+| 2026-03-26 | Discuss ↔ backlog bidirectional integration | `/tyrex-discuss --backlog BL-NNN` focuses on specific item with enrichment flow. Proactive mid-conversation offer detects actionable ideas (non-intrusive, frequency-controlled). Backlog detail view [4] Discuss hands off to focused discuss. BL-012 absorbed into BL-008. |
 
 ## CI/CD
 
