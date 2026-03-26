@@ -1,6 +1,6 @@
 id: BL-014
 title: "Git como espinha dorsal — commits semânticos + tags automáticas"
-status: ready
+status: done
 priority: high
 epic: EP-004
 effort: M
@@ -33,5 +33,5 @@ acceptance_criteria:
   - git tag --list 'tyrex-*' mostra progresso completo
 origin: "discuss session 2026-03-26"
 created: "2026-03-26"
-feature_id: null
+feature_id: 26
 note: "Consolidates BL-014 + BL-015. BL-015b (recovery via git) deferred to Phase 5. Confirmed ready 2026-03-26."
