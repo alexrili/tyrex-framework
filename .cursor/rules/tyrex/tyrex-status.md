@@ -27,7 +27,9 @@ Read these files (in parallel where possible):
 2. `.tyrex/tyrex.yml` — project configuration
 3. `.tyrex/features/` — all feature specs (list directory)
 4. `.tyrex/state/tasks/` — all task state files
-5. `.tyrex/roadmap.yml` — project roadmap and backlog (if exists)
+5. `.tyrex/roadmap.yml` — project roadmap (if exists)
+5b. `.tyrex/backlog/items/` — backlog items (if exists)
+5c. `.tyrex/backlog/epics/` — backlog epics (if exists)
 6. `.tyrex/skills/` — installed skills (list directory)
 7. `.tyrex/context/` — project context files (list directory)
 8. `.tyrex/TYREX.md` — check completeness (sections filled or empty)
@@ -89,6 +91,14 @@ Active (current branch): 003-feature-name
   Tracker: HOT-1234 (build) — https://company.atlassian.net/browse/HOT-1234
   Last sync: 2026-03-23 10:00
   Subtasks synced: 4/7
+
+─── Backlog ────────────────────────────
+  BL-001  Checkpoint system              draft    high   Phase 1
+  BL-002  Guardrails inline              ready    high   Phase 1
+  BL-007  Comando /tyrex-backlog         ready    high   Phase 2
+  Summary: N items (D draft, R ready, P in-progress, C done)
+  Epics: [list]
+  Use /tyrex-backlog view for full details.
 
 ─── Roadmap ────────────────────────────
   004-feature-name           planned     (depends on 003)
@@ -154,11 +164,12 @@ Last action: [action from cursor.yml]
 
 Commands:
   /tyrex-discuss          Explore the project, ask questions, brainstorm
+  /tyrex-backlog          Manage backlog — add, view, plan, pick items
   /tyrex-do               Continue implementation (if active feature)
   /tyrex-review           Review completed feature (if all tasks done)
-  /tyrex-new              Start new feature
+  /tyrex-new              Start new feature (or pick from backlog)
   /tyrex-debug            Diagnose problems, analyze logs, document bugs
-  /tyrex-quick            Quick fix or small task
+  /tyrex-quick            Quick fix or small task [--backlog for batch]
   /tyrex-skills           Create or list skills
   /tyrex-context          Add project context
   /tyrex-security-review  Run security audit
@@ -223,7 +234,8 @@ Based on the status, suggest the most relevant next actions:
 
 - If there's an active feature with pending tasks: suggest `/tyrex-do`
 - If all tasks are done but feature not reviewed: suggest `/tyrex-review`
-- If no active feature: suggest `/tyrex-new`
+- If no active feature and backlog has `ready` items: suggest `/tyrex-backlog pick` or `/tyrex-new`
+- If no active feature and no backlog: suggest `/tyrex-new`
 - If TYREX.md is incomplete: suggest `/tyrex-evolve` or `/tyrex-discuss` to explore and fill gaps
 - If no context files: suggest `/tyrex-context` or `/tyrex-discuss` to explore the project
 - If project is greenfield (no features completed, minimal code): suggest `/tyrex-discuss` to brainstorm
@@ -245,3 +257,5 @@ Based on the status, suggest the most relevant next actions:
 - The Health section surfaces issues proactively — don't wait for the user to ask
 - If roadmap.yml doesn't exist, still try to extract future references from feature specs
 - Adapt the display: omit sections that are completely empty/irrelevant (e.g., don't show Skills section if no skills exist and no features reference them)
+- **Backlog section:** If `.tyrex/backlog/items/` exists and has items, show the Backlog section. Read all BL-*.yml files, count by status, list items sorted by priority. Omit the Backlog section entirely if no backlog directory or no items.
+- **Next action** (per `templates/commands/shared/next-action-map.md`): present the suggested next command based on current state with structured choices.

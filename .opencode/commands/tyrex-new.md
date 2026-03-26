@@ -310,8 +310,16 @@ If any macro documentation was generated (PRD, SRS, ADR), automatically update T
 - ADR → add decision to `## Architecture Decisions` table
 This keeps TYREX.md as the single living index of all project knowledge.
 
-### Step 10: Next step
-Tell the user: "Feature spec created. Run /tyrex-plan to plan the implementation."
+### Step 10: Next action
+**Per `templates/commands/shared/next-action-map.md`:**
+```
+Feature NNN ready for planning — N acceptance criteria defined.
+
+Next step: /tyrex-plan — plan the implementation
+  [1] Execute now
+  [2] Different command
+  [3] Done for now
+```
 
 ## Important Rules
 - Feature spec MUST be under 50 lines

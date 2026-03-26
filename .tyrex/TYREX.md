@@ -178,6 +178,7 @@ Tyrex auto-detects installed agents by scanning for their config directories. Co
 | 2026-03-26 | 5 core commands UX simplification | User flow: discuss, backlog, quick, status, recover. Internal commands (new, plan, do, review) activated by framework. Reduces cognitive load. |
 | 2026-03-26 | Git as project audit trail | Semantic commits for decisions/discussions/planning (.tyrex/ only). Git tags for milestones. Git log as complementary recovery source. Tyrex + Git + LLM = quality development triad. |
 | 2026-03-26 | Quick visual roadmap + accept/reject | Quick shows visual roadmap before executing. Final consolidated report. Accept/reject flow with safe git revert on rejection. |
+| 2026-03-26 | Command resilience + backlog system (ADR-015) | Guardrails inline (~120 tokens), checkpoint reminders every N tasks, next-action suggestions on all commands. `/tyrex-backlog` command with CRUD, epics, roadmap. Command count: 23 (was 22). |
 
 ## CI/CD
 

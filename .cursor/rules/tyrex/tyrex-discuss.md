@@ -135,11 +135,18 @@ When the user says "done", "exit", "end", or starts a different `/tyrex-*` comma
    ```
 2. If yes: follow Step 4 persistence flow.
 3. If no: end cleanly.
-4. **Suggest next action** based on what was discussed:
-   - If project was explored: "Run `/tyrex-new` to start a feature based on what we discussed."
-   - If architecture was brainstormed: "Run `/tyrex-evolve` to record the decisions in TYREX.md."
-   - If greenfield and ready: "Run `/tyrex-new` to define your first feature."
-   - If questions remain: "Run `/tyrex-discuss` again anytime."
+4. **Next action** (per `templates/commands/shared/next-action-map.md`):
+   - If conclusions are actionable: suggest `/tyrex-backlog add` or `/tyrex-new`
+   - If architecture was brainstormed: suggest `/tyrex-evolve`
+   - If greenfield and ready: suggest `/tyrex-new` or `/tyrex-backlog add`
+   - If questions remain: suggest `/tyrex-discuss` again
+   - **Backlog awareness:** if `.tyrex/backlog/items/` has `ready` items, mention them
+   ```
+   Next step: [suggested command] — [context]
+     [1] Execute now
+     [2] Different command
+     [3] Done for now
+   ```
 
 ## Important Rules
 

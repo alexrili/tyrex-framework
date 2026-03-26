@@ -37,6 +37,14 @@ Read the per-feature state file `.tyrex/state/features/NNN.yml` for task trackin
 
 **One question at a time.** Present a single structured choice, then STOP and wait for the user's response before proceeding to the next question. Never combine multiple choice blocks in one message.
 
+## Guardrails Inline
+
+During fix execution (Step 8), read `templates/commands/shared/guardrails-inline.md` and apply its 10-rule compact constitution refresher. This ensures compliance during the fix loop.
+
+## Checkpoint Reminder
+
+During Step 8 (fix execution), apply periodic directive checkpoints per `templates/commands/shared/checkpoint-reminder.md`. After every N completed fix tasks (default: 2), inject the checkpoint reminder block before starting the next fix.
+
 ## The 6 Review Lenses
 
 Every review MUST evaluate the implementation through these 6 critical lenses, in order:
@@ -452,7 +460,15 @@ After all fixes are complete (or if no fixes were needed), check if the feature 
   - Sync updated/new skills: copy from `templates/skills/` to `.tyrex/skills/` and to all agent skill directories configured in the project
 - Final commit with documentation and skill updates
 - Update cursor.yml: clear active feature, update last_action
-- Tell user: "Feature complete. Run /tyrex-new for the next feature, or /tyrex-status for overview."
+- **Next action** (per `templates/commands/shared/next-action-map.md`):
+  - If backlog has `ready` items: "Feature NNN done. Backlog: N items ready. `/tyrex-backlog view` or `/tyrex-new`?"
+  - Otherwise: "Feature NNN done. `/tyrex-new` for next feature, or `/tyrex-status` for overview."
+  ```
+  Next step: [suggested command] — [context]
+    [1] Execute now
+    [2] Different command
+    [3] Done for now
+  ```
 
 ## Important Rules
 - ALWAYS check CHANGELOG.md is updated — it's mandatory

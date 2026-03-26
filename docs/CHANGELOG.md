@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.8.0] - 2026-03-26
+
+### Added
+- **Guardrails inline** — compact 10-rule constitution summary for long-context resilience. Executor commands (do, quick, review) reference it before each task (~120 tokens vs ~2000 for full re-read) (BL-002, ADR-015)
+- **Checkpoint reminder system** — periodic directive refresh every N tasks (default: 2, configurable via `tyrex.yml quality.checkpoint_interval`). Checklist verifies compliance before proceeding (BL-001, ADR-015)
+- **Next-action suggestions** — every command suggests the next logical step with session context upon completion. Structured choices: execute now, different command, or done. Command flow map in shared template (BL-004, ADR-015)
+- **`/tyrex-backlog` command** — structured backlog management with subcommands: add, edit, remove, view, plan, pick. Items in `.tyrex/backlog/items/BL-NNN.yml` with lifecycle (draft→ready→in-progress→done). Epics, phases, ROADMAP.md generation. Ready requires explicit human confirmation (BL-007, ADR-015)
+- **Backlog section in `/tyrex-status`** — shows item counts by status, epic summary
+- **Backlog awareness in `/tyrex-help`** — backlog command in reference, contextual suggestions
+- **Backlog in file structure** — `.tyrex/backlog/` added to CLAUDE.md file structure docs
+
 ## [1.7.0] - 2026-03-24
 
 ### Added

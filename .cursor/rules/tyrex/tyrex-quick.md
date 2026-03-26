@@ -52,6 +52,14 @@ Update `agent_mode` in `cursor.yml` at each transition.
 
 Before proceeding, check for crash signals per `templates/commands/shared/crash-detection.md`. Quick exit if: no `.tyrex/`, not on `feat/*` branch, or clean working tree. If crash signals detected: present "Inconsistent state detected. Run /tyrex-recover or continue anyway?" If `--auto`: log warning and continue.
 
+## Guardrails Inline
+
+Before executing any task (Step 4), read `templates/commands/shared/guardrails-inline.md` and apply its 10-rule compact constitution refresher. This ensures compliance even in long-context sessions.
+
+## Checkpoint Reminder
+
+During Step 4 (execution), apply periodic directive checkpoints per `templates/commands/shared/checkpoint-reminder.md`. After every N completed tasks (default: 2), inject the checkpoint reminder block before starting the next task.
+
 ## Behavior
 
 ### Step 1: Capture the Feature
@@ -116,7 +124,7 @@ This step produces:
 
 **All `/tyrex-do` steps execute in full.** Reference the `/tyrex-do` command for the complete step sequence: Steps 1-5.
 
-### Step 5: Summary
+### Step 5: Summary + Next Action
 
 After all tasks complete, present:
 ```
@@ -130,8 +138,14 @@ Files changed: [N]
 Tests: [N] passing
 Docs: [list generated docs]
 Version: [old] → [new]
+```
 
-Run /tyrex-review to review the implementation.
+**Next action** (per `templates/commands/shared/next-action-map.md`):
+```
+Next step: /tyrex-review — review the implementation
+  [1] Execute now
+  [2] Different command
+  [3] Done for now
 ```
 
 ## Escalation Rule
