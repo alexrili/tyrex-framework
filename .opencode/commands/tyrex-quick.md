@@ -1,10 +1,10 @@
 ---
-description: "Fast-track workflow — unified new/plan/do from a single prompt"
+description: "Fast-track workflow — unified new/plan/do/review from a single prompt"
 ---
 
 # /tyrex-quick - Fast-Track Workflow
 
-You are the Tyrex Framework orchestrator. The user wants to go from prompt to implementation in one command. This command **delegates to the full logic of `/tyrex-new`, `/tyrex-plan`, and `/tyrex-do`** — it does NOT reimplement or abbreviate them. The only difference from running them manually: confirmation/approval checkpoints are auto-accepted. All stages run in full. All artifacts are generated. All quality guardrails apply.
+You are the Tyrex Framework orchestrator. The user wants to go from prompt to reviewed implementation in one command. This command **delegates to the full logic of `/tyrex-new`, `/tyrex-plan`, `/tyrex-do`, and `/tyrex-review`** — it does NOT reimplement or abbreviate them. The only difference from running them manually: confirmation/approval checkpoints are auto-accepted. All stages run in full. All artifacts are generated. All quality guardrails apply.
 
 ## Agent Mode
 
@@ -201,9 +201,43 @@ This step produces:
 
 **All `/tyrex-do` steps execute in full.** Reference the `/tyrex-do` command for the complete step sequence: Steps 1-5.
 
+### Step 4b: Execute /tyrex-review internally
+
+After all implementation tasks are complete, run the full `/tyrex-review` logic in PR scope (branch diff):
+
+- Execute all 6 review lenses (Pattern Compliance, Code Quality & DRY, Business & Technical Compliance, Security First, Test Coverage, Documentation Consistency)
+- Scope: `git diff main...HEAD` (only this feature's changes)
+- Documentation finalization (Step 4 of review)
+- TYREX.md evolution (Step 5 of review)
+- Skill evolution (Step 5b of review)
+
+**With `--auto`:**
+- If **0 CRITICAL/HIGH findings:** auto-accept review, proceed to Step 5
+- If **CRITICAL/HIGH findings exist:** STOP and present findings. Even in auto mode, critical issues require attention.
+  ```
+  Review found issues requiring attention:
+    [!] CRITICAL  [description]
+    [!] HIGH      [description]
+
+    [1] Fix all — create rc- tasks and fix automatically
+    [2] Accept anyway — proceed with known issues
+    [3] Reject — revert to checkpoint
+  ```
+  If `--auto` + fix: auto-create rc- tasks, fix, re-review (loop until clean or 3 iterations max)
+
+**Without `--auto`:** Present the full review summary and decision choices per `/tyrex-review` Step 6-7. The user can approve, fix findings, save to backlog, or reject.
+
+**Review produces:**
+- 6-lens review summary with findings and severities
+- Documentation finalized
+- TYREX.md updated with new patterns/decisions
+- Skills evolved (if findings match skill domains)
+
+**All `/tyrex-review` steps execute in full.** Reference the `/tyrex-review` command for the complete step sequence: Steps 1-9. Skip Step 9 (Finalize) — that happens in Step 5 below after accept/reject.
+
 ### Step 5: Final Report + Accept/Reject
 
-After all tasks complete, present the consolidated report:
+After review completes, present the consolidated report:
 
 ```
 TYREX Quick — Final Report
@@ -213,12 +247,19 @@ Feature: NNN — [name]
 Source:  [backlog BL-NNN | new description]
 Branch:  feat/NNN-[slug]
 
-Tasks:   [N]/[N] completed
-Commits: [N]
-Files changed: [list]
-Tests:   [N passing | N/A]
-Docs:    [list generated]
-Version: [old] → [new]
+Implementation:
+  Tasks:   [N]/[N] completed
+  Commits: [N]
+  Files:   [N] changed
+  Tests:   [N passing | N/A]
+  Docs:    [list generated]
+  Version: [old] → [new]
+
+Review (6 lenses):
+  Findings: [N] (CRITICAL: [n], HIGH: [n], MEDIUM: [n], LOW: [n])
+  Compliance: [N]/[N] passed
+  TYREX.md:   [updated | no changes]
+  Skills:     [N updated | no changes]
 
 Checkpoint: tyrex-checkpoint-NNN (revert point)
 ═══════════════════════════════════════
