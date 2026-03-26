@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.10.0] - 2026-03-26
+
+### Added
+- **Git semantic commits** — plan-mode commands (discuss, backlog, plan) auto-commit `.tyrex/` changes with semantic prefixes (`backlog:`, `discuss:`, `plan:`, `feat:`, `evolve:`, `context:`). Configurable via `tyrex.yml` `git.auto_commit_state` (auto/batch/off) (BL-014)
+- **Git auto-tags on milestones** — `tyrex-feature-NNN-done` on review approval, `tyrex-vX.Y.Z` on version bump, `tyrex-phase-N-done` on backlog phase completion. Configurable via `tyrex.yml` `git.auto_tag` (BL-014/BL-015)
+- **Shared template `git-semantic-commits.md`** — canonical reference for commit prefixes, tag patterns, and configuration rules
+- **Config: `git.auto_commit_state`** and **`git.auto_tag`** in `tyrex.yml`
+
 ## [1.9.0] - 2026-03-26
 
 ### Added

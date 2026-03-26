@@ -262,6 +262,10 @@ When ALL tasks are `completed` (including any doc fix tasks from Step 4b):
     [3] Done for now
   ```
 
+## Git Auto-Tags
+
+Version tags are created automatically per `templates/commands/shared/git-semantic-commits.md`. When a version bump is committed (execution-checklist step 6e/g2), a `tyrex-vX.Y.Z` tag is created if `tyrex.yml` `git.auto_tag` is `true`.
+
 ## Important Rules
 - NEVER skip tests. If tests fail, the task is NOT complete.
 - NEVER make a commit that breaks CI

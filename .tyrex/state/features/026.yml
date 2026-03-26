@@ -1,0 +1,7 @@
+feature_id: 26
+name: "git-semantic-commits-tags"
+feature_file: ".tyrex/features/026-git-semantic-commits-tags.md"
+branch: "feat/026-git-semantic-commits-tags"
+status: "spec"
+tasks_summary: null
+created_at: "2026-03-26T00:00:00Z"

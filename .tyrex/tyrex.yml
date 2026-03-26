@@ -53,3 +53,5 @@ git:
   branch_prefix: "feat/"
   commit_style: "conventional"   # "conventional" | "descriptive"
   auto_push: false                   # Never auto-push by default
+  auto_commit_state: "auto"          # "auto" (commit after each op) | "batch" (commit at command end) | "off" (manual)
+  auto_tag: true                     # Create tyrex-* tags on milestones (feature done, version bump, phase done)

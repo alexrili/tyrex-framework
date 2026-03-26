@@ -42,6 +42,7 @@ For EACH task, execute this sequence:
       - If tests fail + interactive: present fix/skip/abort choices
       - If no test runner: skip with note in `--auto`, ask in interactive
    g. **Commit** — auto in `--auto` mode, present diff+message for approval otherwise
+   g2. **Auto-tag version** — if a version bump was applied in step 6e AND `tyrex.yml` `git.auto_tag` is `true`: after the commit, create tag `tyrex-vX.Y.Z` (per `templates/commands/shared/git-semantic-commits.md`). Check if tag exists first (`git tag -l`) — skip if already present.
    h. **Checkpoint: task complete** — clear `current_task_in_progress`, `in_progress_since`, `in_progress_files_touched` from per-feature state. Update `last_task_completed`, `tasks_summary`.
    i. **Auto-update TYREX.md** — if ADR/PRD/SRS generated, add summary to appropriate section
    j. **Checkpoint reminder** — increment `_checkpoint_counter`. If it reaches the configured interval, inject the directive refresh block from `templates/commands/shared/checkpoint-reminder.md` before starting the next task. Reset counter to 0 after injection.

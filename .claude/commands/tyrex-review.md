@@ -453,6 +453,7 @@ After all fixes are complete (or if no fixes were needed), check if the feature 
 
 ### Step 9: Finalize
 
+- **Auto-tag feature done:** If `tyrex.yml` `git.auto_tag` is `true`, create tag `tyrex-feature-NNN-done` (per `templates/commands/shared/git-semantic-commits.md`). Check if tag exists first — skip if already present.
 - Update feature spec status to `done`
 - Update `.tyrex/roadmap.yml`: set this feature's status to `done`
 - If skill files were modified or created in Step 5b:

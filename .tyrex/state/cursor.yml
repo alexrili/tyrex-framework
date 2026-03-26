@@ -5,10 +5,10 @@ session_id: null
 # Agent mode controls what the agent can do.
 # "plan"  — read, analyze, discuss, plan. MUST NOT write source code.
 # "build" — implement, test, commit. May write source code following TDD and commit rules.
-agent_mode: "plan"  # set by /tyrex-review (2026-03-26)
+agent_mode: "build"  # set by /tyrex-quick (2026-03-26)
 
 # Last active feature — fallback for Feature Context Resolution
-last_active_feature: 25
+last_active_feature: 26
 
 # Legacy fields (kept for backward compatibility during transition)
 active_feature: null
