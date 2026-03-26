@@ -1,0 +1,7 @@
+feature_id: 25
+name: "discuss-backlog-integration"
+feature_file: ".tyrex/features/025-discuss-backlog-integration.md"
+branch: "feat/025-discuss-backlog-integration"
+status: "spec"
+tasks_summary: null
+created_at: "2026-03-26T00:00:00Z"

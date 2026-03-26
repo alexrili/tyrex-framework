@@ -11,6 +11,11 @@ You are the Tyrex Framework orchestrator. The user wants to explore, understand,
 This command runs in **plan** mode. Set `agent_mode: "plan"` in `cursor.yml` as the FIRST action.
 You MUST NOT write source code or modify any project files. Read-only exploration and discussion only.
 
+## Parameters
+
+- **`/tyrex-discuss`** (default) — Open-ended project discussion
+- **`/tyrex-discuss --backlog BL-NNN`** — Focus discussion on a specific backlog item. Loads the item's context (description, acceptance criteria, epic, phase) and scopes the conversation to enriching that item.
+
 ## Feature Context Resolution
 
 **This command can operate with or without an active feature.** If a feature is active (resolved via branch detection or `--feature` flag), use it for scoping. Otherwise, operate project-wide.
@@ -46,6 +51,49 @@ Ready. Ask me anything about [the project | what you want to build].
 Type "save" at any time to persist a conclusion.
 Type "done" to end the discussion.
 ```
+
+### Step 1b: Backlog-focused mode (if `--backlog BL-NNN`)
+
+If the `--backlog` flag is provided:
+
+1. **Load the item:** Read `.tyrex/backlog/items/BL-NNN.yml`. If not found, warn and fall back to open discuss.
+2. **Load the epic:** If the item has an `epic` field, read `.tyrex/backlog/epics/EP-NNN.yml` for broader context.
+3. **Present the focus:**
+   ```
+   Discuss mode: Backlog Item
+   Item: BL-NNN — [title]
+   Status: [status] | Priority: [priority] | Effort: [effort]
+   Epic: [epic title] (Phase [N])
+
+   Description:
+     [item description]
+
+   Acceptance Criteria:
+     [list or "none yet"]
+
+   Focus: exploring and enriching this item.
+   I can help with: refining the description, defining acceptance criteria,
+   discussing technical approach, estimating effort, or identifying dependencies.
+
+   Type "enrich" to update the item with our conclusions.
+   Type "done" to end.
+   ```
+4. **Scope the conversation:** All responses should relate to the backlog item. When the user asks questions, ground answers in the item's context and the project's codebase.
+5. **Enrichment flow:** When the user says "enrich", "update", or "save to item":
+   - Draft updated fields (description, acceptance_criteria, effort, priority — only fields that changed)
+   - Present the diff for confirmation:
+     ```
+     Update BL-NNN:
+       description: [old → new summary]
+       acceptance_criteria: [added N items]
+       effort: [unchanged or old → new]
+
+       [1] Apply updates
+       [2] Edit before applying
+       [3] Cancel
+     ```
+   - If approved: write the updated `.tyrex/backlog/items/BL-NNN.yml`
+   - Note: this is allowed in plan mode — backlog files are `.tyrex/` state, not source code
 
 ### Step 2: Skill loading
 
@@ -102,6 +150,47 @@ Confirm or adjust:
 - Combine both behaviors. Explore what exists, discuss what's next.
 - "You have X and Y implemented. What's the next area you want to tackle?"
 
+### Step 3b: Proactive backlog offer (mid-conversation)
+
+During the discussion loop, watch for **actionable ideas** — statements that describe something to build, fix, improve, or explore later. Indicators:
+- "we should...", "it would be nice to...", "another thing to consider..."
+- "that's a good idea for later", "let's add that to the list"
+- Concrete feature descriptions, improvement proposals, or technical debt observations
+- The user explicitly asks to save something
+
+**When an actionable idea is detected:**
+
+1. **Do NOT interrupt the flow.** Finish responding to the user's message naturally.
+2. **Append a non-intrusive offer at the end of your response:**
+   ```
+   💡 That sounds like a backlog item. Save to backlog? [y/N]
+   ```
+3. **If the user says yes:**
+   - Auto-generate a structured item:
+     ```
+     New backlog item from discussion:
+       Title: [extracted from the idea]
+       Description: [1-3 sentences summarizing the idea]
+       Acceptance criteria:
+         - [extracted from context]
+       Priority: [suggested based on discussion tone]
+       Epic: [suggested if matches existing epic, or "none"]
+
+       [1] Save as-is
+       [2] Edit before saving
+       [3] Cancel
+     ```
+   - Save to `.tyrex/backlog/items/BL-NNN.yml` (next available ID)
+   - Continue the discussion — do NOT end the conversation
+4. **If the user says no or ignores:** continue normally. Do NOT ask again for the same idea.
+
+**Frequency control:** Do NOT offer more than once every 3-4 exchanges. If you already offered recently and the user declined, wait longer. The goal is to be helpful, not annoying.
+
+**Never offer when:**
+- The user is asking a question (not proposing an idea)
+- The idea is vague or speculative ("maybe someday...")
+- The user is in the middle of a thought (wait for a natural pause)
+
 ### Step 4: Persistence (user-initiated only)
 
 Conclusions are NOT persisted automatically. When the user says "save", "persist", "save this", or "record this":
@@ -115,10 +204,11 @@ What to save?
 ```
 
 2. **Ask where to save:**
+   - **Backlog** — save as a new backlog item in `.tyrex/backlog/items/BL-NNN.yml` (auto-generate structured item with title, description, acceptance criteria)
    - **Context** — save as a context file via `/tyrex-context add` flow
      - Ask scope: project-level (`.tyrex/context/`) or feature-level (`.tyrex/features/NNN-context.md`)
    - **TYREX.md** — update project patterns, architecture, stack, or decisions via `/tyrex-evolve` flow
-   - **Both** — save detailed context AND update TYREX.md summary
+   - **Multiple** — save to more than one target
 
 3. **Generate and confirm:**
    - Draft the content to be saved.
