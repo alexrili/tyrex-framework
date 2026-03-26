@@ -301,6 +301,15 @@ Next step: /tyrex-do — start implementation
   [3] Done for now
 ```
 
+## Git Semantic Commits
+
+After saving the plan (Step 6-7), auto-commit per `templates/commands/shared/git-semantic-commits.md`:
+
+- **Plan approved:** `plan: approve — N tasks for feature NNN`
+- **Plan modified:** `plan: modify — [summary of changes]`
+
+Check `tyrex.yml` `git.auto_commit_state` before committing. If `off`, skip silently.
+
 ## Important Rules
 - **No artificial task count limit.** Task count scales with feature complexity. A simple bug fix may need 2 tasks; a complex feature may need 30+. Each case is different.
 - **Granularity over brevity.** Prefer many small precise tasks over few large vague ones. Each task should be implementable in ONE focused commit.

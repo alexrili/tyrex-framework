@@ -238,6 +238,16 @@ When the user says "done", "exit", "end", or starts a different `/tyrex-*` comma
      [3] Done for now
    ```
 
+## Git Semantic Commits
+
+After any operation that modifies `.tyrex/` files (saving conclusions, enriching backlog items, creating backlog items from proactive offers), auto-commit per `templates/commands/shared/git-semantic-commits.md`:
+
+- **Save conclusions → context:** `discuss: save conclusions — [topic summary]`
+- **Enrich backlog item:** `discuss: enrich BL-NNN — [what changed]`
+- **Create backlog item from proactive offer:** `discuss: add BL-NNN — [item title]`
+
+Check `tyrex.yml` `git.auto_commit_state` before committing. If `off`, skip silently.
+
 ## Important Rules
 
 - **This is a CONVERSATION, not a one-shot command.** Stay in the discussion loop until the user exits.
