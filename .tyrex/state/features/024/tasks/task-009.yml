@@ -1,0 +1,16 @@
+task_id: "feat-024-task-009"
+feature: "024-command-resilience-backlog"
+name: "ADR + CHANGELOG + version bump + agent sync"
+status: "pending"
+depends_on: [5, 6, 7, 8]
+unlocks: []
+parallel: false
+security: "none"
+skill: "backend-engineer.md"
+quality: "optional"
+spec_file: "docs/specs/024-task-009-finalize.md"
+started_at: null
+finished_at: null
+commit: null
+files_changed: []
+output: null

@@ -1,0 +1,16 @@
+task_id: "feat-024-task-008"
+feature: "024-command-resilience-backlog"
+name: "Update help, status, CLAUDE.md with backlog references"
+status: "pending"
+depends_on: [4, 6, 7]
+unlocks: [9]
+parallel: false
+security: "none"
+skill: "backend-engineer.md"
+quality: "optional"
+spec_file: "docs/specs/024-task-008-backlog-refs.md"
+started_at: null
+finished_at: null
+commit: null
+files_changed: []
+output: null

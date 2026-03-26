@@ -1,0 +1,25 @@
+id: BL-016
+title: "Roadmap visual no quick antes de executar"
+status: draft
+priority: high
+epic: EP-002
+effort: S
+phase: 4
+description: |
+  Antes de executar, /tyrex-quick mostra fluxograma visual:
+  - Quais BL-items serão atacados
+  - Quais features serão criadas
+  - Quais tasks serão geradas (estimativa)
+  - Ordem de execução
+  - Dependências entre items
+
+  Usuário vê o plano inteiro antes de confirmar. Pode ajustar escopo.
+acceptance_criteria:
+  - Quick apresenta roadmap visual antes de iniciar
+  - Mostra BL-items, features estimadas, tasks estimadas
+  - Mostra ordem e dependências
+  - Usuário confirma ou ajusta escopo antes de executar
+  - Formato visual claro (ASCII flowchart ou tree)
+origin: "discuss session 2026-03-26"
+created: "2026-03-26"
+feature_id: null

@@ -1,0 +1,19 @@
+id: BL-002
+title: "Guardrails inline nos comandos executores"
+status: draft
+priority: high
+epic: EP-001
+effort: S
+phase: 1
+description: |
+  Cada comando que executa tarefas (do, quick, review) ter um bloco compacto de regras
+  críticas (constitution summary) embutido. Não depende da memória do agente sobre o
+  início da conversa. O bloco é auto-contido e sempre presente.
+acceptance_criteria:
+  - Todo comando executor tem constitution summary embutido
+  - Summary é compacto (< 20 linhas)
+  - Cobre regras críticas: TDD, commits atômicos, changelog, docs, security
+  - Não depende de contexto anterior na conversa
+origin: "discuss session 2026-03-26"
+created: "2026-03-26"
+feature_id: null

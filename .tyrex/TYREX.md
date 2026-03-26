@@ -106,6 +106,13 @@ Tyrex auto-detects installed agents by scanning for their config directories. Co
 - **Forensic crash recovery:** `/tyrex-recover` replaces `/tyrex-resume`. Evidence-based state reconstruction from git diff + `.tyrex/` state instead of trusting cursor.yml alone. Three crash signals: dirty_tree_stale_cursor, task_state_mismatch, timestamp_drift. Two modes: crash recovery (forensics → diagnostic → user choices → auto-fix) and normal resume (fast-path when no crash detected). Shared crash detection in `templates/commands/shared/crash-detection.md`. (ADR-013)
 - **Pre-flight crash detection:** All 11 feature-operating commands include a lightweight crash detection pre-flight check (< 2s) before `## Behavior`. Detects inconsistent state proactively. Skips silently when clean. Commands with `--auto` flags log warning and continue. Standalone commands (init, help, debug, research, security-review, test-review, readme, openapi, wiki) are excluded.
 - **Session recovery hierarchy:** Three layers: (1) per-feature state file is primary recovery point, (2) cursor.yml is secondary (global pointer), (3) task state files are tertiary (individual status). If all state is lost, git log + branch name + feature spec can reconstruct enough to resume.
+- **Backlog system:** `.tyrex/backlog/` stores structured backlog items (items/BL-NNN.yml), epics (epics/EP-NNN.yml), and ROADMAP.md. Items have lifecycle: draft→ready→in-progress→done|discarded. Ready requires explicit human confirmation. Items become features when picked for execution. Single command `/tyrex-backlog` with subcomandos: add, edit, remove, view, plan, pick.
+- **Discuss ↔ Backlog integration:** `/tyrex-discuss` creates backlog items from conclusions, enriches existing items (`--backlog BL-NNN`), reorganizes roadmap. Bidirectional — backlog can initiate focused discuss.
+- **5 core commands:** User-facing flow simplified to discuss, backlog, quick, status, recover. Other commands (new, plan, do, review) are internal — activated by the framework automatically.
+- **Git as audit trail:** Discuss, backlog, and plan commands generate semantic commits (.tyrex/ only): `backlog: add BL-007`, `discuss: enrich BL-005`, `plan: roadmap v2`. Complete decision history via git log.
+- **Quick pipeline with visual roadmap:** `/tyrex-quick` shows visual roadmap (tasks + BL-items) before executing. Presents consolidated final report. Without `--auto`: commits but waits for accept/reject. Rejection triggers safe revert via git.
+- **Safe revert via git:** Safe-points (branch, tags, checkpoints) enable full rollback of rejected executions. No data lost — commits preserved in reflog or branch.
+- **Prompt structuring:** Framework never loses an idea — always offers to save actionable ideas to backlog during discuss.
 
 ## Environment Variables
 
@@ -167,6 +174,11 @@ Tyrex auto-detects installed agents by scanning for their config directories. Co
 | 2026-03-23 | External tracker integration via MCP (ADR-012) | Bidirectional sync with Jira/Linear/GitHub Issues via MCP-only. No new commands — woven into 6 existing commands. Forward-only status (max push: `review`, never `done`). Provider-agnostic. Zero dependencies. |
 | 2026-03-24 | Forensic crash recovery replacing resume (ADR-013) | `/tyrex-recover` replaces `/tyrex-resume`. Evidence-based state reconstruction from git diff + `.tyrex/` state. Pre-flight crash detection in all commands. Auto-fix with user confirmation. Three crash signals: dirty tree + stale cursor, task state mismatch, timestamp drift. |
 | 2026-03-24 | Quick as orchestrator + Doc Impact Analysis (ADR-014) | `/tyrex-quick` rewritten as orchestrator delegating to full `new→plan→do` (auto-approve only, no stages skipped). Doc Impact Analysis shared algorithm scans README, wiki, OpenAPI, diagrams, config files for drift. Integrated into plan (predictive), do (post-implementation), review (Lens 6). Auto-creates fix tasks on inconsistency. |
+| 2026-03-26 | Backlog system with structured items and roadmap | `.tyrex/backlog/` with items (BL-NNN.yml), epics (EP-NNN.yml), ROADMAP.md. Lifecycle: draft→ready→in-progress→done. Ready = human confirmation only. Single `/tyrex-backlog` command with subcommands. Bidirectional discuss↔backlog integration. |
+| 2026-03-26 | 5 core commands UX simplification | User flow: discuss, backlog, quick, status, recover. Internal commands (new, plan, do, review) activated by framework. Reduces cognitive load. |
+| 2026-03-26 | Git as project audit trail | Semantic commits for decisions/discussions/planning (.tyrex/ only). Git tags for milestones. Git log as complementary recovery source. Tyrex + Git + LLM = quality development triad. |
+| 2026-03-26 | Quick visual roadmap + accept/reject | Quick shows visual roadmap before executing. Final consolidated report. Accept/reject flow with safe git revert on rejection. |
+| 2026-03-26 | Command resilience + backlog system (ADR-015) | Guardrails inline (~120 tokens), checkpoint reminders every N tasks, next-action suggestions on all commands. `/tyrex-backlog` command with CRUD, epics, roadmap. Command count: 23 (was 22). |
 
 ## CI/CD
 

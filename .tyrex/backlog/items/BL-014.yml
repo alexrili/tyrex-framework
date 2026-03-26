@@ -1,0 +1,25 @@
+id: BL-014
+title: "Commit de decisões e discussões"
+status: draft
+priority: high
+epic: EP-004
+effort: M
+phase: 3
+description: |
+  Discuss, backlog e plan geram commits de contexto (.tyrex/ only, nunca código).
+  Mensagens de commit semânticas:
+  - backlog: add BL-007 — Comando /tyrex-backlog
+  - discuss: enrich BL-005 — pipeline completo
+  - plan: roadmap v2 — reorder phases
+  - backlog: ready BL-001 — checkpoint system confirmed
+
+  Audit trail completo via git log. Tudo rastreável.
+acceptance_criteria:
+  - Comandos de planejamento geram commits automaticamente
+  - Commits são .tyrex/ only — nunca código
+  - Mensagens seguem prefixo semântico (backlog:, discuss:, plan:)
+  - Git log mostra histórico completo de decisões
+  - Configurável: auto-commit ou batch
+origin: "discuss session 2026-03-26"
+created: "2026-03-26"
+feature_id: null

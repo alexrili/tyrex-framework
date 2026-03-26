@@ -1,0 +1,19 @@
+id: BL-004
+title: "Next-action suggestion ao finalizar comandos"
+status: draft
+priority: high
+epic: EP-002
+effort: S
+phase: 1
+description: |
+  Todo comando ao finalizar sugere o próximo comando com o contexto já montado.
+  Ex: "Plan concluído. Próximo: /tyrex-do — 5 tasks prontas. Executar? [Y/n]"
+  Usuário só confirma ou ajusta. Fluxo contínuo sem precisar lembrar comandos.
+acceptance_criteria:
+  - Todo comando sugere próximo passo ao finalizar
+  - Sugestão inclui contexto relevante (quantas tasks, qual feature, etc.)
+  - Usuário pode aceitar, ajustar, ou ignorar
+  - Sugestões seguem o fluxo natural: new > plan > do > review
+origin: "discuss session 2026-03-26"
+created: "2026-03-26"
+feature_id: null

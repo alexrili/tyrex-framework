@@ -1,0 +1,16 @@
+task_id: "feat-024-task-001"
+feature: "024-command-resilience-backlog"
+name: "Create guardrails-inline.md shared template"
+status: "pending"
+depends_on: []
+unlocks: [6]
+parallel: true
+security: "none"
+skill: "backend-engineer.md"
+quality: "optional"
+spec_file: "docs/specs/024-task-001-guardrails-inline.md"
+started_at: null
+finished_at: null
+commit: null
+files_changed: []
+output: null

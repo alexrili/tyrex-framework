@@ -47,7 +47,8 @@ TYREX Help
   Fast Track:
     /tyrex-quick      Unified new→plan→do from a single prompt [--auto]
 
-  Management:
+  Backlog & Management:
+    /tyrex-backlog    Manage backlog — add, view, plan, pick items [add|view|plan|pick|BL-NNN]
     /tyrex-status     Show current project and feature status
     /tyrex-recover    Recover from crashed session or resume from last session
     /tyrex-settings   View/modify Tyrex configuration
@@ -129,7 +130,7 @@ Based on the current state, suggest the next action. Use EXACTLY ONE of these:
   > "You haven't initialized Tyrex in this project yet. Run `tyrex init` in your terminal to create the project structure, then `/tyrex-init` to map your codebase."
 
 - **`.tyrex/` exists but no active feature (or last feature is `done`):**
-  > "Tyrex is initialized. Use `/tyrex-new` to start a new feature, or `/tyrex-quick` for a fast-track task."
+  > "Tyrex is initialized. Use `/tyrex-backlog view` to check your backlog, `/tyrex-new` to start a new feature, or `/tyrex-quick` for a fast-track task."
 
 - **Active feature with status `spec` (no plan yet):**
   > "You have a feature spec ready. Run `/tyrex-plan` to plan the implementation tasks."
@@ -160,7 +161,7 @@ All resolve to the same command.
 #### Step 1: Identify the command
 
 Strip any `/tyrex-` or `tyrex-` prefix from the argument. Match against the known commands:
-`init`, `new`, `plan`, `do`, `review`, `quick`, `status`, `resume`, `settings`, `evolve`, `skills`, `context`, `discuss`, `debug`, `research`, `readme`, `openapi`, `wiki`, `help`
+`init`, `new`, `plan`, `do`, `review`, `quick`, `backlog`, `status`, `resume`, `settings`, `evolve`, `skills`, `context`, `discuss`, `debug`, `research`, `readme`, `openapi`, `wiki`, `help`
 
 Also match deprecated: `handoff` → redirect to `quick`.
 
@@ -258,11 +259,19 @@ Use the reference below for each command:
 
 **quick:**
 - What: Fast-track workflow — unified new/plan/do from a single prompt. Same quality guardrails, fewer steps. All decisions via structured choices.
-- Flags: `--auto` (full autopilot from prompt to implementation)
+- Flags: `--auto` (full autopilot from prompt to implementation), `--backlog` (execute all ready backlog items sequentially)
 - When: Bug fixes, config tweaks, small features — anything that doesn't need extensive ceremony but still needs quality.
 - Steps: Capture feature (choices) → Quick config (choices) → Skill + security check → Quick plan (choices) → Execute (same as /tyrex-do) → Update TYREX.md
 - Prerequisites: `.tyrex/` initialized
 - Next: `/tyrex-review` (optional) or done
+
+**backlog:**
+- What: Manages the backlog — structured ideas waiting for implementation. CRUD operations on items, epic organization, roadmap planning, and pick for execution.
+- Flags: `add`, `edit BL-NNN`, `remove BL-NNN`, `view`, `plan`, `pick`, `BL-NNN` (detail), `all`
+- When: You have ideas to capture, organize, or want to pick the next thing to work on.
+- Steps: (view) List items with filters. (add) Describe idea → auto-structure → confirm. (plan) Organize into epics/phases → generate ROADMAP.md. (pick) Select ready item → hand off to /tyrex-quick or /tyrex-new.
+- Prerequisites: `.tyrex/` initialized
+- Next: `/tyrex-quick` (to execute picked item) or `/tyrex-discuss --backlog BL-NNN` (to enrich)
 
 **status:**
 - What: Shows a comprehensive dashboard: features, active tasks, project roadmap, health diagnostics, documentation coverage, and actionable suggestions.

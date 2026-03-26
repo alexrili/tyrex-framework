@@ -1,0 +1,19 @@
+id: BL-010
+title: "Integração review > backlog"
+status: draft
+priority: medium
+epic: EP-003
+effort: S
+phase: 5
+description: |
+  /tyrex-review pode gerar items de backlog a partir de findings.
+  Melhorias, débito técnico, gaps de qualidade viram items draft.
+  Oferece ao usuário: "Criar item de backlog para este finding?"
+acceptance_criteria:
+  - Review oferece criar backlog item por finding
+  - Items criados com referência ao finding de origem
+  - Só cria com confirmação do usuário
+  - Items criados como draft com priority baseada na severidade
+origin: "discuss session 2026-03-26"
+created: "2026-03-26"
+feature_id: null

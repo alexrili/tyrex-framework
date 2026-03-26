@@ -1,0 +1,25 @@
+id: BL-015
+title: "Git como memória do projeto"
+status: draft
+priority: medium
+epic: EP-004
+effort: L
+phase: 3
+description: |
+  Explorar uso avançado de git como fonte de verdade:
+  - Git log como fonte para recovery (complementa cursor.yml)
+  - Git diff para detectar drift entre estado e código
+  - Git tags para milestones de roadmap (tyrex-phase-1-done, etc.)
+  - Branch history para rastrear evolução de ideias
+  - Reflog como safety net
+
+  Unir propósito do Tyrex + features do git + poder da LLM.
+acceptance_criteria:
+  - Recovery usa git log como fonte complementar
+  - Tags criadas automaticamente em milestones
+  - Branch naming conventions documentadas
+  - Git usado como safety net para reverts
+  - Documentação de como git + tyrex + llm se complementam
+origin: "discuss session 2026-03-26"
+created: "2026-03-26"
+feature_id: null

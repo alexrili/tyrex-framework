@@ -1,0 +1,16 @@
+task_id: "feat-024-task-005"
+feature: "024-command-resilience-backlog"
+name: "Update execution-checklist.md with checkpoints"
+status: "pending"
+depends_on: [2]
+unlocks: []
+parallel: true
+security: "none"
+skill: "backend-engineer.md"
+quality: "optional"
+spec_file: "docs/specs/024-task-005-checklist-checkpoints.md"
+started_at: null
+finished_at: null
+commit: null
+files_changed: []
+output: null

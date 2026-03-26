@@ -1,0 +1,16 @@
+task_id: "feat-024-task-003"
+feature: "024-command-resilience-backlog"
+name: "Create next-action-map.md shared template"
+status: "pending"
+depends_on: []
+unlocks: [6, 7]
+parallel: true
+security: "none"
+skill: "backend-engineer.md"
+quality: "optional"
+spec_file: "docs/specs/024-task-003-next-action-map.md"
+started_at: null
+finished_at: null
+commit: null
+files_changed: []
+output: null

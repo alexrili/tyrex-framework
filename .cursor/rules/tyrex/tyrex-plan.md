@@ -291,7 +291,15 @@ Update cursor.yml:
 - `agent_mode`: "plan"
 - `last_action`: "plan_approved"
 
-Tell the user: "Plan approved. Run /tyrex-do to start implementation."
+**Next action** (per `templates/commands/shared/next-action-map.md`):
+```
+Plan approved. N tasks ready — Wave 1: [task names].
+
+Next step: /tyrex-do — start implementation
+  [1] Execute now
+  [2] Different command
+  [3] Done for now
+```
 
 ## Important Rules
 - **No artificial task count limit.** Task count scales with feature complexity. A simple bug fix may need 2 tasks; a complex feature may need 30+. Each case is different.

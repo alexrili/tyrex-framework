@@ -1,0 +1,21 @@
+id: BL-009
+title: "Integração backlog > execução"
+status: draft
+priority: high
+epic: EP-003
+effort: M
+phase: 4
+description: |
+  /tyrex-new e /tyrex-quick oferecem items ready do backlog como primeira opção.
+  /tyrex-quick com --backlog executa items ready sequencialmente.
+  Status do item atualiza automaticamente ao longo do pipeline:
+  draft > ready > in-progress > done | discarded
+acceptance_criteria:
+  - /tyrex-new lista items ready do backlog como opção
+  - /tyrex-quick --backlog executa items sequencialmente
+  - Status atualiza automaticamente durante execução
+  - Item ganha feature_id quando vira feature
+  - Items done não aparecem mais nas sugestões
+origin: "discuss session 2026-03-26"
+created: "2026-03-26"
+feature_id: null

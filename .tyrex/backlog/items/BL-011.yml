@@ -1,0 +1,20 @@
+id: BL-011
+title: "Fluxo de 5 comandos core"
+status: draft
+priority: medium
+epic: EP-005
+effort: M
+phase: 5
+description: |
+  Reestruturar documentação e sugestões para que o usuário opere com 5 comandos:
+  discuss, backlog, quick, status, recover.
+  Demais comandos (new, plan, do, review, etc.) são internos — ativados pelo framework.
+  O usuário não precisa saber que existem para ter um fluxo completo.
+acceptance_criteria:
+  - Documentação reflete 5 comandos core
+  - Help prioriza 5 comandos core
+  - Comandos internos ainda acessíveis mas não prominentes
+  - Fluxo completo possível sem usar comandos internos diretamente
+origin: "discuss session 2026-03-26"
+created: "2026-03-26"
+feature_id: null

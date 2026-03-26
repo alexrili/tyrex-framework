@@ -1,0 +1,9 @@
+id: EP-003
+title: "Sistema de Backlog e Roadmap"
+description: |
+  Estruturar ideias em backlog, agrupar em épicos, priorizar, e integrar com o fluxo existente.
+  CRUD completo, integração bidirecional com discuss, execução via quick, review gera backlog.
+items: [BL-007, BL-008, BL-009, BL-010, BL-013]
+phase: [2, 4]
+created: "2026-03-26"
+origin: "discuss session 2026-03-26"

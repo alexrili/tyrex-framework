@@ -1,0 +1,16 @@
+task_id: "feat-024-task-002"
+feature: "024-command-resilience-backlog"
+name: "Create checkpoint-reminder.md shared template"
+status: "pending"
+depends_on: []
+unlocks: [5]
+parallel: true
+security: "none"
+skill: "backend-engineer.md"
+quality: "optional"
+spec_file: "docs/specs/024-task-002-checkpoint-reminder.md"
+started_at: null
+finished_at: null
+commit: null
+files_changed: []
+output: null

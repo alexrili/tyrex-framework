@@ -1,0 +1,28 @@
+id: BL-007
+title: "Comando /tyrex-backlog"
+status: draft
+priority: high
+epic: EP-003
+effort: L
+phase: 2
+description: |
+  CRUD completo para items de backlog com subcomandos:
+  - add: cria novo item (draft)
+  - edit: modifica item existente
+  - remove: remove item (com confirmação)
+  - view: lista items com filtros (status, epic, phase, priority)
+  - plan: organiza items em épicos, define phases, gera/atualiza ROADMAP.md
+  - pick: seleciona item ready para execução via /tyrex-new ou /tyrex-quick
+
+  Aceita escopo: BL-NNN (item específico) ou all (backlog inteiro).
+  Plan mode — nunca escreve código.
+acceptance_criteria:
+  - Todos os subcomandos funcionais (add, edit, remove, view, plan, pick)
+  - Filtros no view: por status, epic, phase, priority
+  - Plan gera/atualiza ROADMAP.md automaticamente
+  - Pick integra com /tyrex-new e /tyrex-quick
+  - Escopo avulso (BL-NNN) e completo (all)
+  - Plan mode enforced
+origin: "discuss session 2026-03-26"
+created: "2026-03-26"
+feature_id: null

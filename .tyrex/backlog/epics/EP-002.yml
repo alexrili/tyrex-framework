@@ -1,0 +1,9 @@
+id: EP-002
+title: "Fluxo Contínuo e Sequencial"
+description: |
+  Após cada comando, recomendar e engatilhar o próximo passo para um fluxo contínuo.
+  Quick como pipeline completo com roadmap visual, relatório final, e revert seguro.
+items: [BL-004, BL-005, BL-006, BL-016]
+phase: [1, 4]
+created: "2026-03-26"
+origin: "discuss session 2026-03-26"
