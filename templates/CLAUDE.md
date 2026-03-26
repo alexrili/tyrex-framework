@@ -23,6 +23,7 @@ This project uses the Tyrex Framework for human-driven, AI-accelerated pair prog
 | `/tyrex-status` | Show current project and feature status |
 | `/tyrex-recover` | Recover from crashed session or resume from last session |
 | `/tyrex-quick` | Quick task without full ceremony (bug fixes, tweaks) |
+| `/tyrex-backlog` | Manage backlog — add, view, plan, pick items for execution |
 | `/tyrex-evolve` | Update TYREX.md with new patterns/knowledge |
 | `/tyrex-handoff` | Deterministic autopilot (chains new→plan→do→review) |
 | `/tyrex-skills` | Manage and apply reusable skills |
@@ -58,6 +59,7 @@ This project uses the Tyrex Framework for human-driven, AI-accelerated pair prog
 ├── state/
 │   ├── cursor.yml     # Session pointer (READ THIS THIRD)
 │   └── tasks/         # Individual task states
+├── backlog/           # Backlog items, epics, and ROADMAP.md
 ├── features/          # Feature specs
 ├── templates/         # Document templates
 ├── skills/            # Reusable skills (synced across agents)
