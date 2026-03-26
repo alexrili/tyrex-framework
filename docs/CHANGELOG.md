@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.12.0] - 2026-03-26
+
+### Added
+- **Compliance audit** — execution checklist runs post-completion audit verifying CHANGELOG, version bump, tests, SPECs, state, and settings compliance. Critical gaps block commit (BL-003)
+- **Review → backlog integration** — `/tyrex-review` Step 7 offers "Save to backlog" option, creating draft items from findings with severity-based priority and review origin tracking (BL-010)
+- **5 core commands UX** — `/tyrex-help` restructured to highlight 5 core commands (discuss, backlog, quick, status, recover). Advanced commands grouped separately. Workflow paths updated to reflect recommended flow (BL-011)
+
 ## [1.11.0] - 2026-03-26
 
 ### Added

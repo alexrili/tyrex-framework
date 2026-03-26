@@ -377,12 +377,44 @@ What would you like to do?
   [ ] Fix all findings — create tasks for all [N] findings
   [ ] Fix critical only — create tasks for [N] CRITICAL/HIGH findings
   [ ] Cherry-pick findings — select which to fix
+  [ ] Save to backlog — create backlog items for selected findings (for later)
   [ ] Request re-review — after manual fixes
 ```
 
 If **"Approve"**: go to Step 9 (Finalize).
 If **"Fix all/critical/cherry-pick"**: go to Step 8 (Requested Changes Loop).
+If **"Save to backlog"**: go to Step 7b (Backlog from findings).
 If **"Request re-review"**: tell user to make changes and run `/tyrex-review` again.
+
+### Step 7b: Backlog from findings
+
+When the user chooses to save findings to backlog:
+
+1. **Present findings for selection:**
+   ```
+   Save findings to backlog:
+     [1] BL-item for: [finding description] (MEDIUM)
+     [2] BL-item for: [finding description] (LOW)
+     [A] All findings
+     [0] Cancel
+   ```
+2. **For each selected finding**, auto-generate a backlog item:
+   - **Title:** extracted from finding description
+   - **Description:** finding detail + file/line + recommended fix + review lens source
+   - **Priority:** mapped from severity (CRITICAL→critical, HIGH→high, MEDIUM→medium, LOW→low)
+   - **Status:** `draft`
+   - **Origin:** `"review finding — feature NNN"`
+   - **Acceptance criteria:** extracted from the recommended fix
+3. **Save** each item to `.tyrex/backlog/items/BL-NNN.yml` (next available ID)
+4. **Present summary:**
+   ```
+   Created N backlog items:
+     BL-NNN — [title] (draft, [priority])
+     BL-NNN — [title] (draft, [priority])
+
+   Use /tyrex-backlog view to manage them.
+   ```
+5. **Continue to Step 9** (Finalize) — the findings are now tracked in backlog, not fixed now.
 
 ### Step 8: Requested Changes Loop (plan/do cycle)
 

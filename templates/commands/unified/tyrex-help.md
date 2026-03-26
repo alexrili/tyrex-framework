@@ -32,34 +32,43 @@ Show ALL commands grouped by category:
 TYREX Help
 ═══════════════════════════════════════
 
-  Core Workflow:
-    /tyrex-init       Initialize Tyrex in a project (map codebase, configure)
+  ★ 5 Core Commands (all you need for daily work):
+
+    /tyrex-discuss    Explore, brainstorm, enrich backlog items [--backlog BL-NNN]
+    /tyrex-backlog    Manage ideas — add, view, plan, pick [add|view|plan|pick|BL-NNN]
+    /tyrex-quick      Execute — full pipeline from prompt or backlog [--auto] [--backlog]
+    /tyrex-status     Where am I? Dashboard with features, backlog, health
+    /tyrex-recover    Something went wrong? Recover state automatically
+
+  Typical flow:
+    discuss → backlog → quick → status
+    (repeat)
+
+  ─── Advanced (used internally by quick, or for granular control) ───
+
+  Feature Lifecycle:
     /tyrex-new        Start a new feature (structured choices)
     /tyrex-plan       Plan tasks with security-first approach
     /tyrex-do         Execute tasks [--auto]
-    /tyrex-review     Senior code review with 4 lenses [--do-all | --do-critical] [full]
+    /tyrex-review     Senior code review with 6 lenses [--do-all | --do-critical] [full]
 
-  Exploration & Debugging:
-    /tyrex-discuss    Explore the project, ask questions, brainstorm architecture
+  Analysis & Quality:
     /tyrex-debug      Diagnose problems, analyze logs, document bugs
     /tyrex-research   Technical research — codebase + web
+    /tyrex-security-review  Comprehensive security scan
+    /tyrex-test-review      Scan for test coverage gaps
 
-  Fast Track:
-    /tyrex-quick      Unified new→plan→do from a single prompt [--auto]
+  Project Setup & Config:
+    /tyrex-init       Initialize Tyrex in a project
+    /tyrex-settings   View/modify configuration
+    /tyrex-evolve     Update TYREX.md with new patterns
+    /tyrex-skills     Manage reusable skills
+    /tyrex-context    Ingest project context
 
-  Backlog & Management:
-    /tyrex-backlog    Manage backlog — add, view, plan, pick items [add|view|plan|pick|BL-NNN]
-    /tyrex-status     Show current project and feature status
-    /tyrex-recover    Recover from crashed session or resume from last session
-    /tyrex-settings   View/modify Tyrex configuration
-    /tyrex-evolve     Update TYREX.md with new patterns/knowledge
-
-  Skills & Documentation:
-    /tyrex-skills     Manage reusable skills (list, create, suggest, sync)
-    /tyrex-context    Ingest and manage project context
-    /tyrex-readme     Generate/update project README.md
-    /tyrex-openapi    Generate OpenAPI docs from code (read-only)
-    /tyrex-wiki       Generate/update project wiki pages
+  Documentation:
+    /tyrex-readme     Generate/update README.md
+    /tyrex-openapi    Generate OpenAPI docs (read-only)
+    /tyrex-wiki       Generate/update wiki pages
 
   Meta:
     /tyrex-help       This command. Use /tyrex-help <command> for details.
@@ -73,15 +82,20 @@ TYREX Help
 Present two clear workflow paths:
 
 ```
-Two ways to work:
+Recommended flow (5 core commands):
 
-  FULL WORKFLOW (features, epics, large changes):
-    /tyrex-new  →  /tyrex-plan  →  /tyrex-do  →  /tyrex-review
-    define         decompose       implement      verify
+  /tyrex-discuss   →  /tyrex-backlog   →  /tyrex-quick   →  /tyrex-status
+  explore ideas       structure & plan     execute            check progress
+                                           (auto: new→plan→do→review)
 
-  FAST LANE (bugs, tweaks, single tasks):
-    /tyrex-quick  →  (describe)  →  auto plan+do+review
-    one command       answer Qs      stops at review for decision
+  Something broke? → /tyrex-recover
+
+Advanced flow (granular control):
+  /tyrex-new → /tyrex-plan → /tyrex-do → /tyrex-review
+
+Batch execution:
+  /tyrex-quick --backlog    Execute all ready backlog items sequentially
+  /tyrex-quick --auto       Full autopilot (skips confirmations)
 
 Both paths enforce the same quality: TDD, changelog, small commits.
 The difference is ceremony, not rigor.
