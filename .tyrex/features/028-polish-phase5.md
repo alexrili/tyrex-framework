@@ -20,4 +20,4 @@ Final polish: compliance audit step in execution, review→backlog integration, 
 ## Backlog Items
 - BL-003, BL-010, BL-011
 
-## Status: spec
+## Status: done
