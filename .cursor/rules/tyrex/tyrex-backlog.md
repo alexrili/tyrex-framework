@@ -242,9 +242,7 @@ Filter by:
 - **`/tyrex-new` Step 0:** After registry checks, offers ready backlog items as feature source. On selection: updates status to in-progress, pre-fills description from item.
 - **`/tyrex-quick --backlog`:** Executes all ready items sequentially — pick → full pipeline → mark done → next. Status updates automatically (ready→in-progress→done). Safe revert on rejection.
 - **`/tyrex-quick`:** Visual roadmap before execution, final report with accept/reject, checkpoint tag for safe revert.
-
-**Planned integrations (not yet implemented — requires future backlog items):**
-- **`/tyrex-review`** *(planned — BL-010):* When findings represent improvements (not bugs), offer: "Create backlog item for this finding? [Y/n]"
+- **`/tyrex-review`:** "Save to backlog" option in Step 7 decision. Creates draft backlog items from findings with severity-based priority. Origin tracked as "review finding".
 
 ## File Formats
 

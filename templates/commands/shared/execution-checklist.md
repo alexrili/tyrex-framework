@@ -47,3 +47,45 @@ For EACH task, execute this sequence:
    i. **Auto-update TYREX.md** — if ADR/PRD/SRS generated, add summary to appropriate section
    j. **Checkpoint reminder** — increment `_checkpoint_counter`. If it reaches the configured interval, inject the directive refresh block from `templates/commands/shared/checkpoint-reminder.md` before starting the next task. Reset counter to 0 after injection.
 7. **On failure:** clear checkpoint fields, update task state to `failed`. In `--auto`: retry up to 3 times. Interactive: present fix/skip/stop choices.
+
+### Compliance Audit (runs after ALL tasks complete, before feature completion)
+
+After the last task is committed and before reporting feature completion, run this audit:
+
+```
+Compliance Audit
+═══════════════════════════════════════
+```
+
+| Check | How to verify | Severity if missing |
+|-------|--------------|-------------------|
+| CHANGELOG updated | `docs/CHANGELOG.md` was modified in this feature's commits | CRITICAL — blocks |
+| Version bumped | Package manifest version changed (if CHANGELOG/ADR changed) | HIGH — warns |
+| Tests executed | At least one task ran tests (check task outputs for test results) | HIGH — warns |
+| Specs followed | Each task's SPEC file exists in `docs/specs/` | MEDIUM — warns |
+| State updated | `cursor.yml` and per-feature state file are current | MEDIUM — warns |
+| Settings respected | Commit mode matches `tyrex.yml` config | LOW — notes |
+
+**Behavior:**
+1. Run each check against the feature's completed tasks
+2. Collect results into a summary:
+   ```
+   Compliance: [N]/[total] passed
+     ✓ CHANGELOG updated
+     ✓ Version bumped (1.10.0 → 1.11.0)
+     ✗ Tests not executed (no test framework detected)
+     ✓ SPECs present (N/N)
+     ✓ State current
+     ✓ Settings respected
+   ```
+3. **If CRITICAL gaps:** block and present:
+   ```
+   CRITICAL compliance gap — cannot proceed:
+     [!] CHANGELOG not updated
+
+     [1] Fix now
+     [2] Override (not recommended)
+   ```
+4. **If HIGH/MEDIUM gaps:** warn and continue (note in feature output)
+5. **If `--auto`:** CRITICAL gaps still block (retry fix automatically). HIGH/MEDIUM are logged.
+6. Include the compliance summary in the feature completion report.
