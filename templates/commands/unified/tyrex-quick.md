@@ -17,6 +17,7 @@ Update `agent_mode` in `cursor.yml` at each transition.
 
 - **`/tyrex-quick`** (default) — Runs all stages interactively in a single session. Same as running new → plan → do separately, but without leaving the session between commands.
 - **`/tyrex-quick --auto`** — Auto-approve all confirmation/approval checkpoints. Stages still run in full. Clarification questions for genuine ambiguities are still asked.
+- **`/tyrex-quick --backlog`** — Execute all `ready` backlog items sequentially. For each item: pick → run full pipeline (new→plan→do) → mark done → next item. Combines with `--auto` for full autopilot.
 - `--auto-approve` is accepted as an alias for `--auto` (deprecated, will be removed in v2)
 
 **What `--auto` skips (approvals only):**
@@ -61,6 +62,41 @@ Before executing any task (Step 4), read `templates/commands/shared/guardrails-i
 During Step 4 (execution), apply periodic directive checkpoints per `templates/commands/shared/checkpoint-reminder.md`. After every N completed tasks (default: 2), inject the checkpoint reminder block before starting the next task.
 
 ## Behavior
+
+### Step 0: Backlog mode (if `--backlog`)
+
+If the `--backlog` flag is provided:
+
+1. Read all `.tyrex/backlog/items/BL-*.yml` files with `status: ready`
+2. If no ready items: "No backlog items ready. Use `/tyrex-backlog edit BL-NNN` to mark items as ready." → exit.
+3. Present the execution plan:
+   ```
+   Backlog Execution Plan
+   ═══════════════════════════════════════
+
+   Items to execute (in phase/priority order):
+     [1] BL-NNN — [title] (Phase N, [effort], [priority])
+     [2] BL-NNN — [title] (Phase N, [effort], [priority])
+     ...
+
+   Total: N items
+   Estimated: [sum of efforts]
+
+   Execute all sequentially?
+     [1] Execute all
+     [2] Select which items
+     [3] Cancel
+   ```
+4. For each selected item:
+   a. Update backlog item `status: in-progress`
+   b. Use item's description + acceptance_criteria as the feature description
+   c. Run Steps 1-5 (full pipeline) with item context
+   d. On success: update backlog item `status: done`, set `feature_id`
+   e. On failure/rejection: update backlog item `status: ready` (revert to ready)
+   f. Present: "Item BL-NNN done. Continue to next? [Y/n]"
+   g. If `--auto`: continue automatically
+5. After all items: present combined summary of all executed items.
+6. Skip to Step 5b (combined summary).
 
 ### Step 1: Capture the Feature
 
@@ -108,6 +144,47 @@ This step produces:
 
 **All `/tyrex-plan` steps execute in full.** Reference the `/tyrex-plan` command for the complete step sequence: Steps 1-7.
 
+### Step 3b: Visual Roadmap (before execution)
+
+After planning is complete, present a visual roadmap of what will be executed:
+
+```
+Execution Roadmap
+═══════════════════════════════════════
+
+Feature: NNN — [name]
+Source:  [backlog BL-NNN | new description]
+
+Tasks:
+  Wave 1: [Task 1: description] ──────────────
+                    │
+  Wave 2: [Task 2: description] ─┬── [Task 3] ─
+                                  │  (parallel)
+  Wave 3:                         └── [Task 4] ─
+
+Files affected: [N total]
+Quality: [N required, N recommended, N optional]
+Security tasks: [N or "none"]
+
+Proceed with execution?
+  [1] Execute
+  [2] Modify plan
+  [3] Cancel
+```
+
+**If `--auto`:** skip confirmation, proceed directly.
+**If `--backlog`:** show which BL-item this execution is for.
+
+### Step 3c: Safe checkpoint (before execution)
+
+Before starting any implementation:
+
+1. **Create checkpoint tag:** `git tag tyrex-checkpoint-NNN` (where NNN is the feature number). This marks the exact state before any code changes.
+2. **Note the tag** in the per-feature state file: `checkpoint_tag: tyrex-checkpoint-NNN`
+3. This tag enables full revert if the user rejects the result in Step 5.
+
+If the tag already exists (re-execution), append a counter: `tyrex-checkpoint-NNN-2`.
+
 ### Step 4: Execute /tyrex-do internally
 
 Run the full `/tyrex-do` logic with these modifications:
@@ -124,27 +201,77 @@ This step produces:
 
 **All `/tyrex-do` steps execute in full.** Reference the `/tyrex-do` command for the complete step sequence: Steps 1-5.
 
-### Step 5: Summary + Next Action
+### Step 5: Final Report + Accept/Reject
 
-After all tasks complete, present:
+After all tasks complete, present the consolidated report:
+
 ```
-TYREX Quick Complete
+TYREX Quick — Final Report
 ════════════════════════════════════════
 
 Feature: NNN — [name]
-Tasks: [N]/[N] completed
+Source:  [backlog BL-NNN | new description]
+Branch:  feat/NNN-[slug]
+
+Tasks:   [N]/[N] completed
 Commits: [N]
-Files changed: [N]
-Tests: [N] passing
-Docs: [list generated docs]
+Files changed: [list]
+Tests:   [N passing | N/A]
+Docs:    [list generated]
 Version: [old] → [new]
+
+Checkpoint: tyrex-checkpoint-NNN (revert point)
+═══════════════════════════════════════
+```
+
+**If `--auto`:** accept automatically, skip choice.
+
+**Otherwise, present accept/reject:**
+```
+Accept this delivery?
+  [1] Accept — keep all changes, proceed to review
+  [2] Reject — revert ALL changes to checkpoint
+  [3] Review first — run /tyrex-review before deciding
+```
+
+**If Accept:**
+- Remove the checkpoint tag: `git tag -d tyrex-checkpoint-NNN`
+- Proceed to next action suggestion
+
+**If Reject (safe revert):**
+1. Reset to checkpoint: `git reset --hard tyrex-checkpoint-NNN`
+2. Remove the checkpoint tag: `git tag -d tyrex-checkpoint-NNN`
+3. Update backlog item status back to `ready` (if from backlog)
+4. Update feature status to `rejected`
+5. Tell user: "All changes reverted. Working tree is clean at the checkpoint state."
+6. Present: "What next? [1] Try again [2] /tyrex-discuss [3] Done"
+
+**If Review first:**
+- Keep changes, suggest `/tyrex-review`
+- Checkpoint tag stays until review decision
+
+### Step 5b: Combined summary (for --backlog mode)
+
+If executing multiple backlog items via `--backlog`, after all items are processed, present:
+
+```
+TYREX Backlog Execution Complete
+════════════════════════════════════════
+
+Items executed: [N]/[total]
+
+  ✓ BL-NNN — [title] → Feature NNN (N tasks, N commits)
+  ✓ BL-NNN — [title] → Feature NNN (N tasks, N commits)
+  ✗ BL-NNN — [title] → rejected/failed
+
+Version: [start] → [end]
 ```
 
 **Next action** (per `templates/commands/shared/next-action-map.md`):
 ```
-Next step: /tyrex-review — review the implementation
+Next step: /tyrex-review — review implementations
   [1] Execute now
-  [2] Different command
+  [2] /tyrex-backlog view — check remaining items
   [3] Done for now
 ```
 
@@ -172,3 +299,8 @@ This feature is complex. Recommended approach:
 - Doc Impact Analysis runs at plan time (predictive) and do time (post-implementation).
 - ALWAYS create a separate branch (never work on main/master).
 - If the task grows beyond quick-track scope, suggest escalating.
+- **Checkpoint tag is mandatory.** Always create before execution starts. This is the safety net.
+- **Reject = full revert.** `git reset --hard` to checkpoint. No partial state left behind.
+- **Visual roadmap before execution.** User must see what will happen before it starts.
+- **`--backlog` respects item order.** Execute by phase, then by priority within phase.
+- **Backlog status updates are automatic.** ready→in-progress→done follows the pipeline.

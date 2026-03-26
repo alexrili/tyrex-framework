@@ -1,0 +1,7 @@
+feature_id: 27
+name: "execution-pipeline"
+feature_file: ".tyrex/features/027-execution-pipeline.md"
+branch: "feat/027-execution-pipeline"
+status: "spec"
+tasks_summary: null
+created_at: "2026-03-26T00:00:00Z"

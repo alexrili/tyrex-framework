@@ -32,14 +32,30 @@ Before proceeding, check for crash signals per `templates/commands/shared/crash-
 Before asking the user to describe the feature:
 1. Read `.tyrex/roadmap.yml` (if exists) and check for `planned` features.
 2. Read `integrations.tracker.provider` from `.tyrex/tyrex.yml`.
-3. Present structured choices (adapt to what's available):
+3. Scan `.tyrex/backlog/items/BL-*.yml` for items with `status: ready`.
+4. Present structured choices (adapt to what's available):
    ```
    Start from:
      [1] Describe a new feature
-     [2] Import from roadmap          ← only if planned features exist
-     [3] Import from external tracker  ← only if tracker provider is configured
+     [2] Pick from backlog (N ready)   ← only if ready backlog items exist
+     [3] Import from roadmap           ← only if planned features exist
+     [4] Import from external tracker   ← only if tracker provider is configured
    ```
-   If only one source is available (no roadmap, no tracker), skip to Step 1 directly.
+   If only one source is available (no backlog, no roadmap, no tracker), skip to Step 1 directly.
+
+4b. **If backlog:** list ready items for selection:
+   ```
+   Ready backlog items:
+     [1] BL-NNN — [title] (Phase N, [effort])
+     [2] BL-NNN — [title] (Phase N, [effort])
+     ...
+   ```
+   On selection:
+   - Update backlog item `status: in-progress`
+   - Use item's description + acceptance_criteria as the feature description
+   - Pre-fill the feature name from the item title
+   - Store `feature_id` in the backlog item after feature creation (Step 8)
+   - Continue to Step 1 with pre-populated description (user can edit)
 
 4. **If roadmap:** use the selected feature's description as the starting point for Step 1. Update `.tyrex/roadmap.yml`: change status from `planned` to `in_progress`. Pre-fill the feature number from the roadmap ID.
 

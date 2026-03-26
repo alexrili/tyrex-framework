@@ -1,6 +1,6 @@
 id: BL-006
 title: "Revert seguro via git"
-status: ready
+status: done
 priority: high
 epic: EP-002
 effort: M
