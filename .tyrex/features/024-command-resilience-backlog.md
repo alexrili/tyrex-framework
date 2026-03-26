@@ -31,4 +31,4 @@ Improve command precision in long contexts (checkpoints, guardrails inline), add
 - BL-004: Next-action suggestion
 - BL-007: Comando /tyrex-backlog
 
-## Status: spec
+## Status: done
