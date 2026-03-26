@@ -1,0 +1,16 @@
+task_id: "feat-024-task-006"
+feature: "024-command-resilience-backlog"
+name: "Update executor commands (do, quick, review) with guardrails + next-action"
+status: "pending"
+depends_on: [1, 3]
+unlocks: [8]
+parallel: true
+security: "none"
+skill: "backend-engineer.md"
+quality: "optional"
+spec_file: "docs/specs/024-task-006-executor-commands.md"
+started_at: null
+finished_at: null
+commit: null
+files_changed: []
+output: null
