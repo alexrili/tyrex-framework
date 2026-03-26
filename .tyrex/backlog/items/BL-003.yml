@@ -1,0 +1,19 @@
+id: BL-003
+title: "Audit de conformidade pós-comando"
+status: draft
+priority: medium
+epic: EP-001
+effort: M
+phase: 5
+description: |
+  Checklist explícito como step final de todo comando executor. Verifica: docs gerados?
+  version bump? testes rodaram? changelog atualizado? settings respeitadas?
+  Roda automaticamente, reporta gaps.
+acceptance_criteria:
+  - Checklist roda como último step de comandos executores
+  - Verifica: docs, version bump, testes, changelog, settings
+  - Reporta gaps encontrados com severidade
+  - Pode bloquear commit se gaps críticos encontrados
+origin: "discuss session 2026-03-26"
+created: "2026-03-26"
+feature_id: null

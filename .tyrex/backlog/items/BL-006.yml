@@ -1,0 +1,25 @@
+id: BL-006
+title: "Revert seguro via git"
+status: draft
+priority: high
+epic: EP-002
+effort: M
+phase: 4
+description: |
+  Estrutura de safe-points usando git para reverter execução inteira se rejeitada.
+  Explorar abordagens:
+  - Branch descartável: quick cria feat/NNN-*, se rejeitado git branch -D
+  - Tag de checkpoint: git tag tyrex-checkpoint-NNN antes de iniciar
+  - Squash on accept: múltiplos commits durante execução, squash quando aceito
+
+  Objetivo: usuário pode rejeitar resultado do quick e voltar ao estado anterior
+  sem perda de dados e sem complexidade.
+acceptance_criteria:
+  - Safe-point criado antes de execução iniciar
+  - Revert completo em um único comando/confirmação
+  - Nenhum dado perdido (commits preservados em reflog ou branch)
+  - Funciona com --auto e sem --auto
+  - Integrado ao fluxo de aceitar/rejeitar do quick
+origin: "discuss session 2026-03-26"
+created: "2026-03-26"
+feature_id: null

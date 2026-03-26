@@ -1,0 +1,19 @@
+id: BL-013
+title: "Backlog ready = confirmação humana explícita"
+status: draft
+priority: high
+epic: EP-003
+effort: S
+phase: 2
+description: |
+  Item de backlog só muda de draft para ready quando o usuário confirma explicitamente.
+  Nunca automático. É uma decisão humana — o humano decide WHAT e WHEN.
+  Alinhado com o princípio core: "Human decides WHAT and WHY. AI decides HOW."
+acceptance_criteria:
+  - Transição draft > ready requer confirmação explícita
+  - Nenhum item vira ready automaticamente
+  - UI clara para confirmar ready (via backlog view ou backlog edit)
+  - Bulk ready possível mas com confirmação individual ou de grupo
+origin: "discuss session 2026-03-26"
+created: "2026-03-26"
+feature_id: null

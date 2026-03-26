@@ -1,0 +1,19 @@
+id: BL-012
+title: "Prompt structuring — nunca perder uma ideia"
+status: draft
+priority: medium
+epic: EP-005
+effort: S
+phase: 2
+description: |
+  Toda conversa/discuss que gere ideias deve oferecer estruturar em backlog.
+  O framework nunca deixa uma ideia se perder.
+  Sempre oferece "quer salvar isso no backlog?" quando detecta ideias actionáveis.
+acceptance_criteria:
+  - Discuss detecta ideias actionáveis na conversa
+  - Oferece salvar como backlog item com confirmação
+  - Gera item estruturado (title, description, acceptance_criteria)
+  - Funciona sem ser intrusivo — oferece, não força
+origin: "discuss session 2026-03-26"
+created: "2026-03-26"
+feature_id: null

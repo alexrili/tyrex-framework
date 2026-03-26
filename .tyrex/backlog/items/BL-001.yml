@@ -1,0 +1,19 @@
+id: BL-001
+title: "Checkpoint system para comandos longos"
+status: draft
+priority: high
+epic: EP-001
+effort: M
+phase: 1
+description: |
+  Inserir lembretes compactos de diretrizes (testes, segurança, docs, settings, versioning)
+  nos comandos executores a cada N passos. Token-efficient: resumo condensado, não re-injeção
+  de contexto completo. Configurável via tyrex.yml (intervalo de checkpoints).
+acceptance_criteria:
+  - Comandos relembram diretrizes a cada N passos
+  - Funciona sem aumentar significativamente o consumo de tokens
+  - Configurável via tyrex.yml
+  - Cobre: testes, segurança, docs, settings, versioning
+origin: "discuss session 2026-03-26"
+created: "2026-03-26"
+feature_id: null

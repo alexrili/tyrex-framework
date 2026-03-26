@@ -1,0 +1,9 @@
+id: EP-005
+title: "Simplificação da Experiência"
+description: |
+  Reestruturar UX para 5 comandos core (discuss, backlog, quick, status, recover).
+  Demais comandos são internos. Framework nunca perde uma ideia.
+items: [BL-011, BL-012]
+phase: 5
+created: "2026-03-26"
+origin: "discuss session 2026-03-26"

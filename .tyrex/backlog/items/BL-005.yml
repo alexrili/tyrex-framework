@@ -1,0 +1,26 @@
+id: BL-005
+title: "Quick como pipeline completo com relatório final"
+status: draft
+priority: high
+epic: EP-002
+effort: L
+phase: 4
+description: |
+  /tyrex-quick executa new > plan > do > review em loop completo.
+  Apresenta roadmap visual (fluxograma de tasks + BL-items) ANTES de iniciar.
+  Relatório final consolidado do que foi entregue.
+  Confirma com usuário se encerra feature ou não.
+
+  Com --auto: commita tudo automaticamente.
+  Sem --auto: commita mas aguarda decisão de aceitar ou rejeitar.
+  Se rejeitado: aciona mecanismo de revert (BL-006).
+acceptance_criteria:
+  - Pipeline completo new > plan > do > review sem interrupção
+  - Roadmap visual apresentado antes de iniciar
+  - Relatório final consolidado ao terminar
+  - Confirmação de encerramento da feature
+  - --auto commita tudo; sem --auto aguarda decisão
+  - Rejeição aciona revert seguro
+origin: "discuss session 2026-03-26"
+created: "2026-03-26"
+feature_id: null

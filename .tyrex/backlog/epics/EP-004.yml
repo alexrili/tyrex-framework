@@ -1,0 +1,10 @@
+id: EP-004
+title: "Git como Espinha Dorsal"
+description: |
+  Usar git como audit trail completo do projeto. Commits para decisões, discussões, planejamento.
+  Git log como fonte de verdade para recovery. Tags para milestones. Branch history para evolução de ideias.
+  Tyrex + Git + LLM = tríade do desenvolvimento de qualidade.
+items: [BL-014, BL-015]
+phase: 3
+created: "2026-03-26"
+origin: "discuss session 2026-03-26"
