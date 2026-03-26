@@ -1,7 +1,12 @@
 ### Execution Checklist (canonical rules — inline in every command that executes tasks)
 
+**Before starting:** Read `templates/commands/shared/guardrails-inline.md` to load the compact constitution refresher.
+
+**Checkpoint counter:** Initialize `_checkpoint_counter = 0` at the start of the execution loop. After each task completes, increment by 1. When `_checkpoint_counter` reaches the checkpoint interval (default: 2, configurable via `tyrex.yml` `quality.checkpoint_interval`), inject the checkpoint reminder from `templates/commands/shared/checkpoint-reminder.md` and reset the counter to 0.
+
 For EACH task, execute this sequence:
 
+0. **Guardrails refresh** — if `_checkpoint_counter == 0` (first task) OR checkpoint was just triggered, re-read `templates/commands/shared/guardrails-inline.md`. This ensures directives are fresh in context.
 1. **Load SPEC** — read the task's SPEC file from `docs/specs/`. Use Technical Approach to guide implementation.
 2. **Load skill** — if the task has a `skill` attribute, read the skill file from `.tyrex/skills/<name>.md`. Apply its Role, Guidelines, and Patterns during implementation. Use its Review Criteria as a self-check before marking complete.
 3. **Checkpoint: task start** — update the per-feature state file: set `current_task_in_progress`, `in_progress_since`, `in_progress_files_touched: []`.
@@ -39,4 +44,5 @@ For EACH task, execute this sequence:
    g. **Commit** — auto in `--auto` mode, present diff+message for approval otherwise
    h. **Checkpoint: task complete** — clear `current_task_in_progress`, `in_progress_since`, `in_progress_files_touched` from per-feature state. Update `last_task_completed`, `tasks_summary`.
    i. **Auto-update TYREX.md** — if ADR/PRD/SRS generated, add summary to appropriate section
+   j. **Checkpoint reminder** — increment `_checkpoint_counter`. If it reaches the configured interval, inject the directive refresh block from `templates/commands/shared/checkpoint-reminder.md` before starting the next task. Reset counter to 0 after injection.
 7. **On failure:** clear checkpoint fields, update task state to `failed`. In `--auto`: retry up to 3 times. Interactive: present fix/skip/stop choices.

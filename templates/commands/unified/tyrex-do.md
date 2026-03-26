@@ -37,6 +37,14 @@ Read the per-feature state file `.tyrex/state/features/NNN.yml` for task trackin
 
 Before proceeding, check for crash signals per `templates/commands/shared/crash-detection.md`. Quick exit if: no `.tyrex/`, not on `feat/*` branch, or clean working tree. If crash signals detected: present "Inconsistent state detected. Run /tyrex-recover or continue anyway?" If `--auto-approve`: log warning and continue.
 
+## Guardrails Inline
+
+Before executing any task, read `templates/commands/shared/guardrails-inline.md` and apply its 10-rule compact constitution refresher. This ensures compliance even in long-context sessions where the full constitution may have scrolled out of the agent's effective attention window.
+
+## Checkpoint Reminder
+
+This command uses periodic directive checkpoints per `templates/commands/shared/checkpoint-reminder.md`. After every N completed tasks (default: 2, configurable via `tyrex.yml` `quality.checkpoint_interval`), inject the checkpoint reminder block before starting the next task.
+
 ## Behavior
 
 ### Step 1: Load state
@@ -243,8 +251,16 @@ After ALL implementation tasks are `completed` (before the completion summary), 
 
 ### Step 5: Feature completion
 When ALL tasks are `completed` (including any doc fix tasks from Step 4b):
-- Tell the user: "All tasks completed. Run /tyrex-review to review the implementation."
 - Update feature status to `in_progress` (review pending)
+- **Next action** (per `templates/commands/shared/next-action-map.md`):
+  ```
+  All tasks completed. N/N tasks done, N commits, N files changed.
+
+  Next step: /tyrex-review — review the implementation
+    [1] Execute now
+    [2] Different command
+    [3] Done for now
+  ```
 
 ## Important Rules
 - NEVER skip tests. If tests fail, the task is NOT complete.
