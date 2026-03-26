@@ -1,26 +1,30 @@
 id: BL-008
 title: "Integração bidirecional discuss <> backlog"
-status: draft
+status: ready
 priority: high
 epic: EP-003
 effort: M
 phase: 2
 description: |
-  /tyrex-discuss pode:
-  - Criar items no backlog a partir de conclusões da discussão
-  - Enriquecer item existente (aceita --backlog BL-NNN para focar discussão)
-  - Reorganizar roadmap durante discussão
-  - Oferecer "quer salvar isso no backlog?" quando ideias surgem
+  Integração profunda entre /tyrex-discuss e /tyrex-backlog. Inclui escopo
+  absorvido de BL-012 (prompt structuring).
 
-  /tyrex-backlog pode:
-  - Iniciar discuss focado em um item específico para aprofundamento
-  - Usar discuss para refinar acceptance criteria e description
+  /tyrex-discuss pode:
+  - Aceitar flag --backlog BL-NNN para focar discussão num item específico
+  - Detectar ideias actionáveis mid-conversation e oferecer salvar no backlog
+  - Enriquecer item existente (atualizar description + acceptance_criteria)
+  - Oferta é não-intrusiva — oferece, não força
+
+  /tyrex-backlog detail view:
+  - [4] Discuss inicia discuss focado no item
 acceptance_criteria:
-  - Discuss cria backlog items com confirmação
-  - Discuss aceita --backlog BL-NNN para foco
-  - Discuss oferece salvar no backlog quando ideias surgem
-  - Backlog inicia discuss focado em item
-  - Roadmap reorganizável via discuss
+  - Discuss aceita --backlog BL-NNN para foco em item
+  - Discuss detecta ideias actionáveis mid-conversation e oferece salvar
+  - Discuss pode enriquecer item existente (description + acceptance_criteria)
+  - Backlog detail view [4] Discuss funciona
+  - Oferta é não-intrusiva — oferece, não força
+  - Item gerado é estruturado (title, description, acceptance_criteria)
 origin: "discuss session 2026-03-26"
 created: "2026-03-26"
 feature_id: null
+note: "Absorbs BL-012 scope. Confirmed ready 2026-03-26."

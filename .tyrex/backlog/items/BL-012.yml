@@ -1,6 +1,6 @@
 id: BL-012
 title: "Prompt structuring — nunca perder uma ideia"
-status: draft
+status: discarded
 priority: medium
 epic: EP-005
 effort: S
@@ -17,3 +17,4 @@ acceptance_criteria:
 origin: "discuss session 2026-03-26"
 created: "2026-03-26"
 feature_id: null
+note: "Absorbed into BL-008 (discuss ↔ backlog integration) — scope merged"
