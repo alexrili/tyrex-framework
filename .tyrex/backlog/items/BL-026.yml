@@ -1,0 +1,27 @@
+id: BL-026
+title: "Milestones — agrupar features em releases"
+status: draft
+priority: medium
+epic: EP-006
+effort: L
+phase: 4
+description: |
+  Conceito de milestone como agrupador de features para releases versionadas.
+  Um milestone (v1.13, v2.0) agrupa N features, tem definition of done,
+  e ciclo: define → build → ship. Complementa o backlog system existente.
+  Milestones vivem em .tyrex/milestones/. Integram com auto-versioning e git tags.
+  Inspirado no milestone system do GSD.
+acceptance_criteria:
+  - Novo comando /tyrex-milestone (create, view, complete, audit)
+  - Milestones em .tyrex/milestones/MILESTONE-vN.N.N.yml
+  - Formato: version, title, features (list), definition_of_done, status, created
+  - /tyrex-milestone create — define versão, features incluídas, DoD
+  - /tyrex-milestone audit — verifica se DoD foi atingido
+  - /tyrex-milestone complete — archive + git tag + changelog summary
+  - /tyrex-new oferece associar feature a milestone ativo
+  - /tyrex-status mostra milestone progress
+  - Integra com auto-versioning existente
+  - /tyrex-backlog plan pode organizar items por milestone
+origin: "discuss session 2026-03-27 — GSD comparison"
+created: "2026-03-27"
+feature_id: null

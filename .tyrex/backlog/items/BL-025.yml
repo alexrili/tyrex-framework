@@ -1,0 +1,26 @@
+id: BL-025
+title: "Threads — cross-session persistent context"
+status: draft
+priority: medium
+epic: EP-006
+effort: M
+phase: 3
+description: |
+  Threads são contexto persistente cross-session, mais leve que context files.
+  Uma thread é um tópico nomeado que acumula conhecimento ao longo de múltiplas sessões.
+  Útil para decisões em andamento, investigações, ou temas recorrentes.
+  Vivem em .tyrex/threads/. Carregadas sob demanda por nome.
+  Inspirado no /gsd:thread.
+acceptance_criteria:
+  - Novo comando /tyrex-thread [name] para criar/acessar threads
+  - Threads armazenadas em .tyrex/threads/THREAD-name.md
+  - Formato: frontmatter (name, created, last_updated) + markdown body
+  - /tyrex-thread sem nome lista todas as threads
+  - /tyrex-thread "name" abre a thread para leitura e append
+  - Append via "add" subcomando ou durante /tyrex-discuss (save target)
+  - /tyrex-discuss pode carregar thread como contexto (--thread "name")
+  - Threads não têm lifecycle — são knowledge base ativa
+  - /tyrex-status mostra threads recentes
+origin: "discuss session 2026-03-27 — GSD comparison"
+created: "2026-03-27"
+feature_id: null

@@ -1,0 +1,12 @@
+id: EP-006
+title: "Execution Engine (inspirado no GSD)"
+description: |
+  Combinar a governança do Tyrex com a engine de execução do GSD.
+  Absorver os pontos fortes do GSD: fresh context per task, wave execution,
+  UAT verification, research integrado, ship/PR, context monitor, assumptions mode,
+  seeds, threads, milestones, e workstreams.
+  Objetivo: transformar Tyrex no framework que une governança forte a execução forte.
+items: [BL-017, BL-018, BL-019, BL-020, BL-021, BL-022, BL-023, BL-024, BL-025, BL-026, BL-027]
+phase: [1, 2, 3, 4]
+created: "2026-03-27"
+origin: "discuss session 2026-03-27 — GSD deep research comparison"

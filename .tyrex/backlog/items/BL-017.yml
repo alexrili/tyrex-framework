@@ -1,0 +1,25 @@
+id: BL-017
+title: "Fresh Context per Task (context rot fix)"
+status: draft
+priority: critical
+epic: EP-006
+effort: XL
+phase: 1
+description: |
+  Redesenhar o /tyrex-do para que cada task execute em sub-agent com context fresh.
+  O orchestrator mantém-se leve (só TYREX.md + cursor + task list), spawna um sub-agent
+  por task com: task spec + arquivos relevantes + constitution. Sub-agent executa, commita,
+  retorna resultado. Orchestrator atualiza estado e avança para próxima task.
+  Adicionar size limits nos arquivos de contexto para prevenir context rot.
+  Inspirado no GSD que mantém o orchestrator em ~30-40% do context window.
+acceptance_criteria:
+  - /tyrex-do executa cada task em sub-agent isolado com context fresh
+  - Orchestrator carrega apenas metadados (TYREX.md, cursor, task list), nunca o código inteiro
+  - Sub-agent recebe apenas: task spec, arquivos relevantes listados no plan, constitution
+  - Size limits configuráveis em tyrex.yml (ex: max_context_files, max_file_size)
+  - Resultado do sub-agent (success/fail + summary) retorna ao orchestrator
+  - Orchestrator atualiza task state e cursor após cada sub-agent
+  - Fallback para execução inline se sub-agent não disponível no runtime
+origin: "discuss session 2026-03-27 — GSD comparison"
+created: "2026-03-27"
+feature_id: null

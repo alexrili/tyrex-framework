@@ -1,0 +1,24 @@
+id: BL-022
+title: "Ship/PR command"
+status: draft
+priority: high
+epic: EP-006
+effort: M
+phase: 2
+description: |
+  Criar /tyrex-ship para gerar PR automaticamente a partir de uma feature completada e revisada.
+  Auto-gera body do PR com summary do CHANGELOG, specs, e tasks. Filtra ou squash commits
+  do .tyrex/ para PR limpo. Integra com external tracker sync existente.
+  Inspirado no /gsd:ship.
+acceptance_criteria:
+  - Novo comando /tyrex-ship (ou integrado como etapa final do /tyrex-review)
+  - Gera PR body automaticamente a partir de CHANGELOG + feature spec + task summaries
+  - Opção de squash merge ou merge com history
+  - Filtra commits de .tyrex/ do PR (ou marca como non-functional)
+  - Integra com external tracker sync (atualiza ticket para "review" status)
+  - Suporta --draft para PR em draft
+  - /tyrex-quick oferece ship como próximo passo após accept
+  - Plan mode — não modifica código, apenas cria o PR
+origin: "discuss session 2026-03-27 — GSD comparison"
+created: "2026-03-27"
+feature_id: null

@@ -1,0 +1,26 @@
+id: BL-020
+title: "Verify/UAT como etapa do pipeline"
+status: draft
+priority: critical
+epic: EP-006
+effort: L
+phase: 2
+description: |
+  Adicionar verificação funcional (UAT) como etapa entre /tyrex-do e /tyrex-review.
+  O sistema extrai deliverables testáveis de cada task, walk-through com o user um a um,
+  e se algo falha, cria fix tasks automaticamente. Pipeline passa a ser:
+  new → plan → do → verify → review → accept.
+  Inspirado no /gsd:verify-work.
+acceptance_criteria:
+  - Novo comando /tyrex-verify (ou etapa integrada no pipeline quick)
+  - Extrai deliverables testáveis das specs e tasks completadas
+  - Walk-through com o user: um deliverable por vez, pass/fail
+  - Se fail: diagnóstico automático + criação de fix tasks (prefixo 'fix-')
+  - Fix tasks podem ser executadas imediatamente via /tyrex-do
+  - Re-verify após fixes
+  - /tyrex-quick inclui verify entre do e review
+  - Resultado persiste em .tyrex/state/features/NNN-verify.md
+  - Plan mode — verify não modifica código, só diagnostica
+origin: "discuss session 2026-03-27 — GSD comparison"
+created: "2026-03-27"
+feature_id: null

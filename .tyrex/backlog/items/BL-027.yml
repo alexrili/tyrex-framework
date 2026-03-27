@@ -1,0 +1,26 @@
+id: BL-027
+title: "Workstreams — parallel namespaced work"
+status: draft
+priority: low
+epic: EP-006
+effort: L
+phase: 4
+description: |
+  Workstreams permitem trabalho paralelo namespaced dentro do mesmo projeto.
+  Cada workstream é um contexto isolado com seu próprio estado, features, e backlog.
+  Útil para projetos grandes com múltiplas frentes simultâneas.
+  Complementa o multi-demand existente adicionando isolamento formal.
+  Inspirado no /gsd:workstreams.
+acceptance_criteria:
+  - Novo comando /tyrex-workstream (create, list, switch, complete)
+  - Workstreams em .tyrex/workstreams/WS-name/
+  - Cada workstream tem seu próprio cursor, tasks, e features
+  - /tyrex-workstream create — cria namespace isolado
+  - /tyrex-workstream switch — alterna contexto ativo
+  - /tyrex-workstream complete — merge resultado no main
+  - /tyrex-status mostra workstream ativo
+  - Compatível com multi-demand (workstream pode ter múltiplas features)
+  - Git branch strategy por workstream
+origin: "discuss session 2026-03-27 — GSD comparison"
+created: "2026-03-27"
+feature_id: null

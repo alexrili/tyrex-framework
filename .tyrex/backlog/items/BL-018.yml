@@ -1,0 +1,24 @@
+id: BL-018
+title: "Wave Execution com dependency graph"
+status: draft
+priority: critical
+epic: EP-006
+effort: XL
+phase: 1
+description: |
+  Evoluir o /tyrex-plan para gerar dependency graph explícito entre tasks e o /tyrex-do
+  para executar em waves paralelas. Tasks independentes rodam na mesma wave (paralelo),
+  tasks dependentes esperam waves anteriores. Cada wave é um grupo de sub-agents simultâneos.
+  Inspirado no wave execution model do GSD.
+acceptance_criteria:
+  - /tyrex-plan gera campo 'depends_on' em cada task (lista de task IDs)
+  - /tyrex-plan gera campo 'wave' calculado automaticamente a partir das dependências
+  - /tyrex-do agrupa tasks por wave e executa cada wave em paralelo (sub-agents)
+  - Tasks dentro da mesma wave não podem ter conflito de arquivos
+  - Wave N+1 só inicia quando wave N completa com sucesso
+  - Se uma task falha, wave para e reporta (não executa dependentes)
+  - Visualização de waves no roadmap visual do /tyrex-quick
+  - Fallback para execução sequencial se paralelismo não suportado pelo runtime
+origin: "discuss session 2026-03-27 — GSD comparison"
+created: "2026-03-27"
+feature_id: null

@@ -1,0 +1,25 @@
+id: BL-021
+title: "Research integrado no pipeline plan"
+status: draft
+priority: high
+epic: EP-006
+effort: L
+phase: 2
+description: |
+  Integrar research como etapa automática do /tyrex-plan, antes da decomposição de tasks.
+  Spawnar researchers paralelos que investigam stack, abordagens, pitfalls, e bibliotecas
+  relevantes. Resultado alimenta o planner com conhecimento de domínio.
+  Toggle configurável em tyrex.yml. /tyrex-research continua existindo como standalone.
+  Inspirado no research phase do GSD.
+acceptance_criteria:
+  - /tyrex-plan inclui etapa de research antes de criar tasks
+  - Research spawna sub-agents paralelos (stack, features, architecture, pitfalls)
+  - Resultado persiste em .tyrex/features/NNN-research.md
+  - Planner recebe research como contexto ao criar tasks
+  - Configurável em tyrex.yml: workflow.research_before_plan (true/false, default true)
+  - Skip automático se research recente já existe para a feature
+  - /tyrex-research standalone continua funcionando independentemente
+  - /tyrex-quick respeita a config (research se habilitado)
+origin: "discuss session 2026-03-27 — GSD comparison"
+created: "2026-03-27"
+feature_id: null

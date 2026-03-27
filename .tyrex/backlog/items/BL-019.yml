@@ -1,0 +1,22 @@
+id: BL-019
+title: "Context Monitor"
+status: draft
+priority: high
+epic: EP-006
+effort: M
+phase: 1
+description: |
+  Implementar monitoramento de uso do context window durante sessões longas.
+  Warnings quando o contexto ultrapassa thresholds configuráveis. Sugerir ações
+  como "consider fresh session" ou "spawn sub-agent for remaining tasks".
+  Inspirado no gsd-context-monitor hook do GSD.
+acceptance_criteria:
+  - Mecanismo de estimativa de context usage baseado em tokens aproximados
+  - Warnings configuráveis em tyrex.yml (thresholds: 50%, 70%, 85%)
+  - Warning injetado naturalmente na resposta, sem interromper o fluxo
+  - Sugestão de ação quando threshold alto (fresh session, sub-agent, etc.)
+  - Integração com /tyrex-status para mostrar context health
+  - Funciona em qualquer runtime (não depende de hooks específicos do agente)
+origin: "discuss session 2026-03-27 — GSD comparison"
+created: "2026-03-27"
+feature_id: null

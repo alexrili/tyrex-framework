@@ -1,0 +1,23 @@
+id: BL-023
+title: "Discuss Mode: Assumptions"
+status: draft
+priority: medium
+epic: EP-006
+effort: M
+phase: 3
+description: |
+  Adicionar modo 'assumptions' ao /tyrex-discuss onde o sistema lê o código,
+  propõe o que faria e por quê, e só pergunta ao user onde está errado.
+  Inverso do modo atual (interview-first). Ideal para brownfield/codebase mode.
+  Configurável em tyrex.yml. Inspirado no discuss_mode: assumptions do GSD.
+acceptance_criteria:
+  - /tyrex-discuss suporta flag --assumptions ou config em tyrex.yml
+  - Em assumptions mode: sistema analisa o código primeiro
+  - Apresenta ao user: "Here's what I'd do and why" com bullet points
+  - User corrige apenas o que está errado (mais eficiente)
+  - Modo padrão continua sendo 'discuss' (interview-first)
+  - Config em tyrex.yml: workflow.discuss_mode ('discuss' | 'assumptions')
+  - Funciona em codebase mode e hybrid mode (não em greenfield)
+origin: "discuss session 2026-03-27 — GSD comparison"
+created: "2026-03-27"
+feature_id: null

@@ -1,0 +1,25 @@
+id: BL-024
+title: "Seeds — ideias com trigger conditions"
+status: draft
+priority: medium
+epic: EP-006
+effort: M
+phase: 3
+description: |
+  Sistema de captura de ideias forward-looking com condições de trigger.
+  Diferente do backlog (que é manual), seeds surfaceiam automaticamente quando
+  a condição é satisfeita (ex: "quando implementar auth, considerar OAuth").
+  Seeds vivem em .tyrex/backlog/seeds/ e são verificadas por comandos relevantes.
+  Inspirado no /gsd:plant-seed.
+acceptance_criteria:
+  - Novo subcomando /tyrex-backlog seed "ideia" --trigger "condição"
+  - Seeds armazenadas em .tyrex/backlog/seeds/SEED-NNN.yml
+  - Formato: id, idea, trigger_condition, created, status (active/promoted/dismissed)
+  - /tyrex-new e /tyrex-plan verificam seeds ativas contra o contexto atual
+  - Se trigger match: apresenta seed ao user com opções (promote to backlog / dismiss / skip)
+  - Promote converte seed em backlog item (BL-NNN) com origin "seed SEED-NNN"
+  - /tyrex-backlog view mostra seeds em seção separada
+  - Seeds não expiram automaticamente
+origin: "discuss session 2026-03-27 — GSD comparison"
+created: "2026-03-27"
+feature_id: null
