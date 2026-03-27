@@ -80,6 +80,11 @@ parallel:
   max_agents: 5
   auto_suggest: true                 # Suggest parallelization when possible
 
+# Workflow toggles
+workflow:
+  research_before_plan: true           # Run research phase before task decomposition in /tyrex-plan
+  # Future toggles will be added here (discuss_mode, skip_discuss, etc.)
+
 # Git
 git:
   branch_prefix: "feat/"
