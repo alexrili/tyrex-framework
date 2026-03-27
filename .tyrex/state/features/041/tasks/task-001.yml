@@ -1,8 +1,10 @@
 task_id: "041-001"
 feature: "041"
 name: "Plan mode guard validator script"
-status: in_progress
+status: completed
 started_at: "2026-03-27T00:00:00Z"
+finished_at: "2026-03-27T00:00:00Z"
+commit: "afe4c79"
 depends_on: []
 wave: 1
 estimate: small

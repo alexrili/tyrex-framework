@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.25.0] - 2026-03-27
+
+### Added
+- **Plan mode enforcement hook** — first mechanical validator for the hook infrastructure. Reads `cursor.yml` agent_mode, blocks Write/Edit of source code files when in plan mode. Allows `.tyrex/`, `docs/`, `.md`, `.yml`. Pass-through in build mode. (BL-029, EP-007)
+
 ## [1.24.0] - 2026-03-27
 
 ### Added
