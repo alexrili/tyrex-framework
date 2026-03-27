@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.21.0] - 2026-03-27
+
+### Added
+- **Threads** — new `/tyrex-thread` command for persistent cross-session knowledge topics. Create, list, open, and append to named threads. Entries are append-only with timestamps. (BL-025)
+- **Thread context in discuss** — `/tyrex-discuss --thread "name"` loads a thread as background context. Conclusions can be saved back to the thread.
+- **Threads in status** — `/tyrex-status` shows 3 most recently updated threads
+
 ## [1.20.0] - 2026-03-27
 
 ### Added

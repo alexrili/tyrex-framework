@@ -15,6 +15,7 @@ You MUST NOT write source code or modify any project files. Read-only exploratio
 
 - **`/tyrex-discuss`** (default) — Open-ended project discussion
 - **`/tyrex-discuss --assumptions`** — Assumptions mode: system analyzes the codebase first, proposes what it would do and why, then asks the user to correct what's wrong. Only works in Codebase and Hybrid modes. Can also be set as default via `tyrex.yml` `workflow.discuss_mode: "assumptions"`.
+- **`/tyrex-discuss --thread "name"`** — Load a thread as additional context for the discussion. Thread content is available throughout the conversation. Conclusions can be saved back to the thread.
 - **`/tyrex-discuss --backlog BL-NNN`** — Focus discussion on a specific backlog item. Loads the item's context (description, acceptance criteria, epic, phase) and scopes the conversation to enriching that item.
 
 ## Feature Context Resolution
@@ -58,6 +59,29 @@ Ready. [Analyzing your codebase... | Ask me anything about the project | Tell me
 Type "save" at any time to persist a conclusion.
 Type "done" to end the discussion.
 ```
+
+### Step 1a: Thread context (if `--thread "name"`)
+
+If the `--thread` flag is provided:
+
+1. **Load the thread:** Read `.tyrex/threads/THREAD-<name>.md`. If not found, offer to create it.
+2. **Add to context:** The thread content is available as background knowledge throughout the discussion.
+3. **Inform the user:**
+   ```
+   Thread loaded: [name] (last updated: [date], [N] entries)
+   Thread context will inform this discussion.
+   ```
+4. **Save to thread:** When the user says "save" during Step 4 (persistence), offer the loaded thread as an additional save target:
+   ```
+   Where to save?
+     [1] Backlog
+     [2] Context
+     [3] TYREX.md
+     [4] Thread: [name]  ← append to the loaded thread
+     [5] Multiple
+   ```
+
+`--thread` can be combined with `--backlog` (both contexts loaded simultaneously).
 
 ### Step 1b: Backlog-focused mode (if `--backlog BL-NNN`)
 
