@@ -1,0 +1,15 @@
+task_id: "041-001"
+feature: "041"
+name: "Plan mode guard validator script"
+status: in_progress
+started_at: "2026-03-27T00:00:00Z"
+depends_on: []
+wave: 1
+estimate: small
+quality: recommended
+files:
+  - "templates/hooks/validators/plan-mode-guard.sh"
+relevant_files:
+  - "templates/hooks/lib/common.sh"
+  - "templates/hooks/pre-tool-use.sh"
+  - ".tyrex/state/cursor.yml"
