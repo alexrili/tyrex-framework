@@ -94,6 +94,7 @@ Analyze the feature — including all loaded context, SRS, PRD, and security con
 - **Type:** sequential | parallel
 - **Depends on:** [list of task numbers, or "none"]
 - **Unlocks:** [list of task numbers]
+- **Wave:** [auto-calculated — see Step 3a]
 - **Estimate:** small | medium | large
 - **Files:** [files to create or modify]
 - **Relevant files:** [files the sub-agent needs to READ for context — existing code it depends on, interfaces it implements, tests it must match. Max 10 files per tyrex.yml size_limits]
@@ -162,6 +163,46 @@ Analyze the feature — including all loaded context, SRS, PRD, and security con
 - If `.tyrex/tests/coverage-gaps.md` exists, read it and compare listed gaps against the files affected by proposed tasks
 - For any overlap between a coverage gap and a proposed task's files, add a note to the task: "Addresses GAP-NNN: [description]"
 - If `.tyrex/tests/coverage-gaps.md` does not exist, skip this sub-step silently
+
+### Step 3a: Calculate wave assignments
+
+After all tasks are proposed (with `depends_on` fields populated), calculate wave assignments automatically:
+
+**Algorithm:**
+1. Tasks with NO dependencies (`depends_on: none` or empty) → **Wave 1**
+2. For each remaining task: wave = max(wave of all dependencies) + 1
+3. **File conflict check:** within each wave, verify no two tasks share files in their `Files` field. If conflict found → move the later task to the next wave.
+4. Respect `parallel.max_agents` from `tyrex.yml` — if a wave has more tasks than max_agents, split into sub-waves (Wave 1a, 1b) that run sequentially within the wave group.
+
+**Example:**
+```
+Task 1: Setup models          depends_on: none       → Wave 1
+Task 2: Setup config          depends_on: none       → Wave 1  (parallel with Task 1)
+Task 3: API endpoints         depends_on: [1]        → Wave 2
+Task 4: Business logic        depends_on: [1]        → Wave 2  (parallel with Task 3)
+Task 5: Integration tests     depends_on: [3, 4]     → Wave 3
+Task 6: Security hardening    depends_on: [3]        → Wave 3  (parallel with Task 5)
+Task 7: Documentation         depends_on: [5, 6]     → Wave 4
+```
+
+**Wave visualization (included in plan presentation):**
+```
+Wave 1: [Task 1] ─┬── [Task 2]     (parallel — no shared files)
+                   │
+Wave 2: [Task 3] ─┬── [Task 4]     (parallel — depends on Wave 1)
+                   │
+Wave 3: [Task 5] ─┬── [Task 6]     (parallel — depends on Wave 2)
+                   │
+Wave 4: [Task 7]                    (sequential — depends on Wave 3)
+```
+
+**Validation rules:**
+- Every task MUST have a wave assignment before proceeding to SPEC generation
+- Wave 1 MUST have at least one task (if all tasks have dependencies, there's a circular dependency — error)
+- Circular dependency check: if wave calculation doesn't converge (a task depends on itself or cycle exists), report the cycle and ask the human to resolve
+- Tasks within the same wave that modify the same file = error in decomposition — either split or make sequential
+
+**Populate the `wave` field** in each task's attributes. This field is used by `/tyrex-do` for wave-based execution and by `/tyrex-quick` for the visual roadmap.
 
 ### Step 3b: Generate SPEC per task
 For EACH proposed task, generate a SPEC draft:
@@ -242,6 +283,7 @@ name: "Task description"
 status: "pending"
 depends_on: []
 unlocks: []
+wave: 1                          # Auto-calculated from dependency graph (Step 3a)
 parallel: true|false
 security: "none|input-validation|auth-check|data-sanitization|encryption|full-audit"
 spec_file: "docs/specs/NNN-task-MMM-slug.md"

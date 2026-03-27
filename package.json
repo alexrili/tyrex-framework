@@ -1,6 +1,6 @@
 {
   "name": "tyrex-framework",
-  "version": "1.13.0",
+  "version": "1.14.0",
   "description": "Human-driven, AI-accelerated pair programming framework. Orchestrates AI agents with guardrails, parallelization, and shared memory.",
   "bin": {
     "tyrex": "./bin/tyrex.js"
