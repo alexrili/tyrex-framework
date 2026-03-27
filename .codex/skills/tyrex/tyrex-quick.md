@@ -208,6 +208,28 @@ This step produces:
 
 **All `/tyrex-do` steps execute in full.** Reference the `/tyrex-do` command for the complete step sequence: Steps 1-5.
 
+### Step 4a: Execute /tyrex-verify internally
+
+After all implementation tasks are complete, run user acceptance testing per `/tyrex-verify` logic:
+
+1. Extract testable deliverables from feature spec acceptance criteria and completed task SPECs
+2. Walk through each deliverable with the user (pass/fail/skip)
+3. On failure: diagnose and create fix tasks
+4. If fix tasks created and user approves: execute fixes via `/tyrex-do`, then re-verify failed items
+5. Maximum 3 fix-verify loops
+
+**With `--auto`:**
+- Skip the interactive walk-through — auto-extract deliverables and assess them by reading the implementation code against the spec
+- If the implementation matches the spec: auto-pass
+- If discrepancies found: create fix tasks and execute them
+- Re-verify automatically after fixes
+
+**Without `--auto`:** Full interactive walk-through. The user tests each deliverable and reports pass/fail.
+
+**Verify results** persist in `.tyrex/state/features/NNN-verify.md`.
+
+**All `/tyrex-verify` steps execute in full.** Reference the `/tyrex-verify` command for the complete step sequence: Steps 1-6.
+
 ### Step 4b: Execute /tyrex-review internally
 
 After all implementation tasks are complete, run the full `/tyrex-review` logic in PR scope (branch diff):
