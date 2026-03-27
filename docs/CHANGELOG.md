@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.18.0] - 2026-03-27
+
+### Added
+- **Ship/PR command** — new `/tyrex-ship` creates pull requests from completed features. Auto-generates PR title (conventional commit) and body from feature spec, CHANGELOG, task summaries, verification report, and review findings. Supports `--draft` (draft PR) and `--squash` (squash commits). Uses `gh` CLI with manual fallback. Syncs to external tracker. (BL-022, ADR-021)
+- **Ship suggestion in quick** — `/tyrex-quick` accept flow now suggests `/tyrex-ship` as next step
+
+### Changed
+- **Full pipeline** — complete workflow is now: new → plan → do → verify → review → accept → ship
+
 ## [1.17.0] - 2026-03-27
 
 ### Added

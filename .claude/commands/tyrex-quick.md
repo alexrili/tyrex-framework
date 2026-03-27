@@ -306,7 +306,13 @@ Accept this delivery?
 
 **If Accept:**
 - Remove the checkpoint tag: `git tag -d tyrex-checkpoint-NNN`
-- Proceed to next action suggestion
+- Suggest shipping:
+  ```
+  Feature accepted. Ship as PR?
+    [1] /tyrex-ship — create pull request
+    [2] /tyrex-ship --draft — create draft PR
+    [3] Skip — I'll ship later
+  ```
 
 **If Reject (safe revert):**
 1. Reset to checkpoint: `git reset --hard tyrex-checkpoint-NNN`

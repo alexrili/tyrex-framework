@@ -1,6 +1,6 @@
 id: BL-022
 title: "Ship/PR command"
-status: draft
+status: done
 priority: high
 epic: EP-006
 effort: M
@@ -21,4 +21,4 @@ acceptance_criteria:
   - Plan mode — não modifica código, apenas cria o PR
 origin: "discuss session 2026-03-27 — GSD comparison"
 created: "2026-03-27"
-feature_id: null
+feature_id: 34
