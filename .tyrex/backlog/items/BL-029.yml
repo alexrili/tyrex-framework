@@ -1,6 +1,7 @@
 id: BL-029
 title: "Plan mode enforcement hook"
-status: ready
+status: done
+feature_id: 41
 priority: critical
 epic: EP-007
 effort: M

@@ -1,0 +1,15 @@
+task_id: "041-002"
+feature: "041"
+name: "CHANGELOG, version bump, TYREX.md"
+status: completed
+started_at: "2026-03-27T00:00:00Z"
+finished_at: "2026-03-27T00:00:00Z"
+commit: "a302377"
+depends_on: ["041-001"]
+wave: 2
+estimate: small
+quality: optional
+files:
+  - "docs/CHANGELOG.md"
+  - "package.json"
+  - ".tyrex/TYREX.md"
