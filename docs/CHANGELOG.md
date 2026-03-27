@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.16.0] - 2026-03-27
+
+### Added
+- **Verify/UAT command** — new `/tyrex-verify` for manual user acceptance testing. Extracts testable deliverables from specs, walks through one at a time (pass/fail/skip), auto-diagnoses failures, creates fix tasks with SPEC. Fix→re-verify loop (max 3 iterations). Results persist in NNN-verify.md. Plan mode. (BL-020, ADR-019)
+- **Verify in quick pipeline** — `/tyrex-quick` now includes verify between do and review. Pipeline: new→plan→do→verify→review→accept. `--auto` mode auto-assesses deliverables by comparing code vs spec.
+
+### Changed
+- **tyrex-do next action** — now suggests `/tyrex-verify` as first option after task completion, before `/tyrex-review`
+
 ## [1.15.0] - 2026-03-27
 
 ### Added

@@ -327,9 +327,9 @@ When ALL tasks are `completed` (including any doc fix tasks from Step 4b):
   ```
   All tasks completed. N/N tasks done, N commits, N files changed.
 
-  Next step: /tyrex-review — review the implementation
-    [1] Execute now
-    [2] Different command
+  Next step: /tyrex-verify — verify the implementation works
+    [1] /tyrex-verify — user acceptance testing
+    [2] /tyrex-review — skip verify, go straight to code review
     [3] Done for now
   ```
 
