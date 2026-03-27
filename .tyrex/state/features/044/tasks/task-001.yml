@@ -1,0 +1,14 @@
+task_id: "044-001"
+feature: "044"
+name: "Commit lint validator script"
+status: in_progress
+started_at: "2026-03-27T00:00:00Z"
+depends_on: []
+wave: 1
+estimate: small
+quality: recommended
+files:
+  - "templates/hooks/validators/commit-lint.sh"
+relevant_files:
+  - "templates/hooks/lib/common.sh"
+  - "templates/hooks/commit-msg.sh"
