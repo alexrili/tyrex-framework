@@ -1,0 +1,13 @@
+feature_id: "044"
+name: "Semantic Commit Validation Hook"
+feature_file: ".tyrex/features/044-semantic-commit-hook.md"
+branch: "feat/044-semantic-commit-hook"
+status: "done"
+tasks_dir: ".tyrex/state/features/044/tasks"
+tasks_summary:
+  total: 2
+  completed: 2
+  in_progress: 0
+  pending: 0
+created_at: "2026-03-27T00:00:00Z"
+updated_at: "2026-03-27T00:00:00Z"
