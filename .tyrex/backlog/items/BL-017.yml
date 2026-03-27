@@ -1,6 +1,6 @@
 id: BL-017
 title: "Fresh Context per Task (context rot fix)"
-status: in-progress
+status: done
 priority: critical
 epic: EP-006
 effort: XL
@@ -22,4 +22,4 @@ acceptance_criteria:
   - Fallback para execução inline se sub-agent não disponível no runtime
 origin: "discuss session 2026-03-27 — GSD comparison"
 created: "2026-03-27"
-feature_id: null
+feature_id: 29
