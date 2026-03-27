@@ -1,6 +1,6 @@
 id: BL-026
 title: "Milestones — agrupar features em releases"
-status: ready
+status: done
 priority: medium
 epic: EP-006
 effort: L
@@ -24,4 +24,4 @@ acceptance_criteria:
   - /tyrex-backlog plan pode organizar items por milestone
 origin: "discuss session 2026-03-27 — GSD comparison"
 created: "2026-03-27"
-feature_id: null
+feature_id: 38
