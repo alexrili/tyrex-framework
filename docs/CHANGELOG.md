@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.27.0] - 2026-03-27
+
+### Added
+- **CHANGELOG validation hook** — pre-commit validator that blocks commits with source code changes when `docs/CHANGELOG.md` is not staged. Allows `.tyrex/` and `docs/` only commits without CHANGELOG. Bypass via `TYREX_NO_CHANGELOG=1`. (BL-031, EP-007)
+
 ## [1.26.0] - 2026-03-27
 
 ### Added

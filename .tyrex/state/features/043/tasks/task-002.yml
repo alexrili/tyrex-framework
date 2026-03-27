@@ -1,7 +1,8 @@
 task_id: "043-002"
 feature: "043"
 name: "CHANGELOG, version bump"
-status: pending
+status: in_progress
+started_at: "2026-03-27T00:00:00Z"
 depends_on: ["043-001"]
 wave: 2
 estimate: small
