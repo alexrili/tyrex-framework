@@ -1,6 +1,7 @@
 id: BL-031
 title: "CHANGELOG validation hook"
-status: in-progress
+status: done
+feature_id: 43
 priority: high
 epic: EP-007
 effort: S
