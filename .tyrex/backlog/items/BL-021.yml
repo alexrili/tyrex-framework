@@ -1,6 +1,6 @@
 id: BL-021
 title: "Research integrado no pipeline plan"
-status: ready
+status: done
 priority: high
 epic: EP-006
 effort: L
@@ -22,4 +22,4 @@ acceptance_criteria:
   - /tyrex-quick respeita a config (research se habilitado)
 origin: "discuss session 2026-03-27 — GSD comparison"
 created: "2026-03-27"
-feature_id: null
+feature_id: 33

@@ -86,8 +86,58 @@ No active feature found.
    - Encryption requirements
    - Security testing requirements (these become quality: `required` tasks)
 
+### Step 2b: Research Phase (if enabled)
+
+Check `tyrex.yml` `workflow.research_before_plan`:
+- If `true` (default): run research before proposing tasks
+- If `false`: skip to Step 3
+
+**Auto-skip:** If `.tyrex/features/NNN-research.md` already exists and was created within the last 24 hours, skip research. Log: "Recent research found — using existing results."
+
+**Research process:**
+
+1. **Spawn parallel researcher sub-agents** (up to `parallel.max_agents`), each investigating one area:
+
+   - **Stack researcher** — investigate the tech stack, frameworks, and libraries relevant to this feature. Check compatibility, versions, known issues.
+   - **Approach researcher** — explore implementation approaches. Compare patterns, evaluate trade-offs, identify the recommended approach for this feature's requirements.
+   - **Pitfall researcher** — find common pitfalls, bugs, and gotchas for this type of feature. Check GitHub issues, Stack Overflow, framework docs for known problems.
+   - **Architecture researcher** — analyze how this feature fits into the existing codebase architecture. Identify integration points, potential conflicts, and dependency concerns.
+
+2. **Collect results** from all researchers and synthesize into a unified research document.
+
+3. **Persist research** to `.tyrex/features/NNN-research.md`:
+   ```markdown
+   # Research — Feature NNN: [name]
+
+   Date: YYYY-MM-DD
+
+   ## Stack Analysis
+   [findings from stack researcher]
+
+   ## Recommended Approach
+   [findings from approach researcher]
+
+   ## Pitfalls & Gotchas
+   [findings from pitfall researcher]
+
+   ## Architecture Fit
+   [findings from architecture researcher]
+
+   ## Key Recommendations
+   - [synthesized recommendation 1]
+   - [synthesized recommendation 2]
+   ```
+
+4. **Feed research to the planner:** The research document is loaded as context for Step 3 (task decomposition). The planner uses research findings to:
+   - Choose the recommended implementation approach
+   - Avoid identified pitfalls
+   - Select appropriate libraries/patterns
+   - Structure tasks to fit the architecture
+
+**If research spawning fails** (runtime doesn't support sub-agents): fall back to inline research — the orchestrator performs a single-pass analysis covering all 4 areas. Less thorough but functional.
+
 ### Step 3: Propose tasks
-Analyze the feature — including all loaded context, SRS, PRD, and security considerations — and propose a list of tasks. Each task MUST have these attributes:
+Analyze the feature — including all loaded context, SRS, PRD, security considerations, **and research findings (if available)** — and propose a list of tasks. Each task MUST have these attributes:
 
 ```markdown
 ### Task N: [short description]

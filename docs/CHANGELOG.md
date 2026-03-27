@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.17.0] - 2026-03-27
+
+### Added
+- **Research integrated in plan** — `/tyrex-plan` Step 2b spawns 4 parallel researcher sub-agents (stack, approach, pitfalls, architecture) before task decomposition. Results persist in `NNN-research.md` and feed the planner as context. Auto-skips if recent research exists. Inline fallback. (BL-021, ADR-020)
+- **Workflow config section** — new `workflow` section in `tyrex.yml` with `research_before_plan` toggle (default: true)
+
 ## [1.16.0] - 2026-03-27
 
 ### Added
