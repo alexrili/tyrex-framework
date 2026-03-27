@@ -1,0 +1,17 @@
+task_id: "042-001"
+feature: "042"
+name: "TDD check validator script"
+status: completed
+started_at: "2026-03-27T00:00:00Z"
+finished_at: "2026-03-27T00:00:00Z"
+commit: "e6bac56"
+depends_on: []
+wave: 1
+estimate: medium
+quality: recommended
+files:
+  - "templates/hooks/validators/tdd-check.sh"
+relevant_files:
+  - "templates/hooks/lib/common.sh"
+  - "templates/hooks/pre-commit.sh"
+  - ".tyrex/tyrex.yml"
