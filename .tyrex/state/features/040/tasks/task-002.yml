@@ -1,8 +1,10 @@
 task_id: "040-002"
 feature: "040"
 name: "Update tyrex init to install hooks"
-status: in_progress
+status: completed
 started_at: "2026-03-27T00:00:00Z"
+finished_at: "2026-03-27T00:00:00Z"
+commit: "f21b2ca"
 depends_on: ["040-001"]
 wave: 2
 estimate: medium

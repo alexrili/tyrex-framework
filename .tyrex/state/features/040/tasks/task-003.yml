@@ -1,7 +1,8 @@
 task_id: "040-003"
 feature: "040"
 name: "CHANGELOG, version bump, TYREX.md update"
-status: pending
+status: in_progress
+started_at: "2026-03-27T00:00:00Z"
 depends_on: ["040-002"]
 wave: 3
 estimate: small
