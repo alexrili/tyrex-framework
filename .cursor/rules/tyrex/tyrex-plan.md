@@ -172,7 +172,7 @@ After all tasks are proposed (with `depends_on` fields populated), calculate wav
 1. Tasks with NO dependencies (`depends_on: none` or empty) → **Wave 1**
 2. For each remaining task: wave = max(wave of all dependencies) + 1
 3. **File conflict check:** within each wave, verify no two tasks share files in their `Files` field. If conflict found → move the later task to the next wave.
-4. Respect `parallel.max_agents` from `tyrex.yml` — if a wave has more tasks than max_agents, split into sub-waves (Wave 1a, 1b) that run sequentially within the wave group.
+4. Wave values are always integers (1, 2, 3, ...). The `parallel.max_agents` cap is enforced at execution time by `/tyrex-do` — if a wave has more tasks than max_agents, the orchestrator batches them into sub-groups within the wave.
 
 **Example:**
 ```
@@ -335,7 +335,7 @@ After saving the plan, check if the feature has `external_ref` in the per-featur
 
 ### Step 7: Update state
 Update per-feature state file `.tyrex/state/features/NNN.yml`:
-- `tasks_summary`: with counts (total, pending, parallel, sequential)
+- `tasks_summary`: with counts (total, pending, parallel, sequential, wave_count)
 - `status`: "planned"
 
 Update cursor.yml:

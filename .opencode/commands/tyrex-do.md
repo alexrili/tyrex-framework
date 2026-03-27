@@ -112,6 +112,8 @@ Total: N tasks in M waves
 
 Execute waves sequentially: Wave 1 → Wave 2 → ... → Wave N. Within each wave, execute tasks in parallel using fresh sub-agents.
 
+**Max agents batching:** If a wave has more tasks than `parallel.max_agents` (from tyrex.yml), batch them into sub-groups. Execute each batch in parallel, wait for it to complete, then execute the next batch within the same wave. All batches in a wave must complete before advancing to the next wave.
+
 **Wave loop:**
 ```
 for each wave (ascending order):

@@ -29,7 +29,7 @@ Builds on Feature 029 (fresh context per task).
 1. tyrex-plan.md — add wave calculation algorithm after task decomposition
 2. tyrex-do.md — add wave-based execution loop in fresh context mode
 3. tyrex-quick.md — update visual roadmap to show waves
-4. tyrex.yml — wave config options (max_wave_parallelism)
+4. tyrex.yml — uses existing parallel.max_agents for wave batching (no new config needed)
 
 ## Files Affected
 - templates/commands/unified/tyrex-plan.md

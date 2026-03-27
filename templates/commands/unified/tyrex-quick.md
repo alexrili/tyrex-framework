@@ -146,7 +146,7 @@ This step produces:
 
 ### Step 3b: Visual Roadmap (before execution)
 
-After planning is complete, present a visual roadmap of what will be executed:
+After planning is complete, read `.tyrex/state/features/NNN/tasks/*.yml` and group tasks by their `wave` field (same algorithm as `/tyrex-do` Step 3). Present a visual roadmap derived from actual task state data:
 
 ```
 Execution Roadmap
