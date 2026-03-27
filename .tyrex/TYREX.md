@@ -114,6 +114,8 @@ Tyrex auto-detects installed agents by scanning for their config directories. Co
 - **Safe revert via git:** Safe-points (branch, tags, checkpoints) enable full rollback of rejected executions. No data lost — commits preserved in reflog or branch.
 - **Prompt structuring:** Framework never loses an idea — always offers to save actionable ideas to backlog during discuss.
 - **Discuss ↔ backlog integration:** `/tyrex-discuss --backlog BL-NNN` focuses discussion on a specific item with enrichment flow (update description, acceptance criteria). Proactive mid-conversation offer detects actionable ideas and offers to save — non-intrusive, frequency-controlled (max once every 3-4 exchanges). Backlog detail view [4] Discuss hands off to focused discuss. Persistence step offers backlog as save target alongside context and TYREX.md.
+- **Fresh context per task (context rot fix):** `/tyrex-do` executes each task in a sub-agent with a fresh context window (200K tokens). The orchestrator stays lightweight (<40% context: tyrex.yml, cursor, task list metadata, TYREX.md summary). Sub-agents receive targeted context only: task SPEC + relevant_files + constitution + skill + feature summary. Eliminates context rot — quality stays consistent from task 1 to task N. Config in `tyrex.yml` `context_engineering` section. Execution modes: `fresh` (default, sub-agent per task) and `inline` (legacy, same session). Auto-fallback to inline if runtime doesn't support sub-agents. Inspired by GSD framework.
+- **Relevant files field:** `/tyrex-plan` generates a `relevant_files` list per task — files the sub-agent needs to READ for context (interfaces, existing code, test patterns). Distinct from `Files` (write targets). Max 10 files per `size_limits.max_context_files`. Sub-agent reads additional files on demand if needed.
 
 ## Environment Variables
 
@@ -181,6 +183,7 @@ Tyrex auto-detects installed agents by scanning for their config directories. Co
 | 2026-03-26 | Quick visual roadmap + accept/reject | Quick shows visual roadmap before executing. Final consolidated report. Accept/reject flow with safe git revert on rejection. |
 | 2026-03-26 | Command resilience + backlog system (ADR-015) | Guardrails inline (~120 tokens), checkpoint reminders every N tasks, next-action suggestions on all commands. `/tyrex-backlog` command with CRUD, epics, roadmap. Command count: 23 (was 22). |
 | 2026-03-26 | Discuss ↔ backlog bidirectional integration | `/tyrex-discuss --backlog BL-NNN` focuses on specific item with enrichment flow. Proactive mid-conversation offer detects actionable ideas (non-intrusive, frequency-controlled). Backlog detail view [4] Discuss hands off to focused discuss. BL-012 absorbed into BL-008. |
+| 2026-03-27 | Fresh context per task — context rot fix (ADR-016) | `/tyrex-do` redesigned: each task runs in sub-agent with fresh 200K context. Orchestrator stays <40% context (metadata only). Sub-agent receives targeted context: SPEC + relevant_files + constitution + skill. Two modes: fresh (default) and inline (fallback). Auto-detect runtime capability. Config in `tyrex.yml` `context_engineering`. Inspired by GSD framework. |
 
 ## CI/CD
 

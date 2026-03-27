@@ -47,26 +47,40 @@ This command uses periodic directive checkpoints per `templates/commands/shared/
 
 ## Behavior
 
-### Step 1: Load state
-Read:
-1. Resolve active feature using Feature Context Resolution (above). Read `.tyrex/state/features/NNN.yml` for task progress and checkpoint data.
-2. Active feature spec → task list
-3. `.tyrex/state/features/NNN/tasks/*.yml` → status of all tasks for this feature
-4. `.tyrex/tyrex.yml` → configuration (commit mode, parallel settings)
-5. `.tyrex/TYREX.md` → project context
-6. `.tyrex/constitution.md` → guardrails
-7. `.tyrex/context/` → project-level context files (if exists)
-8. `.tyrex/features/NNN-context.md` → feature-level context (if exists)
-9. `docs/srs/` and `docs/prd/` → SRS/PRD for the active feature (if exist)
+### Step 1: Load orchestrator context (lightweight)
 
-### Step 2: Identify executable tasks
+The orchestrator stays lean to preserve context budget. Load ONLY what's needed to coordinate:
+
+1. Resolve active feature using Feature Context Resolution (above). Read `.tyrex/state/features/NNN.yml` for task progress and checkpoint data.
+2. `.tyrex/tyrex.yml` → configuration (commit mode, parallel settings, **context_engineering**)
+3. `.tyrex/state/features/NNN/tasks/*.yml` → task names, status, dependencies (metadata only)
+4. `.tyrex/TYREX.md` → **first N lines only** (N = `context_engineering.size_limits.tyrex_md_summary_lines`, default 50). This gives the orchestrator project overview + stack + patterns without loading full history.
+5. Active feature spec → **first 30 lines** (summary + acceptance criteria). Full spec is passed to sub-agents, not loaded by orchestrator.
+
+**Do NOT load into orchestrator context:**
+- Full source code files (sub-agents read these)
+- Full TYREX.md (sub-agents get the summary they need)
+- `.tyrex/context/` files (passed to sub-agents via relevant_files)
+- `docs/srs/`, `docs/prd/` (passed to sub-agents if listed in relevant_files)
+- `.tyrex/constitution.md` (passed to sub-agents directly, orchestrator already has guardrails inline)
+
+### Step 2: Determine execution mode
+
+Read `context_engineering.execution_mode` from `tyrex.yml`:
+
+- **`fresh`** (default) → Sub-agent execution. Each task runs in a fresh sub-agent with targeted context. The orchestrator spawns, collects results, commits, updates state. This eliminates context rot.
+- **`inline`** → Legacy execution. All tasks run in the current session (same behavior as pre-v1.13). Use when: runtime doesn't support sub-agents, single simple task, or user preference.
+
+**Auto-detection fallback:** If the runtime does not support spawning sub-agents (e.g., no Agent tool available, no Task tool, single-threaded chat agent), silently fall back to `inline` mode regardless of config. Log: "Fresh context: unavailable in this runtime — falling back to inline execution."
+
+### Step 3: Identify executable tasks + parallelization
+
 Find all tasks where:
 - Status is `pending`
 - All dependencies are `completed`
 
 These are the "ready" tasks.
 
-### Step 3: Parallelization decision
 If there are MULTIPLE ready tasks that are marked as `parallel: true`:
 
 **If `--auto`:** automatically choose parallel execution for all eligible tasks.
@@ -75,158 +89,160 @@ If there are MULTIPLE ready tasks that are marked as `parallel: true`:
 ```
 Tasks [2, 3, 4] are ready and can run in parallel.
 
-  [ ] Execute all in parallel (3 agents)
-  [ ] Execute sequentially (one at a time)
-  [ ] Choose which to parallelize
+  [1] Execute all in parallel (N agents, fresh context each)
+  [2] Execute sequentially (one at a time, fresh context each)
+  [3] Choose which to parallelize
 ```
 
 ### Step 4: Execute tasks
 
-**For SEQUENTIAL execution:**
-For each ready task, one at a time:
+#### Fresh Context Execution (execution_mode: "fresh")
 
-1. **Load SPEC (mandatory):**
-   - Read the task's SPEC file (referenced in task state as `spec_file`, located in `docs/specs/`)
-   - Use the SPEC's **Technical Approach** and **Constraints** to guide implementation
-   - Reference project-level context (`.tyrex/context/`) and feature-level context for informed decisions
-   - If SPEC file is missing, warn user and ask whether to generate one or proceed without
-2. **Load skill (if assigned):**
-   - Check if the task has a `skill` attribute
-   - If yes: read the skill file from `.tyrex/skills/<name>.md`
-   - If skill not found: check agent-specific skill directories (e.g., `.claude/skills/`, `.opencode/skills/`, `.cursor/rules/tyrex/`, `.codex/skills/tyrex/` — based on the agent executing the command). The agent knows its own directory structure.
-   - If still not found: warn user and continue without skill
-   - Apply the skill persona during implementation:
-     - Read `## Role` to understand the persona perspective for this task
-     - Apply `## Guidelines` as behavioral constraints during implementation
-     - Follow `## Patterns` for project-specific conventions
-     - If the skill's `## Expertise` doesn't match the current task's domain, log a note but still apply (the human selected it)
-   - Before marking the task complete, use `## Review Criteria` from the skill as a self-check
-3. Update task state to `in_progress`
-4. Update the per-feature state file with current task (set `current_task_in_progress`, `in_progress_since`, `in_progress_files_touched`)
-5. **Implement following quality strategy:**
-   - Check the task's `quality` attribute (required | recommended | optional)
-   - `required`: TDD mandatory — write tests first, implement, tests MUST pass
-   - `recommended`: write tests alongside code, warn if skipped
-   - `optional`: present choices: `[ ] Write tests for this task` / `[ ] Skip tests`
-   - **If `--auto`:** for `optional` quality, default to writing tests
-   - Run lint if configured — it MUST pass
-   - Run security scan if configured
-6. **On success:**
-   - If the implementation deviated from the SPEC's draft, update the SPEC file to reflect the actual approach taken
+For each task (sequential or parallel), the orchestrator performs a 3-phase cycle: **Prepare → Spawn → Collect**.
+
+**Phase A: Prepare sub-agent context**
+
+For the current task, the orchestrator assembles a targeted context package:
+
+1. **Task SPEC** (full content) — read from `docs/specs/` per task's `spec_file`
+   - If SPEC missing: warn user and ask whether to generate one or proceed without
+   - If SPEC exceeds `size_limits.max_spec_lines`: warn but include anyway
+2. **Relevant files** (read-only context) — from the task's `relevant_files` field
+   - Read each file listed in `relevant_files` (up to `size_limits.max_context_files`, default 10)
+   - Skip files exceeding `size_limits.max_file_lines` (default 500) — add note: "File X skipped (too large) — read on demand during execution"
+   - If `relevant_files` is empty: the sub-agent reads files on demand (no pre-loaded context)
+3. **Constitution** — `.tyrex/constitution.md` (always included, non-negotiable)
+4. **Skill** (if assigned) — full skill markdown from `.tyrex/skills/<name>.md`
+   - If not found locally: check agent-specific dirs (`.claude/skills/`, `.opencode/skills/`, etc.)
+   - If still not found: warn and proceed without
+5. **Feature summary** — first 30 lines of the feature spec (goals + acceptance criteria)
+6. **Quality strategy** — the task's `quality` attribute and what it means (TDD rules)
+
+**Phase B: Spawn sub-agent**
+
+Spawn a sub-agent (using Agent tool, Task tool, or equivalent) with a structured prompt:
+
+```
+You are a Tyrex task executor. Implement ONE task in a fresh context.
+
+TASK: [task name]
+SPEC: [full SPEC content]
+CONSTITUTION: [constitution.md content]
+SKILL: [skill content, if assigned]
+FEATURE: [first 30 lines of feature spec]
+QUALITY: [required|recommended|optional — with TDD rules]
+
+RELEVANT FILES (pre-loaded for context):
+[content of each relevant_file, with file path headers]
+
+INSTRUCTIONS:
+1. Read the SPEC carefully — it defines what to implement and how
+2. Follow the quality strategy (required = TDD, recommended = tests alongside, optional = ask)
+3. Follow the constitution rules (especially: tests, no secrets, path.join, etc.)
+4. Apply the skill persona if assigned (guidelines, patterns, review criteria)
+5. Implement the task. You may read additional files beyond relevant_files if needed.
+6. Run tests if a test command exists
+7. When done, report: files_changed, test_results, summary, any deviations from SPEC
+
+DO NOT: commit (orchestrator handles commits), modify .tyrex/ state files,
+modify CHANGELOG.md, modify other tasks' files, push to remote.
+```
+
+**For parallel tasks:** spawn multiple sub-agents simultaneously (up to `parallel.max_agents`). Each gets its own fresh context. File conflict check: tasks that share files in `Files` field CANNOT be parallel — if detected, force sequential.
+
+**Phase C: Collect results and commit**
+
+After sub-agent completes (or all parallel sub-agents complete):
+
+1. **Collect sub-agent output:**
+   - files_changed: list of files created/modified
+   - test_results: pass/fail count
+   - summary: what was implemented
+   - deviations: any changes from SPEC
+   - errors: if the sub-agent encountered issues
+
+2. **Validate:**
+   - Check that only expected files were modified (files listed in task's `Files` field + test files)
+   - Run tests if the sub-agent didn't already (safety net)
+   - Run lint if configured
+
+3. **On success — orchestrator handles post-task work:**
+   - If deviations reported: update the SPEC file to reflect actual approach
    - Update task state to `completed` with files_changed and output
    - **Resolve audit findings (if applicable):**
      - If the completed task has a `security` attribute (not `none`) or its `task_id` has an `rc-*` prefix:
        1. Check if `.tyrex/security/audit.md` exists; if not, skip silently
        2. Read `.tyrex/security/audit.md`
-       3. Check if the task addresses a known finding (match via task metadata notes like "Addresses SECURITY-NNN" or overlap between `files_changed` and the finding's `files_affected`)
-       4. For each matched finding still marked `[ ]`, update it to `[x]` and append the resolution date (today's date in YYYY-MM-DD format)
-       5. Write the updated audit.md
-       6. **Validation:** only transition `[ ]` to `[x]`; never revert a finding that is already `[x]`
+       3. Check if the task addresses a known finding (match via task metadata or file overlap)
+       4. For each matched finding still marked `[ ]`, update to `[x]` with date
+       5. **Validation:** only `[ ]` → `[x]`; never revert
    - **Sync subtask status to external tracker (if applicable):**
-     - Check if the completed task has `external_task_ref` in its task state file
-     - If absent: skip silently
-     - If present AND the feature's `external_ref.mode` is `build`:
-       1. **Pull** current subtask status via MCP tool (see [External Tracker Sync](../shared/external-tracker-sync.md))
-       2. **Compare** — the subtask is now complete locally. Target remote status: subtask → `done` (subtasks CAN be marked done — the lifecycle boundary applies only to the parent issue)
-       3. **Push** only if moving forward (if remote is already `done` or beyond, skip)
-       4. **Comment:** "Task completed. Updated by {user} — powered by Tyrex Framework"
-       5. Update `external_ref.synced_at` in the per-feature state file
-     - **Graceful degradation:** If MCP tool call fails, warn and continue. Never block the commit.
+     - If task has `external_task_ref` AND feature's `external_ref.mode` is `build`:
+       1. Pull current status, push forward to `done`, add comment
+       2. Graceful degradation on MCP failure
    - Prepare commit message (conventional format)
    - Update `docs/CHANGELOG.md` with what changed
-   - **Version bump check (if CHANGELOG or ADR changed):**
-     1. Detect if `docs/CHANGELOG.md` or any `docs/adrs/*.md` was modified in this task
-     2. If yes, detect the project's package manager manifest:
-        - Scan for: `package.json`, `composer.json`, `pyproject.toml`, `Cargo.toml`, `mix.exs`, `go.mod`
-        - If no manifest found: skip versioning silently
-     3. Read the current version from the manifest
-     4. Suggest semver bump based on change type:
-        - `feat:` commit → minor bump
-        - `fix:` commit → patch bump
-        - `BREAKING CHANGE` or `!:` in commit → major bump
-        - `chore:`, `docs:`, `refactor:`, `test:` → patch bump
-     5. **If `--auto`:** auto-accept the suggested bump
-        **Otherwise, present structured choices:**
-        ```
-        Version bump detected. Current: X.Y.Z
-          [1] Accept suggested: [type] → X.Y.Z+1
-          [2] Override: major
-          [3] Override: minor
-          [4] Override: patch
-          [5] Skip version bump
-        ```
-     6. Validate the resulting version string matches semver format (`MAJOR.MINOR.PATCH`, all numeric). If invalid, warn and ask for correction.
-     7. Update the version in the manifest file
-     8. Propagate version: grep for the old version string in known referencing files: README*, package manifest, TYREX.md, badge URLs, and documentation files. Exclude: `node_modules/`, lock files (`package-lock.json`, `yarn.lock`, `composer.lock`, `Cargo.lock`), vendor directories, and `.git/`.
-     9. Stage the version changes alongside the task changes (same atomic commit)
-   - **Run tests before commit (mandatory for every task):**
-     1. Detect test framework and test command from the project's package manifest scripts (e.g., `test` script in `package.json`, `pytest` in `pyproject.toml`, etc.)
-     2. The test command is read from the project's own manifest and trusted as project-owned. In non-`--auto` mode, display the exact command before running. Example: `Run: npm test [1] Approve [2] Skip`
-     3. If a test command exists: run the full test suite
-     4. If tests **fail**:
-        - **If `--auto`:** automatically retry once; if still failing, mark the task as `failed`
-        - **Otherwise, present structured choices:**
-          ```
-          Tests failed: N failures
-            [1] Fix and retry
-            [2] Skip tests (add note to commit)
-            [3] Abort task
-          ```
-     5. If tests **pass**: include the pass count in the task output: "Tests: N passed, 0 failed"
-     6. If **no test framework/command is detected**:
-        - **If `--auto`:** skip with a note in the task output: "No test command detected — skipped"
-        - **Otherwise, present structured choices:**
-          ```
-          No test command detected.
-            [1] Continue without tests
-            [2] Specify test command
-          ```
-     - This step runs for EVERY task, not just security tasks — core principle: **never let an implementation pass without at least asking about tests**
-   - **If `--auto`:**
-     - Make the commit automatically (overrides `approve` mode from tyrex.yml)
-   - **Else if commit mode is `approve`:**
-     - Show: diff summary, commit message, changelog entry
-     - Present choices: `[ ] Approve commit` / `[ ] Edit commit message` / `[ ] Reject and redo`
-   - **Else if commit mode is `auto`:**
-     - Make the commit automatically
-   - Update the per-feature state file: last_task_completed, tasks_summary, next_tasks. Update cursor.yml only: `last_active_feature` and `agent_mode`.
-   - **Auto-update TYREX.md:** If this task generated or updated any ADR, PRD, SRS, or other macro documentation, automatically update TYREX.md:
-     - Add a summary entry in the appropriate section (Architecture Decisions for ADR, Business Rules for PRD, Requirements for SRS)
-     - Add any new patterns discovered to the Patterns section
-     - This keeps TYREX.md as the living index of all project knowledge
-7. **On failure:**
-   - Update task state to `failed` with error details
-   - Show the error to the user
-   - **If `--auto`:** automatically retry up to 3 times, then mark as `failed` and continue to next task
+   - **Version bump check** (same logic as before):
+     1. Detect if CHANGELOG or ADR was modified
+     2. Detect package manifest, read current version
+     3. Suggest bump (feat→minor, fix→patch, BREAKING→major)
+     4. **If `--auto`:** auto-accept. **Otherwise:** present choices
+     5. Update manifest, propagate version, stage alongside task changes
+   - **Run tests before commit (mandatory):**
+     1. Detect test command from manifest
+     2. Run full suite (sub-agent may have run them, but orchestrator re-verifies)
+     3. On failure: retry once if `--auto`, else present choices
+     4. On pass: include count in output
+     5. No test command: skip with note if `--auto`, else present choices
+   - **Commit:**
+     - **If `--auto`:** commit automatically
+     - **Else if `approve`:** show diff, message, changelog entry → present choices
+     - **Else if `auto`:** commit automatically
+   - Update per-feature state file and cursor.yml
+   - **Auto-update TYREX.md** if macro docs generated
+
+4. **On failure:**
+   - Update task state to `failed` with error details from sub-agent
+   - **If `--auto`:** retry (spawn fresh sub-agent with error context) up to 3 times
    - **Otherwise, present choices:**
      ```
-     [ ] Fix and retry
-     [ ] Skip this task
-     [ ] Stop execution
+     Task failed: [error summary from sub-agent]
+       [1] Fix and retry (fresh sub-agent with error context)
+       [2] Fix inline (switch to inline mode for this task)
+       [3] Skip this task
+       [4] Stop execution
      ```
-   - If retry: fix and go back to step 3 of the task
-   - If skip: mark as `failed`, check if any tasks are now `blocked`
+   - Option [2] is a useful escape hatch — sometimes debugging is easier in the current session
 
-8. After task completion, check for newly unlocked tasks
-9. If new parallel tasks are available, go back to Step 3 (ask about parallelization)
+5. After task completion, check for newly unlocked tasks → go to Step 3
 
-**For PARALLEL execution:**
-1. For each parallel task, spawn a sub-agent (Task tool) with:
-   - The specific task description and files
-   - TYREX.md content (read-only context)
-   - constitution.md content (read-only guardrails)
-   - Skill content (if assigned) — the full skill markdown file
-   - Instruction: "Implement this task following the skill guidelines. Write results to the specified state file."
-   - The sub-agent should: implement, test, and report results
+#### Inline Execution (execution_mode: "inline" or fallback)
 
-2. Wait for all sub-agents to complete
-3. Collect results from task state files
-4. For each completed sub-task:
-   - Validate the implementation (tests pass, lint clean)
-   - Handle commits (based on mode: approve, auto, or `--auto`)
-   - Update CHANGELOG.md (sequentially, after all parallel tasks finish)
-5. Update the per-feature state file with all completed tasks. Update cursor.yml only: `last_active_feature` and `agent_mode`.
-6. Check for newly unlocked tasks → go to Step 3
+When running inline, the orchestrator executes tasks directly in the current session. This is the legacy behavior and serves as the fallback when fresh context is unavailable.
+
+**Additional context loading for inline mode:**
+In addition to the orchestrator context from Step 1, load:
+- `.tyrex/constitution.md` → guardrails
+- `.tyrex/context/` → project-level context files (if exists)
+- `.tyrex/features/NNN-context.md` → feature-level context (if exists)
+- `docs/srs/` and `docs/prd/` → SRS/PRD for the active feature (if exist)
+
+For each ready task, one at a time:
+
+1. **Load SPEC (mandatory):**
+   - Read the task's SPEC file from `docs/specs/`
+   - Use SPEC's Technical Approach and Constraints to guide implementation
+   - Reference project-level and feature-level context
+   - If SPEC missing: warn user and ask whether to generate one or proceed without
+2. **Load skill (if assigned):**
+   - Read from `.tyrex/skills/<name>.md` or agent-specific dirs
+   - Apply persona: Role, Guidelines, Patterns. Self-check via Review Criteria.
+3. Update task state to `in_progress`
+4. Update per-feature state file (current_task_in_progress, in_progress_since, in_progress_files_touched)
+5. **Implement following quality strategy** (required/recommended/optional — same rules as fresh mode)
+6. **On success:** same post-task work as fresh mode Phase C step 3 (audit, tracker sync, commit, changelog, version bump, tests, TYREX.md update)
+7. **On failure:** same as fresh mode Phase C step 4 (retry/skip/stop)
+8. After completion, check for newly unlocked tasks → go to Step 3
 
 ### Step 4b: Doc Impact Analysis (post-implementation)
 
@@ -272,9 +288,13 @@ Version tags are created automatically per `templates/commands/shared/git-semant
 - ALWAYS update the per-feature state file after each task — this enables session recovery. cursor.yml only tracks `agent_mode` and `last_active_feature`.
 - ALWAYS update CHANGELOG.md — it's mandatory
 - ALWAYS use structured choices for decisions — never open-ended questions when choices are possible
-- Sub-agents for parallel tasks should ONLY modify files listed in their task
-- If two parallel tasks need to modify the same file, they CANNOT be parallel — execute sequentially
-- The orchestrator (you) handles commits and state updates, NOT sub-agents
+- Sub-agents ONLY modify files listed in their task's `Files` field (plus test files)
+- Sub-agents do NOT commit, do NOT modify `.tyrex/` state, do NOT update CHANGELOG — the orchestrator does all of this
+- If two tasks need to modify the same file, they CANNOT be parallel — execute sequentially
+- The orchestrator (you) handles commits, state updates, CHANGELOG, and version bumps — NEVER delegate these to sub-agents
 - If the user interrupts ("stop", "wait", "pause"), immediately save state and stop
 - `--auto` is a trust accelerator — it skips ALL human checkpoints but still runs all quality checks (tests, lint, security)
 - When macro docs (ADR, PRD, SRS) are created/updated, ALWAYS update TYREX.md with a summary
+- **Fresh context is the default.** The orchestrator stays under 40% context usage. Each sub-agent gets a fresh 200K context window with only task-specific context.
+- **Inline mode is the fallback**, not the primary path. Use when: sub-agents unavailable, single trivial task, or user preference.
+- **Retry with error context:** When a sub-agent fails and is retried, include the error output in the new sub-agent's prompt so it can learn from the failure.

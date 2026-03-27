@@ -96,10 +96,19 @@ Analyze the feature — including all loaded context, SRS, PRD, and security con
 - **Unlocks:** [list of task numbers]
 - **Estimate:** small | medium | large
 - **Files:** [files to create or modify]
+- **Relevant files:** [files the sub-agent needs to READ for context — existing code it depends on, interfaces it implements, tests it must match. Max 10 files per tyrex.yml size_limits]
 - **Skill:** [skill filename from .tyrex/skills/, e.g., "backend-engineer.md", or "none"]
 - **Quality:** required | recommended | optional
 - **Security:** [none | input-validation | auth-check | data-sanitization | encryption | full-audit]
 ```
+
+**Relevant files guidance:**
+- `Files` = what the task creates or modifies (write targets)
+- `Relevant files` = what the sub-agent needs to read for context (read-only dependencies)
+- Include: interfaces being implemented, existing code being extended, test files for patterns, config files being referenced
+- Exclude: files already in `Files` (the sub-agent reads those automatically), node_modules, lock files
+- If a task needs more than `max_context_files` (default: 10), the sub-agent reads additional files on demand during execution
+- When `context_engineering.execution_mode` is `inline`, this field is informational only (no sub-agent spawned)
 
 **Audit finding integration:**
 - If Step 2 identified pending audit findings that overlap with this feature's scope, incorporate them into the task list
@@ -236,6 +245,7 @@ unlocks: []
 parallel: true|false
 security: "none|input-validation|auth-check|data-sanitization|encryption|full-audit"
 spec_file: "docs/specs/NNN-task-MMM-slug.md"
+relevant_files: []              # Files the sub-agent reads for context (max 10)
 started_at: null
 finished_at: null
 agent: null
