@@ -1,0 +1,14 @@
+task_id: "043-001"
+feature: "043"
+name: "CHANGELOG check validator script"
+status: in_progress
+started_at: "2026-03-27T00:00:00Z"
+depends_on: []
+wave: 1
+estimate: small
+quality: recommended
+files:
+  - "templates/hooks/validators/changelog-check.sh"
+relevant_files:
+  - "templates/hooks/lib/common.sh"
+  - "templates/hooks/pre-commit.sh"

@@ -1,0 +1,11 @@
+task_id: "043-002"
+feature: "043"
+name: "CHANGELOG, version bump"
+status: pending
+depends_on: ["043-001"]
+wave: 2
+estimate: small
+quality: optional
+files:
+  - "docs/CHANGELOG.md"
+  - "package.json"
