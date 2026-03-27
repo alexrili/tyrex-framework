@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.28.0] - 2026-03-27
+
+### Added
+- **Semantic commit validation hook** — commit-msg validator that enforces conventional commits format with 22 prefixes (11 standard + 11 Tyrex-specific). Validates `type(scope)!: description`. Allows merge/revert commits. Bypass via `TYREX_NO_COMMIT_LINT=1`. (BL-032, EP-007)
+
 ## [1.27.0] - 2026-03-27
 
 ### Added
