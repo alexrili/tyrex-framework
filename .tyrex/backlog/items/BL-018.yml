@@ -1,6 +1,6 @@
 id: BL-018
 title: "Wave Execution com dependency graph"
-status: in-progress
+status: done
 priority: critical
 epic: EP-006
 effort: XL
@@ -21,4 +21,4 @@ acceptance_criteria:
   - Fallback para execução sequencial se paralelismo não suportado pelo runtime
 origin: "discuss session 2026-03-27 — GSD comparison"
 created: "2026-03-27"
-feature_id: null
+feature_id: 30
