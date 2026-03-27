@@ -112,6 +112,12 @@ Active (current branch): 003-feature-name
   Skills:         [N installed (list names) | none installed]
   Git branches:   [N stale feature branches | clean]
 
+─── Context Health ─────────────────────
+  Execution mode: [fresh | inline]
+  Estimated usage: [~N% | unknown (no active session)]
+  Threshold:       [OK | ⚠️ warning (70%) | 🔴 critical (85%)]
+  Recommendation:  [continue | consider sub-agents | start fresh session]
+
 ─── Security ───────────────────────────
   Last audit:     [date from security-audit.md header | never]
   Findings:       [N pending, M resolved | no findings | no audit]
@@ -202,7 +208,14 @@ Perform these quick checks and include results in the Health section:
 
 6. **Roadmap awareness** — If `.tyrex/roadmap.yml` exists, show planned/discussed features. If it doesn't exist but feature specs reference future features in "Out of Scope" or "Related" sections, extract those references and display them with a note "(extracted from feature specs — consider creating roadmap.yml)".
 
-7. **Security findings** — If `.tyrex/security/audit.md` exists:
+7. **Context health** — Per `templates/commands/shared/context-monitor.md`:
+   - Read `context_engineering` config from `tyrex.yml`
+   - Show execution mode (fresh/inline)
+   - If in an active execution session: estimate context usage using heuristics (task progress ratio, files read, conversation turns)
+   - Show threshold status and recommendation
+   - If no active session: show "No active execution — context health will be tracked during /tyrex-do"
+
+8. **Security findings** — If `.tyrex/security/audit.md` exists:
    - Parse the findings table for `Status` column (`[ ]` = pending, `[x]` = resolved)
    - Count total findings, pending, and resolved
    - Extract the last scan date from the audit.md header
@@ -211,14 +224,14 @@ Perform these quick checks and include results in the Health section:
    - If all findings are resolved, show "All clear — no pending security findings"
    - If no `.tyrex/security/audit.md` exists, show "No security scans yet. Run `/tyrex-security-review`."
 
-8. **Bug registry** — If `.tyrex/bugs/` exists:
+9. **Bug registry** — If `.tyrex/bugs/` exists:
    - Count `DEBUG-*.md` files (total debug sessions)
    - Parse each file for findings with `Status: open` vs `Status: resolved`
    - Count open bugs by severity (critical, high, medium, low)
    - Show each open bug with severity and title
    - If no `.tyrex/bugs/` or no files: omit the Bugs section entirely
 
-9. **Test coverage gaps** — If `.tyrex/tests/coverage-gaps.md` exists:
+10. **Test coverage gaps** — If `.tyrex/tests/coverage-gaps.md` exists:
    - Parse the gaps table for `Status` column (`[ ]` = pending, `[x]` = resolved)
    - Count total gaps, pending, and resolved
    - Extract the last scan date from the coverage-gaps.md header

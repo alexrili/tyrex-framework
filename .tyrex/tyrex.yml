@@ -65,6 +65,14 @@ context_engineering:
     max_context_files: 10            # Max files passed to sub-agent via relevant_files
     max_file_lines: 500              # Skip files larger than this (sub-agent reads on demand)
     tyrex_md_summary_lines: 50       # How many lines of TYREX.md the orchestrator loads
+  # Context window monitoring — warns when context usage gets high
+  monitoring:
+    enabled: true                      # Enable context usage estimation and warnings
+    thresholds:                        # Percentage of estimated context window capacity
+      info: 50                         # Informational — "context at 50%, on track"
+      warning: 70                      # Warning — "context at 70%, consider sub-agents for remaining tasks"
+      critical: 85                     # Critical — "context at 85%, strongly recommend fresh session"
+    check_interval: "after_each_task"  # "after_each_task" | "after_each_wave" | "manual"
 
 # Parallelization
 parallel:

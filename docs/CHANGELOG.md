@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.15.0] - 2026-03-27
+
+### Added
+- **Context monitor** — heuristic-based context window monitoring during long sessions. Estimates usage via task progress ratio, files read, and conversation turns. Configurable thresholds in `tyrex.yml` (info: 50%, warning: 70%, critical: 85%). Warnings injected naturally after task/wave completion. (BL-019, ADR-018)
+- **Context monitoring config** — new `context_engineering.monitoring` section in `tyrex.yml` with `enabled`, `thresholds` (info/warning/critical), and `check_interval` (after_each_task/after_each_wave/manual)
+- **Shared context-monitor.md** — estimation heuristics, warning format per threshold, action suggestions by execution mode (fresh vs inline)
+- **Context health in /tyrex-status** — new section showing execution mode, estimated usage, threshold status, and recommendation
+
+### Changed
+- **tyrex-do monitoring integration** — context monitor checkpoint after each wave (fresh mode) or each task (inline mode). Critical threshold recommends fresh session.
+
 ## [1.14.0] - 2026-03-27
 
 ### Added

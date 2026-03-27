@@ -45,6 +45,10 @@ Before executing any task, read `templates/commands/shared/guardrails-inline.md`
 
 This command uses periodic directive checkpoints per `templates/commands/shared/checkpoint-reminder.md`. After every N completed tasks (default: 2, configurable via `tyrex.yml` `quality.checkpoint_interval`), inject the checkpoint reminder block before starting the next task.
 
+## Context Monitor
+
+This command monitors context window usage per `templates/commands/shared/context-monitor.md`. After each task completion (or wave completion, per `monitoring.check_interval`), estimate context usage and inject warnings if thresholds are crossed. In fresh mode, only the orchestrator's context is monitored (sub-agents have fresh windows). In inline mode, the full session context is monitored.
+
 ## Behavior
 
 ### Step 1: Load orchestrator context (lightweight)
@@ -262,7 +266,9 @@ After sub-agent completes (or all parallel sub-agents complete):
      ```
    - Option [2] is a useful escape hatch — sometimes debugging is easier in the current session
 
-5. After all tasks in the current wave complete successfully, advance to next wave (back to wave loop step 1). If this was the last wave, proceed to Step 4b.
+5. After all tasks in the current wave complete successfully:
+   - **Context monitor check** (per `templates/commands/shared/context-monitor.md`): estimate context usage and inject warning if threshold crossed. If critical (85%+) and remaining waves exist, recommend saving state and starting fresh session.
+   - Advance to next wave (back to wave loop step 1). If this was the last wave, proceed to Step 4b.
 
 #### Inline Execution (execution_mode: "inline" or fallback)
 
@@ -290,7 +296,8 @@ For each ready task, one at a time:
 5. **Implement following quality strategy** (required/recommended/optional — same rules as fresh mode)
 6. **On success:** same post-task work as fresh mode Phase C step 3 (audit, tracker sync, commit, changelog, version bump, tests, TYREX.md update)
 7. **On failure:** same as fresh mode Phase C step 4 (retry/skip/stop)
-8. After completion, advance to next task in wave order. If wave complete, advance to next wave. If last wave, proceed to Step 4b.
+8. **Context monitor check** (per `templates/commands/shared/context-monitor.md`): estimate context usage after each task. Inline mode accumulates context faster — pay close attention to warnings. If critical (85%+), recommend switching to fresh mode or starting fresh session.
+9. After completion, advance to next task in wave order. If wave complete, advance to next wave. If last wave, proceed to Step 4b.
 
 ### Step 4b: Doc Impact Analysis (post-implementation)
 
