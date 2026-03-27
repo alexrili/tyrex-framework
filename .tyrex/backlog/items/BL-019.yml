@@ -1,6 +1,6 @@
 id: BL-019
 title: "Context Monitor"
-status: in-progress
+status: done
 priority: high
 epic: EP-006
 effort: M
@@ -19,4 +19,4 @@ acceptance_criteria:
   - Funciona em qualquer runtime (não depende de hooks específicos do agente)
 origin: "discuss session 2026-03-27 — GSD comparison"
 created: "2026-03-27"
-feature_id: null
+feature_id: 31
