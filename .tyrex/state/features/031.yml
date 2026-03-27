@@ -1,0 +1,13 @@
+feature_id: 31
+feature_file: ".tyrex/features/031-context-monitor.md"
+branch: "feat/031-context-monitor"
+status: "planning"
+backlog_item: BL-019
+created: "2026-03-27"
+checkpoint_tag: null
+tasks:
+  total: 0
+  completed: 0
+  in_progress: 0
+  pending: 0
+  failed: 0
