@@ -36,6 +36,7 @@ Read these files (in parallel where possible):
 9. `docs/` — scan for existing documentation files
 10. `.tyrex/security/audit.md` — security findings from /tyrex-security-review (if exists)
 11. `.tyrex/bugs/` — debug session reports and open bugs (if exists)
+12. `.tyrex/threads/` — persistent threads (if exists)
 12. `.tyrex/tests/coverage-gaps.md` — test coverage gaps from /tyrex-test-review (if exists)
 
 ### Step 1b: Scan all feature state files
@@ -271,4 +272,5 @@ Based on the status, suggest the most relevant next actions:
 - If roadmap.yml doesn't exist, still try to extract future references from feature specs
 - Adapt the display: omit sections that are completely empty/irrelevant (e.g., don't show Skills section if no skills exist and no features reference them)
 - **Backlog section:** If `.tyrex/backlog/items/` exists and has items, show the Backlog section. Read all BL-*.yml files, count by status, list items sorted by priority. Omit the Backlog section entirely if no backlog directory or no items.
+- **Threads section:** If `.tyrex/threads/` exists and has threads, show the 3 most recently updated threads (sorted by `last_updated`). Format: `[name] — last updated [date] ([N] entries)`. Omit entirely if no threads.
 - **Next action** (per `templates/commands/shared/next-action-map.md`): present the suggested next command based on current state with structured choices.
