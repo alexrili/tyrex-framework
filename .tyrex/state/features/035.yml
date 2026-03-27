@@ -1,0 +1,20 @@
+feature_id: "035"
+feature_name: "discuss-assumptions"
+feature_file: ".tyrex/features/035-discuss-assumptions.md"
+branch: "feat/035-discuss-assumptions"
+status: "active"
+checkpoint_tag: "tyrex-checkpoint-035"
+current_task_in_progress: null
+in_progress_since: null
+in_progress_files_touched: []
+tasks_total: 3
+tasks_completed: 0
+last_task_completed: null
+updated_at: "2026-03-27T00:00:00Z"
+tasks_summary:
+  total: 3
+  completed: 0
+  in_progress: 0
+  pending: 3
+  failed: 0
+  blocked: 0

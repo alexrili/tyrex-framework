@@ -14,6 +14,7 @@ You MUST NOT write source code or modify any project files. Read-only exploratio
 ## Parameters
 
 - **`/tyrex-discuss`** (default) — Open-ended project discussion
+- **`/tyrex-discuss --assumptions`** — Assumptions mode: system analyzes the codebase first, proposes what it would do and why, then asks the user to correct what's wrong. Only works in Codebase and Hybrid modes. Can also be set as default via `tyrex.yml` `workflow.discuss_mode: "assumptions"`.
 - **`/tyrex-discuss --backlog BL-NNN`** — Focus discussion on a specific backlog item. Loads the item's context (description, acceptance criteria, epic, phase) and scopes the conversation to enriching that item.
 
 ## Feature Context Resolution
@@ -40,14 +41,20 @@ Based on what's found:
 - **Greenfield mode** — project is empty or has only configuration/scaffold files. The user wants to brainstorm, plan, or design before writing code.
 - **Hybrid** — project has some code but is early stage. Offer both exploration of what exists and discussion of what's next.
 
+4. **Check discuss mode** — determine if assumptions mode is active:
+   - If `--assumptions` flag is provided → assumptions mode
+   - Else if `tyrex.yml` `workflow.discuss_mode` == `"assumptions"` → assumptions mode
+   - Else → standard discuss mode (interview-first)
+   - **Note:** Assumptions mode only works in Codebase and Hybrid modes. If Greenfield is detected with `--assumptions`, warn and fall back to standard mode: "Assumptions mode requires existing code to analyze. Falling back to standard discuss mode."
+
 Tell the user which mode was detected:
 ```
-Discuss mode: [Codebase | Greenfield | Hybrid]
+Discuss mode: [Codebase | Greenfield | Hybrid] [+ Assumptions]
 Project: [name from tyrex.yml or directory name]
 Context: [TYREX.md loaded | no TYREX.md] | [N context files | no context]
 Skills:  [N available (list names) | none]
 
-Ready. Ask me anything about [the project | what you want to build].
+Ready. [Analyzing your codebase... | Ask me anything about the project | Tell me what you want to build].
 Type "save" at any time to persist a conclusion.
 Type "done" to end the discussion.
 ```
@@ -107,6 +114,39 @@ If skills exist in `.tyrex/skills/`:
 ### Step 3: Interactive discussion loop
 
 Enter a multi-turn conversation. For each user message:
+
+#### In Assumptions mode (Codebase or Hybrid with `--assumptions` or `workflow.discuss_mode: "assumptions"`):
+
+**Initial analysis (on first interaction):**
+
+1. **Analyze the codebase proactively** — read key files: TYREX.md, architecture patterns, main entry points, recent changes (`git log -10 --oneline`), project structure.
+2. **Present your analysis as numbered proposals:**
+   ```
+   Based on my analysis of [project name]:
+
+   Architecture & Patterns:
+     1. [observation about architecture]
+     2. [observation about patterns/conventions]
+     3. [observation about tech stack choices]
+
+   What I'd focus on next:
+     4. [proposed improvement or next step]
+     5. [proposed improvement or next step]
+     6. [proposed improvement or next step]
+
+   Potential concerns:
+     7. [risk, debt, or gap identified]
+     8. [risk, debt, or gap identified]
+
+   What's wrong or missing? Correct any points above, or tell me what area to focus on.
+   ```
+3. **Wait for user corrections.** The user may:
+   - Correct specific points ("Point 4 is wrong because...")
+   - Add missing context ("You missed that we also...")
+   - Redirect focus ("Focus on the API layer instead")
+   - Confirm ("Looks right, let's discuss point 6")
+4. **Adjust and continue.** After corrections, refine your understanding and proceed to explore deeper based on the user's direction.
+5. **Subsequent interactions** follow the standard codebase mode flow (below) but with the corrected assumptions as context. You already have a shared understanding — no need to re-interview.
 
 #### In Codebase mode:
 - **Analyze code on demand** — when the user asks about a feature, component, or flow, search the actual codebase to answer. Reference specific files and line numbers (`file_path:line_number`).
