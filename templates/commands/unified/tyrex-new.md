@@ -277,6 +277,14 @@ Git configuration:
      [ ] Auto-commit for this feature
 ```
 
+**Milestone association:** If `.tyrex/milestones/` has an `active` milestone, offer to associate this feature:
+```
+Active milestone: [version] — [title] ([N]/[M] features)
+  [1] Associate this feature with [version]
+  [2] Don't associate
+```
+If associated, add the feature to the milestone's `features` list after creation (Step 8).
+
 ### Step 5: Documentation First
 Generate documentation BEFORE any code, in this order:
 

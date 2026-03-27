@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.22.0] - 2026-03-27
+
+### Added
+- **Milestones** — new `/tyrex-milestone` command for grouping features into versioned releases. Create milestones with target version, features list, and definition of done. Audit checks readiness, complete creates git tag. (BL-026)
+- **Milestone in new** — `/tyrex-new` offers to associate features with the active milestone
+- **Milestone in status** — `/tyrex-status` shows active milestone progress
+
 ## [1.21.0] - 2026-03-27
 
 ### Added
