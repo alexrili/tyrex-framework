@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.14.0] - 2026-03-27
+
+### Added
+- **Wave execution with dependency graph** — `/tyrex-plan` Step 3a calculates wave assignments from task dependencies. Wave 1 = tasks with no dependencies (parallel). Wave N = max(dependency waves) + 1. File conflict check within waves. Circular dependency detection. (BL-018, ADR-017)
+- **Wave-based execution loop** — `/tyrex-do` executes waves sequentially, tasks within each wave in parallel (fresh sub-agents). Wave N+1 starts only when Wave N completes successfully. Failure stops wave propagation with retry/skip/stop choices
+- **Wave field in task state** — tasks now have a `wave` field auto-calculated during planning. Pre-v1.14 tasks without wave field fall back to sequential execution
+- **Enhanced visual roadmap** — `/tyrex-quick` roadmap shows wave groupings, parallel/sequential indicators, dependency arrows, and execution mode choice (wave-parallel vs sequential)
+
+### Changed
+- **Execution plan presentation** — `/tyrex-do` Step 3 now presents wave execution plan instead of flat parallelization choice
+
 ## [1.13.0] - 2026-03-27
 
 ### Added

@@ -73,32 +73,80 @@ Read `context_engineering.execution_mode` from `tyrex.yml`:
 
 **Auto-detection fallback:** If the runtime does not support spawning sub-agents (e.g., no Agent tool available, no Task tool, single-threaded chat agent), silently fall back to `inline` mode regardless of config. Log: "Fresh context: unavailable in this runtime — falling back to inline execution."
 
-### Step 3: Identify executable tasks + parallelization
+### Step 3: Build wave execution plan
 
-Find all tasks where:
-- Status is `pending`
-- All dependencies are `completed`
+Group all tasks by their `wave` field (calculated during `/tyrex-plan` Step 3a):
 
-These are the "ready" tasks.
+1. Read all task state files and group by `wave` number
+2. Sort waves in ascending order (Wave 1 first, Wave 2 next, etc.)
+3. Within each wave, identify tasks that can run in parallel (same wave = same dependency level)
+4. Present the wave execution plan:
 
-If there are MULTIPLE ready tasks that are marked as `parallel: true`:
+```
+Wave Execution Plan
+═══════════════════════════════════════
 
-**If `--auto`:** automatically choose parallel execution for all eligible tasks.
+Wave 1: [Task 1: name] ─┬── [Task 2: name]     (2 tasks, parallel)
+                         │
+Wave 2: [Task 3: name] ─┬── [Task 4: name]     (2 tasks, parallel)
+                         │
+Wave 3: [Task 5: name]                          (1 task, sequential)
+
+Total: N tasks in M waves
+```
+
+**If `--auto`:** proceed to execution automatically.
 
 **Otherwise, present structured choices:**
 ```
-Tasks [2, 3, 4] are ready and can run in parallel.
-
-  [1] Execute all in parallel (N agents, fresh context each)
-  [2] Execute sequentially (one at a time, fresh context each)
-  [3] Choose which to parallelize
+  [1] Execute waves in parallel (recommended — fresh context each)
+  [2] Execute all sequentially (ignore waves — one task at a time)
+  [3] Modify wave plan
 ```
+
+**Fallback for tasks without `wave` field** (pre-v1.14 task files): treat all tasks as Wave 1 and execute sequentially. Log: "No wave assignments found — executing sequentially."
 
 ### Step 4: Execute tasks
 
-#### Fresh Context Execution (execution_mode: "fresh")
+#### Wave-Based Execution (execution_mode: "fresh")
 
-For each task (sequential or parallel), the orchestrator performs a 3-phase cycle: **Prepare → Spawn → Collect**.
+Execute waves sequentially: Wave 1 → Wave 2 → ... → Wave N. Within each wave, execute tasks in parallel using fresh sub-agents.
+
+**Max agents batching:** If a wave has more tasks than `parallel.max_agents` (from tyrex.yml), batch them into sub-groups. Execute each batch in parallel, wait for it to complete, then execute the next batch within the same wave. All batches in a wave must complete before advancing to the next wave.
+
+**Wave loop:**
+```
+for each wave (ascending order):
+  1. Prepare all tasks in this wave (Phase A for each)
+  2. Spawn all sub-agents simultaneously (Phase B — parallel)
+  3. Wait for ALL sub-agents in this wave to complete
+  4. Collect results for each (Phase C — sequential commits)
+  5. If ANY task in this wave failed → stop execution, do NOT proceed to next wave
+  6. If all tasks in this wave succeeded → advance to next wave
+```
+
+**Wave failure handling:**
+- If a task fails within a wave: other tasks in the SAME wave continue (they're independent)
+- After the wave completes: report which tasks failed
+- Do NOT start the next wave — dependent tasks cannot run without their dependencies
+- Present choices:
+  ```
+  Wave N completed with failures:
+    ✓ Task 3 — completed
+    ✗ Task 4 — failed: [error summary]
+
+  Tasks blocked by failures: [Task 5, Task 6]
+
+    [1] Retry failed tasks (fresh sub-agent with error context)
+    [2] Fix failed tasks inline
+    [3] Skip failed tasks and continue (dependents will also be skipped)
+    [4] Stop execution
+  ```
+- **If `--auto`:** retry failed tasks up to 3 times, then skip and continue if still failing
+
+**Single-task waves:** If a wave has only 1 task, it runs as a single sub-agent (no parallelism overhead). The 3-phase cycle is the same.
+
+For each task within a wave, the orchestrator performs the 3-phase cycle: **Prepare → Spawn → Collect**.
 
 **Phase A: Prepare sub-agent context**
 
@@ -214,11 +262,11 @@ After sub-agent completes (or all parallel sub-agents complete):
      ```
    - Option [2] is a useful escape hatch — sometimes debugging is easier in the current session
 
-5. After task completion, check for newly unlocked tasks → go to Step 3
+5. After all tasks in the current wave complete successfully, advance to next wave (back to wave loop step 1). If this was the last wave, proceed to Step 4b.
 
 #### Inline Execution (execution_mode: "inline" or fallback)
 
-When running inline, the orchestrator executes tasks directly in the current session. This is the legacy behavior and serves as the fallback when fresh context is unavailable.
+When running inline, the orchestrator executes tasks directly in the current session. This is the legacy behavior and serves as the fallback when fresh context is unavailable. Tasks are still executed in wave order (Wave 1 first, then Wave 2, etc.) but sequentially within each wave — no parallelism.
 
 **Additional context loading for inline mode:**
 In addition to the orchestrator context from Step 1, load:
@@ -242,7 +290,7 @@ For each ready task, one at a time:
 5. **Implement following quality strategy** (required/recommended/optional — same rules as fresh mode)
 6. **On success:** same post-task work as fresh mode Phase C step 3 (audit, tracker sync, commit, changelog, version bump, tests, TYREX.md update)
 7. **On failure:** same as fresh mode Phase C step 4 (retry/skip/stop)
-8. After completion, check for newly unlocked tasks → go to Step 3
+8. After completion, advance to next task in wave order. If wave complete, advance to next wave. If last wave, proceed to Step 4b.
 
 ### Step 4b: Doc Impact Analysis (post-implementation)
 

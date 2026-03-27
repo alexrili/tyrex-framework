@@ -146,7 +146,7 @@ This step produces:
 
 ### Step 3b: Visual Roadmap (before execution)
 
-After planning is complete, present a visual roadmap of what will be executed:
+After planning is complete, read `.tyrex/state/features/NNN/tasks/*.yml` and group tasks by their `wave` field (same algorithm as `/tyrex-do` Step 3). Present a visual roadmap derived from actual task state data:
 
 ```
 Execution Roadmap
@@ -155,21 +155,28 @@ Execution Roadmap
 Feature: NNN — [name]
 Source:  [backlog BL-NNN | new description]
 
-Tasks:
-  Wave 1: [Task 1: description] ──────────────
-                    │
-  Wave 2: [Task 2: description] ─┬── [Task 3] ─
-                                  │  (parallel)
-  Wave 3:                         └── [Task 4] ─
+  Wave 1 (parallel — N tasks):
+    [Task 1: description]  ────┐
+    [Task 2: description]  ────┤
+                               │
+  Wave 2 (parallel — N tasks): │ depends on Wave 1
+    [Task 3: description]  ────┤
+    [Task 4: description]  ────┤
+                               │
+  Wave 3 (sequential — 1 task):│ depends on Wave 2
+    [Task 5: description]  ────┘
 
-Files affected: [N total]
-Quality: [N required, N recommended, N optional]
-Security tasks: [N or "none"]
+  Summary: N tasks in M waves
+  Parallel tasks: N | Sequential: N
+  Files affected: [N total]
+  Quality: [N required, N recommended, N optional]
+  Security tasks: [N or "none"]
 
 Proceed with execution?
-  [1] Execute
-  [2] Modify plan
-  [3] Cancel
+  [1] Execute (wave-parallel, fresh context each)
+  [2] Execute sequentially (ignore waves)
+  [3] Modify plan
+  [4] Cancel
 ```
 
 **If `--auto`:** skip confirmation, proceed directly.
