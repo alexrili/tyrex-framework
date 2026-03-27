@@ -141,6 +141,26 @@ The registries, in order:
 - **Label:** "test coverage gaps"
 - **Fix action:** use selected gap(s) as the feature description, proceed to Step 1 with that context pre-filled
 
+### Step 0e: Check active seeds
+
+Scan `.tyrex/backlog/seeds/SEED-*.yml` for seeds with `status: active`. For each active seed, compare its `trigger_condition` against the feature description (from backlog item, tracker issue, or user input so far). Use semantic matching — the trigger doesn't need to be an exact match, just contextually relevant.
+
+If matching seeds are found:
+```
+Seeds triggered by this feature:
+  SEED-NNN — "[idea]" (trigger: "[condition]")
+
+  [1] Promote to backlog — create BL-NNN from this seed
+  [2] Dismiss — not relevant
+  [3] Skip — keep seed active, ignore for now
+```
+
+- **Promote:** Create a new backlog item from the seed. Set seed `status: promoted`, `promoted_to: BL-NNN`. Set backlog item `origin: "seed SEED-NNN"`. Commit: `backlog: promote SEED-NNN → BL-NNN — [idea]`
+- **Dismiss:** Set seed `status: dismissed`. Commit: `backlog: dismiss SEED-NNN — [idea]`
+- **Skip:** Do nothing, continue. Seed stays active for future triggers.
+
+If no seeds directory exists or no seeds match, skip silently.
+
 ### Step 1: Describe the feature
 Ask the user: "Describe what you want to implement."
 Listen to their description. This is the WHAT and WHY.

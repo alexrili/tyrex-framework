@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.20.0] - 2026-03-27
+
+### Added
+- **Seeds system** — `/tyrex-backlog seed "idea" --trigger "condition"` plants forward-looking ideas that surface automatically when their trigger condition matches the current feature context. Seeds are checked in `/tyrex-new` (Step 0e) and `/tyrex-plan` (Step 2c). Can be promoted to backlog items, dismissed, or skipped. (BL-024)
+- **Seeds management** — `/tyrex-backlog seeds` lists all seeds with status. Seeds stored in `.tyrex/backlog/seeds/SEED-NNN.yml`
+
 ## [1.19.0] - 2026-03-27
 
 ### Added
