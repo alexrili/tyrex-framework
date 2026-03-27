@@ -1,6 +1,6 @@
 id: BL-017
 title: "Fresh Context per Task (context rot fix)"
-status: draft
+status: ready
 priority: critical
 epic: EP-006
 effort: XL
