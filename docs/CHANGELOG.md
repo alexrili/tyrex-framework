@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.26.0] - 2026-03-27
+
+### Added
+- **TDD enforcement hook** — pre-commit validator that checks staged source files for corresponding test files. Enforcement per area from `tyrex.yml` quality.strategy: `required` blocks commit, `recommended` warns, `optional` skips. Supports `*.test.*`, `*.spec.*`, `__tests__/` conventions. Bypass via `TYREX_NO_TDD_CHECK=1`. (BL-030, EP-007)
+
 ## [1.25.0] - 2026-03-27
 
 ### Added
