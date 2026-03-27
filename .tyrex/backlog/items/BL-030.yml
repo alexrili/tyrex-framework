@@ -1,6 +1,7 @@
 id: BL-030
 title: "TDD enforcement hook"
-status: in-progress
+status: done
+feature_id: 42
 priority: high
 epic: EP-007
 effort: M
