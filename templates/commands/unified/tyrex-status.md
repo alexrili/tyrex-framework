@@ -38,6 +38,7 @@ Read these files (in parallel where possible):
 11. `.tyrex/bugs/` — debug session reports and open bugs (if exists)
 12. `.tyrex/threads/` — persistent threads (if exists)
 13. `.tyrex/milestones/` — release milestones (if exists)
+14. `.tyrex/workstreams/` — workstreams (if exists)
 12. `.tyrex/tests/coverage-gaps.md` — test coverage gaps from /tyrex-test-review (if exists)
 
 ### Step 1b: Scan all feature state files
@@ -275,4 +276,5 @@ Based on the status, suggest the most relevant next actions:
 - **Backlog section:** If `.tyrex/backlog/items/` exists and has items, show the Backlog section. Read all BL-*.yml files, count by status, list items sorted by priority. Omit the Backlog section entirely if no backlog directory or no items.
 - **Threads section:** If `.tyrex/threads/` exists and has threads, show the 3 most recently updated threads (sorted by `last_updated`). Format: `[name] — last updated [date] ([N] entries)`. Omit entirely if no threads.
 - **Milestone section:** If `.tyrex/milestones/` has an `active` milestone, show: version, title, feature progress (N/M done), DoD progress (X/Y satisfied). Omit if no milestones exist.
+- **Workstream section:** If `.tyrex/workstreams/` has active workstreams, show: active workstream name, feature count, and progress. Omit if no workstreams exist.
 - **Next action** (per `templates/commands/shared/next-action-map.md`): present the suggested next command based on current state with structured choices.

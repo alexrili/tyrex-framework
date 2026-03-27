@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.23.0] - 2026-03-27
+
+### Added
+- **Workstreams** — new `/tyrex-workstream` command for parallel namespaced work. Create isolated work contexts with their own cursor, features, and branch prefix. Switch between workstreams, complete when done. (BL-027)
+- **Workstream in status** — `/tyrex-status` shows active workstream and feature progress
+
 ## [1.22.0] - 2026-03-27
 
 ### Added

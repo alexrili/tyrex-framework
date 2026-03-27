@@ -1,6 +1,6 @@
 id: BL-027
 title: "Workstreams — parallel namespaced work"
-status: ready
+status: done
 priority: low
 epic: EP-006
 effort: L
@@ -23,4 +23,4 @@ acceptance_criteria:
   - Git branch strategy por workstream
 origin: "discuss session 2026-03-27 — GSD comparison"
 created: "2026-03-27"
-feature_id: null
+feature_id: 39
