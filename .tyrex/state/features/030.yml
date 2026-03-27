@@ -1,0 +1,13 @@
+feature_id: 30
+feature_file: ".tyrex/features/030-wave-execution.md"
+branch: "feat/030-wave-execution"
+status: "planning"
+backlog_item: BL-018
+created: "2026-03-27"
+checkpoint_tag: null
+tasks:
+  total: 0
+  completed: 0
+  in_progress: 0
+  pending: 0
+  failed: 0
