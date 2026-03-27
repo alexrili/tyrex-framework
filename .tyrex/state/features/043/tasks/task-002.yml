@@ -1,0 +1,14 @@
+task_id: "043-002"
+feature: "043"
+name: "CHANGELOG, version bump"
+status: completed
+started_at: "2026-03-27T00:00:00Z"
+finished_at: "2026-03-27T00:00:00Z"
+commit: "6a16462"
+depends_on: ["043-001"]
+wave: 2
+estimate: small
+quality: optional
+files:
+  - "docs/CHANGELOG.md"
+  - "package.json"
