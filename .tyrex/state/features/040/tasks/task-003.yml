@@ -1,0 +1,12 @@
+task_id: "040-003"
+feature: "040"
+name: "CHANGELOG, version bump, TYREX.md update"
+status: pending
+depends_on: ["040-002"]
+wave: 3
+estimate: small
+quality: optional
+files:
+  - "docs/CHANGELOG.md"
+  - "package.json"
+  - ".tyrex/TYREX.md"

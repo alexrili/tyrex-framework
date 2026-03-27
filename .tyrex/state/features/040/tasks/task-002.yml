@@ -1,0 +1,14 @@
+task_id: "040-002"
+feature: "040"
+name: "Update tyrex init to install hooks"
+status: pending
+depends_on: ["040-001"]
+wave: 2
+estimate: medium
+quality: recommended
+files:
+  - "bin/tyrex.js"
+relevant_files:
+  - "templates/hooks/pre-tool-use.sh"
+  - "templates/hooks/pre-commit.sh"
+  - "templates/hooks/commit-msg.sh"
