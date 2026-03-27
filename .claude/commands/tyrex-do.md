@@ -110,7 +110,7 @@ For the current task, the orchestrator assembles a targeted context package:
 2. **Relevant files** (read-only context) — from the task's `relevant_files` field
    - Read each file listed in `relevant_files` (up to `size_limits.max_context_files`, default 10)
    - Skip files exceeding `size_limits.max_file_lines` (default 500) — add note: "File X skipped (too large) — read on demand during execution"
-   - If `relevant_files` is empty: the sub-agent reads files on demand (no pre-loaded context)
+   - If `relevant_files` is empty or absent (pre-v1.13 task files): the sub-agent reads files on demand (no pre-loaded context)
 3. **Constitution** — `.tyrex/constitution.md` (always included, non-negotiable)
 4. **Skill** (if assigned) — full skill markdown from `.tyrex/skills/<name>.md`
    - If not found locally: check agent-specific dirs (`.claude/skills/`, `.opencode/skills/`, etc.)

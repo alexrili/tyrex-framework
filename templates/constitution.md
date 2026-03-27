@@ -62,6 +62,7 @@
 
 - Parallel tasks spawn simultaneous sub-agents, each with fresh context
 - Conflicts in file modifications = those tasks CANNOT be parallelized
+- Conflict detection (tasks sharing files in their `Files` field) is performed by the orchestrator before spawning — not enforced within sub-agents
 - The orchestrator commits and updates state sequentially after parallel tasks complete
 
 ## On Commits
