@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.19.0] - 2026-03-27
+
+### Added
+- **Discuss assumptions mode** — `/tyrex-discuss --assumptions` inverts the interview-first flow: system analyzes the codebase, proposes what it would do and why, user corrects what's wrong. Works in Codebase and Hybrid modes. Falls back to standard mode in Greenfield. (BL-023)
+- **Discuss mode config** — `workflow.discuss_mode` in `tyrex.yml` sets the default discuss behavior (`"discuss"` or `"assumptions"`)
+
 ## [1.18.0] - 2026-03-27
 
 ### Added

@@ -1,6 +1,6 @@
 id: BL-023
 title: "Discuss Mode: Assumptions"
-status: ready
+status: done
 priority: medium
 epic: EP-006
 effort: M
@@ -20,4 +20,4 @@ acceptance_criteria:
   - Funciona em codebase mode e hybrid mode (não em greenfield)
 origin: "discuss session 2026-03-27 — GSD comparison"
 created: "2026-03-27"
-feature_id: null
+feature_id: 35

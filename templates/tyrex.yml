@@ -107,7 +107,7 @@ parallel:
 # Workflow toggles
 workflow:
   research_before_plan: true           # Run research phase before task decomposition in /tyrex-plan
-  # Future toggles will be added here (discuss_mode, skip_discuss, etc.)
+  discuss_mode: "discuss"              # "discuss" (interview-first, default) | "assumptions" (system proposes, user corrects)
 
 # Git
 git:
