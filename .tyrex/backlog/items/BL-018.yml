@@ -1,6 +1,6 @@
 id: BL-018
 title: "Wave Execution com dependency graph"
-status: draft
+status: ready
 priority: critical
 epic: EP-006
 effort: XL
