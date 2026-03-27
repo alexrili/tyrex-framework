@@ -1,6 +1,6 @@
 id: BL-020
 title: "Verify/UAT como etapa do pipeline"
-status: draft
+status: ready
 priority: critical
 epic: EP-006
 effort: L
