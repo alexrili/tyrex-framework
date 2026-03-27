@@ -1,6 +1,6 @@
 id: BL-025
 title: "Threads — cross-session persistent context"
-status: draft
+status: ready
 priority: medium
 epic: EP-006
 effort: M
