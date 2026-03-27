@@ -1,6 +1,7 @@
 id: BL-032
 title: "Semantic commit validation hook"
-status: in-progress
+status: done
+feature_id: 44
 priority: high
 epic: EP-007
 effort: S
