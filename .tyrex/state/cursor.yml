@@ -8,14 +8,14 @@ session_id: null
 agent_mode: "build"  # set by /tyrex-quick --backlog BL-023 (2026-03-27)
 
 # Last active feature — fallback for Feature Context Resolution
-last_active_feature: 35
+last_active_feature: 39
 
 # Legacy fields (kept for backward compatibility during transition)
 active_feature: null
 active_feature_file: null
 last_task_completed: null
-last_commit: "4746682"
-last_action: "review_approved"
+last_commit: "c776801"
+last_action: "backlog_batch_complete"
 
 tasks_summary:
   total: 7
