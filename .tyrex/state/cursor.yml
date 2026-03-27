@@ -8,7 +8,7 @@ session_id: null
 agent_mode: "build"  # set by /tyrex-quick feat/030 (2026-03-27)
 
 # Last active feature — fallback for Feature Context Resolution
-last_active_feature: 33
+last_active_feature: 34
 
 # Legacy fields (kept for backward compatibility during transition)
 active_feature: null
