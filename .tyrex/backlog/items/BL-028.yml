@@ -1,6 +1,7 @@
 id: BL-028
 title: "Claude Code hooks infrastructure"
-status: ready
+status: done
+feature_id: 40
 priority: critical
 epic: EP-007
 effort: L

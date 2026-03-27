@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.24.0] - 2026-03-27
+
+### Added
+- **Hook infrastructure** — mechanical enforcement via shell scripts in `.tyrex/hooks/`. PreToolUse runner for Claude Code (intercepts Write/Edit), pre-commit and commit-msg runners for git hooks. Shared library with JSON parsing (jq + Node.js fallback), YAML reading, file classification, and validator discovery pattern. (BL-028, EP-007)
+- **Hook auto-installation** — `tyrex init` copies hook scripts to `.tyrex/hooks/`, configures Claude Code hooks in `.claude/settings.json`, and creates git hook symlinks. Global install includes hook templates.
+- **Validator plugin pattern** — executable scripts in `.tyrex/hooks/validators/` are auto-discovered and run by hook runners. Future validators (plan mode guard, TDD, changelog, commit lint) plug into this infrastructure.
+
 ## [1.23.0] - 2026-03-27
 
 ### Added

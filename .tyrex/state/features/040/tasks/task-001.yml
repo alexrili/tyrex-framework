@@ -1,0 +1,21 @@
+task_id: "040-001"
+feature: "040"
+name: "Hook scripts — runner, library, git hooks"
+status: completed
+started_at: "2026-03-27T00:00:00Z"
+finished_at: "2026-03-27T00:00:00Z"
+commit: "90e2e60"
+depends_on: []
+wave: 1
+estimate: medium
+quality: recommended
+files:
+  - "templates/hooks/lib/common.sh"
+  - "templates/hooks/pre-tool-use.sh"
+  - "templates/hooks/pre-commit.sh"
+  - "templates/hooks/commit-msg.sh"
+  - "templates/hooks/validators/.gitkeep"
+relevant_files:
+  - ".tyrex/constitution.md"
+  - ".tyrex/tyrex.yml"
+  - ".tyrex/state/cursor.yml"

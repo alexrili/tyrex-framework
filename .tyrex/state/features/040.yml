@@ -1,0 +1,13 @@
+feature_id: "040"
+name: "Claude Code Hooks Infrastructure"
+feature_file: ".tyrex/features/040-hooks-infrastructure.md"
+branch: "feat/040-hooks-infrastructure"
+status: "done"
+tasks_dir: ".tyrex/state/features/040/tasks"
+tasks_summary:
+  total: 3
+  completed: 3
+  in_progress: 0
+  pending: 0
+created_at: "2026-03-27T00:00:00Z"
+updated_at: "2026-03-27T00:00:00Z"
