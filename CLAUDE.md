@@ -71,6 +71,7 @@ docs/
 ## On Parallelization
 
 When tasks can run in parallel, ask the human before spawning sub-agents.
-Each sub-agent receives: task description + TYREX.md + constitution.md.
-Each sub-agent writes ONLY to its own task state file.
-The orchestrator (main agent) handles commits, CHANGELOG, and cursor updates.
+Each sub-agent receives: task SPEC + relevant_files + constitution.md + skill (if assigned) + feature summary (first 30 lines).
+Each sub-agent writes ONLY to files listed in its task's `Files` field (plus test files).
+The orchestrator (main agent) handles commits, CHANGELOG, state updates, and cursor updates.
+Conflict detection (tasks sharing files) is done by the orchestrator before spawning.

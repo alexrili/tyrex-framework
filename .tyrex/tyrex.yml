@@ -42,6 +42,30 @@ quality:
     infra: "optional"             # Docker, CI/CD, config files
     docs: "optional"              # Documentation generation
 
+# Context Engineering — controls how tasks receive context during execution
+# Fresh context per task eliminates context rot (quality degradation in long sessions)
+context_engineering:
+  execution_mode: "fresh"            # "fresh" (sub-agent per task) | "inline" (same session, legacy)
+  # What the orchestrator loads (lightweight — stays under 30-40% context)
+  orchestrator_context:
+    - "tyrex.yml"                    # Config
+    - "cursor.yml"                   # State pointer
+    - "task list"                    # Task names + status + dependencies (not full SPECs)
+    - "TYREX.md summary"             # First 50 lines only (overview + stack + patterns)
+  # What each sub-agent receives (targeted — fresh 200K context per task)
+  subagent_context:
+    - "task SPEC"                    # Full SPEC for the task being executed
+    - "relevant_files"               # Only files listed in the task's relevant_files field
+    - "constitution.md"              # Guardrails (always included)
+    - "skill"                        # Assigned skill file (if any)
+    - "feature spec"                 # Feature description (first 30 lines)
+  # Size limits to prevent bloated context
+  size_limits:
+    max_spec_lines: 100              # Warn if a SPEC exceeds this
+    max_context_files: 10            # Max files passed to sub-agent via relevant_files
+    max_file_lines: 500              # Skip files larger than this (sub-agent reads on demand)
+    tyrex_md_summary_lines: 50       # How many lines of TYREX.md the orchestrator loads
+
 # Parallelization
 parallel:
   enabled: true

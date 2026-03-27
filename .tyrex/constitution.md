@@ -57,13 +57,23 @@
 - Batch multiple questions or choice blocks in a single message (exception: configuration review blocks that are a single confirm action)
 - Skip security analysis during planning phase
 
+## On Context Engineering
+
+- **Fresh context is the default execution mode.** Each task runs in a sub-agent with a fresh context window.
+- The orchestrator stays lightweight — loads only: tyrex.yml, cursor.yml, task list (metadata), TYREX.md summary (first 50 lines), feature summary (first 30 lines).
+- Sub-agents receive ONLY targeted context: task SPEC + relevant_files + constitution.md + skill (if assigned) + feature summary.
+- Sub-agents do NOT commit, do NOT modify `.tyrex/` state files, do NOT update CHANGELOG.md — the orchestrator handles all post-task work.
+- Sub-agents do NOT modify cursor.yml (only the orchestrator does).
+- Sub-agents read additional files on demand if needed beyond relevant_files.
+- Respect `tyrex.yml` `context_engineering.size_limits` — max files, max lines, TYREX.md summary length.
+- When sub-agents are unavailable (runtime limitation), fall back to inline execution silently.
+
 ## On Parallelization
 
-- Sub-agents receive ONLY their task context + TYREX.md + constitution.md
-- Sub-agents write ONLY to their own task state file
-- Sub-agents do NOT modify cursor.yml (only the orchestrator does)
-- Sub-agents do NOT modify CHANGELOG.md (done after wave completion)
+- Parallel tasks spawn simultaneous sub-agents, each with fresh context
 - Conflicts in file modifications = those tasks CANNOT be parallelized
+- Conflict detection (tasks sharing files in their `Files` field) is performed by the orchestrator before spawning — not enforced within sub-agents
+- The orchestrator commits and updates state sequentially after parallel tasks complete
 
 ## On Commits
 

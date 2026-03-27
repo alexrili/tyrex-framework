@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.13.0] - 2026-03-27
+
+### Added
+- **Fresh context per task** — `/tyrex-do` now executes each task in a sub-agent with a fresh context window, eliminating context rot. Orchestrator stays lightweight (<40% context budget). Sub-agents receive targeted context only: task SPEC, relevant_files, constitution, skill, feature summary. (BL-017, ADR-016)
+- **Context engineering config** — new `context_engineering` section in `tyrex.yml` with `execution_mode` (fresh/inline), `orchestrator_context`, `subagent_context`, and `size_limits` (max_spec_lines, max_context_files, max_file_lines, tyrex_md_summary_lines)
+- **Relevant files field** — `/tyrex-plan` task structure now includes `relevant_files` — files the sub-agent reads for context (interfaces, existing code, test patterns). Distinct from `Files` (write targets). Max 10 per size_limits
+- **Inline execution fallback** — auto-detects when runtime doesn't support sub-agents and falls back to inline (legacy) execution silently
+- **Constitution context engineering rules** — new "On Context Engineering" section in constitution.md defining fresh context boundaries and sub-agent responsibilities
+
+### Changed
+- **Execution model** — `/tyrex-do` Step 1 is now lightweight orchestrator-only loading. Full context loading moved to sub-agent preparation phase
+- **Parallelization section** — constitution.md parallelization rules simplified to reference fresh context model
+
 ## [1.12.1] - 2026-03-26
 
 ### Changed
