@@ -136,6 +136,27 @@ Check `tyrex.yml` `workflow.research_before_plan`:
 
 **If research spawning fails** (runtime doesn't support sub-agents): fall back to inline research — the orchestrator performs a single-pass analysis covering all 4 areas. Less thorough but functional.
 
+### Step 2c: Check active seeds
+
+Scan `.tyrex/backlog/seeds/SEED-*.yml` for seeds with `status: active`. For each active seed, compare its `trigger_condition` against the feature description, scope, and planned task areas. Use semantic matching.
+
+If matching seeds are found, present them before task decomposition:
+```
+Seeds relevant to this feature:
+  SEED-NNN — "[idea]" (trigger: "[condition]")
+
+  [1] Promote to backlog — create BL-NNN from this seed
+  [2] Incorporate — add as a consideration in the plan (don't create BL item)
+  [3] Dismiss — not relevant
+  [4] Skip — keep seed active, ignore for now
+```
+
+- **Promote:** Same as in `/tyrex-new` Step 0e.
+- **Incorporate:** Note the seed's idea in the planning context. It may influence task structure or add a sub-task. Don't create a backlog item.
+- **Dismiss/Skip:** Same as in `/tyrex-new` Step 0e.
+
+If no seeds directory exists or no seeds match, skip silently.
+
 ### Step 3: Propose tasks
 Analyze the feature — including all loaded context, SRS, PRD, security considerations, **and research findings (if available)** — and propose a list of tasks. Each task MUST have these attributes:
 

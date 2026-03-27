@@ -1,6 +1,6 @@
 id: BL-024
 title: "Seeds — ideias com trigger conditions"
-status: ready
+status: done
 priority: medium
 epic: EP-006
 effort: M
@@ -22,4 +22,4 @@ acceptance_criteria:
   - Seeds não expiram automaticamente
 origin: "discuss session 2026-03-27 — GSD comparison"
 created: "2026-03-27"
-feature_id: null
+feature_id: 36
