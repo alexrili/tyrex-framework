@@ -251,6 +251,35 @@ function installGlobalTemplates() {
     console.log(c("green", `  Installed skills to ~/.tyrex/skills/`));
   }
 
+  // Hooks — copy to global templates for project symlinking
+  const hooksSrc = path.join(TEMPLATES_DIR, "hooks");
+  if (fs.existsSync(hooksSrc)) {
+    const hooksTarget = path.join(globalTemplatesDir, "hooks");
+    ensureDir(hooksTarget);
+    ensureDir(path.join(hooksTarget, "lib"));
+    ensureDir(path.join(hooksTarget, "validators"));
+    const hookEntries = [
+      "pre-tool-use.sh", "pre-commit.sh", "commit-msg.sh",
+    ];
+    for (const file of hookEntries) {
+      const src = path.join(hooksSrc, file);
+      if (fs.existsSync(src)) {
+        fs.copyFileSync(src, path.join(hooksTarget, file));
+      }
+    }
+    // Copy lib/common.sh
+    const commonSrc = path.join(hooksSrc, "lib", "common.sh");
+    if (fs.existsSync(commonSrc)) {
+      fs.copyFileSync(commonSrc, path.join(hooksTarget, "lib", "common.sh"));
+    }
+    // Copy validators/.gitkeep
+    const gitkeepSrc = path.join(hooksSrc, "validators", ".gitkeep");
+    if (fs.existsSync(gitkeepSrc)) {
+      fs.copyFileSync(gitkeepSrc, path.join(hooksTarget, "validators", ".gitkeep"));
+    }
+    console.log(c("green", `  Installed hooks to ~/.tyrex/templates/hooks/`));
+  }
+
   console.log(c("green", `  Installed templates to ~/.tyrex/templates/`));
 }
 
@@ -281,6 +310,122 @@ function installGlobalRulesTemplates() {
     const dest = path.join(configDir, tmpl);
     if (fs.existsSync(src)) {
       fs.copyFileSync(src, dest);
+    }
+  }
+}
+
+// ─── Hooks Installation ─────────────────────────────────────
+
+function installHooks(projectDir, detectedAgents) {
+  const tyrexDir = path.join(projectDir, ".tyrex");
+  const hooksDir = path.join(tyrexDir, "hooks");
+  const globalHooksDir = path.join(GLOBAL_TYREX_DIR, "templates", "hooks");
+
+  // Check if global hook templates exist
+  if (!fs.existsSync(globalHooksDir)) {
+    console.log(c("dim", "  Hooks templates not found — skipping hook installation."));
+    return;
+  }
+
+  // Copy hook scripts to .tyrex/hooks/
+  ensureDir(hooksDir);
+  ensureDir(path.join(hooksDir, "lib"));
+  ensureDir(path.join(hooksDir, "validators"));
+
+  const hookFiles = [
+    { src: "pre-tool-use.sh", dest: "pre-tool-use.sh" },
+    { src: "pre-commit.sh", dest: "pre-commit.sh" },
+    { src: "commit-msg.sh", dest: "commit-msg.sh" },
+    { src: "lib/common.sh", dest: "lib/common.sh" },
+  ];
+
+  for (const { src, dest } of hookFiles) {
+    const srcPath = path.join(globalHooksDir, src);
+    const destPath = path.join(hooksDir, dest);
+    if (fs.existsSync(srcPath)) {
+      fs.copyFileSync(srcPath, destPath);
+      fs.chmodSync(destPath, 0o755);
+    }
+  }
+
+  // Preserve existing custom validators — only copy .gitkeep if empty
+  const validatorsDir = path.join(hooksDir, "validators");
+  const validatorFiles = fs.readdirSync(validatorsDir).filter((f) => f !== ".gitkeep");
+  if (validatorFiles.length === 0) {
+    const gitkeepSrc = path.join(globalHooksDir, "validators", ".gitkeep");
+    if (fs.existsSync(gitkeepSrc)) {
+      fs.copyFileSync(gitkeepSrc, path.join(validatorsDir, ".gitkeep"));
+    }
+  }
+
+  console.log(c("green", "  Installed hooks to .tyrex/hooks/"));
+
+  // ─── Claude Code hooks config ───────────────────────────────
+  if (detectedAgents.includes("claude")) {
+    const claudeDir = path.join(projectDir, ".claude");
+    ensureDir(claudeDir);
+    const settingsPath = path.join(claudeDir, "settings.json");
+
+    let settings = {};
+    if (fs.existsSync(settingsPath)) {
+      try {
+        settings = JSON.parse(fs.readFileSync(settingsPath, "utf-8"));
+      } catch (err) {
+        console.log(c("yellow", "  Could not parse .claude/settings.json — creating fresh hooks config."));
+      }
+    }
+
+    // Merge hooks config (don't overwrite existing hooks for other events)
+    if (!settings.hooks) settings.hooks = {};
+
+    settings.hooks.PreToolUse = [
+      {
+        matcher: "Edit|Write",
+        hooks: [
+          {
+            type: "command",
+            command: ".tyrex/hooks/pre-tool-use.sh",
+          },
+        ],
+      },
+    ];
+
+    fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 2) + "\n");
+    console.log(c("green", "  Configured Claude Code hooks in .claude/settings.json"));
+  }
+
+  // ─── Git hooks (symlinks) ────────────────────────────────────
+  const gitHooksDir = path.join(projectDir, ".git", "hooks");
+  if (fs.existsSync(path.join(projectDir, ".git"))) {
+    ensureDir(gitHooksDir);
+
+    const gitHooks = [
+      { hook: "pre-commit", target: "pre-commit.sh" },
+      { hook: "commit-msg", target: "commit-msg.sh" },
+    ];
+
+    for (const { hook, target } of gitHooks) {
+      const hookPath = path.join(gitHooksDir, hook);
+      const targetPath = path.join(tyrexDir, "hooks", target);
+
+      // Skip if hook already exists and is not a Tyrex symlink
+      try {
+        const stat = fs.lstatSync(hookPath);
+        if (stat.isSymbolicLink()) {
+          const current = fs.readlinkSync(hookPath);
+          if (current === targetPath) continue; // Already correct
+          fs.unlinkSync(hookPath); // Wrong target — recreate
+        } else {
+          // Existing non-symlink hook — don't overwrite (user's custom hook)
+          console.log(c("yellow", `  Git hook ${hook} exists (not a symlink) — skipped. Link manually to .tyrex/hooks/${target}`));
+          continue;
+        }
+      } catch (err) {
+        // Doesn't exist — create
+      }
+
+      fs.symlinkSync(targetPath, hookPath);
+      console.log(c("green", `  Git hook: ${hook} -> .tyrex/hooks/${target}`));
     }
   }
 }
@@ -393,6 +538,9 @@ function initProject(projectDir, config, force = false) {
   // CHANGELOG.md — never overwrite
   const changelogPath = path.join(projectDir, "docs", "CHANGELOG.md");
   copyTemplateIfNew("CHANGELOG.md", changelogPath, replacements);
+
+  // ─── Hooks installation ─────────────────────────────────────
+  installHooks(projectDir, detectedAgents);
 
   console.log(c("green", "  Created .tyrex/ directory structure"));
   console.log(c("green", "  Created docs/ directory structure"));
