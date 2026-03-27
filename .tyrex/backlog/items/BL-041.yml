@@ -1,0 +1,21 @@
+id: BL-041
+title: "Migrar test gaps MD → YAML"
+status: ready
+priority: high
+epic: EP-009
+effort: M
+phase: 3
+description: |
+  Migrar tests/TEST-REVIEW-NNN.md (prosa) e tests/coverage-gaps.md (consolidado)
+  para tests/gaps/TST-NNN-FFF.yml (um arquivo por gap).
+  Eliminar coverage-gaps.md. Atualizar /tyrex-test-review (output),
+  /tyrex-new (check), /tyrex-plan (awareness), /tyrex-do (run), /tyrex-review (lens 5).
+acceptance_criteria:
+  - tests/gaps/TST-NNN-FFF.yml com campos: id, session, tier, file, description, suggested_test, status, created, resolved_at, refs
+  - Tier enum: critical, important, nice-to-have
+  - Status enum: pending, resolved, skipped
+  - /tyrex-test-review gera gaps em YAML (não MD)
+  - tests/coverage-gaps.md eliminado
+  - 5 comandos atualizados
+origin: "discuss session 2026-03-27 — production-ready"
+created: "2026-03-27"

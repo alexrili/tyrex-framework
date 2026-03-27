@@ -1,0 +1,12 @@
+id: EP-008
+title: "Observabilidade e Métricas"
+description: |
+  Saber o que aconteceu, com dados — não feeling.
+  Log estruturado de execução por sessão, métricas por feature,
+  context usage tracking real, quality scorecards.
+  Dados estruturados em YAML, prontos para consumo por API futura.
+  Depende de EP-007 (sem enforcement, métricas não são confiáveis).
+items: [BL-034, BL-035, BL-036, BL-037]
+phase: [2]
+created: "2026-03-27"
+origin: "discuss session 2026-03-27 — production-ready analysis"

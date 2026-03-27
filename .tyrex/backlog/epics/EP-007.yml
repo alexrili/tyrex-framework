@@ -1,0 +1,12 @@
+id: EP-007
+title: "Enforcement Mecânico"
+description: |
+  Sair do "prompt pede" para "sistema força".
+  Implementar hooks reais (Claude Code primeiro, extensível para outros runtimes)
+  que garantem mecanicamente: plan mode, TDD, CHANGELOG, semantic commits, version bump.
+  Princípio: se o agente pode ignorar, não é guardrail — é sugestão.
+  Claude Code é o primeiro runtime; arquitetura deve ser agnóstica ao LLM.
+items: [BL-028, BL-029, BL-030, BL-031, BL-032, BL-033]
+phase: [1, 2]
+created: "2026-03-27"
+origin: "discuss session 2026-03-27 — production-ready analysis"

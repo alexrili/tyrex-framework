@@ -1,0 +1,24 @@
+id: BL-045
+title: "State normalization e cleanup"
+status: ready
+priority: high
+epic: EP-009
+effort: L
+phase: 3
+description: |
+  Normalizar estado e eliminar cruft acumulado:
+  - Padronizar feature IDs como string zero-padded ("029")
+  - Remover campos legacy do cursor.yml (active_feature, active_feature_file)
+  - Eliminar map/ (estático, drift) — scan on-demand via /tyrex-init
+  - Remover formato antigo de task files (feat-NNN-task-MMM.yml)
+  - Garantir consistent refs entre artefatos (feature→tasks→commits→findings)
+  - Breaking change: v2.0 não suporta formato antigo
+acceptance_criteria:
+  - Feature IDs sempre string "NNN" (3 dígitos, zero-padded)
+  - cursor.yml sem campos legacy
+  - map/ directory eliminado do template e de projetos existentes
+  - Task files apenas no formato novo (features/NNN/tasks/task-MMM.yml)
+  - Cada artefato tem refs field linkando a artefatos relacionados
+  - Migration guide documentado para v1.x → v2.0
+origin: "discuss session 2026-03-27 — production-ready"
+created: "2026-03-27"

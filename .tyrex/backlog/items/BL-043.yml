@@ -1,0 +1,22 @@
+id: BL-043
+title: "Consolidar roadmap — fonte única"
+status: ready
+priority: medium
+epic: EP-009
+effort: S
+phase: 3
+description: |
+  Eliminar redundância de 3 representações do roadmap.
+  Fonte única: .tyrex/backlog/ROADMAP.yml (YAML estruturado).
+  ROADMAP.md auto-gerado a partir do YAML (read-only, regenerável).
+  Eliminar templates/roadmap.yml (template vazio desnecessário).
+  Eliminar .tyrex/roadmap.yml (mover para backlog/).
+acceptance_criteria:
+  - backlog/ROADMAP.yml como fonte única (YAML estruturado)
+  - backlog/ROADMAP.md auto-gerado (markdown legível, com nota "auto-generated")
+  - templates/roadmap.yml removido
+  - .tyrex/roadmap.yml removido (se existir)
+  - /tyrex-backlog plan gera/atualiza ROADMAP.yml
+  - /tyrex-status lê ROADMAP.yml
+origin: "discuss session 2026-03-27 — production-ready"
+created: "2026-03-27"

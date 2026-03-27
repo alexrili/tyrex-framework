@@ -1,0 +1,24 @@
+id: BL-044
+title: "Event stream append-only"
+status: ready
+priority: medium
+epic: EP-009
+effort: L
+phase: 4
+description: |
+  Implementar event stream append-only em .tyrex/events/YYYY-MM-DD.jsonl.
+  Cada ação significativa gera um evento (uma linha JSON).
+  Eventos: task_started, task_completed, task_failed, commit_created,
+  review_finding, security_finding, bug_found, test_gap, feature_started,
+  feature_completed, version_bumped, pr_created, etc.
+  Event sourcing permite reconstruir qualquer estado.
+acceptance_criteria:
+  - .tyrex/events/YYYY-MM-DD.jsonl (um arquivo por dia)
+  - Cada linha é JSON válido com: timestamp, event_type, actor, payload, refs
+  - Refs ligam evento a feature, task, commit, finding
+  - Comandos que modificam estado emitem eventos
+  - Eventos são append-only (nunca editados)
+  - Leitura via grep/jq (não precisa de runtime)
+  - /tyrex-status pode mostrar "recent activity" dos eventos
+origin: "discuss session 2026-03-27 — production-ready"
+created: "2026-03-27"

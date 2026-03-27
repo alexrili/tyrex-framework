@@ -1,0 +1,22 @@
+id: BL-049
+title: "Compliance report per feature"
+status: ready
+priority: medium
+epic: EP-010
+effort: M
+phase: 4
+description: |
+  Relatório de compliance gerado ao final de cada feature.
+  Checa todas as policies, gates, quality scores, security findings,
+  test coverage, changelog, versioning. Persistido em
+  .tyrex/governance/reports/FEAT-NNN-compliance.yml.
+acceptance_criteria:
+  - Gerado automaticamente ao final de /tyrex-review ou /tyrex-ship
+  - Campos: feature_id, generated_at, policies_checked, policies_passed, policies_failed
+  - Campos: gates_passed, quality_score, security_findings_summary, test_gaps_summary
+  - Campos: changelog_updated, version_bumped, review_completed, verify_completed
+  - Overall status: compliant | non-compliant | partial
+  - /tyrex-status mostra compliance status da feature ativa
+  - /tyrex-ship inclui compliance summary no PR body
+origin: "discuss session 2026-03-27 — production-ready"
+created: "2026-03-27"

@@ -1,0 +1,19 @@
+id: BL-031
+title: "CHANGELOG validation hook"
+status: ready
+priority: high
+epic: EP-007
+effort: S
+phase: 1
+description: |
+  Hook pre-commit que valida: se source files changed, CHANGELOG.md deve ter
+  entrada correspondente. Bloqueia commits sem CHANGELOG quando source files mudam.
+  Permite commits sem CHANGELOG para .tyrex/ only changes (state updates).
+acceptance_criteria:
+  - Bloqueia commit se source files staged sem CHANGELOG entry
+  - Permite commits de .tyrex/ files sem CHANGELOG
+  - Permite commits de docs/ files sem CHANGELOG
+  - Mensagem clara indicando que CHANGELOG é obrigatório
+  - Flag --no-changelog para bypass explícito
+origin: "discuss session 2026-03-27 — production-ready"
+created: "2026-03-27"

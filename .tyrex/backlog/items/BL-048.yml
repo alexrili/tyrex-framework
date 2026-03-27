@@ -1,0 +1,22 @@
+id: BL-048
+title: "Approval gates configuráveis"
+status: ready
+priority: medium
+epic: EP-010
+effort: M
+phase: 4
+description: |
+  Gates configuráveis no pipeline: pontos onde execução pausa para aprovação.
+  Default pipeline: plan→[gate]→do→verify→[gate]→review→[gate]→ship.
+  Gates são opcionais e configuráveis via .tyrex/governance/gates.yml.
+  --auto bypassa gates (com log). Cada gate gera evento no event stream.
+acceptance_criteria:
+  - .tyrex/governance/gates.yml com lista de gates
+  - Cada gate: id, name, position (after_plan|after_verify|before_ship), required (bool)
+  - Gates default: plan_approval (required), ship_approval (required)
+  - /tyrex-quick respeita gates (pausa nos pontos configurados)
+  - --auto bypassa gates com log warning
+  - Gate passage logada como evento
+  - Custom gates adicionáveis via /tyrex-settings
+origin: "discuss session 2026-03-27 — production-ready"
+created: "2026-03-27"

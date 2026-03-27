@@ -1,0 +1,19 @@
+id: BL-033
+title: "Version bump validation hook"
+status: ready
+priority: medium
+epic: EP-007
+effort: S
+phase: 2
+description: |
+  Hook pre-commit que detecta: se CHANGELOG.md ou ADR files mudaram,
+  deve haver version bump no package manifest. Warn por default.
+  Detecta manifests: package.json, composer.json, pyproject.toml, Cargo.toml.
+acceptance_criteria:
+  - Detecta CHANGELOG/ADR changes sem version bump
+  - Suporta múltiplos manifests (package.json, pyproject.toml, etc)
+  - Warn por default (não block — human decides version)
+  - Mensagem indica qual manifest e versão atual
+  - Skip se nenhum manifest encontrado
+origin: "discuss session 2026-03-27 — production-ready"
+created: "2026-03-27"

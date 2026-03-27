@@ -1,0 +1,21 @@
+id: BL-029
+title: "Plan mode enforcement hook"
+status: ready
+priority: critical
+epic: EP-007
+effort: M
+phase: 1
+description: |
+  Hook que intercepta file writes e bloqueia escrita de source code quando
+  cursor.yml diz agent_mode: "plan". Mesma lógica do OpenCode plugin mas
+  via Claude Code hooks. Allowed em plan: .tyrex/*, docs/*, *.md, *.yml, *.yaml.
+  Blocked em plan: *.js, *.ts, *.py, *.go, *.java, etc.
+acceptance_criteria:
+  - Hook lê cursor.yml e verifica agent_mode
+  - Em plan mode, bloqueia escrita de source code files
+  - Permite escrita de .tyrex/, docs/, markdown, YAML
+  - Mensagem clara quando bloqueia ("Plan mode — source code writes blocked")
+  - Em build mode, permite tudo (pass-through)
+  - Performance < 100ms por invocação
+origin: "discuss session 2026-03-27 — production-ready"
+created: "2026-03-27"

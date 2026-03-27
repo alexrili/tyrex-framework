@@ -1,0 +1,21 @@
+id: BL-030
+title: "TDD enforcement hook"
+status: ready
+priority: high
+epic: EP-007
+effort: M
+phase: 1
+description: |
+  Hook pre-commit que valida: se source files estão staged, test files
+  correspondentes devem existir. Usa convenções do projeto (*.test.js, *.spec.ts, etc).
+  Warn por default, block se quality strategy = required para a área do arquivo.
+  Lê tyrex.yml quality.strategy para determinar enforcement level.
+acceptance_criteria:
+  - Hook detecta source files staged sem test files correspondentes
+  - Respeita quality strategy (required = block, recommended = warn, optional = skip)
+  - Suporta convenções comuns (*.test.*, *.spec.*, __tests__/)
+  - Configurável via tyrex.yml (padrões de test files)
+  - Mensagem indica quais source files não têm testes
+  - Flag --no-tdd-check para bypass explícito (emergências)
+origin: "discuss session 2026-03-27 — production-ready"
+created: "2026-03-27"

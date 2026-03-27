@@ -1,0 +1,24 @@
+id: BL-039
+title: "Migrar security findings MD → YAML"
+status: ready
+priority: high
+epic: EP-009
+effort: L
+phase: 3
+description: |
+  Migrar security/SECURITY-NNN.md (prosa) e security/audit.md (consolidado manual)
+  para security/findings/SEC-NNN-FFF.yml (um arquivo por finding).
+  Eliminar audit.md — consolidados viram queries sobre findings/.
+  Atualizar comandos: /tyrex-security-review (output), /tyrex-do (resolve),
+  /tyrex-new (check), /tyrex-plan (cross-reference), /tyrex-status (summary).
+acceptance_criteria:
+  - security/findings/SEC-NNN-FFF.yml com campos: id, session, severity, category, file, line, description, status, created, resolved_at, resolved_by, refs
+  - Status enum: open, resolved, accepted-risk, false-positive
+  - Severity enum: critical, high, medium, low
+  - /tyrex-security-review gera findings em YAML (não MD)
+  - /tyrex-do marca findings como resolved atualizando YAML
+  - security/audit.md eliminado — substituído por query
+  - Migração de dados existentes (se houver findings ativos)
+  - 5 comandos atualizados para novo formato
+origin: "discuss session 2026-03-27 — production-ready"
+created: "2026-03-27"

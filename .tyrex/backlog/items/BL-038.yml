@@ -1,0 +1,28 @@
+id: BL-038
+title: "JSON Schema definitions para todos os tipos YAML"
+status: ready
+priority: critical
+epic: EP-009
+effort: XL
+phase: 3
+description: |
+  Criar JSON Schema para cada tipo de dado YAML do framework.
+  Schemas em .tyrex/schemas/. Servem como: documentação, validação,
+  contrato para API futura, e referência para agentes gerarem dados corretos.
+  Começar pelos mais usados (task, feature, session) e expandir.
+acceptance_criteria:
+  - task.schema.json — schema do task state file
+  - feature.schema.json — schema do feature state file
+  - backlog-item.schema.json — schema do BL-NNN.yml
+  - epic.schema.json — schema do EP-NNN.yml
+  - session-log.schema.json — schema do SESS-NNN.yml
+  - security-finding.schema.json — schema do SEC-NNN-FFF.yml
+  - bug-finding.schema.json — schema do BUG-NNN-FFF.yml
+  - test-gap.schema.json — schema do TST-NNN-FFF.yml
+  - event.schema.json — schema de eventos (JSONL)
+  - cursor.schema.json — schema do cursor.yml
+  - config.schema.json — schema do tyrex.yml
+  - Todos com $id, description, required fields, types, enums para status/priority
+  - Validáveis com qualquer JSON Schema validator
+origin: "discuss session 2026-03-27 — production-ready"
+created: "2026-03-27"

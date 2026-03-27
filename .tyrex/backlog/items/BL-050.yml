@@ -1,0 +1,23 @@
+id: BL-050
+title: "Drift detection"
+status: ready
+priority: medium
+epic: EP-010
+effort: L
+phase: 4
+description: |
+  Scan que detecta divergência entre: docs vs código, policies vs execução,
+  schemas vs dados reais, README vs funcionalidades. Evolução do Doc Impact
+  Analysis existente para cobrir governance artifacts.
+  Pode rodar standalone ou integrado em /tyrex-review e /tyrex-status.
+acceptance_criteria:
+  - Detecta drift: README vs código (ports, routes, env vars, CLI commands)
+  - Detecta drift: wiki vs funcionalidades atuais
+  - Detecta drift: policies.yml vs execução real (policy existe mas nunca checada)
+  - Detecta drift: schemas vs dados reais (YAML files que não passam no schema)
+  - Detecta drift: TYREX.md vs estado atual do projeto
+  - Report de drift com: file, expected, actual, severity
+  - Integrado em /tyrex-review (Lens 6 expandido) e /tyrex-status
+  - Pode sugerir fix tasks para drifts encontrados
+origin: "discuss session 2026-03-27 — production-ready"
+created: "2026-03-27"

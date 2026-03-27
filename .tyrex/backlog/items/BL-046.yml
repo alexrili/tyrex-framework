@@ -1,0 +1,28 @@
+id: BL-046
+title: "Atualizar command templates para novos formatos"
+status: ready
+priority: critical
+epic: EP-009
+effort: XL
+phase: 4
+description: |
+  Atualizar TODOS os command templates que lêem ou escrevem dados migrados.
+  Impacto alto: tyrex-do, tyrex-security-review, tyrex-debug, tyrex-test-review.
+  Impacto médio: tyrex-new, tyrex-plan, tyrex-status, tyrex-review.
+  Impacto baixo: tyrex-quick (herda), tyrex-recover, tyrex-verify.
+  Cada template deve ler/escrever no novo formato YAML.
+  Sync para todos os 4 agent directories como último passo.
+acceptance_criteria:
+  - /tyrex-do lê/escreve security findings em YAML
+  - /tyrex-security-review gera findings em YAML
+  - /tyrex-debug gera bug findings em YAML
+  - /tyrex-test-review gera test gaps em YAML
+  - /tyrex-new lê findings/gaps de YAML
+  - /tyrex-plan lê frontmatter de feature specs
+  - /tyrex-status queries YAML findings em vez de parsear MD
+  - /tyrex-review Lens 5/6 lê dados estruturados
+  - Todos os shared algorithms atualizados
+  - Re-sync para 4 agent directories
+  - Nenhum comando referencia formato MD antigo
+origin: "discuss session 2026-03-27 — production-ready"
+created: "2026-03-27"

@@ -1,0 +1,20 @@
+id: BL-040
+title: "Migrar bug findings MD → YAML"
+status: ready
+priority: high
+epic: EP-009
+effort: M
+phase: 3
+description: |
+  Migrar bugs/DEBUG-NNN.md (prosa) e bugs/coverage-gaps.md (consolidado)
+  para bugs/findings/BUG-NNN-FFF.yml (um arquivo por bug).
+  Eliminar coverage-gaps.md. Atualizar /tyrex-debug (output),
+  /tyrex-new (check), /tyrex-status (summary).
+acceptance_criteria:
+  - bugs/findings/BUG-NNN-FFF.yml com campos: id, session, severity, category, file, line, description, status, created, resolved_at, refs
+  - Status enum: open, resolved, wont-fix
+  - /tyrex-debug gera findings em YAML (não MD)
+  - bugs/coverage-gaps.md eliminado
+  - 3 comandos atualizados
+origin: "discuss session 2026-03-27 — production-ready"
+created: "2026-03-27"

@@ -1,0 +1,20 @@
+id: BL-037
+title: "Context usage tracking real"
+status: ready
+priority: medium
+epic: EP-008
+effort: S
+phase: 2
+description: |
+  Substituir estimativa heurística do context monitor por logging real.
+  Cada checkpoint (task/wave boundary) registra no session log:
+  files_read_count, conversation_turns, inline_vs_fresh, estimated_pct.
+  Permite calibrar os thresholds com dados reais ao longo do tempo.
+acceptance_criteria:
+  - Context checkpoint logged no SESS-NNN.yml a cada task/wave
+  - Campos: checkpoint_at, files_read, turns, execution_mode, estimated_pct
+  - Thresholds (50/70/85) consultáveis e ajustáveis via tyrex.yml
+  - Histórico de context usage por sessão permite análise de tendência
+  - Warning messages continuam funcionando (agora backed by data)
+origin: "discuss session 2026-03-27 — production-ready"
+created: "2026-03-27"

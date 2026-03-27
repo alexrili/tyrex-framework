@@ -1,0 +1,12 @@
+id: EP-010
+title: "Governance Layer"
+description: |
+  Controle, compliance, e visibilidade para equipes.
+  Policy engine configurável, approval gates no pipeline,
+  compliance reports por feature, drift detection contínuo.
+  Depende de EP-009 (governance precisa de dados estruturados).
+  Preparação para multi-agent visibility em esteira de desenvolvimento.
+items: [BL-047, BL-048, BL-049, BL-050]
+phase: [4]
+created: "2026-03-27"
+origin: "discuss session 2026-03-27 — production-ready analysis"

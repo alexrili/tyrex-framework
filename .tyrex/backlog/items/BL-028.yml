@@ -1,0 +1,22 @@
+id: BL-028
+title: "Claude Code hooks infrastructure"
+status: ready
+priority: critical
+epic: EP-007
+effort: L
+phase: 1
+description: |
+  Criar a infraestrutura de hooks para Claude Code (.claude/settings.json).
+  Os hooks interceptam ações do agente (pre-tool-use, post-tool-use) e executam
+  scripts de validação. Arquitetura deve ser agnóstica — scripts em shell que
+  qualquer runtime pode adaptar. Estrutura em .tyrex/hooks/ com scripts reutilizáveis.
+  Claude Code hooks config em .claude/settings.json apontando para .tyrex/hooks/.
+acceptance_criteria:
+  - Estrutura .tyrex/hooks/ com scripts de validação
+  - .claude/settings.json configurado com hooks (pre-tool-use para file writes)
+  - Hook runner genérico que executa validações e retorna allow/block
+  - Documentação de como adicionar hooks para outros runtimes
+  - tyrex init configura hooks automaticamente para agentes detectados
+  - Hooks não quebram se .tyrex/ não existe (graceful skip)
+origin: "discuss session 2026-03-27 — production-ready"
+created: "2026-03-27"

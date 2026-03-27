@@ -1,0 +1,22 @@
+id: BL-034
+title: "Session log estruturado"
+status: ready
+priority: high
+epic: EP-008
+effort: L
+phase: 2
+description: |
+  Cada sessão de execução (tyrex-do, tyrex-quick) gera um log estruturado
+  em .tyrex/metrics/sessions/SESS-NNN.yml com: timestamps, tasks executadas,
+  waves, duração por task, resultado, arquivos modificados, commits gerados,
+  retries, context estimation por checkpoint. Índice em metrics/index.yml.
+acceptance_criteria:
+  - SESS-NNN.yml gerado automaticamente por /tyrex-do e /tyrex-quick
+  - Campos: session_id, feature_id, started_at, finished_at, duration_seconds
+  - Tasks log: task_id, wave, started_at, finished_at, status, files_changed, commit
+  - Métricas: total_tasks, completed, failed, retries, waves_count
+  - Context checkpoints: estimated_pct at each task/wave boundary
+  - Index file (metrics/index.yml) atualizado com cada nova sessão
+  - /tyrex-status consome e mostra resumo de sessões recentes
+origin: "discuss session 2026-03-27 — production-ready"
+created: "2026-03-27"

@@ -1,0 +1,25 @@
+id: BL-047
+title: "Policy engine"
+status: ready
+priority: high
+epic: EP-010
+effort: L
+phase: 4
+description: |
+  Motor de políticas configuráveis em .tyrex/governance/policies.yml.
+  Cada policy é uma regra com: condição, ação, enforcement level (block/warn/info).
+  Exemplos: "security tasks MUST have devsec skill", "no ship without review",
+  "features > 10 tasks must have ADR". Policies são checadas por comandos
+  em pontos relevantes do pipeline.
+acceptance_criteria:
+  - .tyrex/governance/policies.yml com lista de policies
+  - Cada policy: id, name, condition, action, enforcement (block|warn|info), scope
+  - Policies built-in (shipped com framework): security-skill, review-before-ship, changelog-required
+  - Policies custom (user define): via /tyrex-settings ou edição direta
+  - /tyrex-plan checa policies de planning
+  - /tyrex-do checa policies de execution
+  - /tyrex-ship checa policies de shipping
+  - Policy violations logadas no event stream
+  - Mensagem clara quando policy blocks ação
+origin: "discuss session 2026-03-27 — production-ready"
+created: "2026-03-27"

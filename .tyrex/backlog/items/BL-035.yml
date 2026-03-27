@@ -1,0 +1,20 @@
+id: BL-035
+title: "Execution report"
+status: ready
+priority: high
+epic: EP-008
+effort: M
+phase: 2
+description: |
+  Ao final de cada /tyrex-do ou /tyrex-quick, apresentar relatório consolidado
+  com métricas da execução. Consumido do session log (BL-034).
+  Formato visual para o terminal + dados no session YAML.
+acceptance_criteria:
+  - Report apresentado ao final de /tyrex-do e /tyrex-quick
+  - Mostra: tasks (total/passed/failed), waves, duration, files changed
+  - Mostra: retries, fix-loops, test results summary
+  - Mostra: context usage final estimate
+  - Mostra: commits created (hashes + messages)
+  - Dados já persistidos no SESS-NNN.yml (não duplica)
+origin: "discuss session 2026-03-27 — production-ready"
+created: "2026-03-27"

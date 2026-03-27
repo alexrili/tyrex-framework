@@ -1,0 +1,22 @@
+id: BL-042
+title: "Feature specs com frontmatter YAML"
+status: ready
+priority: high
+epic: EP-009
+effort: M
+phase: 3
+description: |
+  Adicionar frontmatter YAML a todos os feature specs (.tyrex/features/NNN-*.md).
+  Frontmatter contém dados estruturados (id, title, status, branch, epic,
+  backlog_item, acceptance_criteria). Corpo markdown mantido para narrativa.
+  Atualizar /tyrex-new para gerar specs com frontmatter.
+acceptance_criteria:
+  - Feature specs têm frontmatter YAML entre --- delimiters
+  - Campos: id, title, status, branch, epic, backlog_item, created, acceptance_criteria[]
+  - Corpo markdown preservado (objective, technical notes, out of scope)
+  - /tyrex-new gera specs com frontmatter
+  - /tyrex-plan lê frontmatter para context
+  - Template atualizado em templates/
+  - Migração dos 39 specs existentes (script ou manual)
+origin: "discuss session 2026-03-27 — production-ready"
+created: "2026-03-27"

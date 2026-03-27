@@ -1,0 +1,21 @@
+id: BL-036
+title: "Quality scorecard per feature"
+status: ready
+priority: medium
+epic: EP-008
+effort: M
+phase: 2
+description: |
+  Score de qualidade calculado por feature baseado em dados objetivos:
+  TDD compliance (tests acompanham source), security findings resolved,
+  review findings fixed, CHANGELOG coverage, version bumped, verify pass rate.
+  Persistido em .tyrex/metrics/scorecards/FEAT-NNN.yml.
+acceptance_criteria:
+  - Scorecard gerado ao final de /tyrex-review ou /tyrex-quick
+  - Dimensões: tdd_compliance, security_resolved, review_findings_fixed
+  - Dimensões: changelog_coverage, version_bumped, verify_pass_rate
+  - Score geral 0-100 (média ponderada — security e TDD pesam mais)
+  - /tyrex-status mostra scorecard da feature ativa
+  - Histórico de scorecards consultável
+origin: "discuss session 2026-03-27 — production-ready"
+created: "2026-03-27"
