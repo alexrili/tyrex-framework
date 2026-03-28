@@ -39,7 +39,8 @@ Read these files (in parallel where possible):
 12. `.tyrex/threads/` — persistent threads (if exists)
 13. `.tyrex/milestones/` — release milestones (if exists)
 14. `.tyrex/workstreams/` — workstreams (if exists)
-12. `.tyrex/tests/coverage-gaps.md` — test coverage gaps from /tyrex-test-review (if exists)
+15. `.tyrex/tests/coverage-gaps.md` — test coverage gaps from /tyrex-test-review (if exists)
+16. `.tyrex/metrics/index.yml` — session history. If the file doesn't exist, skip session reporting.
 
 ### Step 1b: Scan all feature state files
 
@@ -107,6 +108,23 @@ Active (current branch): 003-feature-name
   004-feature-name           planned     (depends on 003)
   005-feature-name           planned     (depends on 002)
   006-feature-name           discussed   (no spec yet)
+
+─── Recent Sessions ────────────────────────────────────
+  SESS-003 — 2026-03-28 15:30 — Feature 046 (tyrex-quick)
+    Tasks: 5/5 completed | Duration: 45min | Status: completed
+  SESS-002 — 2026-03-27 10:00 — Feature 045 (tyrex-do)
+    Tasks: 2/2 completed | Duration: 20min | Status: completed
+  SESS-001 — 2026-03-26 14:00 — Feature 044 (tyrex-quick)
+    Tasks: 3/3 completed | Duration: 35min | Status: completed
+
+  Display rules:
+  - Show last 5 sessions from index.yml, sorted by started_at descending
+  - Each line: session ID, date/time (from started_at), feature ID, command, then detail line
+  - Detail line: tasks_completed/tasks_total completed, duration (human-friendly), status
+  - Duration format: if duration_seconds < 3600 show "Xmin", if >= 3600 show "Xh Ymin"
+  - Status markers: "completed" = plain, "failed" = [FAILED], "running" = [RUNNING] (crashed)
+  - If no sessions exist or index.yml missing: show "No sessions recorded yet"
+  - Omit this section entirely if index.yml does not exist
 
 ─── Health ─────────────────────────────
   TYREX.md:       [complete | incomplete (list empty sections)]

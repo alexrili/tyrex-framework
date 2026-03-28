@@ -45,6 +45,10 @@ Before executing any task, read `templates/commands/shared/guardrails-inline.md`
 
 This command uses periodic directive checkpoints per `templates/commands/shared/checkpoint-reminder.md`. After every N completed tasks (default: 2, configurable via `tyrex.yml` `quality.checkpoint_interval`), inject the checkpoint reminder block before starting the next task.
 
+## Session Logging
+
+Before proceeding, read `templates/commands/shared/session-log.md` for the session logging protocol. This command calls session logging hooks at natural execution checkpoints (session_start, wave_start, task_end, wave_end, session_end).
+
 ## Context Monitor
 
 This command monitors context window usage per `templates/commands/shared/context-monitor.md`. After each task completion (or wave completion, per `monitoring.check_interval`), estimate context usage and inject warnings if thresholds are crossed. In fresh mode, only the orchestrator's context is monitored (sub-agents have fresh windows). In inline mode, the full session context is monitored.
@@ -60,6 +64,7 @@ The orchestrator stays lean to preserve context budget. Load ONLY what's needed 
 3. `.tyrex/state/features/NNN/tasks/*.yml` → task names, status, dependencies (metadata only)
 4. `.tyrex/TYREX.md` → **first N lines only** (N = `context_engineering.size_limits.tyrex_md_summary_lines`, default 50). This gives the orchestrator project overview + stack + patterns without loading full history.
 5. Active feature spec → **first 30 lines** (summary + acceptance criteria). Full spec is passed to sub-agents, not loaded by orchestrator.
+6. Call `session_start` per session-log.md: create SESS-NNN.yml with feature_id, command='tyrex-do', branch, execution_mode.
 
 **Do NOT load into orchestrator context:**
 - Full source code files (sub-agents read these)
@@ -99,6 +104,8 @@ Wave 3: [Task 5: name]                          (1 task, sequential)
 Total: N tasks in M waves
 ```
 
+Log the wave count and total tasks in the session file (update SESS-NNN.yml with waves_count and total_tasks).
+
 **If `--auto`:** proceed to execution automatically.
 
 **Otherwise, present structured choices:**
@@ -121,12 +128,14 @@ Execute waves sequentially: Wave 1 → Wave 2 → ... → Wave N. Within each wa
 **Wave loop:**
 ```
 for each wave (ascending order):
+  0. Call `wave_start` per session-log.md: append wave entry to session file
   1. Prepare all tasks in this wave (Phase A for each)
   2. Spawn all sub-agents simultaneously (Phase B — parallel)
   3. Wait for ALL sub-agents in this wave to complete
   4. Collect results for each (Phase C — sequential commits)
   5. If ANY task in this wave failed → stop execution, do NOT proceed to next wave
-  6. If all tasks in this wave succeeded → advance to next wave
+  6. Call `wave_end` per session-log.md: update wave finished_at
+  7. If all tasks in this wave succeeded → advance to next wave
 ```
 
 **Wave failure handling:**
@@ -251,6 +260,7 @@ After sub-agent completes (or all parallel sub-agents complete):
      - **Else if `approve`:** show diff, message, changelog entry → present choices
      - **Else if `auto`:** commit automatically
    - Update per-feature state file and cursor.yml
+   - Call `task_end` per session-log.md: update task entry with status, files_changed, commit hash, context checkpoint.
    - **Auto-update TYREX.md** if macro docs generated
 
 4. **On failure:**
@@ -322,6 +332,7 @@ After ALL implementation tasks are `completed` (before the completion summary), 
 
 ### Step 5: Feature completion
 When ALL tasks are `completed` (including any doc fix tasks from Step 4b):
+- Call `session_end` per session-log.md: finalize session file with duration, status, metrics. Update index.
 - Update feature status to `in_progress` (review pending)
 - **Next action** (per `templates/commands/shared/next-action-map.md`):
   ```

@@ -1,6 +1,6 @@
 task_id: "046-002"
 title: "ADR-022 — Session log estruturado"
-status: "pending"
+status: "completed"
 wave: 1
 depends_on: []
 quality: "optional"
