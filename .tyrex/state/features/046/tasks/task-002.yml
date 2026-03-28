@@ -1,0 +1,13 @@
+task_id: "046-002"
+title: "ADR-022 — Session log estruturado"
+status: "pending"
+wave: 1
+depends_on: []
+quality: "optional"
+skill: null
+files: ["docs/adrs/ADR-022-session-log.md"]
+relevant_files: ["docs/adrs/ADR-017-wave-execution.md", "docs/adrs/ADR-018-context-monitor.md", ".tyrex/features/046-session-log.md"]
+spec: "docs/specs/046-task-002-adr-session-log.md"
+commit: null
+started_at: null
+finished_at: null

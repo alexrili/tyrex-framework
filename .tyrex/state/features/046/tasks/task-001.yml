@@ -1,0 +1,13 @@
+task_id: "046-001"
+title: "Session log shared algorithm + YAML template"
+status: "pending"
+wave: 1
+depends_on: []
+quality: "recommended"
+skill: "backend-engineer"
+files: ["templates/commands/shared/session-log.md"]
+relevant_files: ["templates/commands/shared/context-monitor.md", "templates/commands/shared/execution-checklist.md", ".tyrex/tyrex.yml"]
+spec: "docs/specs/046-task-001-session-log-algorithm.md"
+commit: null
+started_at: null
+finished_at: null

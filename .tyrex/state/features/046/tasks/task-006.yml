@@ -1,0 +1,13 @@
+task_id: "046-006"
+title: "Sync commands to all agent directories"
+status: "pending"
+wave: 3
+depends_on: ["046-003", "046-004", "046-005"]
+quality: "optional"
+skill: null
+files: [".claude/commands/tyrex-do.md", ".claude/commands/tyrex-quick.md", ".claude/commands/tyrex-status.md", ".cursor/rules/tyrex/tyrex-do.md", ".cursor/rules/tyrex/tyrex-quick.md", ".cursor/rules/tyrex/tyrex-status.md", ".codex/skills/tyrex/tyrex-do.md", ".codex/skills/tyrex/tyrex-quick.md", ".codex/skills/tyrex/tyrex-status.md", ".opencode/commands/tyrex-do.md", ".opencode/commands/tyrex-quick.md", ".opencode/commands/tyrex-status.md"]
+relevant_files: ["templates/commands/unified/tyrex-do.md", "templates/commands/unified/tyrex-quick.md", "templates/commands/unified/tyrex-status.md"]
+spec: "docs/specs/046-task-006-sync-commands.md"
+commit: null
+started_at: null
+finished_at: null

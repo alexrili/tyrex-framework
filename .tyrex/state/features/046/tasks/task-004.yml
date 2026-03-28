@@ -1,0 +1,13 @@
+task_id: "046-004"
+title: "Integrate session logging into tyrex-quick"
+status: "pending"
+wave: 2
+depends_on: ["046-001"]
+quality: "recommended"
+skill: "backend-engineer"
+files: ["templates/commands/unified/tyrex-quick.md"]
+relevant_files: ["templates/commands/shared/session-log.md", "templates/commands/unified/tyrex-do.md"]
+spec: "docs/specs/046-task-004-tyrex-quick-integration.md"
+commit: null
+started_at: null
+finished_at: null

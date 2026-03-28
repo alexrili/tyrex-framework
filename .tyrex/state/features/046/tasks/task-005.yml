@@ -1,0 +1,13 @@
+task_id: "046-005"
+title: "Add Recent Sessions section to tyrex-status"
+status: "pending"
+wave: 2
+depends_on: ["046-001"]
+quality: "recommended"
+skill: "backend-engineer"
+files: ["templates/commands/unified/tyrex-status.md"]
+relevant_files: ["templates/commands/shared/session-log.md", ".tyrex/tyrex.yml"]
+spec: "docs/specs/046-task-005-tyrex-status-integration.md"
+commit: null
+started_at: null
+finished_at: null

@@ -1,0 +1,13 @@
+task_id: "046-003"
+title: "Integrate session logging into tyrex-do"
+status: "pending"
+wave: 2
+depends_on: ["046-001"]
+quality: "recommended"
+skill: "backend-engineer"
+files: ["templates/commands/unified/tyrex-do.md"]
+relevant_files: ["templates/commands/shared/session-log.md", "templates/commands/shared/execution-checklist.md", "templates/commands/shared/context-monitor.md"]
+spec: "docs/specs/046-task-003-tyrex-do-integration.md"
+commit: null
+started_at: null
+finished_at: null

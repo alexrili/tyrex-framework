@@ -1,0 +1,22 @@
+# Feature 046 — Session Log Estruturado
+feature_id: 46
+feature_file: ".tyrex/features/046-session-log.md"
+branch: "feat/046-session-log"
+status: "planning"
+epic: "EP-008"
+backlog_item: "BL-034"
+skills: ["backend-engineer"]
+docs:
+  spec: true
+  adr: true
+  diagrams: true
+  changelog: true
+created: "2026-03-28"
+checkpoint_tag: "tyrex-checkpoint-046"
+tasks:
+  - "046-001"
+  - "046-002"
+  - "046-003"
+  - "046-004"
+  - "046-005"
+  - "046-006"
