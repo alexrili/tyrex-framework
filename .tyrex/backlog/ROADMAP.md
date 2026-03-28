@@ -59,7 +59,7 @@ All 27 items from EP-001 through EP-006 are done. See git history for details.
 
 | Item | Title | Effort | Priority | Status |
 |------|-------|--------|----------|--------|
-| BL-034 | Session log estruturado | L | high | ready |
+| BL-034 | Session log estruturado | L | high | done |
 | BL-035 | Execution report | M | high | ready |
 | BL-036 | Quality scorecard per feature | M | medium | ready |
 | BL-037 | Context usage tracking real | S | medium | ready |

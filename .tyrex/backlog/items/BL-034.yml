@@ -1,6 +1,7 @@
 id: BL-034
 title: "Session log estruturado"
-status: in-progress
+status: done
+feature_id: 46
 priority: high
 epic: EP-008
 effort: L
