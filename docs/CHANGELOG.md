@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.30.0] - 2026-03-28
+
+### Added
+- **Structured session logging** — execution sessions (tyrex-do, tyrex-quick) generate YAML logs in `.tyrex/metrics/sessions/SESS-NNN.yml` with timestamps, task results, wave info, commits, and context checkpoints. Index file in `metrics/index.yml`. Shared algorithm in `templates/commands/shared/session-log.md`. (BL-034, EP-008)
+- **Recent Sessions in tyrex-status** — new section shows last 5 sessions with task counts, duration, and status
+- **ADR-022** — documents structured session logging decision (YAML format, index pattern, producer/consumer model)
+
 ## [1.29.0] - 2026-03-27
 
 ### Added

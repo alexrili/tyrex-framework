@@ -1,6 +1,6 @@
 task_id: "046-006"
 title: "Sync commands to all agent directories"
-status: "pending"
+status: "completed"
 wave: 3
 depends_on: ["046-003", "046-004", "046-005"]
 quality: "optional"

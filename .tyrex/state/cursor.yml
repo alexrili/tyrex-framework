@@ -14,8 +14,8 @@ last_active_feature: 46
 active_feature: null
 active_feature_file: null
 last_task_completed: null
-last_commit: "c776801"
-last_action: "backlog_batch_complete"
+last_commit: "fa08d17"
+last_action: "task_complete"
 
 tasks_summary:
   total: 7
