@@ -1,6 +1,7 @@
 id: BL-033
 title: "Version bump validation hook"
-status: in-progress
+status: done
+feature_id: 45
 priority: medium
 epic: EP-007
 effort: S

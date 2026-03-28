@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.29.0] - 2026-03-27
+
+### Added
+- **Version bump validation hook** — pre-commit validator that warns when CHANGELOG.md or ADR files are staged without a version bump in the package manifest. Warn-only (never blocks). Detects `package.json`, `composer.json`, `pyproject.toml`, `Cargo.toml`. Shows current version and bump guidance. (BL-033, EP-007)
+- **EP-007 complete** — all 6 mechanical enforcement hooks delivered: infrastructure (BL-028), plan mode guard (BL-029), TDD check (BL-030), CHANGELOG check (BL-031), commit lint (BL-032), version check (BL-033)
+
 ## [1.28.0] - 2026-03-27
 
 ### Added

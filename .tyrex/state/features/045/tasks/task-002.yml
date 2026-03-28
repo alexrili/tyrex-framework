@@ -1,7 +1,10 @@
 task_id: "045-002"
 feature: "045"
 name: "CHANGELOG, version bump"
-status: pending
+status: completed
+started_at: "2026-03-27T00:00:00Z"
+finished_at: "2026-03-28T00:00:00Z"
+commit: "pending"
 depends_on: ["045-001"]
 wave: 2
 estimate: small

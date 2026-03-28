@@ -2,12 +2,12 @@ feature_id: "045"
 name: "Version Bump Validation Hook"
 feature_file: ".tyrex/features/045-version-bump-hook.md"
 branch: "feat/045-version-bump-hook"
-status: "planned"
+status: "done"
 tasks_dir: ".tyrex/state/features/045/tasks"
 tasks_summary:
   total: 2
-  completed: 0
+  completed: 2
   in_progress: 0
-  pending: 2
+  pending: 0
 created_at: "2026-03-27T00:00:00Z"
 updated_at: "2026-03-27T00:00:00Z"
