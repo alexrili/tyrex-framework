@@ -61,6 +61,10 @@ Before executing any task (Step 4), read `templates/commands/shared/guardrails-i
 
 During Step 4 (execution), apply periodic directive checkpoints per `templates/commands/shared/checkpoint-reminder.md`. After every N completed tasks (default: 2), inject the checkpoint reminder block before starting the next task.
 
+## Session Logging
+
+Before execution (Step 4), read `templates/commands/shared/session-log.md` for the session logging protocol. This command creates sessions with richer data than tyrex-do (includes verify and review results).
+
 ## Behavior
 
 ### Step 0: Backlog mode (if `--backlog`)
@@ -192,6 +196,8 @@ Before starting any implementation:
 
 If the tag already exists (re-execution), append a counter: `tyrex-checkpoint-NNN-2`.
 
+4. **Start session logging:** Call `session_start` per session-log.md — create SESS-NNN.yml with feature_id, command=`tyrex-quick`, branch, execution_mode.
+
 ### Step 4: Execute /tyrex-do internally
 
 Run the full `/tyrex-do` logic with these modifications:
@@ -207,6 +213,8 @@ This step produces:
 - State updates per task
 
 **All `/tyrex-do` steps execute in full.** Reference the `/tyrex-do` command for the complete step sequence: Steps 1-5.
+
+**Session logging:** tyrex-do fills in task/wave details via its own session logging hooks (the session file created in Step 3c is shared).
 
 ### Step 4a: Execute /tyrex-verify internally
 
@@ -229,6 +237,8 @@ After all implementation tasks are complete, run user acceptance testing per `/t
 **Verify results** persist in `.tyrex/state/features/NNN-verify.md`.
 
 **All `/tyrex-verify` steps execute in full.** Reference the `/tyrex-verify` command for the complete step sequence: Steps 1-6.
+
+**Session logging:** Update session file `verify` block — deliverables_total, passed, failed, skipped.
 
 ### Step 4b: Execute /tyrex-review internally
 
@@ -263,6 +273,8 @@ After all implementation tasks are complete, run the full `/tyrex-review` logic 
 - Skills evolved (if findings match skill domains)
 
 **All `/tyrex-review` steps execute in full.** Reference the `/tyrex-review` command for the complete step sequence: Steps 1-9. Skip Step 9 (Finalize) — that happens in Step 5 below after accept/reject.
+
+**Session logging:** Update session file `review` block — findings_total, critical, high, medium, low, accepted.
 
 ### Step 5: Final Report + Accept/Reject
 
@@ -321,6 +333,8 @@ Accept this delivery?
 4. Update feature status to `rejected`
 5. Tell user: "All changes reverted. Working tree is clean at the checkpoint state."
 6. Present: "What next? [1] Try again [2] /tyrex-discuss [3] Done"
+
+**Session logging:** Call `session_end` per session-log.md — finalize with duration, status (`completed` if accepted, `failed` if rejected), metrics. Update index.
 
 **If Review first:**
 - Keep changes, suggest `/tyrex-review`

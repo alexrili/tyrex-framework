@@ -36,7 +36,11 @@ Read these files (in parallel where possible):
 9. `docs/` — scan for existing documentation files
 10. `.tyrex/security/audit.md` — security findings from /tyrex-security-review (if exists)
 11. `.tyrex/bugs/` — debug session reports and open bugs (if exists)
-12. `.tyrex/tests/coverage-gaps.md` — test coverage gaps from /tyrex-test-review (if exists)
+12. `.tyrex/threads/` — persistent threads (if exists)
+13. `.tyrex/milestones/` — release milestones (if exists)
+14. `.tyrex/workstreams/` — workstreams (if exists)
+15. `.tyrex/tests/coverage-gaps.md` — test coverage gaps from /tyrex-test-review (if exists)
+16. `.tyrex/metrics/index.yml` — session history. If the file doesn't exist, skip session reporting.
 
 ### Step 1b: Scan all feature state files
 
@@ -104,6 +108,23 @@ Active (current branch): 003-feature-name
   004-feature-name           planned     (depends on 003)
   005-feature-name           planned     (depends on 002)
   006-feature-name           discussed   (no spec yet)
+
+─── Recent Sessions ────────────────────────────────────
+  SESS-003 — 2026-03-28 15:30 — Feature 046 (tyrex-quick)
+    Tasks: 5/5 completed | Duration: 45min | Status: completed
+  SESS-002 — 2026-03-27 10:00 — Feature 045 (tyrex-do)
+    Tasks: 2/2 completed | Duration: 20min | Status: completed
+  SESS-001 — 2026-03-26 14:00 — Feature 044 (tyrex-quick)
+    Tasks: 3/3 completed | Duration: 35min | Status: completed
+
+  Display rules:
+  - Show last 5 sessions from index.yml, sorted by started_at descending
+  - Each line: session ID, date/time (from started_at), feature ID, command, then detail line
+  - Detail line: tasks_completed/tasks_total completed, duration (human-friendly), status
+  - Duration format: if duration_seconds < 3600 show "Xmin", if >= 3600 show "Xh Ymin"
+  - Status markers: "completed" = plain, "failed" = [FAILED], "running" = [RUNNING] (crashed)
+  - If no sessions exist or index.yml missing: show "No sessions recorded yet"
+  - Omit this section entirely if index.yml does not exist
 
 ─── Health ─────────────────────────────
   TYREX.md:       [complete | incomplete (list empty sections)]
@@ -271,4 +292,7 @@ Based on the status, suggest the most relevant next actions:
 - If roadmap.yml doesn't exist, still try to extract future references from feature specs
 - Adapt the display: omit sections that are completely empty/irrelevant (e.g., don't show Skills section if no skills exist and no features reference them)
 - **Backlog section:** If `.tyrex/backlog/items/` exists and has items, show the Backlog section. Read all BL-*.yml files, count by status, list items sorted by priority. Omit the Backlog section entirely if no backlog directory or no items.
+- **Threads section:** If `.tyrex/threads/` exists and has threads, show the 3 most recently updated threads (sorted by `last_updated`). Format: `[name] — last updated [date] ([N] entries)`. Omit entirely if no threads.
+- **Milestone section:** If `.tyrex/milestones/` has an `active` milestone, show: version, title, feature progress (N/M done), DoD progress (X/Y satisfied). Omit if no milestones exist.
+- **Workstream section:** If `.tyrex/workstreams/` has active workstreams, show: active workstream name, feature count, and progress. Omit if no workstreams exist.
 - **Next action** (per `templates/commands/shared/next-action-map.md`): present the suggested next command based on current state with structured choices.
